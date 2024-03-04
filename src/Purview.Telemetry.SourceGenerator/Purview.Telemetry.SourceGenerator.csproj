@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+  		<TargetFramework>netstandard2.0</TargetFramework>
+
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<NoPackageAnalysis>true</NoPackageAnalysis>
+		<IsPackable>true</IsPackable>
+
+		<PackageId>Purview.Telemetry.SourceGenerator</PackageId>
+		<Title>Purview Telemetry Source Generator</Title>
+		<Description>.NET Source Generator for interface-based telemetry building activities, activity events, logs and metrics.</Description>
+		<PackageIcon>purview-logo.png</PackageIcon>
+
+		<CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+		<IsRoslynComponent>true</IsRoslynComponent>
+
+		<Version>0.1.0.0</Version>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Purview.Telemetry.Shared\Purview.Telemetry.Shared.csproj" PrivateAssets="All" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Remove="bin\**" />
+		<None Remove="bin\**" />
+	</ItemGroup>
+
+	<!-- Package the build output into the "analyzer" slot in the NuGet package -->
+	<ItemGroup>
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
+		<None Remove="bin\Debug\netstandard2.0\\Purview.Telemetry.SourceGenerator.dll" />
+		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<None Remove="bin\Debug\netstandard2.0\\Purview.Telemetry.dll" />
+		<None Include="$(OutputPath)\Purview.Telemetry.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<None Remove="bin\Debug\netstandard2.0\\Purview.Telemetry.dll" />
+		<None Remove="bin\Debug\netstandard2.0\\Purview.Telemetry.dll" />
+		<None Include="$(OutputPath)\Purview.Telemetry.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
+	</ItemGroup>
+
+</Project>

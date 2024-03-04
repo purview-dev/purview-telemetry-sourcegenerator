@@ -1,0 +1,10 @@
+﻿<Project>
+
+	<Import Project="./.build-system/Directory.Build.props"/>
+
+	<PropertyGroup>
+		<DefineConstants Condition="'$(Configuration)' == 'DEBUG'">DEBUG_SG</DefineConstants>
+		<PackageTags>logging;source-generator;high-performance-logging;dotnet;aspnet;otel;open-telemetry;traces;tracing;metrics;events;distributed-traces;distributed-tracing;</PackageTags>
+	</PropertyGroup>
+
+</Project>

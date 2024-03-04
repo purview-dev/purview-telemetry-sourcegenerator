@@ -1,0 +1,11 @@
+﻿<Project>
+
+	<PropertyGroup Label="NuGet Package Defaults">
+
+		<Authors>Purview</Authors>
+		<Company>Purview</Company>
+		<Copyright>Purview | All rights reserved.</Copyright>
+
+	</PropertyGroup>
+
+</Project>

@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"dotnetAcquisitionExtension.enableTelemetry": false,
+		"workbench.colorCustomizations": {}
+	}
+}

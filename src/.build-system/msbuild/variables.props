@@ -1,0 +1,83 @@
+﻿<Project>
+
+	<PropertyGroup Label="Define C# Properties" Condition="'$(MSBuildProjectExtension)' == '.csproj'">
+
+		<IsCSharpProject>true</IsCSharpProject>
+		<IsTestProject>false</IsTestProject>
+		<_CsProjContent>$([System.IO.File]::ReadAllText(`$(MSBuildProjectFullPath)`))</_CsProjContent>
+
+	</PropertyGroup>
+
+	<!-- Get the Project Sdk details. -->
+	<PropertyGroup Label="Define C# SDK Project Properties" Condition="'$(_CsProjContent)' != ''">
+
+		<IsSdkProject>$([System.Text.RegularExpressions.Regex]::IsMatch(`$(_CsProjContent))`, `(?s-i)(?:^|\s|>)(?s-i)(?:^|\s|&gt;)&lt;\s*(?:Project|Import)\s(?:[^&gt;]*?)\s?Sdk\s*=&quot;(?&lt;sdkproj&gt;.*?)&quot;`))</IsSdkProject>
+		<SdkProjectName>$([System.Text.RegularExpressions.Regex]::Match(`$(_CsProjContent))`, `(?s-i)(?:^|\s|>)(?s-i)(?:^|\s|&gt;)&lt;\s*(?:Project|Import)\s(?:[^&gt;]*?)\s?Sdk\s*=&quot;(?&lt;sdkproj&gt;.*?)&quot;`).Groups['sdkproj'].Value)</SdkProjectName>
+
+	</PropertyGroup>
+
+	<!-- Add build properties director variable. -->
+	<PropertyGroup Label="Define C# MS-Build Properties" Condition="'$(IsCSharpProject)' == 'true'">
+
+		<_CsProjContent>$([System.IO.File]::ReadAllText(`$(MSBuildProjectFullPath)`))</_CsProjContent>
+		<AutoMSBuildProps>$(MSBuildThisFileDirectory)Properties/</AutoMSBuildProps>
+		<TestingType>$([System.Text.RegularExpressions.Regex]::Match($(MSBuildProjectName), `^.*\.([\w|_]\w*)Tests?$`).get_Groups().get_Item(1).ToString())</TestingType>
+
+	</PropertyGroup>
+
+	<!-- Update the root namespace with no .Core. -->
+	<PropertyGroup Label="C# Project Namespace Properties" Condition="'$(IsCSharpProject)' == 'true' AND $(MSBuildProjectName.EndsWith('.Core'))">
+
+		<RootNamespace>$(MSBuildProjectName.Replace('.Core', ''))</RootNamespace>
+
+	</PropertyGroup>
+
+	<!-- Determine if it's a integration test project. -->
+	<PropertyGroup Label="C# Test Properties" Condition="'$(TestingType)' != ''">
+
+		<IsTestProject>true</IsTestProject>
+		<RootNamespace>$(MSBuildProjectName.Replace('.Core.$(TestingType)Tests', '').Replace('.$(TestingType)Tests', ''))</RootNamespace>
+
+	</PropertyGroup>
+
+	<ItemGroup Label="Defining Testing Types">
+
+		<TestType Include="Accessibility" />
+		<TestType Include="Acceptance" />
+		<TestType Include="BlackBox" />
+		<TestType Include="Chaos" />
+		<TestType Include="EndToEnd" />
+		<TestType Include="Environment" />
+		<TestType Include="Functional" />
+		<TestType Include="Interactive" />
+		<TestType Include="Integration" />
+		<TestType Include="Load" />
+		<TestType Include="Performance" />
+		<TestType Include="Regression" />
+		<TestType Include="Security" />
+		<TestType Include="Scenario" />
+		<TestType Include="Smoke" />
+		<TestType Include="Stress" />
+		<TestType Include="System" />
+		<TestType Include="Threat" />
+		<TestType Include="Unit" />
+		<TestType Include="WhiteBox" />
+
+	</ItemGroup>
+
+	<Target Name="InternalsVisibleTo"
+			BeforeTargets="BeforeCompile"
+			Condition="'$(IsCSharpProject)' == 'true' AND '$(IsTestProject)' == 'false'"
+			Inputs="@TestType"
+			Outputs="%(TestType.Identity)"
+			Label="Generates InternalsVisibleToAttribute for Non-Test Projects based on Defined Testing Types">
+
+		<ItemGroup>
+			<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+				<_Parameter1>$(MSBuildProjectName).%(TestType.Identity)Tests</_Parameter1>
+			</AssemblyAttribute>
+		</ItemGroup>
+
+	</Target>
+
+</Project>

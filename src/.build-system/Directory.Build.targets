@@ -1,0 +1,33 @@
+<Project>
+
+	<!-- Project defaults for all projects, Configuration Label -->
+	<PropertyGroup Label="C# Project Configuration" Condition="'$(IsCSharpProject)' == 'true'">
+
+		<Deterministic>true</Deterministic>
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<PathMap>source=dest</PathMap>
+
+	</PropertyGroup>
+
+	<PropertyGroup Label="NuGet Packaging Values" Condition="'$(IsPackable)' == 'true'">
+
+		<PackageTags>$(PackageTags);purview;</PackageTags>
+		<IncludeSymbols>true</IncludeSymbols>
+		<IncludeSource>true</IncludeSource>
+
+	</PropertyGroup>
+
+	<!-- Exclude any ncrunch settings and xml comment files. -->
+	<ItemGroup Label="C# File Content Options" Condition="'$(IsCSharpProject)' == 'true'">
+
+		<None Remove="$(MSBuildProjectName).v3.ncrunchproject" />
+		<None Remove="$(AssemblyName).xml" />
+
+		<Compile Remove="TestResults/**" />
+		<Content Remove="TestResults/**" />
+		<EmbeddedResource Remove="TestResults/**" />
+		<None Remove="TestResults/**" />
+
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,176 @@
+﻿<Project>
+
+	<Import Project="$(MSBuildThisFileDirectory)msbuild/variables.props" />
+	<Import Project="$(MSBuildThisFileDirectory)msbuild/nuget-packable-default.props" />
+
+	<!-- All C# Projects -->
+	<PropertyGroup Label="C# Project Property Groups" Condition="'$(IsCSharpProject)' == 'true'">
+
+		<TargetFramework>net8.0</TargetFramework>
+
+		<Deterministic>true</Deterministic>
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+ 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+		<AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+
+ 		<IsPackable>false</IsPackable>
+
+		<LangVersion>12.0</LangVersion>
+
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AnalysisLevel>5</AnalysisLevel>
+
+		<NoWarn>IDE0011;$(NoWarn)</NoWarn>
+		<NoWarn>CS1591;$(NoWarn)</NoWarn>
+		<NoWarn>CA1014;CA1848;CA2007;CA2201;CA2234;CA2225;CA2254;$(NoWarn)</NoWarn>
+		<NoWarn>RCS1090;RCS1108;$(NoWarn)</NoWarn>
+
+		<!-- Default, for running locally - overriden on build. -->
+		<VersionSuffix>0.0.1.0</VersionSuffix>
+
+		<!-- This should be in your executable/ buildable project? -->
+		<!-- <FileVersion>$(VersionSuffix)</FileVersion>
+		<Version>$(VersionSuffix)</Version> -->
+
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+
+	</PropertyGroup>
+
+	<ItemGroup Label="C# Project Item Groups" Condition="'$(IsCSharpProject)' == 'true'">
+
+		<!-- Embedded Resources -->
+		<None Remove="Resources/**/*" />
+		<EmbeddedResource Include="Resources/**/*" />
+
+	</ItemGroup>
+
+	<ItemGroup Label="Dynamic Versioning" Condition="'$(IsCSharpProject)' == 'true'">
+
+		<Compile Include="$(AutoMSBuildProps)AssemblyInfo_Shared.cs" Link="Properties/SharedAssemblyInfo.cs" />
+
+	</ItemGroup>
+
+	<!-- Package Projects -->
+	<PropertyGroup Label="NuGet Package Project Properties" Condition="'$(IsPackable)' == 'true'">
+
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+		<!-- Include symbol files (*.pdb) in the built .nupkg -->
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+	</PropertyGroup>
+
+	<ItemGroup Label="NuGet Package References" Condition="$(IsTestProject) == 'false'">
+
+		<PackageReference Include="Microsoft.SourceLink.GitHub">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+
+	</ItemGroup>
+
+	<!-- Test Projects. -->
+	<PropertyGroup Label="Testing Project Properties" Condition="'$(IsTestProject)' == 'true'">
+
+		<NoWarn>CA1701;CA1702;CA1705;CA1707;CA1806;CA2000;$(NoWarn)</NoWarn>
+		<NoWarn>IDE0001;IDE0007;$(NoWarn)</NoWarn>
+		<NoWarn>RCS1001;RCS1003;RCS1010;RCS1018;$(NoWarn)</NoWarn>
+		<NoWarn>VSTHRD200;$(NoWarn)</NoWarn>
+
+		<CollectCoverage>true</CollectCoverage>
+		<CoverletOutput Condition=" '$(OutputPath)' != '' ">$(OutputPath)/</CoverletOutput>
+		<CoverletOutputFormat>cobertura,json</CoverletOutputFormat>
+		<Exclude>[NSubstitute*]*,[xunit.*]*</Exclude>
+		<ExcludeByAttribute>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ExcludeByAttribute>
+
+		<Packable>false</Packable>
+		<IsPackable>false</IsPackable>
+		<IsPublishable>false</IsPublishable>
+
+	</PropertyGroup>
+
+	<ItemGroup Label="Test AssemblyInfo and Runner Properties" Condition="'$(IsTestProject)' == 'true'">
+
+		<AssemblyAttribute Include="Xunit.AssemblyTrait">
+			<_Parameter1>Category</_Parameter1>
+			<_Parameter2>$(TestingType)</_Parameter2>
+		</AssemblyAttribute>
+
+		<Compile Include="$(AutoMSBuildProps)AssemblyInfo_SharedTesting.cs" Link="Properties/SharedTestingAssemblyInfo.cs" />
+		<Content Include="$(MSBuildThisFileDirectory)xunit/xunit.runner.json" Link="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+
+	</ItemGroup>
+
+	<ItemGroup Label="Testing NuGet Packages" Condition="'$(IsTestProject)' == 'true'">
+
+		<!-- Implicit usings for tests. -->
+		<Using Include="FluentAssertions" />
+		<Using Include="NSubstitute" />
+		<Using Include="Xunit" />
+
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="Microsoft.CodeCoverage" />
+
+		<PackageReference Include="AutoFixture" />
+		<PackageReference Include="FluentAssertions" />
+		<PackageReference Include="NCrunch.Framework" />
+		<PackageReference Include="NSubstitute" />
+
+		<PackageReference Include="NSubstitute.Analyzers.CSharp">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+
+		<PackageReference Include="xunit" />
+		<PackageReference Include="xunit.analyzers" />
+		<PackageReference Include="xunit.runner.visualstudio">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+
+	</ItemGroup>
+
+	<ItemGroup Label="Scenario Testing NuGet Packages" Condition="'$(TestingType)' == 'Scenario' OR '$(TestingType)' == 'Acceptance'">
+
+		<!-- Implicit usings for tests. -->
+		<Using Include="TechTalk.SpecFlow" />
+
+		<!-- Scenario NuGet packages. -->
+		<PackageReference Include="SpecFlow.Plus.LivingDocPlugin" />
+		<PackageReference Include="SpecFlow.xUnit" />
+
+	</ItemGroup>
+
+	<ItemGroup Label="Performance Testing NuGet Packages" Condition="'$(TestingType)' == 'Performance'">
+
+		<Using Include="BenchmarkDotNet" />
+
+		<!-- Scenario NuGet packages. -->
+		<PackageReference Include="BenchmarkDotNet" />
+		<PackageReference Include="BenchmarkDotNet.TestAdapter" />
+
+	</ItemGroup>
+
+	<PropertyGroup Label="Performance Testing NuGet Packages" Condition="'$(TestingType)' == 'Performance'">
+
+	 	<OutputType>Exe</OutputType>
+		<Optimize>true</Optimize>
+
+		<!-- Disable entry point generation as this project has it's own entry point -->
+    	<GenerateProgramFile>false</GenerateProgramFile>
+
+	</PropertyGroup>
+
+</Project>
