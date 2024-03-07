@@ -1,7 +1,6 @@
 ﻿using Purview.Telemetry.SourceGenerator.Templates;
-using Purview.Telemetry.SourceGenerator.Templates.Shims;
 
-// This this as the non-SourceGenerator namespace...
+// This as the non-SourceGenerator namespace...
 namespace Purview.Telemetry;
 
 static partial class Constants {
@@ -192,11 +191,11 @@ static partial class Constants {
 		//	ObservableUpDownCounterAttribute
 		];
 
-		readonly static public Dictionary<MetricTypes, TypeInfo> MetricTypeToInfoMap = new() {
-			{ MetricTypes.Counter, Counter },
-			{ MetricTypes.UpDownCounter, UpDownCounter },
-			{ MetricTypes.Histogram, Histogram },
-		};
+		//readonly static public Dictionary<MetricTypes, TypeInfo> MetricTypeToInfoMap = new() {
+		//	{ MetricTypes.Counter, Counter },
+		//	{ MetricTypes.UpDownCounter, UpDownCounter },
+		//	{ MetricTypes.Histogram, Histogram },
+		//};
 
 		//readonly static public Dictionary<string, MetricTypes> MetricTypeMap = new()  {
 		//	{ CounterAttribute.FullName, MetricTypes.Counter },

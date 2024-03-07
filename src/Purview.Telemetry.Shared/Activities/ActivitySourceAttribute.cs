@@ -1,12 +1,9 @@
-﻿using System.Diagnostics;
-
-namespace Purview.Telemetry.Activities;
+﻿namespace Purview.Telemetry.Activities;
 
 /// <summary>
 /// Determines the default Activity Source name for generated Activities.
 /// </summary>
 [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Assembly, AllowMultiple = false)]
-[Conditional(Constants.EmbedAttributesHashDefineName)]
 sealed public class ActivitySourceAttribute : Attribute {
 	/// <summary>
 	/// Constructs a new <see cref="ActivitySourceAttribute"/>.

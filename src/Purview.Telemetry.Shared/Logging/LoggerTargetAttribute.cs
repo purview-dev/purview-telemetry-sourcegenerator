@@ -1,12 +1,9 @@
-﻿using System.Diagnostics;
-
-namespace Purview.Telemetry.Logging;
+﻿namespace Purview.Telemetry.Logging;
 
 /// <summary>
 /// Marker attribute required for Log generation.
 /// </summary>
 [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-[Conditional(Constants.EmbedAttributesHashDefineName)]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed public class LoggerTargetAttribute : Attribute {
 	public LoggerTargetAttribute() {
@@ -21,15 +18,21 @@ sealed public class LoggerTargetAttribute : Attribute {
 		StartingEventId = startingEventId;
 	}
 
-	public LoggerTargetAttribute(LogGeneratedLevel defaultLevel, string? className = null) {
+	public LoggerTargetAttribute(LogGeneratedLevel defaultLevel, string? className = null, string? customPrefix = null) {
 		DefaultLevel = defaultLevel;
 		ClassName = className;
+		CustomPrefix = customPrefix;
+
+		if (CustomPrefix != null) {
+			PrefixType = LogPrefixType.Custom;
+		}
 	}
 
 	/// <summary>
-	/// The inclusive starting event id for this logger.
+	/// The inclusive starting event Id for this logger, all other non-specified event Ids
+	/// for this logger will be an incrementing value from this starting event Id.
 	/// </summary>
-	public int StartingEventId { get; set; }
+	public int StartingEventId { get; set; } = 1;
 
 	/// <summary>
 	/// Optional. Gets the <see cref="LogGeneratedLevel">level</see> of the
@@ -42,4 +45,14 @@ sealed public class LoggerTargetAttribute : Attribute {
 	/// Overrides the class name generated for this activity target.
 	/// </summary>
 	public string? ClassName { get; set; }
+
+	/// <summary>
+	/// Optional. The prefix used to generate the log entry.
+	/// </summary>
+	public string? CustomPrefix { get; set; }
+
+	/// <summary>
+	/// Specifies the mode used to generate or override the prefix for the log entry.
+	/// </summary>
+	public LogPrefixType PrefixType { get; set; } = LogPrefixType.Default;
 }

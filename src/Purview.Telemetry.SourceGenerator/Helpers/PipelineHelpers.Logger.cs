@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Purview.Telemetry.SourceGenerator.Targets;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
-sealed partial class PipelineHelpers {
+partial class PipelineHelpers {
 	static public bool HasLoggerAttribute(SyntaxNode _, CancellationToken __) => true;
 
 	static public LoggerTarget? BuildLoggerTransform(GeneratorAttributeSyntaxContext context, IGenerationLogger? logger, CancellationToken token) {
@@ -14,18 +14,19 @@ sealed partial class PipelineHelpers {
 			return null;
 		}
 
-		if (context.TargetSymbol is not INamedTypeSymbol classSymbol) {
-			logger?.Error($"Could not find class symbol '{interfaceDeclaration.Flatten()}'.");
+		if (context.TargetSymbol is not INamedTypeSymbol interfaceSymbol) {
+			logger?.Error($"Could not find interface symbol '{interfaceDeclaration.Flatten()}'.");
 			return null;
 		}
 
 		var semanticModel = context.SemanticModel;
-		var generateIAggregateAttribute = SharedHelpers.GetLoggerTargetAttribute(context.Attributes[0], semanticModel, logger, token);
-		if (generateIAggregateAttribute == null) {
-			logger?.Invoke($"Could not find {Constants.Core.GenerateIAggregateAttribute} when one was expected '{interfaceDeclaration.Flatten()}'.", OutputType.Error);
+		var loggerTargetAttribute = SharedHelpers.GetGenerateLoggerTargetAttribute(context.Attributes[0], semanticModel, logger, token);
+		if (loggerTargetAttribute == null) {
+			logger?.Error($"Could not find {Constants.Logging.LoggerTargetAttribute} when one was expected '{interfaceDeclaration.Flatten()}'.");
 
 			return null;
 		}
 
+		throw new NotImplementedException();
 	}
 }

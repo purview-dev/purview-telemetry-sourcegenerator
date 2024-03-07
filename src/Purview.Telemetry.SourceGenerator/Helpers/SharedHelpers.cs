@@ -20,10 +20,13 @@ static class SharedHelpers {
 		if (!AttributeParser(attributeData,
 		(name, value) => {
 			if (name.Equals(nameof(loggerTargetAttribute.StartingEventId), StringComparison.OrdinalIgnoreCase)) {
-				loggerTargetAttribute.StartingEventId = int.Parse((string)value);
+				loggerTargetAttribute.StartingEventId = (int)value;
 			}
 			else if (name.Equals(nameof(loggerTargetAttribute.ClassName), StringComparison.OrdinalIgnoreCase)) {
 				loggerTargetAttribute.ClassName = (string)value;
+			}
+			else if (name.Equals(nameof(loggerTargetAttribute.DefaultLevel), StringComparison.OrdinalIgnoreCase)) {
+				loggerTargetAttribute.DefaultLevel = (LogGeneratedLevel)value;
 			}
 		}, semanticModel, logger, token)) {
 			// Failed to parse correctly, so null it out.
@@ -140,7 +143,7 @@ static class SharedHelpers {
 
 	static bool HasErrors(AttributeData attributeData,
 		SemanticModel semanticModel,
-		Action<string, OutputType>? logger,
+		IGenerationLogger? logger,
 		CancellationToken cancellationToken) {
 		if (attributeData.ApplicationSyntaxReference?.GetSyntax(cancellationToken) is not AttributeSyntax attributeSyntax) {
 			return false;
@@ -149,7 +152,7 @@ static class SharedHelpers {
 		var diagnostics = semanticModel.GetDiagnostics(attributeSyntax.Span, cancellationToken);
 		if (diagnostics.Length > 0 && logger != null) {
 			var d = diagnostics.Select(m => m.GetMessage(CultureInfo.InvariantCulture));
-			logger("Attribute has diagnostics: \n" + string.Join("\n - ", d), OutputType.Debug);
+			logger.Debug("Attribute has diagnostics: \n" + string.Join("\n - ", d));
 		}
 
 		return diagnostics.Any(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);

@@ -6,6 +6,10 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 
 static class Utilities {
+	readonly static SymbolDisplayFormat _symbolDisplayFormat = new(
+		typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces
+	);
+
 	static public StringBuilder AppendTabs(this StringBuilder builder, int tabs) {
 		for (var i = 0; i < tabs; i++) {
 			builder.Append('\t');

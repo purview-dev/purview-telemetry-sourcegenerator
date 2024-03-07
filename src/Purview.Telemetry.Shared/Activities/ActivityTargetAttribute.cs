@@ -1,12 +1,9 @@
-﻿using System.Diagnostics;
-
-namespace Purview.Telemetry.Activities;
+﻿namespace Purview.Telemetry.Activities;
 
 /// <summary>
 /// Marker attribute required for Activity generation.
 /// </summary>
 [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Assembly, AllowMultiple = false)]
-[Conditional(Constants.EmbedAttributesHashDefineName)]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed public class ActivityTargetAttribute : Attribute {
 	/// <summary>

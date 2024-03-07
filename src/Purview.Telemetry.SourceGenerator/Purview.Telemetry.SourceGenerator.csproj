@@ -47,12 +47,17 @@
 		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Activities\**\*.cs" LinkBase="Templates\Sources\Activities\" />
 		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Logging\**\*.cs" LinkBase="Templates\Sources\Logging\" />
 	</ItemGroup>
+
+    	<ItemGroup>
+    	  <Compile Remove="Samples\LogSamples.cs" />
+    	</ItemGroup>
 	<!-- Package the build output into the "analyzer" slot in the NuGet package -->
 	<ItemGroup>
 		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
 		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 		<None Include="$(OutputPath)\Purview.Telemetry.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 		<None Include="$(OutputPath)\Purview.Telemetry.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
+		<None Include="Samples\LogSamples.cs" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Templates\" />
