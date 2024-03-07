@@ -10,7 +10,7 @@ sealed public partial class TelemetrySourceGenerator : IIncrementalGenerator, IL
 		// Register all of the shared attributes we need.
 		context.RegisterPostInitializationOutput(ctx => {
 			foreach (var template in Constants.GetAllTemplates()) {
-				_logger?.Debug($"Adding {template.Name} as source.");
+				_logger?.Debug($"Adding {template.Name}.");
 
 				ctx.AddSource($"{template.Name}.g.cs", template.TemplateData);
 			}

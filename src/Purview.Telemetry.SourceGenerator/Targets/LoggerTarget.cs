@@ -3,6 +3,8 @@
 record LoggerTarget(
 	string ClassName,
 	string? ClassNamespace, string[] ParentClasses,
-	string? FullNamespace, string FullyQualifiedName
+	string? FullNamespace, string FullyQualifiedName,
+
+
 	) {
 }

@@ -28,6 +28,12 @@ static class SharedHelpers {
 			else if (name.Equals(nameof(loggerTargetAttribute.DefaultLevel), StringComparison.OrdinalIgnoreCase)) {
 				loggerTargetAttribute.DefaultLevel = (LogGeneratedLevel)value;
 			}
+			else if (name.Equals(nameof(loggerTargetAttribute.CustomPrefix), StringComparison.OrdinalIgnoreCase)) {
+				loggerTargetAttribute.CustomPrefix = (string)value;
+			}
+			else if (name.Equals(nameof(loggerTargetAttribute.PrefixType), StringComparison.OrdinalIgnoreCase)) {
+				loggerTargetAttribute.PrefixType = (LogPrefixType)value;
+			}
 		}, semanticModel, logger, token)) {
 			// Failed to parse correctly, so null it out.
 			return null;
