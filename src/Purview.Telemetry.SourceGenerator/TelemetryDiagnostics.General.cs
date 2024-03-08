@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Purview.Telemetry.SourceGenerator.Records;
 
-namespace Purview.Telemetry;
+namespace Purview.Telemetry.SourceGenerator;
 
 partial class TelemetryDiagnostics {
 	static public class General {

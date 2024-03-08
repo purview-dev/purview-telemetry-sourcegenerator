@@ -1,0 +1,14 @@
+﻿{
+  Diagnostics: [
+    {
+      Id: TSG2002,
+      Title: Inferring error log level,
+      Severity: Info,
+      WarningLevel: 1,
+      Location: Guid_1: (10,6)-(10,9),
+      MessageFormat: Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.,
+      Message: Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.,
+      Category: Activity.Usage
+    }
+  ]
+}

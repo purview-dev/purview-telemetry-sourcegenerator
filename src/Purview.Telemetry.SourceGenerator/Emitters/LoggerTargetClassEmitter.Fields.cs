@@ -40,7 +40,7 @@ partial class LoggerTargetClassEmitter {
 			if (methodTarget.HasMultipleExceptions) {
 				logger?.Diagnostic($"Method has multiple exception parameters, only a single one is permitted.");
 
-				throw new Exception("TODO: Raise diagnostic.");
+				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.MultipleExceptionsDefined, methodTarget.Location);
 
 				continue;
 			}
@@ -48,9 +48,15 @@ partial class LoggerTargetClassEmitter {
 			if (methodTarget.ParameterCount > Constants.Logging.MaxNonExceptionParameters) {
 				logger?.Diagnostic($"Method has more than 6 parameters.");
 
-				throw new Exception("TODO: Raise diagnostic.");
+				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.MaximumLogEntryParametersExceeded, methodTarget.Location);
 
 				continue;
+			}
+
+			if (methodTarget.InferredErrorLevel) {
+				logger?.Diagnostic($"Inferring error log level.");
+
+				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.InferringErrorLogLevel, methodTarget.Location);
 			}
 
 			EmitLogActionField(builder, indent, methodTarget);

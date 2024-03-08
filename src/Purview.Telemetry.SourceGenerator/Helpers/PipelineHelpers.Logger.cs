@@ -100,6 +100,7 @@ partial class PipelineHelpers {
 				? null
 				: methodParameters.FirstOrDefault(m => m.IsException);
 
+			var inferredErrorLevel = logEntry?.Level?.IsSet ?? false == false && exceptionParam != null;
 			var level = (LogGeneratedLevel)(logEntry?.Level?.IsSet == true
 				? logEntry.Level.Value!
 				: exceptionParam == null
@@ -125,7 +126,10 @@ partial class PipelineHelpers {
 				ParametersSansException: [.. methodParameters.Where(m => !m.IsException)],
 				ExceptionParameter: exceptionParam,
 
-				HasMultipleExceptions: hasMultipleExceptions
+				HasMultipleExceptions: hasMultipleExceptions,
+				InferredErrorLevel: inferredErrorLevel,
+
+				Location: method.Locations.FirstOrDefault()
 			));
 		}
 

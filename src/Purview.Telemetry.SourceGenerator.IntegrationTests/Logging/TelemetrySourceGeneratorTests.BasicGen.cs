@@ -84,6 +84,48 @@ public interface ITestLogger {
 		GenerationResult generationResult = await GenerateAsync(basicAggregate);
 
 		// Assert
-		await TestHelpers.Verify(generationResult);
+		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids());
+	}
+
+	[Fact]
+	async public Task Generate_GivenInterfaceMoreThanSixParameters_GenerateLogger() {
+		// Arrange
+		const string basicAggregate = @"
+using Purview.Telemetry.Logging;
+
+namespace Testing;
+
+[LoggerTarget]
+public interface ITestLogger {
+	void Log(string stringParam, int intParam, bool boolParam, string stringParam1, int intParam1, bool boolParam1, string stringParam2, int intParam2, bool boolParam2);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicAggregate);
+
+		// Assert
+		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids());
+	}
+
+	[Fact]
+	async public Task Generate_GivenInterfaceMoreThanOneExceptionParameter_GenerateLogger() {
+		// Arrange
+		const string basicAggregate = @"
+using Purview.Telemetry.Logging;
+
+namespace Testing;
+
+[LoggerTarget]
+public interface ITestLogger {
+	void Log(string stringParam, Exception exception1, Exception exception2);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicAggregate);
+
+		// Assert
+		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids());
 	}
 }

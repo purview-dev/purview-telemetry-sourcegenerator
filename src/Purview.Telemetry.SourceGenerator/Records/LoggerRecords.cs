@@ -56,8 +56,11 @@ record LogEntryMethodGenerationTarget(
 	ImmutableArray<LogEntryMethodParameterTarget> ParametersSansException,
 
 	LogEntryMethodParameterTarget? ExceptionParameter,
-	bool HasMultipleExceptions
-) {
+	bool HasMultipleExceptions,
+
+	Microsoft.CodeAnalysis.Location? Location
+,
+	bool InferredErrorLevel) {
 	public int TotalParameterCount => AllParameters.Length;
 
 	public int ParameterCount => ParametersSansException.Length;
