@@ -18,10 +18,10 @@ partial class LoggerTargetClassEmitter {
 		var indent = EmitNamespaceStart(target, builder, context, logger);
 
 		indent = EmitClassStart(target, builder, indent, context, logger);
-		indent = EmitFields(target, builder, indent, context, logger);
 
-		//indent = EmitProperties(target, builder, indent, context, logger);
-		//indent = EmitMethods(target, builder, indent, context, logger);
+		indent = EmitFields(target, builder, indent, context, logger);
+		indent = EmitCtor(target, builder, indent, context, logger);
+		indent = EmitMethods(target, builder, indent, context, logger);
 
 		EmitClassEnd(target, builder, indent, context, logger);
 		EmitNamespaceEnd(target, builder, indent, context, logger);

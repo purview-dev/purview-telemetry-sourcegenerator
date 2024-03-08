@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using Purview.Telemetry.Logging;
+using Purview.Telemetry.SourceGenerator.Templates;
 
 namespace Purview.Telemetry.SourceGenerator.Targets;
 
@@ -49,17 +50,17 @@ record LogEntryMethodGenerationTarget(
 	string MessageTemplate,
 	string LogEntryName,
 
-	ImmutableArray<LogEntryMethodParameterTarget> Parameters
+	TypeInfo MSLevel,
+
+	ImmutableArray<LogEntryMethodParameterTarget> AllParameters,
+	ImmutableArray<LogEntryMethodParameterTarget> ParametersSansException,
+
+	LogEntryMethodParameterTarget? ExceptionParameter,
+	bool HasMultipleExceptions
 ) {
-	public int GetParameterCount(bool includingException = true)
-		=> includingException
-			? Parameters.Length
-			: Parameters.Count(p => !p.IsException);
+	public int TotalParameterCount => AllParameters.Length;
 
-	public bool HasExceptionParameter => Parameters.Any(p => p.IsException);
-
-	public LogEntryMethodParameterTarget? GetExceptionParameter()
-		=> Parameters.FirstOrDefault(p => p.IsException);
+	public int ParameterCount => ParametersSansException.Length;
 }
 
 record LogEntryMethodParameterTarget(

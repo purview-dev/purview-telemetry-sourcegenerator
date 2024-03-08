@@ -3,6 +3,7 @@ using System.Reflection;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.Extensions.Logging;
+using Purview.Telemetry.Logging;
 using Purview.Telemetry.SourceGenerator.BuildTools;
 using Purview.Telemetry.SourceGenerator.Helpers;
 using Xunit.Abstractions;
@@ -201,6 +202,8 @@ abstract public class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 			project = project
 				.AddMetadataReference(MetadataReference.CreateFromFile(Assembly.Load("netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51").Location))
 				.AddMetadataReference(MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location))
+
+				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(LogGeneratedLevel).Assembly.Location))
 
 				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(LogLevel).Assembly.Location))
 				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(Activity).Assembly.Location))

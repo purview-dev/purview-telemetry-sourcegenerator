@@ -68,14 +68,14 @@ partial class PipelineHelpers {
 	}
 
 	static ImmutableArray<LogEntryMethodGenerationTarget> BuildLoggerMethods(
-			string className,
-			LogGeneratedLevel? defaultLogLevel,
-			LoggerTargetAttributeRecord loggerTarget,
-			GeneratorAttributeSyntaxContext context,
-			SemanticModel semanticModel,
-			INamedTypeSymbol interfaceSymbol,
-			IGenerationLogger? logger,
-			CancellationToken token) {
+		string className,
+		LogGeneratedLevel? defaultLogLevel,
+		LoggerTargetAttributeRecord loggerTarget,
+		GeneratorAttributeSyntaxContext context,
+		SemanticModel semanticModel,
+		INamedTypeSymbol interfaceSymbol,
+		IGenerationLogger? logger,
+		CancellationToken token) {
 
 		token.ThrowIfCancellationRequested();
 
@@ -93,12 +93,19 @@ partial class PipelineHelpers {
 			var isKnownReturnType = method.ReturnsVoid || Constants.System.IDisposable.Equals(method.ReturnType);
 			var loggerActionFieldName = $"_{Utilities.LowercaseFirstChar(method.Name)}Action";
 
-			var level = logEntry?.Level?.IsSet == true
-				? logEntry.Level.Value!
-				: defaultLogLevel;
-
 			var messageTemplate = logEntry?.MessageTemplate?.Value ?? GenerateTemplateMessage(methodParameters);
 			var logEntryName = GetLogEntryName(interfaceSymbol.Name, className, loggerTarget, logEntry, method.Name);
+			var hasMultipleExceptions = methodParameters.Count(m => m.IsException) > 1;
+			var exceptionParam = hasMultipleExceptions
+				? null
+				: methodParameters.FirstOrDefault(m => m.IsException);
+
+			var level = (LogGeneratedLevel)(logEntry?.Level?.IsSet == true
+				? logEntry.Level.Value!
+				: exceptionParam == null
+					? defaultLogLevel
+					: LogGeneratedLevel.Error
+				)!;
 
 			methodTargets.Add(new(
 				MethodName: method.Name,
@@ -108,12 +115,17 @@ partial class PipelineHelpers {
 				UnknownReturnType: !isKnownReturnType,
 
 				EventId: logEntry?.EventId?.Value,
-				Level: (LogGeneratedLevel)level!,
+				Level: level,
 				MessageTemplate: messageTemplate,
 
 				LogEntryName: logEntryName,
+				MSLevel: Utilities.ConvertToMSLogLevel(level),
 
-				Parameters: methodParameters
+				AllParameters: methodParameters,
+				ParametersSansException: [.. methodParameters.Where(m => !m.IsException)],
+				ExceptionParameter: exceptionParam,
+
+				HasMultipleExceptions: hasMultipleExceptions
 			));
 		}
 

@@ -22,4 +22,68 @@ public interface ITestLogger {
 		// Assert
 		await TestHelpers.Verify(generationResult);
 	}
+
+	[Fact]
+	async public Task Generate_GivenInterfaceWithSingleBasicImplicitLogEntry_GenerateLogger() {
+		// Arrange
+		const string basicAggregate = @"
+using Purview.Telemetry.Logging;
+
+namespace Testing;
+
+[LoggerTarget]
+public interface ITestLogger {
+	void Log(string stringParam, int intParam, bool boolParam);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicAggregate);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
+	async public Task Generate_GivenInterfaceWithExplicitLogLevelAndAnExceptionParameter_GenerateLogger() {
+		// Arrange
+		const string basicAggregate = @"
+using Purview.Telemetry.Logging;
+
+namespace Testing;
+
+[LoggerTarget]
+public interface ITestLogger {
+	[LogEntry(Level = LogGeneratedLevel.Trace)]
+	void Log(string stringParam, int intParam, bool boolParam, Exception exception);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicAggregate);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
+	async public Task Generate_GivenInterfaceWithoutExplicitLogLevelAndAnExceptionParameter_GenerateLogger() {
+		// Arrange
+		const string basicAggregate = @"
+using Purview.Telemetry.Logging;
+
+namespace Testing;
+
+[LoggerTarget]
+public interface ITestLogger {
+	void Log(string stringParam, int intParam, bool boolParam, Exception exception);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicAggregate);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
 }

@@ -37,6 +37,22 @@ partial class LoggerTargetClassEmitter {
 		foreach (var methodTarget in target.LogEntryMethods) {
 			context.CancellationToken.ThrowIfCancellationRequested();
 
+			if (methodTarget.HasMultipleExceptions) {
+				logger?.Diagnostic($"Method has multiple exception parameters, only a single one is permitted.");
+
+				throw new Exception("TODO: Raise diagnostic.");
+
+				continue;
+			}
+
+			if (methodTarget.ParameterCount > Constants.Logging.MaxNonExceptionParameters) {
+				logger?.Diagnostic($"Method has more than 6 parameters.");
+
+				throw new Exception("TODO: Raise diagnostic.");
+
+				continue;
+			}
+
 			EmitLogActionField(builder, indent, methodTarget);
 		}
 
@@ -52,12 +68,7 @@ partial class LoggerTargetClassEmitter {
 			.Append(", ")
 		;
 
-		var parameterCount = methodTarget.GetParameterCount(includingException: false);
-		foreach (var parameter in methodTarget.Parameters) {
-			if (parameter.IsException) {
-				continue;
-			}
-
+		foreach (var parameter in methodTarget.ParametersSansException) {
 			builder.Append(parameter.FullyQualifiedType);
 			if (parameter.IsNullable) {
 				builder.Append('?');
@@ -75,7 +86,7 @@ partial class LoggerTargetClassEmitter {
 		else {
 			builder
 				.Append(Constants.System.Exception)
-				.Append("> ")
+				.Append("?> ")
 			;
 		}
 
@@ -92,15 +103,11 @@ partial class LoggerTargetClassEmitter {
 			;
 		}
 
-		if (parameterCount > 0) {
+		if (methodTarget.ParameterCount > 0) {
 			builder.Append('<');
 
 			var i = 0;
-			foreach (var parameter in methodTarget.Parameters) {
-				if (parameter.IsException) {
-					continue;
-				}
-
+			foreach (var parameter in methodTarget.ParametersSansException) {
 				builder
 					.Append(parameter.FullyQualifiedType)
 				;
@@ -111,7 +118,7 @@ partial class LoggerTargetClassEmitter {
 					;
 				}
 
-				if (i < parameterCount)
+				if (i < methodTarget.ParameterCount - 1)
 					builder
 						.Append(", ")
 					;
@@ -119,14 +126,16 @@ partial class LoggerTargetClassEmitter {
 				i++;
 			}
 
-			builder.Append('>');
+			builder
+				.Append('>')
+			;
 		}
 
 		builder.Append('(');
 
 		if (!methodTarget.IsScoped) {
 			builder
-				.Append(Utilities.ConvertToMSLogLevel(methodTarget.Level))
+				.Append(methodTarget.MSLevel)
 				.Append(", ")
 			;
 
@@ -141,8 +150,9 @@ partial class LoggerTargetClassEmitter {
 					.Append("\"), ")
 				;
 			}
-			else
+			else {
 				builder.Append("default, ");
+			}
 		}
 
 		builder
