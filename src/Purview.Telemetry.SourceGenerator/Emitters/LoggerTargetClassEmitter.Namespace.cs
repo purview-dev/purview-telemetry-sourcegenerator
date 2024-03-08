@@ -6,7 +6,7 @@ using Purview.Telemetry.SourceGenerator.Targets;
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class LoggerTargetClassEmitter {
-	static int EmitNamespaceStart(LoggerTarget target, StringBuilder builder, SourceProductionContext context, IGenerationLogger? logger) {
+	static int EmitNamespaceStart(LoggerGenerationTarget target, StringBuilder builder, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		logger?.Debug($"Generating namespace for: {target.FullyQualifiedName}");
@@ -42,7 +42,7 @@ partial class LoggerTargetClassEmitter {
 		return indent++;
 	}
 
-	static void EmitNamespaceEnd(LoggerTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
+	static void EmitNamespaceEnd(LoggerGenerationTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		logger?.Debug($"Generating namespace end for: {target.FullyQualifiedName}");

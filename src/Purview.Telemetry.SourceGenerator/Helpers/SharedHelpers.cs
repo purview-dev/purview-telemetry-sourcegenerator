@@ -3,29 +3,58 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Purview.Telemetry.Logging;
 using Purview.Telemetry.SourceGenerator.Targets;
-using Purview.Telemetry.SourceGenerator.Templates;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 
 static class SharedHelpers {
-	static public AttributeData? GetAttributeData(ISymbol symbol, TemplateInfo attributeType) {
-		var attributes = symbol.GetAttributes();
-		foreach (var attribute in attributes) {
-			if (attribute.AttributeClass != null && attributeType.Equals(attribute.AttributeClass)) {
-				return attribute;
-			}
+	static public LogEntryAttributeRecord? GetLogEntryAttribute(
+		ISymbol symbol,
+		SemanticModel semanticModel,
+		IGenerationLogger? logger,
+		CancellationToken token
+	) {
+		if (!Utilities.TryContainsAttribute(symbol, Constants.Logging.LogEntryAttribute, token, out var attributeData)) {
+			return null;
 		}
 
-		return null;
+		AttributeValue<LogGeneratedLevel>? level = null;
+		AttributeStringValue? messageTemplate = null;
+		AttributeValue<int>? eventId = null;
+		AttributeStringValue? nameValue = null;
+
+		if (!AttributeParser(attributeData!,
+		(name, value) => {
+			if (name.Equals(nameof(LogEntryAttribute.Level), StringComparison.OrdinalIgnoreCase)) {
+				level = new((LogGeneratedLevel)value);
+			}
+			else if (name.Equals(nameof(LogEntryAttribute.MessageTemplate), StringComparison.OrdinalIgnoreCase)) {
+				messageTemplate = new((string)value);
+			}
+			else if (name.Equals(nameof(LogEntryAttribute.EventId), StringComparison.OrdinalIgnoreCase)) {
+				eventId = new((int)value);
+			}
+			else if (name.Equals(nameof(LogEntryAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
+				nameValue = new((string)value);
+			}
+		}, semanticModel, logger, token)) {
+			// Failed to parse correctly, so null it out.
+			return null;
+		}
+
+		return new(
+			Level: level ?? new(),
+			MessageTemplate: messageTemplate ?? new(),
+			EventId: eventId ?? new(),
+			Name: nameValue ?? new()
+		);
 	}
 
-	static public LoggerTargetAttributeRecord? GetGenerateLoggerTargetAttribute(
-	AttributeData attributeData,
-	SemanticModel semanticModel,
-	IGenerationLogger? logger,
-	CancellationToken token) {
+	static public LoggerTargetAttributeRecord? GetLoggerTargetAttribute(
+		AttributeData attributeData,
+		SemanticModel semanticModel,
+		IGenerationLogger? logger,
+		CancellationToken token) {
 
-		AttributeValue<int>? startingEventId = null;
 		AttributeValue<LogGeneratedLevel>? defaultLevel = null;
 		AttributeStringValue? className = null;
 		AttributeStringValue? customPrefix = null;
@@ -33,10 +62,7 @@ static class SharedHelpers {
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(LoggerTargetAttribute.StartingEventId), StringComparison.OrdinalIgnoreCase)) {
-				startingEventId = new((int)value);
-			}
-			else if (name.Equals(nameof(LoggerTargetAttribute.DefaultLevel), StringComparison.OrdinalIgnoreCase)) {
+			if (name.Equals(nameof(LoggerTargetAttribute.DefaultLevel), StringComparison.OrdinalIgnoreCase)) {
 				defaultLevel = new((LogGeneratedLevel)value);
 			}
 			else if (name.Equals(nameof(LoggerTargetAttribute.ClassName), StringComparison.OrdinalIgnoreCase)) {
@@ -54,7 +80,6 @@ static class SharedHelpers {
 		}
 
 		return new(
-			StartingEventId: startingEventId ?? new(),
 			DefaultLevel: defaultLevel ?? new(),
 			ClassName: className ?? new(),
 			CustomPrefix: customPrefix ?? new(),
@@ -62,7 +87,7 @@ static class SharedHelpers {
 		);
 	}
 
-	static public LoggerDefaultsAttributeRecord? GetGenerateLoggerDefaultsAttribute(
+	static public LoggerDefaultsAttributeRecord? GetLoggerDefaultsAttribute(
 		AttributeData attributeData,
 		SemanticModel semanticModel,
 		IGenerationLogger? logger,
@@ -130,7 +155,7 @@ static class SharedHelpers {
 
 				var name = constructorMethod.Parameters[i].Name;
 				var value = Utilities.GetTypedConstantValue(items[i])!;
-				if (Constants.Shared.String.Equals(constructorMethod.Parameters[i].Type)) {
+				if (Constants.System.String.Equals(constructorMethod.Parameters[i].Type)) {
 					var v = (string)value;
 					if (string.IsNullOrWhiteSpace(v)) {
 						continue;
@@ -153,7 +178,7 @@ static class SharedHelpers {
 					continue;
 				}
 
-				if (Constants.Shared.String.Equals(namedArgument.Value.Type)) {
+				if (Constants.System.String.Equals(namedArgument.Value.Type)) {
 					var v = (string)value;
 					if (string.IsNullOrWhiteSpace(v)) {
 						continue;

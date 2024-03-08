@@ -3,6 +3,7 @@ using Purview.Telemetry.SourceGenerator.Helpers;
 
 namespace Purview.Telemetry.SourceGenerator;
 
+[Generator]
 sealed public partial class TelemetrySourceGenerator : IIncrementalGenerator, ILogSupport {
 	IGenerationLogger? _logger;
 

@@ -6,72 +6,150 @@ using Purview.Telemetry.SourceGenerator.Targets;
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class LoggerTargetClassEmitter {
-	static int EmitFields(LoggerTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
+	static int EmitFields(LoggerGenerationTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
-		var defaultLevel =
-			target.LoggerTargetAttribute.DefaultLevel.IsSet
-			? target.LoggerTargetAttribute.DefaultLevel.Value!
-			: target.LoggerDefaultsAttribute?.DefaultLevel.IsSet == true
-				? target.LoggerDefaultsAttribute.DefaultLevel.Value
-				: Logging.LogGeneratedLevel.Information;
+		indent++;
 
 		builder
-			.Append(indent + 1, "const ", withNewLine: false)
+			.Append(indent, "const ", withNewLine: false)
 			.Append(Constants.Logging.MicrosoftExtensions.LogLevel)
 			.Append(' ')
 			.Append(Constants.Logging.DefaultLogLevelConstantName)
 			.Append(" = ")
-			.Append(Constants.Logging.MicrosoftExtensions.ConvertToMSLogLevel(defaultLevel!))
+			.Append(Utilities.ConvertToMSLogLevel(target.DefaultLevel))
 			.AppendLine(';');
 		;
 
-		// Generate the event types.
 		builder
-			.Append(indent + 1, "readonly ", withNewLine: false)
-			.Append(Constants.Shared.List)
+			.AppendLine()
+			.Append(indent, "readonly ", withNewLine: false)
+			.Append(Constants.Logging.MicrosoftExtensions.ILogger)
 			.Append('<')
-			.Append(Constants.Shared.Type)
-			.Append("> _eventTypes = new ")
-			.Append(Constants.Shared.List)
-			.Append('<')
-			.Append(Constants.Shared.Type)
-			.AppendLine(">() {")
-			.Append(3, "// System events")
-			.Append(3, "typeof(Purview.EventSourcing.Aggregates.Events.DeleteEvent),")
-			.Append(3, "typeof(Purview.EventSourcing.Aggregates.Events.RestoreEvent),")
-			.Append(3, "typeof(Purview.EventSourcing.Aggregates.Events.ForceSaveEvent),")
-		;
-
-		if (target.GeneratedApplyMethods.Length > 0) {
-
-			builder.Append(indent + 2, "// Generated events");
-			foreach (var generatedEvent in target.GeneratedApplyMethods) {
-				builder
-					.Append(indent + 2, "typeof(", withNewLine: false)
-					.Append(generatedEvent.EventType)
-					.AppendLine("),")
-				;
-			}
-		}
-
-		if (target.PredefinedApplyMethods.Length > 0) {
-
-			builder.Append(indent + 2, "// Found pre-defined events");
-			foreach (var foundEvent in target.PredefinedApplyMethods) {
-				builder
-					.Append(indent + 2, "typeof(", withNewLine: false)
-					.Append(foundEvent.EventType)
-					.AppendLine("),")
-				;
-			}
-		}
-
-		builder
-			.Append(indent + 1, "};")
+			.Append(target.FullyQualifiedInterfaceName)
+			.Append('>')
+			.Append(' ')
+			.Append("_logger;")
+			.AppendLine()
 			.AppendLine()
 		;
 
-		return indent;
+		foreach (var methodTarget in target.LogEntryMethods) {
+			context.CancellationToken.ThrowIfCancellationRequested();
+
+			EmitLogActionField(builder, indent, methodTarget);
+		}
+
+		return --indent;
+	}
+
+	static void EmitLogActionField(StringBuilder builder, int indent, LogEntryMethodGenerationTarget methodTarget) {
+		builder
+			.Append(indent, "static readonly ", withNewLine: false)
+			.Append(methodTarget.IsScoped ? Constants.System.Func : Constants.System.Action)
+			.Append('<')
+			.Append(Constants.Logging.MicrosoftExtensions.ILogger)
+			.Append(", ")
+		;
+
+		var parameterCount = methodTarget.GetParameterCount(includingException: false);
+		foreach (var parameter in methodTarget.Parameters) {
+			if (parameter.IsException) {
+				continue;
+			}
+
+			builder.Append(parameter.FullyQualifiedType);
+			if (parameter.IsNullable) {
+				builder.Append('?');
+			}
+
+			builder.Append(", ");
+		}
+
+		if (methodTarget.IsScoped) {
+			builder
+				.Append(Constants.System.IDisposable)
+				.Append("> ")
+			;
+		}
+		else {
+			builder
+				.Append(Constants.System.Exception)
+				.Append("> ")
+			;
+		}
+
+		builder
+			.Append(methodTarget.LoggerActionFieldName)
+			.Append(" = ")
+			.Append(Constants.Logging.MicrosoftExtensions.LoggerMessage)
+			.Append(".Define")
+		;
+
+		if (methodTarget.IsScoped) {
+			builder
+				.Append("Scope")
+			;
+		}
+
+		if (parameterCount > 0) {
+			builder.Append('<');
+
+			var i = 0;
+			foreach (var parameter in methodTarget.Parameters) {
+				if (parameter.IsException) {
+					continue;
+				}
+
+				builder
+					.Append(parameter.FullyQualifiedType)
+				;
+
+				if (parameter.IsNullable) {
+					builder
+						.Append('?')
+					;
+				}
+
+				if (i < parameterCount)
+					builder
+						.Append(", ")
+					;
+
+				i++;
+			}
+
+			builder.Append('>');
+		}
+
+		builder.Append('(');
+
+		if (!methodTarget.IsScoped) {
+			builder
+				.Append(Utilities.ConvertToMSLogLevel(methodTarget.Level))
+				.Append(", ")
+			;
+
+			if (methodTarget.EventId != null) {
+				builder
+					.Append("new ")
+					.Append(Constants.Logging.MicrosoftExtensions.EventId)
+					.Append('(')
+					.Append(methodTarget.EventId.Value)
+					.Append(", \"")
+					.Append(methodTarget.LogEntryName)
+					.Append("\"), ")
+				;
+			}
+			else
+				builder.Append("default, ");
+		}
+
+		builder
+			.Append('"')
+			.Append(methodTarget.MessageTemplate)
+			.Append('"')
+			.AppendLine(");")
+		;
 	}
 }

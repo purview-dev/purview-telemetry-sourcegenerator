@@ -215,19 +215,19 @@ static class Utilities {
 		=> parameterType == (fullTypeName + "[]");
 
 	static public bool IsEnumerable(string parameterType, string fullTypeName)
-		=> parameterType == (Constants.Shared.IEnumerable.FullName + "<" + fullTypeName + ">")
-		|| parameterType.StartsWith(Constants.Shared.IEnumerable.FullName + "<" + fullTypeName, StringComparison.Ordinal);
+		=> parameterType == (Constants.System.IEnumerable.FullName + "<" + fullTypeName + ">")
+		|| parameterType.StartsWith(Constants.System.IEnumerable.FullName + "<" + fullTypeName, StringComparison.Ordinal);
 
 	static public bool IsString(string type)
-		=> type == Constants.Shared.String.Name
-			|| type == Constants.Shared.String.FullName
-			|| type == Constants.Shared.StringKeyword;
+		=> type == Constants.System.String.Name
+			|| type == Constants.System.String.FullName
+			|| type == Constants.System.StringKeyword;
 
 	static public bool IsExceptionType(ITypeSymbol? typeSymbol) {
 		if (typeSymbol == null)
 			return false;
 
-		if (Constants.Shared.Exception.Equals(typeSymbol))
+		if (Constants.System.Exception.Equals(typeSymbol))
 			return true;
 
 		return IsExceptionType(typeSymbol.BaseType);
@@ -245,4 +245,71 @@ static class Utilities {
 
 	static public string Flatten(this string value)
 		=> Regex.Replace(value, @"\s+", " ", RegexOptions.None, TimeSpan.FromMilliseconds(2000));
+
+	static public Templates.TypeInfo ConvertToMSLogLevel(Logging.LogGeneratedLevel? level)
+		=> level switch {
+			Logging.LogGeneratedLevel.Trace => Constants.Logging.MicrosoftExtensions.LogLevel_Trace,
+			Logging.LogGeneratedLevel.Debug => Constants.Logging.MicrosoftExtensions.LogLevel_Debug,
+			Logging.LogGeneratedLevel.Information => Constants.Logging.MicrosoftExtensions.LogLevel_Information,
+			Logging.LogGeneratedLevel.Warning => Constants.Logging.MicrosoftExtensions.LogLevel_Warning,
+			Logging.LogGeneratedLevel.Error => Constants.Logging.MicrosoftExtensions.LogLevel_Error,
+			Logging.LogGeneratedLevel.Critical => Constants.Logging.MicrosoftExtensions.LogLevel_Critical,
+			_ => Constants.Logging.MicrosoftExtensions.LogLevel_None,
+		};
+
+	static public bool ContainsAttribute(ISymbol symbol, Templates.TypeInfo typeInfo, CancellationToken token)
+		=> TryContainsAttribute(symbol, typeInfo, token, out _);
+
+	static public bool TryContainsAttribute(ISymbol symbol, Templates.TypeInfo typeInfo, CancellationToken token, out AttributeData? attributeData) {
+		attributeData = null;
+
+		var attributes = symbol.GetAttributes();
+		foreach (var attribute in attributes) {
+			token.ThrowIfCancellationRequested();
+
+			if (attribute.AttributeClass != null && typeInfo.Equals(attribute.AttributeClass)) {
+				attributeData = attribute;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	static public bool ContainsAttribute(ISymbol symbol, Templates.TemplateInfo templateInfo, CancellationToken token)
+		=> TryContainsAttribute(symbol, templateInfo, token, out _);
+
+	static public bool TryContainsAttribute(ISymbol symbol, Templates.TemplateInfo templateInfo, CancellationToken token, out AttributeData? attributeData) {
+		attributeData = null;
+
+		var attributes = symbol.GetAttributes();
+		foreach (var attribute in attributes) {
+			token.ThrowIfCancellationRequested();
+
+			if (attribute.AttributeClass != null && templateInfo.Equals(attribute.AttributeClass)) {
+				attributeData = attribute;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	static public string LowercaseFirstChar(string value) {
+		if (value.Length > 0) {
+			var firstChar = char.ToLowerInvariant(value[0]);
+			value = firstChar + value.Substring(1);
+		}
+
+		return value;
+	}
+
+	static public string UppercaseFirstChar(string value) {
+		if (value.Length > 0) {
+			var firstChar = char.ToUpperInvariant(value[0]);
+			value = firstChar + value.Substring(1);
+		}
+
+		return value;
+	}
 }

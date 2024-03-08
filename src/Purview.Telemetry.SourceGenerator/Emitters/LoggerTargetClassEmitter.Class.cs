@@ -7,7 +7,7 @@ using Purview.Telemetry.SourceGenerator.Templates;
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class LoggerTargetClassEmitter {
-	static void GenerateLoggerClass(LoggerTarget target, SourceProductionContext context, IGenerationLogger? logger) {
+	static void GenerateLoggerClass(LoggerGenerationTarget target, SourceProductionContext context, IGenerationLogger? logger) {
 		StringBuilder builder = new();
 
 		builder
@@ -18,7 +18,8 @@ partial class LoggerTargetClassEmitter {
 		var indent = EmitNamespaceStart(target, builder, context, logger);
 
 		indent = EmitClassStart(target, builder, indent, context, logger);
-		//indent = EmitFields(target, builder, indent, context, logger);
+		indent = EmitFields(target, builder, indent, context, logger);
+
 		//indent = EmitProperties(target, builder, indent, context, logger);
 		//indent = EmitMethods(target, builder, indent, context, logger);
 
@@ -31,7 +32,7 @@ partial class LoggerTargetClassEmitter {
 		context.AddSource(hintName, Microsoft.CodeAnalysis.Text.SourceText.From(sourceText, Encoding.UTF8));
 	}
 
-	static int EmitClassStart(LoggerTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
+	static int EmitClassStart(LoggerGenerationTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		logger?.Debug($"Generating class for: {target.FullyQualifiedName}");
@@ -48,7 +49,7 @@ partial class LoggerTargetClassEmitter {
 		return indent;
 	}
 
-	static void EmitClassEnd(LoggerTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
+	static void EmitClassEnd(LoggerGenerationTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		logger?.Debug($"Generating class end for: {target.FullyQualifiedName}");

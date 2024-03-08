@@ -1,12 +1,15 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Collections.Immutable;
+using System.Text;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Purview.Telemetry.Logging;
 using Purview.Telemetry.SourceGenerator.Targets;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 partial class PipelineHelpers {
 	static public bool HasLoggerAttribute(SyntaxNode _, CancellationToken __) => true;
 
-	static public LoggerTarget? BuildLoggerTransform(GeneratorAttributeSyntaxContext context, IGenerationLogger? logger, CancellationToken token) {
+	static public LoggerGenerationTarget? BuildLoggerTransform(GeneratorAttributeSyntaxContext context, IGenerationLogger? logger, CancellationToken token) {
 		token.ThrowIfCancellationRequested();
 
 		if (context.TargetNode is not InterfaceDeclarationSyntax interfaceDeclaration) {
@@ -20,7 +23,7 @@ partial class PipelineHelpers {
 		}
 
 		var semanticModel = context.SemanticModel;
-		var loggerTargetAttribute = SharedHelpers.GetGenerateLoggerTargetAttribute(context.Attributes[0], semanticModel, logger, token);
+		var loggerTargetAttribute = SharedHelpers.GetLoggerTargetAttribute(context.Attributes[0], semanticModel, logger, token);
 		if (loggerTargetAttribute == null) {
 			logger?.Error($"Could not find {Constants.Logging.LoggerTargetAttribute} when one was expected '{interfaceDeclaration.Flatten()}'.");
 
@@ -31,7 +34,22 @@ partial class PipelineHelpers {
 			? loggerTargetAttribute.ClassName.Value!
 			: GenerateClassName(interfaceSymbol.Name);
 
+		var loggerDefaults = GetLoggerTargetAttributeRecord(semanticModel, logger, token);
+		var defaultLogLevel = loggerDefaults?.DefaultLevel?.IsSet == true
+			? loggerDefaults.DefaultLevel.Value!
+			: LogGeneratedLevel.Information;
+
 		var fullNamespace = Utilities.GetFullNamespace(interfaceDeclaration, true);
+		var logEntryMethods = BuildLoggerMethods(
+			className,
+			defaultLogLevel,
+			loggerTargetAttribute,
+			context,
+			semanticModel,
+			interfaceSymbol,
+			logger,
+			token);
+
 		return new(
 			ClassNameToGenerate: className,
 			ClassNamespace: Utilities.GetNamespace(interfaceDeclaration),
@@ -43,8 +61,149 @@ partial class PipelineHelpers {
 			FullyQualifiedInterfaceName: fullNamespace + interfaceSymbol.Name,
 
 			LoggerTargetAttribute: loggerTargetAttribute,
-			LoggerDefaultsAttribute: GetLoggerTargetAttributeRecord(semanticModel, logger, token)
+			DefaultLevel: (LogGeneratedLevel)defaultLogLevel,
+
+			LogEntryMethods: logEntryMethods
 		);
+	}
+
+	static ImmutableArray<LogEntryMethodGenerationTarget> BuildLoggerMethods(
+			string className,
+			LogGeneratedLevel? defaultLogLevel,
+			LoggerTargetAttributeRecord loggerTarget,
+			GeneratorAttributeSyntaxContext context,
+			SemanticModel semanticModel,
+			INamedTypeSymbol interfaceSymbol,
+			IGenerationLogger? logger,
+			CancellationToken token) {
+
+		token.ThrowIfCancellationRequested();
+
+		List<LogEntryMethodGenerationTarget> methodTargets = [];
+		foreach (var method in interfaceSymbol.GetMembers().OfType<IMethodSymbol>()) {
+			if (Utilities.ContainsAttribute(method, Constants.Logging.ExcludeAttribute, token)) {
+				logger?.Debug($"Skipping {interfaceSymbol.Name}.{method.Name}, explicitly excluded.");
+				continue;
+			}
+
+			logger?.Debug($"Found method {interfaceSymbol.Name}.{method.Name}.");
+
+			var methodParameters = GetLoggerMethodParameters(method, logger, token);
+			var logEntry = SharedHelpers.GetLogEntryAttribute(method, semanticModel, logger, token);
+			var isKnownReturnType = method.ReturnsVoid || Constants.System.IDisposable.Equals(method.ReturnType);
+			var loggerActionFieldName = $"_{Utilities.LowercaseFirstChar(method.Name)}Action";
+
+			var level = logEntry?.Level?.IsSet == true
+				? logEntry.Level.Value!
+				: defaultLogLevel;
+
+			var messageTemplate = logEntry?.MessageTemplate?.Value ?? GenerateTemplateMessage(methodParameters);
+			var logEntryName = GetLogEntryName(interfaceSymbol.Name, className, loggerTarget, logEntry, method.Name);
+
+			methodTargets.Add(new(
+				MethodName: method.Name,
+				IsScoped: !method.ReturnsVoid,
+				LoggerActionFieldName: loggerActionFieldName,
+
+				UnknownReturnType: !isKnownReturnType,
+
+				EventId: logEntry?.EventId?.Value,
+				Level: (LogGeneratedLevel)level!,
+				MessageTemplate: messageTemplate,
+
+				LogEntryName: logEntryName,
+
+				Parameters: methodParameters
+			));
+		}
+
+		return [.. methodTargets];
+	}
+
+	static string GetLogEntryName(string interfaceName, string className, LoggerTargetAttributeRecord loggerTarget, LogEntryAttributeRecord? logEntry, string methodName) {
+		if (logEntry?.Name?.Value != null) {
+			methodName = logEntry.Name.Value;
+		};
+
+		if (loggerTarget.PrefixType.Value == LogPrefixType.Default) {
+			if (interfaceName[0] == 'I') {
+				interfaceName = interfaceName.Substring(1);
+			}
+
+			if (interfaceName.EndsWith("Logs", StringComparison.Ordinal)) {
+				interfaceName = interfaceName.Substring(0, interfaceName.Length - 4);
+			}
+			else if (interfaceName.EndsWith("Logger", StringComparison.Ordinal)) {
+				interfaceName = interfaceName.Substring(0, interfaceName.Length - 6);
+			}
+			else if (interfaceName.EndsWith("Telemetry", StringComparison.Ordinal)) {
+				interfaceName = interfaceName.Substring(0, interfaceName.Length - 9);
+			}
+
+			return $"{interfaceName}.{methodName}";
+		}
+		else if (loggerTarget.PrefixType.Value == LogPrefixType.Interface) {
+			return $"{interfaceName}.{methodName}";
+		}
+		else if (loggerTarget.PrefixType.Value == LogPrefixType.Class) {
+			return $"{className}.{methodName}";
+		}
+		else if (loggerTarget.PrefixType.Value == LogPrefixType.Custom) {
+			if (!string.IsNullOrWhiteSpace(loggerTarget.CustomPrefix.Value)) {
+				return $"{loggerTarget.CustomPrefix.Value}.{methodName}";
+			}
+		}
+
+		// This is the NoSuffix case or if it's Custom and the CustomPrefix is null, empty or whitespace.
+		return methodName;
+	}
+
+	static string GenerateTemplateMessage(ImmutableArray<LogEntryMethodParameterTarget> methodParameters) {
+		StringBuilder builder = new();
+
+		var count = methodParameters.Count(m => !m.IsException);
+		var index = 0;
+		foreach (var parameter in methodParameters) {
+			if (parameter.IsException) {
+				continue;
+			}
+
+			builder
+				.Append(parameter.Name)
+				.Append(": ")
+				.Append('{')
+				.Append(parameter.UpperCasedName)
+				.Append('}')
+			;
+
+			if (index < count - 1) {
+				builder
+					.Append(", ")
+				;
+			}
+
+			index++;
+		}
+
+		return builder.ToString();
+	}
+
+	static ImmutableArray<LogEntryMethodParameterTarget> GetLoggerMethodParameters(IMethodSymbol method, IGenerationLogger? logger, CancellationToken token) {
+
+		List<LogEntryMethodParameterTarget> parameters = [];
+		foreach (var parameter in method.Parameters) {
+			token.ThrowIfCancellationRequested();
+
+			parameters.Add(new(
+				Name: parameter.Name,
+				UpperCasedName: Utilities.UppercaseFirstChar(parameter.Name),
+				FullyQualifiedType: Utilities.GetFullyQualifiedName(parameter.Type),
+				IsNullable: parameter.NullableAnnotation == NullableAnnotation.Annotated,
+				IsException: Utilities.IsExceptionType(parameter.Type)
+			));
+		}
+
+		return [.. parameters];
 	}
 
 	static string GenerateClassName(string name) {
@@ -55,12 +214,12 @@ partial class PipelineHelpers {
 		return name + "Core";
 	}
 
-	static public LoggerDefaultsAttributeRecord? GetLoggerTargetAttributeRecord(SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token) {
+	static LoggerDefaultsAttributeRecord? GetLoggerTargetAttributeRecord(SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token) {
 		token.ThrowIfCancellationRequested();
 
-		var loggerDefaultAttributeData = SharedHelpers.GetAttributeData(semanticModel.Compilation.Assembly, Constants.Logging.LogGeneratedLevel);
-		return loggerDefaultAttributeData == null
-			? null
-			: SharedHelpers.GetGenerateLoggerDefaultsAttribute(loggerDefaultAttributeData, semanticModel, logger, token);
+		if (!Utilities.TryContainsAttribute(semanticModel.Compilation.Assembly, Constants.Logging.LogGeneratedLevel, token, out var attributeData))
+			return null;
+
+		return SharedHelpers.GetLoggerDefaultsAttribute(attributeData!, semanticModel, logger, token);
 	}
 }
