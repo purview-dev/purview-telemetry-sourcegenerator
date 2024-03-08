@@ -27,8 +27,40 @@ partial class PipelineHelpers {
 			return null;
 		}
 
+		var className = loggerTargetAttribute.ClassName.IsSet
+			? loggerTargetAttribute.ClassName.Value!
+			: GenerateClassName(interfaceSymbol.Name);
 
+		var fullNamespace = Utilities.GetFullNamespace(interfaceDeclaration, true);
+		return new(
+			ClassNameToGenerate: className,
+			ClassNamespace: Utilities.GetNamespace(interfaceDeclaration),
+			ParentClasses: Utilities.GetParentClasses(interfaceDeclaration),
+			FullNamespace: fullNamespace,
+			FullyQualifiedName: fullNamespace + className,
 
-		throw new NotImplementedException();
+			InterfaceName: interfaceSymbol.Name,
+			FullyQualifiedInterfaceName: fullNamespace + interfaceSymbol.Name,
+
+			LoggerTargetAttribute: loggerTargetAttribute,
+			LoggerDefaultsAttribute: GetLoggerTargetAttributeRecord(semanticModel, logger, token)
+		);
+	}
+
+	static string GenerateClassName(string name) {
+		if (name[0] == 'I') {
+			name = name.Substring(1);
+		}
+
+		return name + "Core";
+	}
+
+	static public LoggerDefaultsAttributeRecord? GetLoggerTargetAttributeRecord(SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token) {
+		token.ThrowIfCancellationRequested();
+
+		var loggerDefaultAttributeData = SharedHelpers.GetAttributeData(semanticModel.Compilation.Assembly, Constants.Logging.LogGeneratedLevel);
+		return loggerDefaultAttributeData == null
+			? null
+			: SharedHelpers.GetGenerateLoggerDefaultsAttribute(loggerDefaultAttributeData, semanticModel, logger, token);
 	}
 }

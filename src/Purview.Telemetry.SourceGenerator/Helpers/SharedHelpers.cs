@@ -2,45 +2,89 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Purview.Telemetry.Logging;
+using Purview.Telemetry.SourceGenerator.Targets;
+using Purview.Telemetry.SourceGenerator.Templates;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 
 static class SharedHelpers {
-	static public LoggerTargetAttribute? GetGenerateLoggerTargetAttribute(
-		AttributeData attributeData,
-		SemanticModel semanticModel,
-		IGenerationLogger? logger,
-		CancellationToken token) {
+	static public AttributeData? GetAttributeData(ISymbol symbol, TemplateInfo attributeType) {
+		var attributes = symbol.GetAttributes();
+		foreach (var attribute in attributes) {
+			if (attribute.AttributeClass != null && attributeType.Equals(attribute.AttributeClass)) {
+				return attribute;
+			}
+		}
 
-		LoggerTargetAttribute? loggerTargetAttribute = new() {
-			StartingEventId = 0,
-			DefaultLevel = LogGeneratedLevel.Information
-		};
+		return null;
+	}
+
+	static public LoggerTargetAttributeRecord? GetGenerateLoggerTargetAttribute(
+	AttributeData attributeData,
+	SemanticModel semanticModel,
+	IGenerationLogger? logger,
+	CancellationToken token) {
+
+		AttributeValue<int>? startingEventId = null;
+		AttributeValue<LogGeneratedLevel>? defaultLevel = null;
+		AttributeStringValue? className = null;
+		AttributeStringValue? customPrefix = null;
+		AttributeValue<LogPrefixType>? prefixType = null;
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(loggerTargetAttribute.StartingEventId), StringComparison.OrdinalIgnoreCase)) {
-				loggerTargetAttribute.StartingEventId = (int)value;
+			if (name.Equals(nameof(LoggerTargetAttribute.StartingEventId), StringComparison.OrdinalIgnoreCase)) {
+				startingEventId = new((int)value);
 			}
-			else if (name.Equals(nameof(loggerTargetAttribute.ClassName), StringComparison.OrdinalIgnoreCase)) {
-				loggerTargetAttribute.ClassName = (string)value;
+			else if (name.Equals(nameof(LoggerTargetAttribute.DefaultLevel), StringComparison.OrdinalIgnoreCase)) {
+				defaultLevel = new((LogGeneratedLevel)value);
 			}
-			else if (name.Equals(nameof(loggerTargetAttribute.DefaultLevel), StringComparison.OrdinalIgnoreCase)) {
-				loggerTargetAttribute.DefaultLevel = (LogGeneratedLevel)value;
+			else if (name.Equals(nameof(LoggerTargetAttribute.ClassName), StringComparison.OrdinalIgnoreCase)) {
+				className = new((string)value);
 			}
-			else if (name.Equals(nameof(loggerTargetAttribute.CustomPrefix), StringComparison.OrdinalIgnoreCase)) {
-				loggerTargetAttribute.CustomPrefix = (string)value;
+			else if (name.Equals(nameof(LoggerTargetAttribute.CustomPrefix), StringComparison.OrdinalIgnoreCase)) {
+				customPrefix = new((string)value);
 			}
-			else if (name.Equals(nameof(loggerTargetAttribute.PrefixType), StringComparison.OrdinalIgnoreCase)) {
-				loggerTargetAttribute.PrefixType = (LogPrefixType)value;
+			else if (name.Equals(nameof(LoggerTargetAttribute.PrefixType), StringComparison.OrdinalIgnoreCase)) {
+				prefixType = new((LogPrefixType)value);
 			}
 		}, semanticModel, logger, token)) {
 			// Failed to parse correctly, so null it out.
 			return null;
 		}
 
-		return loggerTargetAttribute;
+		return new(
+			StartingEventId: startingEventId ?? new(),
+			DefaultLevel: defaultLevel ?? new(),
+			ClassName: className ?? new(),
+			CustomPrefix: customPrefix ?? new(),
+			PrefixType: prefixType ?? new()
+		);
 	}
+
+	static public LoggerDefaultsAttributeRecord? GetGenerateLoggerDefaultsAttribute(
+		AttributeData attributeData,
+		SemanticModel semanticModel,
+		IGenerationLogger? logger,
+		CancellationToken token) {
+
+		AttributeValue<LogGeneratedLevel>? defaultLevel = null;
+
+		if (!AttributeParser(attributeData,
+		(name, value) => {
+			if (name.Equals(nameof(LoggerDefaultsAttribute.DefaultLevel), StringComparison.OrdinalIgnoreCase)) {
+				defaultLevel = new((LogGeneratedLevel)value);
+			}
+		}, semanticModel, logger, token)) {
+			// Failed to parse correctly, so null it out.
+			return null;
+		}
+
+		return new(
+			DefaultLevel: defaultLevel ?? new()
+		);
+	}
+
 	static public bool AttributeParser(
 		AttributeData attributeData,
 		Action<string, object> namedArguments,

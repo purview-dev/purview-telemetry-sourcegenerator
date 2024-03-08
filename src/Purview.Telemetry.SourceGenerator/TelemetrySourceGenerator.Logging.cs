@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Purview.Telemetry.Logging;
+using Purview.Telemetry.SourceGenerator.Emitters;
 using Purview.Telemetry.SourceGenerator.Helpers;
 using Purview.Telemetry.SourceGenerator.Targets;
 
@@ -46,15 +47,15 @@ partial class TelemetrySourceGenerator {
 
 		try {
 			foreach (var target in targets) {
-				//logger?.Debug($"Event generation target: {target!.FullyQualifiedName}");
+				logger?.Debug($"Logger generation target: {target!.FullyQualifiedName}");
 
-				//EventTargetClassEmitter.GenerateImplementation(target!, spc, logger);
+				LoggerTargetClassEmitter.GenerateImplementation(target!, spc, logger);
 			}
 		}
 		catch (Exception ex) {
 			logger?.Error($"A fatal error occurred while executing the source generation stage: {ex}");
 
-			//EventSourcingDiagnostics.Report(spc.ReportDiagnostic, EventSourcingDiagnostics.General.FatalExecutionDuringExecution, null, ex);
+			TelemetryDiagnostics.Report(spc.ReportDiagnostic, TelemetryDiagnostics.General.FatalExecutionDuringExecution, null, ex);
 		}
 	}
 }

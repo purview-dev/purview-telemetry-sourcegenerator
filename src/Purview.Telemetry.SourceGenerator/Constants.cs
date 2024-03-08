@@ -4,6 +4,8 @@
 namespace Purview.Telemetry;
 
 static partial class Constants {
+	public const Telemetry.Logging.LogGeneratedLevel DefaultLevel = Telemetry.Logging.LogGeneratedLevel.Information;
+
 	public const string SystemDiagnosticsNamespace = "System.Diagnostics";
 
 	readonly static string SystemDiagnosticsMetricsNamespace = SystemDiagnosticsNamespace + ".Metrics";
@@ -18,19 +20,6 @@ static partial class Constants {
 	}
 
 	static public class Shared {
-		public const string VoidKeyword = "void";
-
-		public const string StringKeyword = "string";
-		public const string BoolKeyword = "bool";
-
-		public const string ByteKeyword = "byte";
-		public const string ShortKeyword = "short";
-		public const string IntKeyword = "int";
-		public const string LongKeyword = "long";
-		public const string FloatKeyword = "float";
-		public const string DoubleKeyword = "double";
-		public const string DecimalKeyword = "decimal";
-
 		public const string Activity = nameof(Activity);
 
 		//readonly static public TemplateInfo GenerateServiceCollectionExtensionAttribute = TemplateInfo.Create<GenerateServiceCollectionExtensionAttribute>();
@@ -39,33 +28,46 @@ static partial class Constants {
 
 		readonly static public TemplateInfo TelemetryDisposableWrapper = TemplateInfo.Create("Purview.Telemetry.TelemetryDisposableWrapper", attachHeader: false);
 
-		readonly static public TypeInfo Func = TypeInfo.Create("System.Func"); // <>
-
-		readonly static public TypeInfo String = TypeInfo.Create("System.String");
-		readonly static public TypeInfo Byte = TypeInfo.Create("System.Byte");
-		readonly static public TypeInfo Int16 = TypeInfo.Create("System.Int16");
-		readonly static public TypeInfo Int32 = TypeInfo.Create("System.Int32");
-		readonly static public TypeInfo Int64 = TypeInfo.Create("System.Int64");
-		readonly static public TypeInfo Single = TypeInfo.Create("System.Single");
-		readonly static public TypeInfo Double = TypeInfo.Create("System.Double");
-		readonly static public TypeInfo Decimal = TypeInfo.Create("System.Decimal");
-
-		readonly static public TypeInfo DateTimeOffset = TypeInfo.Create("System.DateTimeOffset");
-		readonly static public TypeInfo IEnumerable = TypeInfo.Create("System.Collections.Generic.IEnumerable"); // <>
-		readonly static public TypeInfo ConcurrentDictionary = TypeInfo.Create("System.Collections.Concurrent.ConcurrentDictionary"); // <>
-		readonly static public TypeInfo IDisposable = TypeInfo.Create("System.IDisposable");
-		readonly static public TypeInfo Exception = TypeInfo.Create("System.Exception");
-
-		readonly static public TypeInfo TagList = TypeInfo.Create(SystemDiagnosticsNamespace + ".TagList");
-
 		static public TemplateInfo[] GetTemplates()
-			=> new[] {
+			=> [
 				//GenerateServiceCollectionExtensionAttribute,
 				//SkipGenerationAttribute,
 				//TelemetryGenerationAttribute,
 
 				TelemetryDisposableWrapper
-			};
+			];
+
+		static public class System {
+			public const string VoidKeyword = "void";
+
+			public const string StringKeyword = "string";
+			public const string BoolKeyword = "bool";
+
+			public const string ByteKeyword = "byte";
+			public const string ShortKeyword = "short";
+			public const string IntKeyword = "int";
+			public const string LongKeyword = "long";
+			public const string FloatKeyword = "float";
+			public const string DoubleKeyword = "double";
+			public const string DecimalKeyword = "decimal";
+
+			readonly static public TypeInfo Func = TypeInfo.Create("System.Func"); // <>
+
+			readonly static public TypeInfo String = TypeInfo.Create("System.String");
+			readonly static public TypeInfo Byte = TypeInfo.Create("System.Byte");
+			readonly static public TypeInfo Int16 = TypeInfo.Create("System.Int16");
+			readonly static public TypeInfo Int32 = TypeInfo.Create("System.Int32");
+			readonly static public TypeInfo Int64 = TypeInfo.Create("System.Int64");
+			readonly static public TypeInfo Single = TypeInfo.Create("System.Single");
+			readonly static public TypeInfo Double = TypeInfo.Create("System.Double");
+			readonly static public TypeInfo Decimal = TypeInfo.Create("System.Decimal");
+
+			readonly static public TypeInfo DateTimeOffset = TypeInfo.Create("System.DateTimeOffset");
+			readonly static public TypeInfo IEnumerable = TypeInfo.Create("System.Collections.Generic.IEnumerable"); // <>
+			readonly static public TypeInfo ConcurrentDictionary = TypeInfo.Create("System.Collections.Concurrent.ConcurrentDictionary"); // <>
+			readonly static public TypeInfo IDisposable = TypeInfo.Create("System.IDisposable");
+			readonly static public TypeInfo Exception = TypeInfo.Create("System.Exception");
+		}
 	}
 
 	static public class Activities {
@@ -80,21 +82,10 @@ static partial class Constants {
 		public const string Tag_ExceptionMessage = "exception.message";
 		public const string Tag_ExceptionStackTrace = "exception.stacktrace";
 
-		readonly static public TypeInfo Activity = TypeInfo.Create(SystemDiagnosticsNamespace + ".Activity");
-		readonly static public TypeInfo ActivitySource = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivitySource");
-		readonly static public TypeInfo ActivityEvent = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityEvent");
-		readonly static public TypeInfo ActivityContext = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityContext");
-		readonly static public TypeInfo ActivityKind = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityKind");
-		readonly static public TypeInfo ActivityTagsCollection = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityTagsCollection");
-		readonly static public TypeInfo ActivityTagIEnumerable = TypeInfo.Create("System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object?>>");
-
-		readonly static public TypeInfo ActivityLink = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityLink");
-		readonly static public TypeInfo ActivityLinkIEnumerable = TypeInfo.Create("System.Collections.Generic.IEnumerable<System.Diagnostics.ActivityLink>");
-		readonly static public TypeInfo ActivityLinkArray = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityLink[]");
-
 		readonly static public TemplateInfo ActivityAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityAttribute>();
 		readonly static public TemplateInfo ActivityGeneratedKind = TemplateInfo.Create<Telemetry.Activities.ActivityGeneratedKind>();
 		readonly static public TemplateInfo ActivitySourceAttribute = TemplateInfo.Create<Telemetry.Activities.ActivitySourceAttribute>();
+		readonly static public TemplateInfo ActivityTargetAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityTargetAttribute>();
 		//readonly static public TemplateInfo ActivityMetadataAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityMetadataAttribute>();
 		//readonly static public TemplateInfo BaggageAttribute = TemplateInfo.Create<Telemetry.Activities.BaggageAttribute>();
 		//readonly static public TemplateInfo EventAttribute = TemplateInfo.Create<Telemetry.Activities.EventAttribute>();
@@ -107,23 +98,54 @@ static partial class Constants {
 				ActivityAttribute,
 				ActivityGeneratedKind,
 				ActivitySourceAttribute,
+				ActivityTargetAttribute,
 				//ActivityMetadataAttribute,
 				//BaggageAttribute,
 				//EventAttribute,
 				//TagAttribute,
 				//ExcludeFromActivityOrEventAttribute
 			];
+
+		static public class SystemDiagnostics {
+
+			readonly static public TypeInfo Activity = TypeInfo.Create(SystemDiagnosticsNamespace + ".Activity");
+			readonly static public TypeInfo ActivitySource = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivitySource");
+			readonly static public TypeInfo ActivityEvent = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityEvent");
+			readonly static public TypeInfo ActivityContext = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityContext");
+			readonly static public TypeInfo ActivityKind = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityKind");
+			readonly static public TypeInfo ActivityTagsCollection = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityTagsCollection");
+			readonly static public TypeInfo ActivityTagIEnumerable = TypeInfo.Create("System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object?>>");
+
+			readonly static public TypeInfo ActivityLink = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityLink");
+			readonly static public TypeInfo ActivityLinkIEnumerable = TypeInfo.Create("System.Collections.Generic.IEnumerable<System.Diagnostics.ActivityLink>");
+			readonly static public TypeInfo ActivityLinkArray = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityLink[]");
+
+			readonly static public TypeInfo TagList = TypeInfo.Create(SystemDiagnosticsNamespace + ".TagList");
+		}
 	}
 
 	static public class Logging {
 		public const int MaxNonExceptionParameters = 6;
+		public const string DefaultLogLevelConstantName = "DEFAULT_LOGLEVEL";
 
-		//readonly static public TemplateInfo DefaultLogGenerationSettingsAttribute = TemplateInfo.Create<Telemetry.Logging.DefaultLogGenerationSettingsAttribute>();
-		//readonly static public TemplateInfo LogAttribute = TemplateInfo.Create<Telemetry.Logging.LogAttribute>();
+		readonly static public TemplateInfo LoggerEntryAttribute = TemplateInfo.Create<Telemetry.Logging.LoggerEntryAttribute>();
 		readonly static public TemplateInfo LogGeneratedLevel = TemplateInfo.Create<Telemetry.Logging.LogGeneratedLevel>();
+		readonly static public TemplateInfo LoggerDefaultsAttribute = TemplateInfo.Create<Telemetry.Logging.LoggerDefaultsAttribute>();
 		readonly static public TemplateInfo LoggerTargetAttribute = TemplateInfo.Create<Telemetry.Logging.LoggerTargetAttribute>();
+		readonly static public TemplateInfo LogPrefixType = TemplateInfo.Create<Telemetry.Logging.LogPrefixType>();
 		//readonly static public TemplateInfo LogOutputAttribute = TemplateInfo.Create<Telemetry.Logging.LogOutputAttribute>();
 		//readonly static public TemplateInfo ExcludeFromLogAttribute = TemplateInfo.Create<Telemetry.Logging.ExcludeFromLogAttribute>();
+
+		static public TemplateInfo[] GetTemplates() => [
+			LoggerEntryAttribute,
+			LogGeneratedLevel,
+			LoggerDefaultsAttribute,
+			LoggerTargetAttribute,
+			LogPrefixType,
+			//LogGeneratedLevelAttribute,
+			//LogOutputAttribute,
+			//ExcludeFromLogAttribute
+		];
 
 		static public class MicrosoftExtensions {
 			public const string Namespace = "Microsoft.Extensions.Logging";
@@ -140,17 +162,18 @@ static partial class Constants {
 			readonly static public TypeInfo LogLevel_Error = TypeInfo.Create(LogLevel.FullName + ".Error");
 			readonly static public TypeInfo LogLevel_Critical = TypeInfo.Create(LogLevel.FullName + ".Critical");
 			readonly static public TypeInfo LogLevel_None = TypeInfo.Create(LogLevel.FullName + ".None");
-		}
 
-		static public TemplateInfo[] GetTemplates() => [
-			LogGeneratedLevel,
-			LoggerTargetAttribute,
-		//DefaultLogGenerationSettingsAttribute,
-		//LogAttribute,
-		//LogGeneratedLevelAttribute,
-		//LogOutputAttribute,
-		//ExcludeFromLogAttribute
-		];
+			static public TypeInfo ConvertToMSLogLevel(Telemetry.Logging.LogGeneratedLevel level)
+				=> level switch {
+					Telemetry.Logging.LogGeneratedLevel.Trace => LogLevel_Trace,
+					Telemetry.Logging.LogGeneratedLevel.Debug => LogLevel_Debug,
+					Telemetry.Logging.LogGeneratedLevel.Information => LogLevel_Information,
+					Telemetry.Logging.LogGeneratedLevel.Warning => LogLevel_Warning,
+					Telemetry.Logging.LogGeneratedLevel.Error => LogLevel_Error,
+					Telemetry.Logging.LogGeneratedLevel.Critical => LogLevel_Critical,
+					_ => LogLevel_None,
+				};
+		}
 	}
 
 	static public class Metrics {
