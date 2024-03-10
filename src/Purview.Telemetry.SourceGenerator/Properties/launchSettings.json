@@ -1,0 +1,8 @@
+﻿{
+  "profiles": {
+    "SG Debug": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "../TelemetryRoslynTestHarness/TelemetryRoslynTestHarness.csproj"
+    }
+  }
+}

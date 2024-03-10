@@ -93,14 +93,18 @@ partial class PipelineHelpers {
 			var isKnownReturnType = method.ReturnsVoid || Constants.System.IDisposable.Equals(method.ReturnType);
 			var loggerActionFieldName = $"_{Utilities.LowercaseFirstChar(method.Name)}Action";
 
-			var messageTemplate = logEntry?.MessageTemplate?.Value ?? GenerateTemplateMessage(methodParameters);
 			var logEntryName = GetLogEntryName(interfaceSymbol.Name, className, loggerTarget, logEntry, method.Name);
+			var messageTemplate = logEntry?.MessageTemplate?.Value ?? GenerateTemplateMessage(logEntryName, methodParameters);
 			var hasMultipleExceptions = methodParameters.Count(m => m.IsException) > 1;
 			var exceptionParam = hasMultipleExceptions
 				? null
 				: methodParameters.FirstOrDefault(m => m.IsException);
 
-			var inferredErrorLevel = logEntry?.Level?.IsSet ?? false == false && exceptionParam != null;
+			var inferredErrorLevel = exceptionParam != null;
+			if (logEntry?.Level?.IsSet ?? false == true) {
+				inferredErrorLevel = false;
+			}
+
 			var level = (LogGeneratedLevel)(logEntry?.Level?.IsSet == true
 				? logEntry.Level.Value!
 				: exceptionParam == null
@@ -141,7 +145,11 @@ partial class PipelineHelpers {
 			methodName = logEntry.Name.Value;
 		};
 
-		if (loggerTarget.PrefixType.Value == LogPrefixType.Default) {
+		var prefixType = loggerTarget.PrefixType.IsSet
+			? loggerTarget.PrefixType.Value
+			: LogPrefixType.Default;
+
+		if (prefixType == LogPrefixType.Default) {
 			if (interfaceName[0] == 'I') {
 				interfaceName = interfaceName.Substring(1);
 			}
@@ -158,13 +166,13 @@ partial class PipelineHelpers {
 
 			return $"{interfaceName}.{methodName}";
 		}
-		else if (loggerTarget.PrefixType.Value == LogPrefixType.Interface) {
+		else if (prefixType == LogPrefixType.Interface) {
 			return $"{interfaceName}.{methodName}";
 		}
-		else if (loggerTarget.PrefixType.Value == LogPrefixType.Class) {
+		else if (prefixType == LogPrefixType.Class) {
 			return $"{className}.{methodName}";
 		}
-		else if (loggerTarget.PrefixType.Value == LogPrefixType.Custom) {
+		else if (prefixType == LogPrefixType.Custom) {
 			if (!string.IsNullOrWhiteSpace(loggerTarget.CustomPrefix.Value)) {
 				return $"{loggerTarget.CustomPrefix.Value}.{methodName}";
 			}
@@ -174,10 +182,16 @@ partial class PipelineHelpers {
 		return methodName;
 	}
 
-	static string GenerateTemplateMessage(ImmutableArray<LogEntryMethodParameterTarget> methodParameters) {
+	static string GenerateTemplateMessage(string logEntryName, ImmutableArray<LogEntryMethodParameterTarget> methodParameters) {
 		StringBuilder builder = new();
 
+		builder.Append(logEntryName);
+
 		var count = methodParameters.Count(m => !m.IsException);
+		if (count > 0) {
+			builder.Append(": ");
+		}
+
 		var index = 0;
 		foreach (var parameter in methodParameters) {
 			if (parameter.IsException) {
@@ -237,5 +251,12 @@ partial class PipelineHelpers {
 			return null;
 
 		return SharedHelpers.GetLoggerDefaultsAttribute(attributeData!, semanticModel, logger, token);
+	}
+}
+
+
+class A : Attribute {
+	public A(int? Hello) {
+
 	}
 }

@@ -7,6 +7,9 @@ record TemplateInfo(string Name, string FullName, string Namespace, string? Sour
 	: IEquatable<NameSyntax>, IEquatable<AttributeSyntax>, IEquatable<ISymbol>, IEquatable<string>, IEquatable<AttributeData> {
 	public string TemplateData { get; private set; } = default!;
 
+	public string GetGeneratedFilename()
+		=> $"{Name}.g.cs";
+
 	public bool Equals(string other)
 		=> other == Name || other == FullName;
 

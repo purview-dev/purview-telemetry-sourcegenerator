@@ -86,7 +86,7 @@ partial class LoggerTargetClassEmitter {
 		if (methodTarget.IsScoped) {
 			builder
 				.Append(Constants.System.IDisposable)
-				.Append("> ")
+				.Append("?> ")
 			;
 		}
 		else {

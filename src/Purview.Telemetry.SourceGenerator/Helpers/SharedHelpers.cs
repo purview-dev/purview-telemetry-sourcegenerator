@@ -33,7 +33,7 @@ static class SharedHelpers {
 			else if (name.Equals(nameof(LogEntryAttribute.EventId), StringComparison.OrdinalIgnoreCase)) {
 				eventId = new((int)value);
 			}
-			else if (name.Equals(nameof(LogEntryAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals(nameof(LogEntryAttribute.EntryName), StringComparison.OrdinalIgnoreCase)) {
 				nameValue = new((string)value);
 			}
 		}, semanticModel, logger, token)) {

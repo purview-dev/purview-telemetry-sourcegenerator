@@ -60,7 +60,8 @@ partial class LoggerTargetClassEmitter {
 		if (methodTarget.IsScoped) {
 			builder
 				.Append(indent + 1, "return ", withNewLine: false)
-			;
+				.Append(methodTarget.LoggerActionFieldName)
+				.Append("(_logger");
 		}
 		else {
 			builder
@@ -71,13 +72,10 @@ partial class LoggerTargetClassEmitter {
 				.AppendLine()
 				.Append(indent + 2, "return;")
 				.AppendLine()
+				.Append(indent + 1, methodTarget.LoggerActionFieldName, withNewLine: false)
+				.Append("(_logger")
 			;
 		}
-
-		builder
-			.Append(indent + 1, methodTarget.LoggerActionFieldName, withNewLine: false)
-			.Append("(_logger")
-		;
 
 		foreach (var parameter in methodTarget.ParametersSansException) {
 			builder

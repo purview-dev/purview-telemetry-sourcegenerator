@@ -7,7 +7,6 @@
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed public class LogEntryAttribute : Attribute {
 	public LogEntryAttribute() {
-
 	}
 
 	public LogEntryAttribute(string messageTemplate) {
@@ -18,11 +17,17 @@ sealed public class LogEntryAttribute : Attribute {
 		EventId = eventId;
 	}
 
-	public LogEntryAttribute(LogGeneratedLevel level, string? messageTemplate = null, int? eventId = null, string? name = null) {
+	public LogEntryAttribute(LogGeneratedLevel level, string? messageTemplate = null, string? entryName = null) {
+		Level = level;
+		MessageTemplate = messageTemplate;
+		EntryName = entryName;
+	}
+
+	public LogEntryAttribute(int eventId, LogGeneratedLevel level, string? messageTemplate = null, string? entryName = null) {
 		Level = level;
 		MessageTemplate = messageTemplate;
 		EventId = eventId;
-		Name = name;
+		EntryName = entryName;
 	}
 
 	/// <summary>
@@ -46,5 +51,5 @@ sealed public class LogEntryAttribute : Attribute {
 	/// <summary>
 	/// Optional. Gets/ set the name of the log entry. If one is not specified, the method name is used.
 	/// </summary>
-	public string? Name { get; set; }
+	public string? EntryName { get; set; }
 }

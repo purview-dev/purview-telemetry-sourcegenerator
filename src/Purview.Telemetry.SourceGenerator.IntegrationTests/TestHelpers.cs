@@ -2,6 +2,7 @@
 using System.Text;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Emit;
 
 namespace Purview.Telemetry.SourceGenerator;
 
@@ -61,14 +62,29 @@ using System;
 		return result;
 	}
 
-	async static public Task Verify(GenerationResult generationResult, Action<SettingsTask>? config = null, bool validateNonEmptyDiagnostics = false) {
+	async static public Task Verify(GenerationResult generationResult,
+		Action<SettingsTask>? config = null,
+		bool validateNonEmptyDiagnostics = false,
+		bool validationCompilation = true,
+		bool includeTemplates = true) {
+
 		var verifierTask = Verifier
 			.Verify(generationResult.Result)
 			.UseDirectory("Snapshots")
 			.DisableRequireUniquePrefix()
 			.DisableDateCounting()
 			.ScrubInlineDateTimeOffsets("yyyy-MM-dd HH:mm:ss zzzz") // 2024-22-02 14:43:22 +00:00
+
+		//.UseStringComparer(StringCompareX)
+		//.UseStreamComparer(StreamCompareX)
 		;
+
+		if (includeTemplates) {
+			foreach (var template in Constants.GetAllTemplates()) {
+				// Ignores predefined templates, e.g. ActivityAttribute.g.cs
+				verifierTask = verifierTask.AppendContentAsFile(template.TemplateData, name: template.GetGeneratedFilename());
+			}
+		}
 
 		config?.Invoke(verifierTask);
 
@@ -82,5 +98,24 @@ using System;
 		else {
 			generationResult.Diagnostics.Should().BeEmpty();
 		}
+
+		if (!validationCompilation) {
+			return;
+		}
+
+		await using MemoryStream ms = new();
+		EmitResult result = generationResult.Compilation.Emit(ms);
+
+		if (!result.Success) {
+			result.Diagnostics.Should().NotBeEmpty();
+		}
+	}
+
+	async static Task<CompareResult> StringCompareX(string received, string verified, IReadOnlyDictionary<string, object> context) {
+		return CompareResult.Equal;
+	}
+
+	async static Task<CompareResult> StreamCompareX(Stream received, Stream verified, IReadOnlyDictionary<string, object> context) {
+		return CompareResult.Equal;
 	}
 }

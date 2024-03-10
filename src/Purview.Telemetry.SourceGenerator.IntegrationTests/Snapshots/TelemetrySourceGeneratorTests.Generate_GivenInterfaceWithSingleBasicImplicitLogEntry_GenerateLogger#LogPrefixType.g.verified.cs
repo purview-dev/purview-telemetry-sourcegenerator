@@ -35,8 +35,8 @@ public enum LogPrefixType {
 	Class,
 
 	/// <summary>
-	/// Uses the custom name specified in the attribute. This is used when
-	/// the <see cref="LoggerTargetAttribute.CustomPrefix"/> is specified
+	/// Uses the custom name specified by <see cref="LoggerTargetAttribute.CustomPrefix"/>. This is used when
+	/// the <see cref="LoggerTargetAttribute.CustomPrefix"/> is set
 	/// regardless of <see cref="LoggerTargetAttribute.PrefixType"/>.
 	/// </summary>
 	Custom,
