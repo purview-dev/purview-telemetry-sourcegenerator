@@ -7,5 +7,7 @@ class Program {
 		Console.WriteLine("Hello, World!");
 
 		IBasicLogger logger = new BasicLoggerCore(null);
+
+
 	}
 }

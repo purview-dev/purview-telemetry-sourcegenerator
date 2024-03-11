@@ -64,17 +64,15 @@ static partial class Constants {
 		public const string Tag_ExceptionMessage = "exception.message";
 		public const string Tag_ExceptionStackTrace = "exception.stacktrace";
 
-		readonly static public TemplateInfo ActivityAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityAttribute>();
-		readonly static public TemplateInfo ActivityGeneratedKind = TemplateInfo.Create<Telemetry.Activities.ActivityGeneratedKind>();
 		readonly static public TemplateInfo ActivitySourceAttribute = TemplateInfo.Create<Telemetry.Activities.ActivitySourceAttribute>();
 		readonly static public TemplateInfo ActivityTargetAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityTargetAttribute>();
+		readonly static public TemplateInfo ActivityAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityAttribute>();
+		readonly static public TemplateInfo ActivityGeneratedKind = TemplateInfo.Create<Telemetry.Activities.ActivityGeneratedKind>();
 		readonly static public TemplateInfo ActivityExcludeAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityExcludeAttribute>();
+		readonly static public TemplateInfo TagAttribute = TemplateInfo.Create<Telemetry.Activities.TagAttribute>();
+		readonly static public TemplateInfo BaggageAttribute = TemplateInfo.Create<Telemetry.Activities.BaggageAttribute>();
 
-		//readonly static public TemplateInfo BaggageAttribute = TemplateInfo.Create<Telemetry.Activities.BaggageAttribute>();
 		//readonly static public TemplateInfo EventAttribute = TemplateInfo.Create<Telemetry.Activities.EventAttribute>();
-		//readonly static public TemplateInfo TagAttribute = TemplateInfo.Create<Telemetry.Activities.TagAttribute>();
-
-		//readonly static public TemplateInfo ExcludeFromActivityOrEventAttribute = TemplateInfo.Create<Telemetry.Activities.ExcludeFromActivityOrEventAttribute>();
 
 		static public TemplateInfo[] GetTemplates()
 			=> [
@@ -83,11 +81,9 @@ static partial class Constants {
 				ActivitySourceAttribute,
 				ActivityTargetAttribute,
 				ActivityExcludeAttribute,
-				//ActivityMetadataAttribute,
-				//BaggageAttribute,
+				TagAttribute,
+				BaggageAttribute,
 				//EventAttribute,
-				//TagAttribute,
-				//ExcludeFromActivityOrEventAttribute
 			];
 
 		static public class SystemDiagnostics {

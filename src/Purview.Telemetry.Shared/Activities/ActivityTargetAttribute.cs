@@ -31,4 +31,12 @@ sealed public class ActivityTargetAttribute : Attribute {
 	/// Overrides the class name generated for this activity target.
 	/// </summary>
 	public string? ClassName { get; set; }
+
+	public bool DefaultToTags { get; set; } = true;
+
+	public string? BaggageAndTagPrefix { get; set; }
+
+	public bool IncludeActivitySourcePrefix { get; set; } = true;
+
+	public bool LowercaseBaggageAndTagKeys { get; set; } = true;
 }

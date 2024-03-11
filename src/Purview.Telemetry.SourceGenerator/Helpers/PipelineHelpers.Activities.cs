@@ -32,17 +32,18 @@ partial class PipelineHelpers {
 			? activityTargetAttribute.ClassName.Value!
 			: GenerateClassName(interfaceSymbol.Name);
 
-		var activitySource = GetActivitySourceAttribute(semanticModel, logger, token);
-		var activitySourceName = activitySource?.Name?.IsSet == true
-			? activitySource.Name.Value!
+		var activitySourceAttribute = GetActivitySourceAttribute(semanticModel, logger, token);
+		var activitySourceName = activitySourceAttribute?.Name?.IsSet == true
+			? activitySourceAttribute.Name.Value!
 			: activityTargetAttribute.ActivitySource.IsSet
 				? activityTargetAttribute.ActivitySource.Value!
-				: "TODO";
+				: null;
 
 		var fullNamespace = Utilities.GetFullNamespace(interfaceDeclaration, true);
 		var activityMethods = BuildActivityMethods(
 			className,
 			activityTargetAttribute,
+			activitySourceAttribute,
 			context,
 			semanticModel,
 			interfaceSymbol,
@@ -59,7 +60,10 @@ partial class PipelineHelpers {
 			InterfaceName: interfaceSymbol.Name,
 			FullyQualifiedInterfaceName: fullNamespace + interfaceSymbol.Name,
 
+			ActivitySourceAttribute: activitySourceAttribute,
 			ActivitySourceName: activitySourceName,
+
+			ActivityTargetAttributeRecord: activityTargetAttribute,
 
 			ActivityMethods: activityMethods
 		);
@@ -68,6 +72,7 @@ partial class PipelineHelpers {
 	static ImmutableArray<ActivityMethodGenerationTarget> BuildActivityMethods(
 		string className,
 		ActivityTargetAttributeRecord activityTarget,
+		ActivitySourceAttributeRecord? activitySourceAttribute,
 		GeneratorAttributeSyntaxContext context,
 		SemanticModel semanticModel,
 		INamedTypeSymbol interfaceSymbol,
@@ -84,6 +89,16 @@ partial class PipelineHelpers {
 			}
 
 			logger?.Debug($"Found method {interfaceSymbol.Name}.{method.Name}.");
+
+			var isEvent = true;
+
+			var baggageParameters = GetActivityBaggageParameters();
+			var tagParameters = GetActivityTagParameters();
+
+			methodTargets.Add(new(
+
+				IsEvent: true
+			));
 		}
 
 		return [.. methodTargets];

@@ -12,20 +12,30 @@ record ActivityGenerationTarget(
 	string InterfaceName,
 	string FullyQualifiedInterfaceName,
 
-	string ActivitySourceName,
+	ActivitySourceAttributeRecord? ActivitySourceAttribute,
+	string? ActivitySourceName,
 
 	ImmutableArray<ActivityMethodGenerationTarget> ActivityMethods
-);
+,
+	ActivityTargetAttributeRecord ActivityTargetAttributeRecord);
 
 record ActivityTargetAttributeRecord(
 	AttributeStringValue ActivitySource,
-
-	AttributeStringValue ClassName
+	AttributeStringValue ClassName,
+	AttributeValue<bool> DefaultToTags,
+	AttributeStringValue BaggageAndTagPrefix,
+	AttributeValue<bool> IncludeActivitySourcePrefix,
+	AttributeValue<bool> LowercaseBaggageAndTagKeys
 );
 
 record ActivitySourceAttributeRecord(
-	AttributeStringValue Name
+	AttributeStringValue Name,
+	AttributeValue<bool> DefaultToTags,
+	AttributeStringValue BaggageAndTagPrefix,
+	AttributeStringValue BaggageAndTagSeparator,
+	AttributeValue<bool> LowercaseBaggageAndTagKeys
 );
 
 record ActivityMethodGenerationTarget(
+	bool IsEvent
 );

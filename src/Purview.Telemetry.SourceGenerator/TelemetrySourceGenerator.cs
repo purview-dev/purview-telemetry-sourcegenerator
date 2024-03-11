@@ -17,6 +17,7 @@ sealed public partial class TelemetrySourceGenerator : IIncrementalGenerator, IL
 			}
 		});
 
+		RegisterActivitiesGeneration(context, _logger);
 		RegisterLoggerGeneration(context, _logger);
 	}
 
