@@ -21,7 +21,7 @@ namespace Testing
 
 		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
 
-		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.String, System.Int32, System.Boolean, System.Exception?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.String, System.Int32, System.Boolean>(Microsoft.Extensions.Logging.LogLevel.Information, default, "Test.custom-log-name: stringParam: {StringParam}, intParam: {IntParam}, boolParam: {BoolParam}");
+		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.String, System.Int32, System.Boolean, System.Exception?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.String, System.Int32, System.Boolean>(Microsoft.Extensions.Logging.LogLevel.Information, default, "Test.123: stringParam: {StringParam}, intParam: {IntParam}, boolParam: {BoolParam}");
 
 		public TestLoggerCore(Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
 		{

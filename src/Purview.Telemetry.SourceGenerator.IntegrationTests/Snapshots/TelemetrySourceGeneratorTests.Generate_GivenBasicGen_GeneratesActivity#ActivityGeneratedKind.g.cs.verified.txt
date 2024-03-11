@@ -12,38 +12,37 @@
 
 #if PURVIEW_TELEMETRY_EMBED_ATTRIBUTES
 
-namespace Purview.Telemetry.Logging;
+namespace Purview.Telemetry.Activities;
 
 /// <summary>
-/// The types of prefixes that can be used for the log entry.
+/// Describes the relationship between the activity, its parents and its children in a trace.
 /// </summary>
-public enum LogPrefixType {
+public enum ActivityGeneratedKind {
 	/// <summary>
-	/// The name of the interface without the "I" prefix or "Log", "Logger" or "Telemetry" suffixes.
+	/// Internal operation within an application, as opposed to operations with remote
+	/// parents or children. This is the default value.
 	/// </summary>
-	Default,
+	Internal = 0,
 
 	/// <summary>
-	/// The name of the interface.
+	/// Requests incoming from external component.
 	/// </summary>
-	Interface,
+	Server = 1,
 
 	/// <summary>
-	/// The name of the class either specified or generated.
+	/// Outgoing request to the external component.
 	/// </summary>
-	Class,
+	Client = 2,
 
 	/// <summary>
-	/// Uses the custom name specified by <see cref="LoggerTargetAttribute.CustomPrefix"/>. This is used when
-	/// the <see cref="LoggerTargetAttribute.CustomPrefix"/> is set
-	/// regardless of <see cref="LoggerTargetAttribute.PrefixType"/>.
+	/// Output provided to external components.
 	/// </summary>
-	Custom,
+	Producer = 3,
 
 	/// <summary>
-	/// No suffix is added to the name.
+	/// Output received from an external component.
 	/// </summary>
-	NoSuffix
+	Consumer = 4
 }
 
 #endif

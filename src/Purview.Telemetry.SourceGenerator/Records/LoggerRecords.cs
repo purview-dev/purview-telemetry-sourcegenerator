@@ -2,7 +2,7 @@
 using Purview.Telemetry.Logging;
 using Purview.Telemetry.SourceGenerator.Templates;
 
-namespace Purview.Telemetry.SourceGenerator.Targets;
+namespace Purview.Telemetry.SourceGenerator.Records;
 
 record LoggerGenerationTarget(
 	string ClassNameToGenerate,

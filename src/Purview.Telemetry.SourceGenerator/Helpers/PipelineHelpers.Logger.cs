@@ -3,11 +3,12 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Purview.Telemetry.Logging;
-using Purview.Telemetry.SourceGenerator.Targets;
+using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
+
 partial class PipelineHelpers {
-	static public bool HasLoggerAttribute(SyntaxNode _, CancellationToken __) => true;
+	static public bool HasLoggerTargetAttribute(SyntaxNode _, CancellationToken __) => true;
 
 	static public LoggerGenerationTarget? BuildLoggerTransform(GeneratorAttributeSyntaxContext context, IGenerationLogger? logger, CancellationToken token) {
 		token.ThrowIfCancellationRequested();
@@ -34,7 +35,7 @@ partial class PipelineHelpers {
 			? loggerTargetAttribute.ClassName.Value!
 			: GenerateClassName(interfaceSymbol.Name);
 
-		var loggerDefaults = GetLoggerTargetAttributeRecord(semanticModel, logger, token);
+		var loggerDefaults = GetLoggerDefaultsAttribute(semanticModel, logger, token);
 		var defaultLogLevel = loggerDefaults?.DefaultLevel?.IsSet == true
 			? loggerDefaults.DefaultLevel.Value!
 			: LogGeneratedLevel.Information;
@@ -81,7 +82,7 @@ partial class PipelineHelpers {
 
 		List<LogEntryMethodGenerationTarget> methodTargets = [];
 		foreach (var method in interfaceSymbol.GetMembers().OfType<IMethodSymbol>()) {
-			if (Utilities.ContainsAttribute(method, Constants.Logging.ExcludeAttribute, token)) {
+			if (Utilities.ContainsAttribute(method, Constants.Logging.LogExcludeAttribute, token)) {
 				logger?.Debug($"Skipping {interfaceSymbol.Name}.{method.Name}, explicitly excluded.");
 				continue;
 			}
@@ -219,7 +220,6 @@ partial class PipelineHelpers {
 	}
 
 	static ImmutableArray<LogEntryMethodParameterTarget> GetLoggerMethodParameters(IMethodSymbol method, IGenerationLogger? logger, CancellationToken token) {
-
 		List<LogEntryMethodParameterTarget> parameters = [];
 		foreach (var parameter in method.Parameters) {
 			token.ThrowIfCancellationRequested();
@@ -233,30 +233,17 @@ partial class PipelineHelpers {
 			));
 		}
 
+		logger?.Debug($"Found {parameters.Count} parameter(s) for {method.Name}.");
+
 		return [.. parameters];
 	}
 
-	static string GenerateClassName(string name) {
-		if (name[0] == 'I') {
-			name = name.Substring(1);
-		}
-
-		return name + "Core";
-	}
-
-	static LoggerDefaultsAttributeRecord? GetLoggerTargetAttributeRecord(SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token) {
+	static LoggerDefaultsAttributeRecord? GetLoggerDefaultsAttribute(SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token) {
 		token.ThrowIfCancellationRequested();
 
-		if (!Utilities.TryContainsAttribute(semanticModel.Compilation.Assembly, Constants.Logging.LogGeneratedLevel, token, out var attributeData))
+		if (!Utilities.TryContainsAttribute(semanticModel.Compilation.Assembly, Constants.Logging.LoggerDefaultsAttribute, token, out var attributeData))
 			return null;
 
 		return SharedHelpers.GetLoggerDefaultsAttribute(attributeData!, semanticModel, logger, token);
-	}
-}
-
-
-class A : Attribute {
-	public A(int? Hello) {
-
 	}
 }

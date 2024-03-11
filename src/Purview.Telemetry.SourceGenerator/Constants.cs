@@ -68,7 +68,8 @@ static partial class Constants {
 		readonly static public TemplateInfo ActivityGeneratedKind = TemplateInfo.Create<Telemetry.Activities.ActivityGeneratedKind>();
 		readonly static public TemplateInfo ActivitySourceAttribute = TemplateInfo.Create<Telemetry.Activities.ActivitySourceAttribute>();
 		readonly static public TemplateInfo ActivityTargetAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityTargetAttribute>();
-		//readonly static public TemplateInfo ActivityMetadataAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityMetadataAttribute>();
+		readonly static public TemplateInfo ActivityExcludeAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityExcludeAttribute>();
+
 		//readonly static public TemplateInfo BaggageAttribute = TemplateInfo.Create<Telemetry.Activities.BaggageAttribute>();
 		//readonly static public TemplateInfo EventAttribute = TemplateInfo.Create<Telemetry.Activities.EventAttribute>();
 		//readonly static public TemplateInfo TagAttribute = TemplateInfo.Create<Telemetry.Activities.TagAttribute>();
@@ -81,6 +82,7 @@ static partial class Constants {
 				ActivityGeneratedKind,
 				ActivitySourceAttribute,
 				ActivityTargetAttribute,
+				ActivityExcludeAttribute,
 				//ActivityMetadataAttribute,
 				//BaggageAttribute,
 				//EventAttribute,
@@ -115,7 +117,7 @@ static partial class Constants {
 		readonly static public TemplateInfo LoggerDefaultsAttribute = TemplateInfo.Create<Telemetry.Logging.LoggerDefaultsAttribute>();
 		readonly static public TemplateInfo LoggerTargetAttribute = TemplateInfo.Create<Telemetry.Logging.LoggerTargetAttribute>();
 		readonly static public TemplateInfo LogPrefixType = TemplateInfo.Create<Telemetry.Logging.LogPrefixType>();
-		readonly static public TemplateInfo ExcludeAttribute = TemplateInfo.Create<Telemetry.Logging.ExcludeAttribute>();
+		readonly static public TemplateInfo LogExcludeAttribute = TemplateInfo.Create<Telemetry.Logging.LogExcludeAttribute>();
 
 		static public TemplateInfo[] GetTemplates() => [
 			LogEntryAttribute,
@@ -123,7 +125,7 @@ static partial class Constants {
 			LoggerDefaultsAttribute,
 			LoggerTargetAttribute,
 			LogPrefixType,
-			ExcludeAttribute
+			LogExcludeAttribute
 		];
 
 		static public class MicrosoftExtensions {

@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 using Purview.Telemetry.Logging;
 using Purview.Telemetry.SourceGenerator.Emitters;
 using Purview.Telemetry.SourceGenerator.Helpers;
-using Purview.Telemetry.SourceGenerator.Targets;
+using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator;
 
@@ -19,7 +19,7 @@ partial class TelemetrySourceGenerator {
 		var loggerTargetsPredicate = context.SyntaxProvider
 			.ForAttributeWithMetadataName(
 				Constants.Logging.LoggerTargetAttribute,
-				static (node, token) => PipelineHelpers.HasLoggerAttribute(node, token),
+				static (node, token) => PipelineHelpers.HasLoggerTargetAttribute(node, token),
 				loggerTargetTransform
 			)
 			.WhereNotNull()
@@ -34,6 +34,7 @@ partial class TelemetrySourceGenerator {
 		// Register with the source generator.
 		var loggerTargets
 			= context.CompilationProvider.Combine(loggerTargetsPredicate.Collect());
+
 		context.RegisterSourceOutput(
 			source: loggerTargets,
 			action: generationLoggerAction

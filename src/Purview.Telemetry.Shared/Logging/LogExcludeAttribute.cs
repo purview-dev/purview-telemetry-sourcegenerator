@@ -4,5 +4,5 @@
 /// Excludes the method from any log entry generation.
 /// </summary>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-sealed public class ExcludeAttribute : Attribute {
+sealed public class LogExcludeAttribute : Attribute {
 }

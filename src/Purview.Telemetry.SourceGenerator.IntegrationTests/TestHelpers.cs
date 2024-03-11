@@ -74,9 +74,6 @@ using System;
 			.DisableRequireUniquePrefix()
 			.DisableDateCounting()
 			.ScrubInlineDateTimeOffsets("yyyy-MM-dd HH:mm:ss zzzz") // 2024-22-02 14:43:22 +00:00
-
-		//.UseStringComparer(StringCompareX)
-		//.UseStreamComparer(StreamCompareX)
 		;
 
 		if (includeTemplates) {
@@ -109,13 +106,5 @@ using System;
 		if (!result.Success) {
 			result.Diagnostics.Should().NotBeEmpty();
 		}
-	}
-
-	async static Task<CompareResult> StringCompareX(string received, string verified, IReadOnlyDictionary<string, object> context) {
-		return CompareResult.Equal;
-	}
-
-	async static Task<CompareResult> StreamCompareX(Stream received, Stream verified, IReadOnlyDictionary<string, object> context) {
-		return CompareResult.Equal;
 	}
 }

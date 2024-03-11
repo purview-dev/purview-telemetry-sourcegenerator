@@ -1,4 +1,4 @@
-﻿namespace Purview.Telemetry.SourceGenerator.Targets;
+﻿namespace Purview.Telemetry.SourceGenerator.Records;
 
 record AttributeValue<T>
 	where T : struct {

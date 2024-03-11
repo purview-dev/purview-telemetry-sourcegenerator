@@ -12,13 +12,13 @@
 
 #if PURVIEW_TELEMETRY_EMBED_ATTRIBUTES
 
-namespace Purview.Telemetry.Logging;
+namespace Purview.Telemetry.Activities;
 
 /// <summary>
-/// Excludes the method from any log entry generation.
+/// Excludes the method from any activity generation.
 /// </summary>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-sealed class ExcludeAttribute : Attribute {
+sealed class ActivityExcludeAttribute : Attribute {
 }
 
 #endif

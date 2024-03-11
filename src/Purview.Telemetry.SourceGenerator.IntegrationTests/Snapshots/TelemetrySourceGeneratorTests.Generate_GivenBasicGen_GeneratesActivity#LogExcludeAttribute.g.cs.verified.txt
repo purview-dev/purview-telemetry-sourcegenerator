@@ -18,7 +18,7 @@ namespace Purview.Telemetry.Logging;
 /// Excludes the method from any log entry generation.
 /// </summary>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-sealed class ExcludeAttribute : Attribute {
+sealed class LogExcludeAttribute : Attribute {
 }
 
 #endif

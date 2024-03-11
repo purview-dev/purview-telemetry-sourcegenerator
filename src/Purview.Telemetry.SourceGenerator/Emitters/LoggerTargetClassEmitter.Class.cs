@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Microsoft.CodeAnalysis;
 using Purview.Telemetry.SourceGenerator.Helpers;
-using Purview.Telemetry.SourceGenerator.Targets;
+using Purview.Telemetry.SourceGenerator.Records;
 using Purview.Telemetry.SourceGenerator.Templates;
 
 namespace Purview.Telemetry.SourceGenerator.Emitters;
