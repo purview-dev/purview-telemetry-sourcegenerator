@@ -66,7 +66,7 @@ using System;
 		Action<SettingsTask>? config = null,
 		bool validateNonEmptyDiagnostics = false,
 		bool validationCompilation = true,
-		bool includeTemplates = true) {
+		bool autoVerifyTemplates = true) {
 
 		var verifierTask = Verifier
 			.Verify(generationResult.Result)
@@ -74,14 +74,20 @@ using System;
 			.DisableRequireUniquePrefix()
 			.DisableDateCounting()
 			.ScrubInlineDateTimeOffsets("yyyy-MM-dd HH:mm:ss zzzz") // 2024-22-02 14:43:22 +00:00
-		;
+			.AutoVerify(file => {
+				if (autoVerifyTemplates) {
+					foreach (var template in Constants.GetAllTemplates()) {
+						var potentialName = $"#{template.Name}.g.";
 
-		if (includeTemplates) {
-			foreach (var template in Constants.GetAllTemplates()) {
-				// Ignores predefined templates, e.g. ActivityAttribute.g.cs
-				verifierTask = verifierTask.AppendContentAsFile(template.TemplateData, name: template.GetGeneratedFilename());
-			}
-		}
+						if (file.Contains(potentialName, StringComparison.Ordinal)) {
+							return true;
+						}
+					}
+				}
+
+				return false;
+			})
+		;
 
 		config?.Invoke(verifierTask);
 

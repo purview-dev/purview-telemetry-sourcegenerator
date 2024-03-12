@@ -131,6 +131,7 @@ abstract public class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 			ImmutableDictionary<string, string>? globalOptions = null,
 			Func<Project, Project>? projectModifier = null,
 			bool debugLog = true) {
+
 		CSharpParseOptions parseOptions = new(kind: SourceCodeKind.Regular, documentationMode: DocumentationMode.Parse);
 
 		globalOptions ??= ImmutableDictionary<string, string>.Empty;

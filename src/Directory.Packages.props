@@ -32,6 +32,6 @@
     <PackageVersion Include="SpecFlow.xUnit" Version="3.9.74" />
     <PackageVersion Include="BenchmarkDotNet.TestAdapter" Version="0.13.12" />
     <PackageVersion Include="Verify.SourceGenerators" Version="2.2.0" />
-    <PackageVersion Include="Verify.Xunit" Version="23.4.0" />
+    <PackageVersion Include="Verify.Xunit" Version="23.5.0" />
   </ItemGroup>
 </Project>

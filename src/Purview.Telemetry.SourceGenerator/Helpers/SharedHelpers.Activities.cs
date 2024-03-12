@@ -94,4 +94,88 @@ partial class SharedHelpers {
 			LowercaseBaggageAndTagKeys: lowercaseBaggageAndTagKeys ?? new()
 		);
 	}
+
+	static public TagOrBaggageAttributeRecord? GetTagOrBaggageAttribute(
+		AttributeData attributeData,
+		SemanticModel semanticModel,
+		IGenerationLogger? logger,
+		CancellationToken token) {
+
+		AttributeStringValue? nameValue = null;
+		AttributeValue<bool>? skipOnNullOrEmpty = null;
+
+		if (!AttributeParser(attributeData,
+		(name, value) => {
+			if (name.Equals(nameof(TagAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
+				nameValue = new((string)value);
+			}
+			else if (name.Equals(nameof(TagAttribute.SkipOnNullOrEmpty), StringComparison.OrdinalIgnoreCase)) {
+				skipOnNullOrEmpty = new((bool)value);
+			}
+		}, semanticModel, logger, token)) {
+			// Failed to parse correctly, so null it out.
+			return null;
+		}
+
+		return new(
+			Name: nameValue ?? new(),
+			SkipOnNullOrEmpty: skipOnNullOrEmpty ?? new()
+		);
+	}
+
+	static public ActivityAttributeRecord? GetActivityAttribute(
+		AttributeData attributeData,
+		SemanticModel semanticModel,
+		IGenerationLogger? logger,
+		CancellationToken token) {
+
+		AttributeStringValue? nameValue = null;
+		AttributeValue<ActivityGeneratedKind>? kind = null;
+		AttributeValue<bool>? createOnly = null;
+
+		if (!AttributeParser(attributeData,
+		(name, value) => {
+			if (name.Equals(nameof(ActivityAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
+				nameValue = new((string)value);
+			}
+			else if (name.Equals(nameof(ActivityAttribute.Kind), StringComparison.OrdinalIgnoreCase)) {
+				kind = new((ActivityGeneratedKind)value);
+			}
+			else if (name.Equals(nameof(ActivityAttribute.CreateOnly), StringComparison.OrdinalIgnoreCase)) {
+				createOnly = new((bool)value);
+			}
+		}, semanticModel, logger, token)) {
+			// Failed to parse correctly, so null it out.
+			return null;
+		}
+
+		return new(
+			Name: nameValue ?? new(),
+			Kind: kind ?? new(),
+			CreateOnly: createOnly ?? new()
+		);
+	}
+
+	static public ActivityEventAttributeRecord? GetActivityEventAttribute(
+		AttributeData attributeData,
+		SemanticModel semanticModel,
+		IGenerationLogger? logger,
+		CancellationToken token) {
+
+		AttributeStringValue? nameValue = null;
+
+		if (!AttributeParser(attributeData,
+		(name, value) => {
+			if (name.Equals(nameof(ActivityEventAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
+				nameValue = new((string)value);
+			}
+		}, semanticModel, logger, token)) {
+			// Failed to parse correctly, so null it out.
+			return null;
+		}
+
+		return new(
+			Name: nameValue ?? new()
+		);
+	}
 }

@@ -41,10 +41,8 @@ partial class PipelineHelpers {
 
 		var fullNamespace = Utilities.GetFullNamespace(interfaceDeclaration, true);
 		var activityMethods = BuildActivityMethods(
-			className,
 			activityTargetAttribute,
 			activitySourceAttribute,
-			context,
 			semanticModel,
 			interfaceSymbol,
 			logger,
@@ -70,10 +68,8 @@ partial class PipelineHelpers {
 	}
 
 	static ImmutableArray<ActivityMethodGenerationTarget> BuildActivityMethods(
-		string className,
 		ActivityTargetAttributeRecord activityTarget,
 		ActivitySourceAttributeRecord? activitySourceAttribute,
-		GeneratorAttributeSyntaxContext context,
 		SemanticModel semanticModel,
 		INamedTypeSymbol interfaceSymbol,
 		IGenerationLogger? logger,
@@ -81,27 +77,172 @@ partial class PipelineHelpers {
 
 		token.ThrowIfCancellationRequested();
 
+		var prefix = GeneratePrefix(activitySourceAttribute, activityTarget, token);
+		var defaultToTags = activitySourceAttribute?.DefaultToTags?.IsSet == true
+			? activitySourceAttribute.DefaultToTags.Value!.Value
+			: activityTarget.DefaultToTags.Value!.Value;
+		var lowercaseBaggageAndTagKeys = activityTarget.LowercaseBaggageAndTagKeys!.Value!.Value;
+
 		List<ActivityMethodGenerationTarget> methodTargets = [];
 		foreach (var method in interfaceSymbol.GetMembers().OfType<IMethodSymbol>()) {
+			token.ThrowIfCancellationRequested();
+
 			if (Utilities.ContainsAttribute(method, Constants.Activities.ActivityExcludeAttribute, token)) {
 				logger?.Debug($"Skipping {interfaceSymbol.Name}.{method.Name}, explicitly excluded.");
 				continue;
 			}
 
-			logger?.Debug($"Found method {interfaceSymbol.Name}.{method.Name}.");
+			var isActivity = IsActivity(method, semanticModel, logger, token, out var activityAttribute, out var activityEventAttribute);
+			var activityOrEventName = activityAttribute?.Name?.Value ?? activityEventAttribute?.Name?.Value;
+			if (string.IsNullOrWhiteSpace(activityOrEventName)) {
+				activityOrEventName = method.Name;
+			}
 
-			var isEvent = true;
+			logger?.Debug($"Found {(isActivity ? "activity" : "event")} method {interfaceSymbol.Name}.{method.Name}.");
 
-			var baggageParameters = GetActivityBaggageParameters();
-			var tagParameters = GetActivityTagParameters();
+			var parameters = GetActivityParameters(method, prefix, defaultToTags, lowercaseBaggageAndTagKeys, semanticModel, logger, token);
+			var baggageParameters = parameters.Where(m => !m.IsTag).ToImmutableArray();
+			var tagParameters = parameters.Where(m => m.IsTag).ToImmutableArray();
 
 			methodTargets.Add(new(
+				MethodName: method.Name,
+				ReturnType: Utilities.GetFullyQualifiedName(method.ReturnType),
+				ActivityOrEventName: activityOrEventName!,
 
-				IsEvent: true
+				ActivityAttribute: activityAttribute,
+				ActivityEventAttribute: activityEventAttribute,
+
+				IsActivity: isActivity,
+
+				Baggage: baggageParameters,
+				Tags: tagParameters
 			));
 		}
 
 		return [.. methodTargets];
+	}
+
+	static ImmutableArray<ActivityMethodParameterTarget> GetActivityParameters(IMethodSymbol method,
+		string? prefix,
+		bool defaultToTags,
+		bool lowercaseBaggageAndTagKeys,
+		SemanticModel semanticModel,
+		IGenerationLogger? logger,
+		CancellationToken token) {
+		List<ActivityMethodParameterTarget> parameterTargets = [];
+
+		foreach (var parameter in method.Parameters) {
+			token.ThrowIfCancellationRequested();
+
+			var isTag = defaultToTags;
+			if (Utilities.TryContainsAttribute(parameter, Constants.Activities.TagAttribute, token, out var attribute)) {
+				logger?.Debug($"Found explicit tag: {parameter.Name}.");
+				isTag = true;
+			}
+			else if (Utilities.TryContainsAttribute(parameter, Constants.Activities.BaggageAttribute, token, out attribute)) {
+				logger?.Debug($"Found explicit baggage: {parameter.Name}.");
+				isTag = false;
+			}
+			else {
+				logger?.Debug($"Inferring {(defaultToTags ? "tag" : "baggage")}: {parameter.Name}.");
+			}
+
+			TagOrBaggageAttributeRecord? tagOrBaggageAttribute = null;
+			if (attribute != null) {
+				tagOrBaggageAttribute = SharedHelpers.GetTagOrBaggageAttribute(attribute, semanticModel, logger, token);
+			}
+
+			var parameterName = parameter.Name;
+			var parameterType = parameter.Type.ToDisplayString();
+			var generatedName = GenerateParameterName(tagOrBaggageAttribute?.Name?.Value ?? parameterName, prefix, lowercaseBaggageAndTagKeys);
+
+			parameterTargets.Add(new(
+				ParameterName: parameterName,
+				ParameterType: parameterType,
+				GeneratedName: generatedName,
+				IsTag: isTag,
+				SkipOnNullOrEmpty: (tagOrBaggageAttribute?.SkipOnNullOrEmpty?.IsSet) != true
+					|| tagOrBaggageAttribute!.SkipOnNullOrEmpty!.Value!.Value
+			));
+		}
+
+		return [.. parameterTargets];
+	}
+
+	static string GenerateParameterName(string name, string? prefix, bool lowercaseBaggageAndTagKeys) {
+		if (lowercaseBaggageAndTagKeys) {
+			name = name.ToLowerInvariant();
+		}
+
+		return $"{prefix}{name}";
+	}
+
+	static bool IsActivity(IMethodSymbol method, SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token, out ActivityAttributeRecord? activityAttribute, out ActivityEventAttributeRecord? eventAttribute) {
+		activityAttribute = null;
+		eventAttribute = null;
+
+		token.ThrowIfCancellationRequested();
+
+		if (Utilities.TryContainsAttribute(method, Constants.Activities.ActivityAttribute, token, out var attributeData)) {
+			activityAttribute = SharedHelpers.GetActivityAttribute(attributeData!, semanticModel, logger, token);
+
+			logger?.Debug($"Found explicit activity: {method.Name}.");
+
+			return true;
+		}
+
+		if (Utilities.TryContainsAttribute(method, Constants.Activities.ActivityEventAttribute, token, out attributeData)) {
+			eventAttribute = SharedHelpers.GetActivityEventAttribute(attributeData!, semanticModel, logger, token);
+
+			logger?.Debug($"Found explicit event: {method.Name}.");
+
+			return false;
+		}
+
+		var returnType = method.ReturnType;
+		if (Constants.Activities.SystemDiagnostics.Activity.Equals(returnType)
+			|| Constants.System.IDisposable.Equals(returnType)) {
+
+			logger?.Debug($"Inferring activity due to return type ({returnType.ToDisplayString()}): {method.Name}.");
+
+			return true;
+		}
+
+		if (method.Name.EndsWith("Event", StringComparison.Ordinal)) {
+			logger?.Debug($"Inferring event as the method name ends in 'Event': {method.Name}.");
+
+			return false;
+		}
+
+		logger?.Debug($"Defaulting to activity: {method.Name}.");
+
+		return true;
+	}
+
+	static string? GeneratePrefix(ActivitySourceAttributeRecord? activitySourceAttribute, ActivityTargetAttributeRecord activityTarget, CancellationToken token) {
+		token.ThrowIfCancellationRequested();
+
+		string? prefix = null;
+		var separator = activitySourceAttribute?.BaggageAndTagSeparator?.IsSet == true
+			? activitySourceAttribute.BaggageAndTagSeparator.Value
+			: ".";
+
+		if (activitySourceAttribute?.Name?.IsSet == true) {
+			prefix = activitySourceAttribute.Name.Value;
+			if (activitySourceAttribute.BaggageAndTagSeparator != null) {
+				prefix += separator;
+			}
+		}
+
+		if (activityTarget.BaggageAndTagPrefix.IsSet) {
+			if (activityTarget.IncludeActivitySourcePrefix.Value == true)
+				prefix += activityTarget.ActivitySource.Value + separator;
+		}
+		else {
+			prefix = activityTarget.ActivitySource.Value + separator;
+		}
+
+		return prefix;
 	}
 
 	static ActivitySourceAttributeRecord? GetActivitySourceAttribute(SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token) {

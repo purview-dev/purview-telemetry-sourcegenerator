@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using Purview.Telemetry.Activities;
 
 namespace Purview.Telemetry.SourceGenerator.Records;
 
@@ -37,5 +38,38 @@ record ActivitySourceAttributeRecord(
 );
 
 record ActivityMethodGenerationTarget(
-	bool IsEvent
+	string MethodName,
+	string ReturnType,
+	string ActivityOrEventName,
+
+	ActivityAttributeRecord? ActivityAttribute,
+	ActivityEventAttributeRecord? ActivityEventAttribute,
+
+	bool IsActivity,
+
+	ImmutableArray<ActivityMethodParameterTarget> Baggage,
+	ImmutableArray<ActivityMethodParameterTarget> Tags
+);
+
+record ActivityMethodParameterTarget(
+	string ParameterName,
+	string ParameterType,
+	string GeneratedName,
+	bool IsTag,
+	bool SkipOnNullOrEmpty
+);
+
+record TagOrBaggageAttributeRecord(
+	AttributeStringValue Name,
+	AttributeValue<bool> SkipOnNullOrEmpty
+);
+
+record ActivityAttributeRecord(
+	AttributeStringValue Name,
+	AttributeValue<ActivityGeneratedKind> Kind,
+	AttributeValue<bool> CreateOnly
+);
+
+record ActivityEventAttributeRecord(
+	AttributeStringValue Name
 );

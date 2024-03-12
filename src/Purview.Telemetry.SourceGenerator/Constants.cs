@@ -67,23 +67,22 @@ static partial class Constants {
 		readonly static public TemplateInfo ActivitySourceAttribute = TemplateInfo.Create<Telemetry.Activities.ActivitySourceAttribute>();
 		readonly static public TemplateInfo ActivityTargetAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityTargetAttribute>();
 		readonly static public TemplateInfo ActivityAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityAttribute>();
+		readonly static public TemplateInfo ActivityEventAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityEventAttribute>();
 		readonly static public TemplateInfo ActivityGeneratedKind = TemplateInfo.Create<Telemetry.Activities.ActivityGeneratedKind>();
 		readonly static public TemplateInfo ActivityExcludeAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityExcludeAttribute>();
 		readonly static public TemplateInfo TagAttribute = TemplateInfo.Create<Telemetry.Activities.TagAttribute>();
 		readonly static public TemplateInfo BaggageAttribute = TemplateInfo.Create<Telemetry.Activities.BaggageAttribute>();
 
-		//readonly static public TemplateInfo EventAttribute = TemplateInfo.Create<Telemetry.Activities.EventAttribute>();
-
 		static public TemplateInfo[] GetTemplates()
 			=> [
-				ActivityAttribute,
-				ActivityGeneratedKind,
 				ActivitySourceAttribute,
 				ActivityTargetAttribute,
+				ActivityAttribute,
+				ActivityEventAttribute,
+				ActivityGeneratedKind,
 				ActivityExcludeAttribute,
 				TagAttribute,
-				BaggageAttribute,
-				//EventAttribute,
+				BaggageAttribute
 			];
 
 		static public class SystemDiagnostics {
