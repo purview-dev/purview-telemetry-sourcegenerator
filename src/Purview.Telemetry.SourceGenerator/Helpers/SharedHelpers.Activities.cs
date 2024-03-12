@@ -45,10 +45,10 @@ partial class SharedHelpers {
 		return new(
 			ActivitySource: activitySource ?? new(),
 			ClassName: className ?? new(),
-			DefaultToTags: defaultToTags ?? new(),
+			DefaultToTags: defaultToTags ?? new(true),
 			BaggageAndTagPrefix: baggageAndTagPrefix ?? new(),
-			IncludeActivitySourcePrefix: includeActivitySourcePrefix ?? new(),
-			LowercaseBaggageAndTagKeys: lowercaseBaggageAndTagKeys ?? new()
+			IncludeActivitySourcePrefix: includeActivitySourcePrefix ?? new(true),
+			LowercaseBaggageAndTagKeys: lowercaseBaggageAndTagKeys ?? new(true)
 		);
 	}
 
@@ -90,8 +90,8 @@ partial class SharedHelpers {
 			Name: nameValue ?? new(),
 			DefaultToTags: defaultToTags ?? new(),
 			BaggageAndTagPrefix: baggageAndTagPrefix ?? new(),
-			BaggageAndTagSeparator: baggageAndTagSeparator ?? new(),
-			LowercaseBaggageAndTagKeys: lowercaseBaggageAndTagKeys ?? new()
+			BaggageAndTagSeparator: baggageAndTagSeparator ?? new("."),
+			LowercaseBaggageAndTagKeys: lowercaseBaggageAndTagKeys ?? new(true)
 		);
 	}
 
@@ -119,7 +119,7 @@ partial class SharedHelpers {
 
 		return new(
 			Name: nameValue ?? new(),
-			SkipOnNullOrEmpty: skipOnNullOrEmpty ?? new()
+			SkipOnNullOrEmpty: skipOnNullOrEmpty ?? new(true)
 		);
 	}
 
@@ -151,7 +151,7 @@ partial class SharedHelpers {
 
 		return new(
 			Name: nameValue ?? new(),
-			Kind: kind ?? new(),
+			Kind: kind ?? new(ActivityGeneratedKind.Internal),
 			CreateOnly: createOnly ?? new()
 		);
 	}

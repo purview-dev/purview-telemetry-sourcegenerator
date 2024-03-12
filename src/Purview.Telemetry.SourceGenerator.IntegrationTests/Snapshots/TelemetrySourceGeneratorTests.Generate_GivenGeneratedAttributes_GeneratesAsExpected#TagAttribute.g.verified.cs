@@ -32,7 +32,7 @@ sealed class TagAttribute : Attribute {
 
 	public string? Name { get; set; }
 
-	public bool SkipOnNullOrEmpty { get; set; }
+	public bool SkipOnNullOrEmpty { get; set; } = true;
 }
 
 #endif

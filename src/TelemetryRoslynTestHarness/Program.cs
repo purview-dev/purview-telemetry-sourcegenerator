@@ -1,4 +1,5 @@
-﻿using TelemetryRoslynTestHarness.Interfaces.Telemetry;
+﻿using System.Diagnostics;
+using TelemetryRoslynTestHarness.Interfaces.Telemetry;
 
 namespace TelemetryRoslynTestHarness;
 
@@ -7,6 +8,8 @@ class Program {
 		Console.WriteLine("Hello, World!");
 
 		IBasicLogger logger = new BasicLoggerCore(null);
+
+		var a = Activity.Current;
 
 
 	}

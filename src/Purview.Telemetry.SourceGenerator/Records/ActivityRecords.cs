@@ -4,8 +4,9 @@ using Purview.Telemetry.Activities;
 namespace Purview.Telemetry.SourceGenerator.Records;
 
 record ActivityGenerationTarget(
-	string ClassName,
+	string ClassNameToGenerate,
 	string ClassNamespace,
+
 	string[] ParentClasses,
 	string? FullNamespace,
 	string? FullyQualifiedName,
@@ -47,6 +48,8 @@ record ActivityMethodGenerationTarget(
 
 	bool IsActivity,
 
+	string ActivityAccessorName,
+
 	ImmutableArray<ActivityMethodParameterTarget> Baggage,
 	ImmutableArray<ActivityMethodParameterTarget> Tags
 );
@@ -55,9 +58,15 @@ record ActivityMethodParameterTarget(
 	string ParameterName,
 	string ParameterType,
 	string GeneratedName,
-	bool IsTag,
+	ActivityParameterDestination ParamDestination,
 	bool SkipOnNullOrEmpty
 );
+
+enum ActivityParameterDestination {
+	Useful,
+	Tag,
+	Baggage
+}
 
 record TagOrBaggageAttributeRecord(
 	AttributeStringValue Name,

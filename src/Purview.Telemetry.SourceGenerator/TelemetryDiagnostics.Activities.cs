@@ -13,5 +13,12 @@ partial class TelemetryDiagnostics {
 			Description: "A baggage parameter type must be of type string.",
 			Severity: DiagnosticSeverity.Error
 		);
+
+		readonly static public TelemetryDiagnosticDescriptor NoActivitySourceSpecified = new(
+			Id: "TSG3001",
+			Title: "No activity source specified.",
+			Description: $"An activity source helps to identify your application and it's telemetry. Defaulting to '{Constants.DefaultActivitySourceName}'.",
+			Severity: DiagnosticSeverity.Info
+		);
 	}
 }

@@ -5,17 +5,17 @@ partial class TelemetrySourceGeneratorActivityTests {
 	async public Task Generate_GivenBasicGen_GeneratesActivity() {
 		// Arrange
 		const string basicActivity = @"
-using Purview.Telemetry.Activity;
+using Purview.Telemetry.Activities;
 
 namespace Testing;
 
 [ActivityTarget]
 public interface ITestActivities {
 	[Activity]
-	void Activity(string stringParam, int intParam, bool boolParam);
+	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
-	[Event]
-	void Event(string stringParam, int intParam, bool boolParam);
+	[ActivityEvent]
+	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
 

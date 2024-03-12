@@ -49,8 +49,9 @@ partial class PipelineHelpers {
 			token);
 
 		return new(
-			ClassName: className,
+			ClassNameToGenerate: className,
 			ClassNamespace: Utilities.GetNamespace(interfaceDeclaration),
+
 			ParentClasses: Utilities.GetParentClasses(interfaceDeclaration),
 			FullNamespace: fullNamespace,
 			FullyQualifiedName: fullNamespace + className,
@@ -101,8 +102,10 @@ partial class PipelineHelpers {
 			logger?.Debug($"Found {(isActivity ? "activity" : "event")} method {interfaceSymbol.Name}.{method.Name}.");
 
 			var parameters = GetActivityParameters(method, prefix, defaultToTags, lowercaseBaggageAndTagKeys, semanticModel, logger, token);
-			var baggageParameters = parameters.Where(m => !m.IsTag).ToImmutableArray();
-			var tagParameters = parameters.Where(m => m.IsTag).ToImmutableArray();
+			var baggageParameters = parameters.Where(m => m.ParamDestination == ActivityParameterDestination.Baggage).ToImmutableArray();
+			var tagParameters = parameters.Where(m => m.ParamDestination == ActivityParameterDestination.Tag).ToImmutableArray();
+			var activityParam = parameters.FirstOrDefault(m => Constants.Activities.SystemDiagnostics.Activity.Equals(m.ParameterType));
+			var activityAccessorName = activityParam?.ParameterName ?? $"{Constants.Activities.ActivityAttribute}.Current";
 
 			methodTargets.Add(new(
 				MethodName: method.Name,
@@ -113,6 +116,7 @@ partial class PipelineHelpers {
 				ActivityEventAttribute: activityEventAttribute,
 
 				IsActivity: isActivity,
+				ActivityAccessorName: activityAccessorName,
 
 				Baggage: baggageParameters,
 				Tags: tagParameters
@@ -134,17 +138,31 @@ partial class PipelineHelpers {
 		foreach (var parameter in method.Parameters) {
 			token.ThrowIfCancellationRequested();
 
-			var isTag = defaultToTags;
+			var destination = defaultToTags ? ActivityParameterDestination.Tag : ActivityParameterDestination.Baggage;
 			if (Utilities.TryContainsAttribute(parameter, Constants.Activities.TagAttribute, token, out var attribute)) {
 				logger?.Debug($"Found explicit tag: {parameter.Name}.");
-				isTag = true;
+				destination = ActivityParameterDestination.Tag;
 			}
 			else if (Utilities.TryContainsAttribute(parameter, Constants.Activities.BaggageAttribute, token, out attribute)) {
 				logger?.Debug($"Found explicit baggage: {parameter.Name}.");
-				isTag = false;
+				destination = ActivityParameterDestination.Baggage;
 			}
 			else {
-				logger?.Debug($"Inferring {(defaultToTags ? "tag" : "baggage")}: {parameter.Name}.");
+				if (Constants.Activities.SystemDiagnostics.Activity.Equals(parameter.Type)
+					|| Constants.Activities.SystemDiagnostics.ActivityTagsCollection.Equals(parameter.Type)
+					|| Constants.Activities.SystemDiagnostics.ActivityContext.Equals(parameter.Type)
+					|| Constants.Activities.SystemDiagnostics.ActivityLink.Equals(parameter.Type)
+					|| Constants.Activities.SystemDiagnostics.ActivityLinkArray.Equals(parameter.Type)
+					|| Constants.Activities.SystemDiagnostics.ActivityLinkIEnumerable.Equals(parameter.Type)
+					|| Constants.Activities.SystemDiagnostics.ActivityTagIEnumerable.Equals(parameter.Type)
+					|| Constants.Activities.SystemDiagnostics.ActivityTagsCollection.Equals(parameter.Type)) {
+					destination = ActivityParameterDestination.Useful;
+
+					logger?.Debug($"Found a useful parameter: {parameter.Name} ({parameter.Type}).");
+				}
+				else {
+					logger?.Debug($"Inferring {(defaultToTags ? "tag" : "baggage")}: {parameter.Name}.");
+				}
 			}
 
 			TagOrBaggageAttributeRecord? tagOrBaggageAttribute = null;
@@ -160,7 +178,7 @@ partial class PipelineHelpers {
 				ParameterName: parameterName,
 				ParameterType: parameterType,
 				GeneratedName: generatedName,
-				IsTag: isTag,
+				ParamDestination: destination,
 				SkipOnNullOrEmpty: (tagOrBaggageAttribute?.SkipOnNullOrEmpty?.IsSet) != true
 					|| tagOrBaggageAttribute!.SkipOnNullOrEmpty!.Value!.Value
 			));
@@ -200,8 +218,8 @@ partial class PipelineHelpers {
 		}
 
 		var returnType = method.ReturnType;
-		if (Constants.Activities.SystemDiagnostics.Activity.Equals(returnType)
-			|| Constants.System.IDisposable.Equals(returnType)) {
+		if (Constants.Activities.SystemDiagnostics.Activity.Equals(returnType)) {
+			//|| Constants.System.IDisposable.Equals(returnType)) {
 
 			logger?.Debug($"Inferring activity due to return type ({returnType.ToDisplayString()}): {method.Name}.");
 
@@ -227,19 +245,20 @@ partial class PipelineHelpers {
 			? activitySourceAttribute.BaggageAndTagSeparator.Value
 			: ".";
 
-		if (activitySourceAttribute?.Name?.IsSet == true) {
-			prefix = activitySourceAttribute.Name.Value;
+		if (activitySourceAttribute?.BaggageAndTagPrefix?.IsSet == true) {
+			prefix = activitySourceAttribute.BaggageAndTagPrefix.Value;
 			if (activitySourceAttribute.BaggageAndTagSeparator != null) {
 				prefix += separator;
 			}
 		}
 
 		if (activityTarget.BaggageAndTagPrefix.IsSet) {
-			if (activityTarget.IncludeActivitySourcePrefix.Value == true)
-				prefix += activityTarget.ActivitySource.Value + separator;
-		}
-		else {
-			prefix = activityTarget.ActivitySource.Value + separator;
+			if (activityTarget.IncludeActivitySourcePrefix.Value == true) {
+				prefix += activityTarget.BaggageAndTagPrefix.Value + separator;
+			}
+			else {
+				prefix = activityTarget.BaggageAndTagPrefix.Value + separator;
+			}
 		}
 
 		return prefix;
