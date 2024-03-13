@@ -24,11 +24,13 @@ partial class ActivityTargetClassEmitter {
 			.Append(indent, "readonly static ", withNewLine: false)
 			.Append(Constants.Activities.SystemDiagnostics.ActivitySource)
 			.Append(' ')
-			.Append("_activityName = new ")
+			.Append(Constants.Activities.ActivitySourceFieldName)
+			.Append(" = new ")
 			.Append(Constants.Activities.SystemDiagnostics.ActivitySource)
 			.Append('(')
-			.Append(activitySourceName)
+			.Append(activitySourceName!.Wrap())
 			.AppendLine(");")
+			.AppendLine()
 		;
 
 		return --indent;

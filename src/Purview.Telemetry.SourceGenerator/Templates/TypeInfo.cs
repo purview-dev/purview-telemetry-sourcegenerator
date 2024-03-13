@@ -3,8 +3,17 @@
 namespace Purview.Telemetry.SourceGenerator.Templates;
 
 record TypeInfo(string Name, string FullName, string Namespace) : IEquatable<string> {
-	public bool Equals(string other)
-		=> other == Name || other == FullName;
+	public bool Equals(string? other) {
+		if (other == null) {
+			return false;
+		}
+
+		if (other.Length > 0 && other[other.Length - 1] == '?') {
+			other = other.Substring(0, other.Length - 1);
+		}
+
+		return other == Name || other == FullName;
+	}
 
 	public bool Equals(ITypeSymbol other) {
 		if (other == null)

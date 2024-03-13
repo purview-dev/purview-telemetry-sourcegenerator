@@ -15,7 +15,7 @@
 
 namespace Purview.Telemetry.Activities;
 
-[AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed class ActivityAttribute : Attribute {
 

@@ -20,5 +20,54 @@ partial class TelemetryDiagnostics {
 			Description: $"An activity source helps to identify your application and it's telemetry. Defaulting to '{Constants.DefaultActivitySourceName}'.",
 			Severity: DiagnosticSeverity.Info
 		);
+
+		readonly static public TelemetryDiagnosticDescriptor InvalidReturnType = new(
+			Id: "TSG3002",
+			Title: "Invalid return type.",
+			Description: $"An activity or event must return either void or an {Constants.Activities.SystemDiagnostics.Activity}.",
+			Severity: DiagnosticSeverity.Error
+		);
+
+		readonly static public TelemetryDiagnosticDescriptor DuplicateParameterTypes = new(
+			Id: "TSG3003",
+			Title: "Duplicate special parameters defined.",
+			Description: "{0} are all the same type of parameter ({1}), a maximum or one is allowed. Explicitly define them as either a Tag or Baggage.",
+			Severity: DiagnosticSeverity.Error
+		);
+
+		readonly static public TelemetryDiagnosticDescriptor ActivityParameterNotAllowed = new(
+			Id: "TSG3004",
+			Title: "Activity parameter is not valid.",
+			Description: "The {0} parameter is not allowed when defining an activity, only an event.",
+			Severity: DiagnosticSeverity.Error
+		);
+
+		readonly static public TelemetryDiagnosticDescriptor TimestampParameterNotAllowed = new(
+			Id: "TSG3005",
+			Title: "Timestamp parameter is not valid.",
+			Description: "The {0} parameter is not allowed when defining an activity, only an event. You can specify this as a Tag or as Baggage to stop the inferrence.",
+			Severity: DiagnosticSeverity.Error
+		);
+
+		readonly static public TelemetryDiagnosticDescriptor StartTimeParameterNotAllowed = new(
+			Id: "TSG3006",
+			Title: "Start time parameter is not valid on Create activity or Event method.",
+			Description: "The {0} parameter is not allowed when defining an activity create or activity event method, only when starting an activity.",
+			Severity: DiagnosticSeverity.Error
+		);
+
+		readonly static public TelemetryDiagnosticDescriptor ParentContextOrIdParameterNotAllowed = new(
+			Id: "TSG3007",
+			Title: "Parent context or Parent Id parameter is not valid on event.",
+			Description: "The {0} parameter is not allowed when defining an activity event, only on the activity start/ create method.",
+			Severity: DiagnosticSeverity.Error
+		);
+
+		readonly static public TelemetryDiagnosticDescriptor LinksParameterNotAllowed = new(
+			Id: "TSG3008",
+			Title: "Activity links parameters are not valid on events.",
+			Description: "The {0} parameter is not allowed when defining an activity event, only on the activity start/ create method.",
+			Severity: DiagnosticSeverity.Error
+		);
 	}
 }

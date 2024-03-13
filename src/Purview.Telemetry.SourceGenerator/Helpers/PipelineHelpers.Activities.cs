@@ -104,20 +104,24 @@ partial class PipelineHelpers {
 			var parameters = GetActivityParameters(method, prefix, defaultToTags, lowercaseBaggageAndTagKeys, semanticModel, logger, token);
 			var baggageParameters = parameters.Where(m => m.ParamDestination == ActivityParameterDestination.Baggage).ToImmutableArray();
 			var tagParameters = parameters.Where(m => m.ParamDestination == ActivityParameterDestination.Tag).ToImmutableArray();
-			var activityParam = parameters.FirstOrDefault(m => Constants.Activities.SystemDiagnostics.Activity.Equals(m.ParameterType));
-			var activityAccessorName = activityParam?.ParameterName ?? $"{Constants.Activities.ActivityAttribute}.Current";
+
+			var returnType = method.ReturnsVoid
+				? Constants.System.VoidKeyword
+				: Utilities.GetFullyQualifiedName(method.ReturnType);
 
 			methodTargets.Add(new(
 				MethodName: method.Name,
-				ReturnType: Utilities.GetFullyQualifiedName(method.ReturnType),
+				ReturnType: returnType,
+				IsNullableReturn: method.ReturnType.NullableAnnotation == NullableAnnotation.Annotated,
 				ActivityOrEventName: activityOrEventName!,
+				MethodLocation: method.Locations.FirstOrDefault(),
 
 				ActivityAttribute: activityAttribute,
 				ActivityEventAttribute: activityEventAttribute,
 
 				IsActivity: isActivity,
-				ActivityAccessorName: activityAccessorName,
 
+				Parameters: parameters,
 				Baggage: baggageParameters,
 				Tags: tagParameters
 			));
@@ -147,22 +151,29 @@ partial class PipelineHelpers {
 				logger?.Debug($"Found explicit baggage: {parameter.Name}.");
 				destination = ActivityParameterDestination.Baggage;
 			}
+			else if (Constants.Activities.SystemDiagnostics.Activity.Equals(parameter.Type)) {
+				destination = ActivityParameterDestination.Activity;
+			}
+			else if (Constants.Activities.SystemDiagnostics.ActivityTagsCollection.Equals(parameter.Type)
+				|| Constants.Activities.SystemDiagnostics.ActivityTagIEnumerable.Equals(parameter.Type)
+				|| Constants.Activities.SystemDiagnostics.TagList.Equals(parameter.Type)) {
+				destination = ActivityParameterDestination.TagsEnumerable;
+			}
+			else if (Constants.Activities.SystemDiagnostics.ActivityContext.Equals(parameter.Type)
+				|| (parameter.Name == Constants.Activities.ParentIdParameterName && Utilities.IsString(parameter.Type))) {
+				destination = ActivityParameterDestination.ParentContextOrId;
+			}
+			else if (Constants.Activities.SystemDiagnostics.ActivityLink.Equals(parameter.Type)
+				|| Constants.Activities.SystemDiagnostics.ActivityLinkArray.Equals(parameter.Type)
+				|| Constants.Activities.SystemDiagnostics.ActivityLinkIEnumerable.Equals(parameter.Type)) {
+				destination = ActivityParameterDestination.LinksEnumerable;
+			}
+			else if (parameter.Name == Constants.Activities.StartTimeParameterName && Constants.System.DateTimeOffset.Equals(parameter.Type)) {
+				destination = ActivityParameterDestination.StartTime;
+			}
 			else {
-				if (Constants.Activities.SystemDiagnostics.Activity.Equals(parameter.Type)
-					|| Constants.Activities.SystemDiagnostics.ActivityTagsCollection.Equals(parameter.Type)
-					|| Constants.Activities.SystemDiagnostics.ActivityContext.Equals(parameter.Type)
-					|| Constants.Activities.SystemDiagnostics.ActivityLink.Equals(parameter.Type)
-					|| Constants.Activities.SystemDiagnostics.ActivityLinkArray.Equals(parameter.Type)
-					|| Constants.Activities.SystemDiagnostics.ActivityLinkIEnumerable.Equals(parameter.Type)
-					|| Constants.Activities.SystemDiagnostics.ActivityTagIEnumerable.Equals(parameter.Type)
-					|| Constants.Activities.SystemDiagnostics.ActivityTagsCollection.Equals(parameter.Type)) {
-					destination = ActivityParameterDestination.Useful;
-
-					logger?.Debug($"Found a useful parameter: {parameter.Name} ({parameter.Type}).");
-				}
-				else {
-					logger?.Debug($"Inferring {(defaultToTags ? "tag" : "baggage")}: {parameter.Name}.");
-				}
+				logger?.Debug($"Inferring {(defaultToTags ? "tag" : "baggage")}: {parameter.Name}.");
+				// destination is already set to default.
 			}
 
 			TagOrBaggageAttributeRecord? tagOrBaggageAttribute = null;
@@ -177,10 +188,12 @@ partial class PipelineHelpers {
 			parameterTargets.Add(new(
 				ParameterName: parameterName,
 				ParameterType: parameterType,
+				IsNullable: parameter.Type.NullableAnnotation == NullableAnnotation.Annotated,
 				GeneratedName: generatedName,
 				ParamDestination: destination,
 				SkipOnNullOrEmpty: (tagOrBaggageAttribute?.SkipOnNullOrEmpty?.IsSet) != true
-					|| tagOrBaggageAttribute!.SkipOnNullOrEmpty!.Value!.Value
+					|| tagOrBaggageAttribute!.SkipOnNullOrEmpty!.Value!.Value,
+				Location: parameter.Locations.FirstOrDefault()
 			));
 		}
 

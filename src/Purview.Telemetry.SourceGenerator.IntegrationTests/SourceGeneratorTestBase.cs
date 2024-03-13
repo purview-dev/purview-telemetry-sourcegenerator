@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Reflection;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -208,6 +209,7 @@ abstract public class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 
 				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(LogLevel).Assembly.Location))
 				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(Activity).Assembly.Location))
+				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(Meter).Assembly.Location))
 			;
 		}
 

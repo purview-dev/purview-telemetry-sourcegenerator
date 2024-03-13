@@ -166,8 +166,14 @@ static class Utilities {
 		return string.Empty;
 	}
 
-	static public string GetFullyQualifiedName(ITypeSymbol namedType)
-		=> namedType.ToDisplayString(_symbolDisplayFormat);
+	static public string GetFullyQualifiedName(ITypeSymbol namedType, bool trimNullableAnnotation = true) {
+		var result = namedType.ToDisplayString(_symbolDisplayFormat) ?? namedType.ToString();
+		if (trimNullableAnnotation && namedType.NullableAnnotation == NullableAnnotation.Annotated) {
+			result = result.TrimEnd('?');
+		}
+
+		return result;
+	}
 
 	//static public string GetFullyQualifiedName(TypeDeclarationSyntax type)
 	//	=> GetFullNamespace(type, true) + type.Identifier.Text;
@@ -218,10 +224,13 @@ static class Utilities {
 		=> parameterType == (Constants.System.IEnumerable.FullName + "<" + fullTypeName + ">")
 		|| parameterType.StartsWith(Constants.System.IEnumerable.FullName + "<" + fullTypeName, StringComparison.Ordinal);
 
+	static public bool IsString(ITypeSymbol type)
+		=> type.ToDisplayString() == Constants.System.StringKeyword
+			|| Constants.System.String.Equals(type);
+
 	static public bool IsString(string type)
-		=> type == Constants.System.String.Name
-			|| type == Constants.System.String.FullName
-			|| type == Constants.System.StringKeyword;
+		=> type == Constants.System.StringKeyword
+			|| Constants.System.String.Equals(type);
 
 	static public bool IsExceptionType(ITypeSymbol? typeSymbol) {
 		if (typeSymbol == null)

@@ -31,6 +31,8 @@ partial class LoggerTargetClassEmitter {
 	static void EmitLogActionMethod(StringBuilder builder, int indent, LogEntryMethodGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
+		logger?.Debug($"Building logging method: {methodTarget.MethodName}");
+
 		builder
 			.AppendLine()
 			.Append(indent, "public ", withNewLine: false)

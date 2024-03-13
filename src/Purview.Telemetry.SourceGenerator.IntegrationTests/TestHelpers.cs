@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Emit;
+using Purview.Telemetry.SourceGenerator.Templates;
 
 namespace Purview.Telemetry.SourceGenerator;
 
@@ -76,8 +77,8 @@ using System;
 			.ScrubInlineDateTimeOffsets("yyyy-MM-dd HH:mm:ss zzzz") // 2024-22-02 14:43:22 +00:00
 			.AutoVerify(file => {
 				if (autoVerifyTemplates) {
-					foreach (var template in Constants.GetAllTemplates()) {
-						var potentialName = $"#{template.Name}.g.";
+					foreach (TemplateInfo template in Constants.GetAllTemplates()) {
+						string potentialName = $"#{template.Name}.g.";
 
 						if (file.Contains(potentialName, StringComparison.Ordinal)) {
 							return true;

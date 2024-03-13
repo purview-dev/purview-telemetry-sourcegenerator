@@ -46,6 +46,8 @@
 
 		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Activities\**\*.cs" LinkBase="Templates\Sources\Activities\" />
 		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Logging\**\*.cs" LinkBase="Templates\Sources\Logging\" />
+		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Metrics\**\*.cs" LinkBase="Templates\Sources\Metrics\" />
+
 	</ItemGroup>
 
 	<!-- Package the build output into the "analyzer" slot in the NuGet package -->

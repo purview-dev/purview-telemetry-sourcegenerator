@@ -15,7 +15,7 @@
 
 namespace Purview.Telemetry.Activities;
 
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed class BaggageAttribute : Attribute {
 	public BaggageAttribute() {

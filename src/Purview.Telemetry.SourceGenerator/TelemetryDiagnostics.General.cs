@@ -4,6 +4,8 @@ using Purview.Telemetry.SourceGenerator.Records;
 namespace Purview.Telemetry.SourceGenerator;
 
 partial class TelemetryDiagnostics {
+	internal static void Report(Action<Diagnostic> reportDiagnostic, object duplicateParameterTypes) => throw new NotImplementedException();
+
 	static public class General {
 		readonly static public TelemetryDiagnosticDescriptor FatalExecutionDuringExecution = new(
 			Id: "TSG1000",

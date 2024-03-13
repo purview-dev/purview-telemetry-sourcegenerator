@@ -1,15 +1,13 @@
-﻿using Purview.Telemetry.SourceGenerator.Templates;
+﻿using System.Collections.Immutable;
+using Purview.Telemetry.SourceGenerator.Templates;
+using Purview.Telemetry.SourceGenerator.Templates.Shims;
 
 // This as the non-SourceGenerator namespace...
 namespace Purview.Telemetry;
 
 static partial class Constants {
-
-	public const Telemetry.Logging.LogGeneratedLevel DefaultLevel = Telemetry.Logging.LogGeneratedLevel.Information;
-	public const string SystemDiagnosticsNamespace = "System.Diagnostics";
 	public const string Activity = nameof(Activity);
-
-	readonly static string SystemDiagnosticsMetricsNamespace = SystemDiagnosticsNamespace + ".Metrics";
+	public const string SystemDiagnosticsNamespace = "System.Diagnostics";
 
 	static public TemplateInfo[] GetAllTemplates() {
 		return [
@@ -47,6 +45,7 @@ static partial class Constants {
 
 		readonly static public TypeInfo DateTimeOffset = TypeInfo.Create("System.DateTimeOffset");
 		readonly static public TypeInfo IEnumerable = TypeInfo.Create("System.Collections.Generic.IEnumerable"); // <>
+		readonly static public TypeInfo List = TypeInfo.Create("System.Collections.Generic.List"); // <>
 		readonly static public TypeInfo ConcurrentDictionary = TypeInfo.Create("System.Collections.Concurrent.ConcurrentDictionary"); // <>
 		readonly static public TypeInfo IDisposable = TypeInfo.Create("System.IDisposable");
 		readonly static public TypeInfo Exception = TypeInfo.Create("System.Exception");
@@ -55,6 +54,9 @@ static partial class Constants {
 	static public class Activities {
 		public const string ActivitySourceFieldName = "_activitySource";
 		public const string ActivityVariableName = "activity";
+
+		public const string ParentIdParameterName = "parentId";
+		public const string StartTimeParameterName = "startTime";
 
 		public const string StatusCode_Key = "otel.status_code";
 		public const string StatusDescription_Key = "otel.status_description";
@@ -86,7 +88,6 @@ static partial class Constants {
 			];
 
 		static public class SystemDiagnostics {
-
 			readonly static public TypeInfo Activity = TypeInfo.Create(SystemDiagnosticsNamespace + ".Activity");
 			readonly static public TypeInfo ActivitySource = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivitySource");
 			readonly static public TypeInfo ActivityEvent = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityEvent");
@@ -106,6 +107,8 @@ static partial class Constants {
 	static public class Logging {
 		public const int MaxNonExceptionParameters = 6;
 		public const string DefaultLogLevelConstantName = "DEFAULT_LOGLEVEL";
+
+		public const Telemetry.Logging.LogGeneratedLevel DefaultLevel = Telemetry.Logging.LogGeneratedLevel.Information;
 
 		readonly static public TemplateInfo LogEntryAttribute = TemplateInfo.Create<Telemetry.Logging.LogEntryAttribute>();
 		readonly static public TemplateInfo LogGeneratedLevel = TemplateInfo.Create<Telemetry.Logging.LogGeneratedLevel>();
@@ -144,102 +147,105 @@ static partial class Constants {
 	static public class Metrics {
 		public const string MeterFieldName = "_meter";
 
-		//readonly static public TemplateInfo MeterAttribute = TemplateInfo.Create<Telemetry.Metrics.MeterAttribute>();
+		readonly static public TemplateInfo MeterAttribute = TemplateInfo.Create<Telemetry.Metrics.MeterAttribute>();
 
-		//readonly static public TemplateInfo MeasurementValueAttribute = TemplateInfo.Create<Telemetry.Metrics.MeasurementValueAttribute>();
-		//readonly static public TemplateInfo MeasurementTagAttribute = TemplateInfo.Create<Telemetry.Metrics.MeasurementTagAttribute>();
+		readonly static public TemplateInfo MeasurementValueAttribute = TemplateInfo.Create<Telemetry.Metrics.MeasurementValueAttribute>();
+		readonly static public TemplateInfo MeasurementTagAttribute = TemplateInfo.Create<Telemetry.Metrics.MeasurementTagAttribute>();
 
-		//readonly static public TemplateInfo CounterAttribute = TemplateInfo.Create<Telemetry.Metrics.CounterAttribute>();
-		//readonly static public TemplateInfo UpDownCounterAttribute = TemplateInfo.Create<Telemetry.Metrics.UpDownCounterAttribute>();
-		//readonly static public TemplateInfo HistogramAttribute = TemplateInfo.Create<Telemetry.Metrics.HistogramAttribute>();
+		readonly static public TemplateInfo CounterAttribute = TemplateInfo.Create<Telemetry.Metrics.CounterAttribute>();
+		readonly static public TemplateInfo UpDownCounterAttribute = TemplateInfo.Create<Telemetry.Metrics.UpDownCounterAttribute>();
+		readonly static public TemplateInfo HistogramAttribute = TemplateInfo.Create<Telemetry.Metrics.HistogramAttribute>();
 
-		//readonly static public TemplateInfo ObservableCounterAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableCounterAttribute>();
-		//readonly static public TemplateInfo ObservableGaugeAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableGaugeAttribute>();
-		//readonly static public TemplateInfo ObservableUpDownCounterAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableUpDownCounterAttribute>();
+		readonly static public TemplateInfo ObservableCounterAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableCounterAttribute>();
+		readonly static public TemplateInfo ObservableGaugeAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableGaugeAttribute>();
+		readonly static public TemplateInfo ObservableUpDownCounterAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableUpDownCounterAttribute>();
 
-		//readonly static public TemplateInfo ExcludeFromMetricAttribute = TemplateInfo.Create<Telemetry.Metrics.ExcludeFromMetricAttribute>();
+		readonly static public TemplateInfo MetricExcludeAttribute = TemplateInfo.Create<Telemetry.Metrics.MetricExcludeAttribute>();
 
-		readonly static public TypeInfo Meter = TypeInfo.Create(SystemDiagnosticsMetricsNamespace + ".Meter");
+		readonly static public TemplateInfo[] ValidMetricTypes = [
+			CounterAttribute,
+			UpDownCounterAttribute,
+			HistogramAttribute,
 
-		readonly static public TypeInfo Counter = TypeInfo.Create(SystemDiagnosticsMetricsNamespace + ".Counter"); // <>
-		readonly static public TypeInfo UpDownCounter = TypeInfo.Create(SystemDiagnosticsMetricsNamespace + ".UpDownCounter"); // <>
-		readonly static public TypeInfo Histogram = TypeInfo.Create(SystemDiagnosticsMetricsNamespace + ".Histogram"); // <>
-
-		// Also supports IEnumerable<Measurement>.
-		readonly static public TypeInfo Measurement = TypeInfo.Create(SystemDiagnosticsMetricsNamespace + ".Measurement"); // <>
-
-		readonly static public TemplateInfo[] ValidMetricTypes =
-		[
-		//	CounterAttribute,
-		//	UpDownCounterAttribute,
-		//	HistogramAttribute,
-
-		//	ObservableCounterAttribute,
-		//	ObservableGaugeAttribute,
-		//	ObservableUpDownCounterAttribute
+			ObservableCounterAttribute,
+			ObservableGaugeAttribute,
+			ObservableUpDownCounterAttribute
 		];
 
-		//readonly static public Dictionary<MetricTypes, TypeInfo> MetricTypeToInfoMap = new() {
-		//	{ MetricTypes.Counter, Counter },
-		//	{ MetricTypes.UpDownCounter, UpDownCounter },
-		//	{ MetricTypes.Histogram, Histogram },
-		//};
+		readonly static public ImmutableDictionary<MetricTypes, TypeInfo> MetricTypeToInfoMap = new Dictionary<MetricTypes, TypeInfo>() {
+			{ MetricTypes.Counter, SystemDiagnostics.Counter },
+			{ MetricTypes.UpDownCounter, SystemDiagnostics.UpDownCounter },
+			{ MetricTypes.Histogram, SystemDiagnostics.Histogram },
+		}.ToImmutableDictionary();
 
-		//readonly static public Dictionary<string, MetricTypes> MetricTypeMap = new()  {
-		//	{ CounterAttribute.FullName, MetricTypes.Counter },
-		//	{ CounterAttribute.Name, MetricTypes.Counter },
+		readonly static public ImmutableDictionary<string, MetricTypes> MetricTypeMap = new Dictionary<string, MetricTypes>()  {
+			{ CounterAttribute.FullName, MetricTypes.Counter },
+			{ CounterAttribute.Name, MetricTypes.Counter },
 
-		//	{ UpDownCounterAttribute.FullName, MetricTypes.UpDownCounter },
-		//	{ UpDownCounterAttribute.Name, MetricTypes.UpDownCounter },
+			{ UpDownCounterAttribute.FullName, MetricTypes.UpDownCounter },
+			{ UpDownCounterAttribute.Name, MetricTypes.UpDownCounter },
 
-		//	{ HistogramAttribute.FullName, MetricTypes.Histogram },
-		//	{ HistogramAttribute.Name, MetricTypes.Histogram },
+			{ HistogramAttribute.FullName, MetricTypes.Histogram },
+			{ HistogramAttribute.Name, MetricTypes.Histogram },
 
-		//	{ ObservableCounterAttribute.FullName, MetricTypes.ObservableCounter },
-		//	{ ObservableCounterAttribute.Name, MetricTypes.ObservableCounter },
+			{ ObservableCounterAttribute.FullName, MetricTypes.ObservableCounter },
+			{ ObservableCounterAttribute.Name, MetricTypes.ObservableCounter },
 
-		//	{ ObservableGaugeAttribute.FullName, MetricTypes.ObservableGauge },
-		//	{ ObservableGaugeAttribute.Name, MetricTypes.ObservableGauge },
+			{ ObservableGaugeAttribute.FullName, MetricTypes.ObservableGauge },
+			{ ObservableGaugeAttribute.Name, MetricTypes.ObservableGauge },
 
-		//	{ ObservableUpDownCounterAttribute.FullName, MetricTypes.ObservableUpDownCounter },
-		//	{ ObservableUpDownCounterAttribute.Name, MetricTypes.ObservableUpDownCounter }
-		//};
+			{ ObservableUpDownCounterAttribute.FullName, MetricTypes.ObservableUpDownCounter },
+			{ ObservableUpDownCounterAttribute.Name, MetricTypes.ObservableUpDownCounter }
+		}.ToImmutableDictionary();
 
-		//readonly static public string[] ValidMeasurementKeywordTypes = new[] {
-		//	Shared.ByteKeyword,
-		//	Shared.ShortKeyword,
-		//	Shared.IntKeyword,
-		//	Shared.LongKeyword,
-		//	Shared.FloatKeyword,
-		//	Shared.DoubleKeyword,
-		//	Shared.DecimalKeyword
-		//};
+		readonly static public string[] ValidMeasurementKeywordTypes = [
+			System.ByteKeyword,
+			System.ShortKeyword,
+			System.IntKeyword,
+			System.LongKeyword,
+			System.FloatKeyword,
+			System.DoubleKeyword,
+			System.DecimalKeyword
+		];
 
-		//readonly static public TypeInfo[] ValidMeasurementTypes = new[] {
-		//	Shared.Byte,
-		//	Shared.Int16,
-		//	Shared.Int32,
-		//	Shared.Int64,
-		//	Shared.Single,
-		//	Shared.Double,
-		//	Shared.Decimal
-		//};
+		readonly static public TypeInfo[] ValidMeasurementTypes = [
+			System.Byte,
+			System.Int16,
+			System.Int32,
+			System.Int64,
+			System.Single,
+			System.Double,
+			System.Decimal
+		];
+
+		static public class SystemDiagnostics {
+			readonly static string SystemDiagnosticsMetricsNamespace = SystemDiagnosticsNamespace + ".Metrics";
+
+			readonly static public TypeInfo Meter = TypeInfo.Create(SystemDiagnosticsMetricsNamespace + ".Meter");
+
+			readonly static public TypeInfo Counter = TypeInfo.Create(SystemDiagnosticsMetricsNamespace + ".Counter"); // <>
+			readonly static public TypeInfo UpDownCounter = TypeInfo.Create(SystemDiagnosticsMetricsNamespace + ".UpDownCounter"); // <>
+			readonly static public TypeInfo Histogram = TypeInfo.Create(SystemDiagnosticsMetricsNamespace + ".Histogram"); // <>
+
+			// Also supports IEnumerable<Measurement>.
+			readonly static public TypeInfo Measurement = TypeInfo.Create(SystemDiagnosticsMetricsNamespace + ".Measurement"); // <>
+		}
 
 		static public TemplateInfo[] GetTemplates() => [
-		//	MeterAttribute,
+			MeterAttribute,
 
-		//	MeasurementTagAttribute,
-		//	MeasurementValueAttribute,
+			MeasurementTagAttribute,
+			MeasurementValueAttribute,
 
-		//	CounterAttribute,
-		//	UpDownCounterAttribute,
-		//	HistogramAttribute,
+			CounterAttribute,
+			UpDownCounterAttribute,
+			HistogramAttribute,
 
-		//	ObservableCounterAttribute,
-		//	ObservableGaugeAttribute,
-		//	ObservableUpDownCounterAttribute,
+			ObservableCounterAttribute,
+			ObservableGaugeAttribute,
+			ObservableUpDownCounterAttribute,
 
-		//	ExcludeFromMetricAttribute
+			MetricExcludeAttribute
 		];
 	}
 
