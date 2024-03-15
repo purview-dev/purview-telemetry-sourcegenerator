@@ -19,6 +19,7 @@ sealed public partial class TelemetrySourceGenerator : IIncrementalGenerator, IL
 
 		RegisterActivitiesGeneration(context, _logger);
 		RegisterLoggerGeneration(context, _logger);
+		RegisterMetricsGeneration(context, _logger);
 	}
 
 	void ILogSupport.SetLogOutput(Action<string, OutputType> action) {

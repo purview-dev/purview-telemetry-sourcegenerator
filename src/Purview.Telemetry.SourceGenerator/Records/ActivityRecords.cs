@@ -20,7 +20,8 @@ record ActivityGenerationTarget(
 
 	ImmutableArray<ActivityMethodGenerationTarget> ActivityMethods
 ,
-	ActivityTargetAttributeRecord ActivityTargetAttributeRecord);
+	ActivityTargetAttributeRecord ActivityTargetAttributeRecord
+);
 
 record ActivityTargetAttributeRecord(
 	AttributeStringValue ActivitySource,
@@ -77,11 +78,6 @@ enum ActivityParameterDestination {
 	StartTime,
 	Timestamp
 }
-
-record TagOrBaggageAttributeRecord(
-	AttributeStringValue Name,
-	AttributeValue<bool> SkipOnNullOrEmpty
-);
 
 record ActivityAttributeRecord(
 	AttributeStringValue Name,

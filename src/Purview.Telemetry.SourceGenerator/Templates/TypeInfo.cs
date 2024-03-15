@@ -30,6 +30,9 @@ record TypeInfo(string Name, string FullName, string Namespace) : IEquatable<str
 		return Equals(typeName) || Equals(other.Name);
 	}
 
+	public string MakeGeneric(params string[] types)
+		=> FullName + "<" + string.Join(", ", types) + ">";
+
 	override public string ToString()
 		=> FullName;
 

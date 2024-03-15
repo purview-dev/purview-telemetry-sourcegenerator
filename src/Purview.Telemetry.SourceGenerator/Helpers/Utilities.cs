@@ -10,6 +10,9 @@ static class Utilities {
 		typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces
 	);
 
+	static public string WithNull(this string value)
+		=> value + "?";
+
 	static public StringBuilder AppendTabs(this StringBuilder builder, int tabs) {
 		for (var i = 0; i < tabs; i++) {
 			builder.Append('\t');

@@ -2,7 +2,7 @@
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 [System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
-sealed public class UpDownCounterAttribute : MetricAttributeBase {
+sealed public class UpDownCounterAttribute : InstrumentAttributeBase {
 	public UpDownCounterAttribute() {
 	}
 

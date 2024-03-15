@@ -8,6 +8,6 @@ sealed record TelemetryDiagnosticDescriptor(
 	string Title,
 	string Description,
 	DiagnosticSeverity Severity,
-	string Category = Constants.Diagnostics.Activity.Usage,
+	string Category,
 	bool EnabledByDefault = true
 );

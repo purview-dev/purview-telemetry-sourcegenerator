@@ -9,8 +9,6 @@ partial class ActivityTargetClassEmitter {
 	static int EmitMethods(ActivityGenerationTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
 		indent++;
 
-		context.CancellationToken.ThrowIfCancellationRequested();
-
 		foreach (var methodTarget in target.ActivityMethods) {
 			context.CancellationToken.ThrowIfCancellationRequested();
 

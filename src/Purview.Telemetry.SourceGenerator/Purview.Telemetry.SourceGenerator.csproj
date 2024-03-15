@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-  		<TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFramework>netstandard2.0</TargetFramework>
 
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
@@ -32,7 +32,7 @@
 		<None Remove="bin\**" />
 	</ItemGroup>
 
-    	<ItemGroup>
+	<ItemGroup>
 		<Compile Include="..\Purview.Telemetry.Shared\Constants.cs" Link="CoreConstants.cs" />
 
 		<Compile Remove="Templates\Sources\**\*.cs" />
@@ -47,6 +47,7 @@
 		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Activities\**\*.cs" LinkBase="Templates\Sources\Activities\" />
 		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Logging\**\*.cs" LinkBase="Templates\Sources\Logging\" />
 		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Metrics\**\*.cs" LinkBase="Templates\Sources\Metrics\" />
+		<EmbeddedResource Include="..\Purview.Telemetry.Shared\TagAttribute.cs" Link="Templates\Sources\TagAttribute.cs" />
 
 	</ItemGroup>
 

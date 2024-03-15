@@ -35,6 +35,9 @@ record TemplateInfo(string Name, string FullName, string Namespace, string? Sour
 	public bool Equals(AttributeData other)
 		=> (other.AttributeClass != null) && Equals(other.AttributeClass);
 
+	public string MakeGeneric(params string[] types)
+		=> FullName + "<" + string.Join(", ", types) + ">";
+
 	static public TemplateInfo Create<T>(bool attachHeader = true)
 		=> Create(typeof(T).FullName, attachHeader);
 

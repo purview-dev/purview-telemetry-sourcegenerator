@@ -3,7 +3,7 @@
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 [System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed public class CounterAttribute : MetricAttributeBase {
+sealed public class CounterAttribute : InstrumentAttributeBase {
 	public CounterAttribute() {
 	}
 

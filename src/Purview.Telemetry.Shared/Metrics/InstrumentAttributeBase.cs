@@ -1,11 +1,11 @@
 ﻿namespace Purview.Telemetry.Metrics;
 
 [System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
-abstract public class MetricAttributeBase : Attribute {
-	protected MetricAttributeBase() {
+abstract public class InstrumentAttributeBase : Attribute {
+	protected InstrumentAttributeBase() {
 	}
 
-	protected MetricAttributeBase(string name, string? unit = null, string? description = null) {
+	protected InstrumentAttributeBase(string name, string? unit = null, string? description = null) {
 		Name = name;
 		Unit = unit;
 		Description = description;

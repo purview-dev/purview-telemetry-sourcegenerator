@@ -13,6 +13,7 @@ static partial class TestHelpers {
 
 	readonly static public string DefaultUsingSet = @$"
 using System;
+using Purview.Telemetry;
 
 ";
 

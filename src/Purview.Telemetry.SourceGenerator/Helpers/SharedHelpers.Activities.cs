@@ -4,6 +4,15 @@ using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 partial class SharedHelpers {
+	static public ActivitySourceAttributeRecord? GetActivitySourceAttribute(SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token) {
+		token.ThrowIfCancellationRequested();
+
+		if (!Utilities.TryContainsAttribute(semanticModel.Compilation.Assembly, Constants.Activities.ActivitySourceAttribute, token, out var attributeData))
+			return null;
+
+		return GetActivitySourceAttribute(attributeData!, semanticModel, logger, token);
+	}
+
 	static public ActivityTargetAttributeRecord? GetActivityTargetAttribute(
 		AttributeData attributeData,
 		SemanticModel semanticModel,
@@ -92,34 +101,6 @@ partial class SharedHelpers {
 			BaggageAndTagPrefix: baggageAndTagPrefix ?? new(),
 			BaggageAndTagSeparator: baggageAndTagSeparator ?? new("."),
 			LowercaseBaggageAndTagKeys: lowercaseBaggageAndTagKeys ?? new(true)
-		);
-	}
-
-	static public TagOrBaggageAttributeRecord? GetTagOrBaggageAttribute(
-		AttributeData attributeData,
-		SemanticModel semanticModel,
-		IGenerationLogger? logger,
-		CancellationToken token) {
-
-		AttributeStringValue? nameValue = null;
-		AttributeValue<bool>? skipOnNullOrEmpty = null;
-
-		if (!AttributeParser(attributeData,
-		(name, value) => {
-			if (name.Equals(nameof(TagAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
-				nameValue = new((string)value);
-			}
-			else if (name.Equals(nameof(TagAttribute.SkipOnNullOrEmpty), StringComparison.OrdinalIgnoreCase)) {
-				skipOnNullOrEmpty = new((bool)value);
-			}
-		}, semanticModel, logger, token)) {
-			// Failed to parse correctly, so null it out.
-			return null;
-		}
-
-		return new(
-			Name: nameValue ?? new(),
-			SkipOnNullOrEmpty: skipOnNullOrEmpty ?? new(true)
 		);
 	}
 

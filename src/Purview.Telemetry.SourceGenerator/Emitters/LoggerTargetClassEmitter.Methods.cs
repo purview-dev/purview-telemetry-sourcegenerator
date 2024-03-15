@@ -7,8 +7,6 @@ namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class LoggerTargetClassEmitter {
 	static int EmitMethods(LoggerGenerationTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
-		context.CancellationToken.ThrowIfCancellationRequested();
-
 		indent++;
 
 		foreach (var methodTarget in target.LogEntryMethods) {

@@ -11,6 +11,7 @@ partial class TelemetryDiagnostics {
 			Id: "TSG2000",
 			Title: "Too many exception parameters",
 			Description: "Only a single exceptions parameter is permitted.",
+			Category: Constants.Diagnostics.Logging.Usage,
 			Severity: DiagnosticSeverity.Error
 		);
 
@@ -18,6 +19,7 @@ partial class TelemetryDiagnostics {
 			Id: "TSG2001",
 			Title: "More than 6 parameters",
 			Description: $"The maximum number of parameters (excluding optional Exception) is {Constants.Logging.MaxNonExceptionParameters}",
+			Category: Constants.Diagnostics.Logging.Usage,
 			Severity: DiagnosticSeverity.Error
 		);
 
@@ -25,6 +27,7 @@ partial class TelemetryDiagnostics {
 			Id: "TSG2002",
 			Title: "Inferring error log level",
 			Description: "Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.",
+			Category: Constants.Diagnostics.Logging.Usage,
 			Severity: DiagnosticSeverity.Info
 		);
 	}

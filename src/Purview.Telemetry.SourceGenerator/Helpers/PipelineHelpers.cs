@@ -8,4 +8,12 @@ static partial class PipelineHelpers {
 
 		return name + "Core";
 	}
+
+	static string GenerateParameterName(string name, string? prefix, bool lowercase) {
+		if (lowercase) {
+			name = name.ToLowerInvariant();
+		}
+
+		return $"{prefix}{name}";
+	}
 }

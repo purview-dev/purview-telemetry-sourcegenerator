@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 
@@ -126,5 +127,33 @@ static partial class SharedHelpers {
 		}
 
 		return diagnostics.Any(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
+	}
+
+	static public TagOrBaggageAttributeRecord? GetTagOrBaggageAttribute(
+		AttributeData attributeData,
+		SemanticModel semanticModel,
+		IGenerationLogger? logger,
+		CancellationToken token) {
+
+		AttributeStringValue? nameValue = null;
+		AttributeValue<bool>? skipOnNullOrEmpty = null;
+
+		if (!AttributeParser(attributeData,
+		(name, value) => {
+			if (name.Equals(nameof(TagAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
+				nameValue = new((string)value);
+			}
+			else if (name.Equals(nameof(TagAttribute.SkipOnNullOrEmpty), StringComparison.OrdinalIgnoreCase)) {
+				skipOnNullOrEmpty = new((bool)value);
+			}
+		}, semanticModel, logger, token)) {
+			// Failed to parse correctly, so null it out.
+			return null;
+		}
+
+		return new(
+			Name: nameValue ?? new(),
+			SkipOnNullOrEmpty: skipOnNullOrEmpty ?? new(Constants.Shared.SkipOnNullOrEmptyDefault)
+		);
 	}
 }

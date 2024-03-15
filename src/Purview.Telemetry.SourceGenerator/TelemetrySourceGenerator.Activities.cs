@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Purview.Telemetry.Logging;
+using Purview.Telemetry.Activities;
 using Purview.Telemetry.SourceGenerator.Emitters;
 using Purview.Telemetry.SourceGenerator.Helpers;
 using Purview.Telemetry.SourceGenerator.Records;
@@ -16,28 +16,28 @@ partial class TelemetrySourceGenerator {
 				: (context, cancellationToken) => PipelineHelpers.BuildActivityTransform(context, logger, cancellationToken);
 
 		// Register
-		var loggerTargetsPredicate = context.SyntaxProvider
+		var activityTargetsPredicate = context.SyntaxProvider
 			.ForAttributeWithMetadataName(
 				Constants.Activities.ActivityTargetAttribute,
 				static (node, token) => PipelineHelpers.HasActivityTargetAttribute(node, token),
 				activityTargetTransform
 			)
 			.WhereNotNull()
-			.WithTrackingName($"{nameof(TelemetrySourceGenerator)}_{nameof(LoggerTargetAttribute)}");
+			.WithTrackingName($"{nameof(TelemetrySourceGenerator)}_{nameof(ActivityTargetAttribute)}");
 
 		// Build generation (static vs. non-static is for the logger).
-		Action<SourceProductionContext, (Compilation Compilation, ImmutableArray<ActivityGenerationTarget?> Targets)> generationLoggerAction =
+		Action<SourceProductionContext, (Compilation Compilation, ImmutableArray<ActivityGenerationTarget?> Targets)> generationActivityAction =
 			logger == null
 				? static (spc, source) => GenerateActivitiesTargets(source.Targets, spc, null)
 				: (spc, source) => GenerateActivitiesTargets(source.Targets, spc, logger);
 
 		// Register with the source generator.
 		var activityTargets
-			= context.CompilationProvider.Combine(loggerTargetsPredicate.Collect());
+			= context.CompilationProvider.Combine(activityTargetsPredicate.Collect());
 
 		context.RegisterSourceOutput(
 			source: activityTargets,
-			action: generationLoggerAction
+			action: generationActivityAction
 		);
 	}
 
