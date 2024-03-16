@@ -19,6 +19,7 @@ namespace Purview.Telemetry.Logging;
 /// Marker attribute required for Log generation.
 /// </summary>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed class LogEntryAttribute : Attribute {
 	public LogEntryAttribute() {

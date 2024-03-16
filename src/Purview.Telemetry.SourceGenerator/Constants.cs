@@ -17,9 +17,11 @@ static partial class Constants {
 
 	static public partial class Shared {
 		readonly static public TemplateInfo TagAttribute = TemplateInfo.Create<TagAttribute>();
+		readonly static public TemplateInfo Constants = TemplateInfo.Create(typeof(Constants).FullName);
 
 		static public TemplateInfo[] GetTemplates() => [
-			TagAttribute
+			TagAttribute,
+			Constants
 		];
 	}
 

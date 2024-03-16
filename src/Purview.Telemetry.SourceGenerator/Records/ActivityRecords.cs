@@ -48,7 +48,7 @@ record ActivityMethodGenerationTarget(
 
 	Location? MethodLocation,
 
-	ActivityAttributeRecord? ActivityAttribute,
+	ActivityGenAttributeRecord? ActivityAttribute,
 	ActivityEventAttributeRecord? ActivityEventAttribute,
 
 	bool IsActivity,
@@ -79,7 +79,7 @@ enum ActivityParameterDestination {
 	Timestamp
 }
 
-record ActivityAttributeRecord(
+record ActivityGenAttributeRecord(
 	AttributeStringValue Name,
 	AttributeValue<ActivityGeneratedKind> Kind,
 	AttributeValue<bool> CreateOnly

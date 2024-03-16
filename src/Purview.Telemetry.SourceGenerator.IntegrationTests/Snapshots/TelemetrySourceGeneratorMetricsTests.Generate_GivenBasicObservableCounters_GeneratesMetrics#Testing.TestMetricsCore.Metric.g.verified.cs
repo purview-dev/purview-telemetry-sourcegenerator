@@ -17,7 +17,7 @@ namespace Testing
 {
 	sealed partial class TestMetricsCore : Testing.ITestMetrics
 	{
-		readonly System.Diagnostics.Metrics.IMeterFactory _meterFactory;
+		readonly System.Diagnostics.Metrics.Meter _meter;
 
 		System.Diagnostics.Metrics.ObservableCounter<System.Int32>? _observableCounterInstrument = null;
 		System.Diagnostics.Metrics.ObservableCounter<System.Int32>? _observableCounter2Instrument = null;
@@ -25,19 +25,19 @@ namespace Testing
 
 		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
-			_meterFactory = meterFactory;
-
 			System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateMeterTags(meterTags);
 
-			System.Diagnostics.Metrics.Meter meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-observable-meter")
+			_meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-observable-meter")
 			{
 				Version = null,
 				Tags = meterTags
 			});
 
 		}
+
+		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
 
 		public void ObservableCounter(System.Func<int> f, int intParam, bool boolParam)
 		{
@@ -46,12 +46,12 @@ namespace Testing
 				return;
 			}
 
-			System.Collections.Generic.Dictionary<string, object?> observableCounterTagsList = new System.Collections.Generic.Dictionary<string, object?>();
+			System.Diagnostics.TagList observableCounterTagList = new System.Diagnostics.TagList();
 
-			observableCounterTagsList.Add("intparam", intParam);
-			observableCounterTagsList.Add("boolparam", boolParam);
+			observableCounterTagList.Add("intparam", intParam);
+			observableCounterTagList.Add("boolparam", boolParam);
 
-			_observableCounterInstrument = _meterFactory.CreateObservableCounter<System.Int32>("ObservableCounter", f, tags: observableCounterTagsList);
+			_observableCounterInstrument = _meter.CreateObservableCounter<System.Int32>("ObservableCounter", f, unit: null, description: null, tags: observableCounterTagList);
 		}
 
 		public void ObservableCounter2(System.Func<System.Diagnostics.Metrics.Measurement<System.Int32>> f, int intParam, bool boolParam)
@@ -61,12 +61,12 @@ namespace Testing
 				throw new System.Exception("ObservableCounter2 has already been initialized.");
 			}
 
-			System.Collections.Generic.Dictionary<string, object?> observableCounter2TagsList = new System.Collections.Generic.Dictionary<string, object?>();
+			System.Diagnostics.TagList observableCounter2TagList = new System.Diagnostics.TagList();
 
-			observableCounter2TagsList.Add("intparam", intParam);
-			observableCounter2TagsList.Add("boolparam", boolParam);
+			observableCounter2TagList.Add("intparam", intParam);
+			observableCounter2TagList.Add("boolparam", boolParam);
 
-			_observableCounter2Instrument = _meterFactory.CreateObservableCounter<System.Int32>("ObservableCounter2", f, tags: observableCounter2TagsList);
+			_observableCounter2Instrument = _meter.CreateObservableCounter<System.Int32>("ObservableCounter2", f, unit: null, description: null, tags: observableCounter2TagList);
 		}
 
 		public void ObservableCounter3(System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<System.Int32>>> f, int intParam, bool boolParam)
@@ -76,12 +76,12 @@ namespace Testing
 				return;
 			}
 
-			System.Collections.Generic.Dictionary<string, object?> observableCounter3TagsList = new System.Collections.Generic.Dictionary<string, object?>();
+			System.Diagnostics.TagList observableCounter3TagList = new System.Diagnostics.TagList();
 
-			observableCounter3TagsList.Add("intparam", intParam);
-			observableCounter3TagsList.Add("boolparam", boolParam);
+			observableCounter3TagList.Add("intparam", intParam);
+			observableCounter3TagList.Add("boolparam", boolParam);
 
-			_observableCounter3Instrument = _meterFactory.CreateObservableCounter<System.Int32>("ObservableCounter3", f, tags: observableCounter3TagsList);
+			_observableCounter3Instrument = _meter.CreateObservableCounter<System.Int32>("ObservableCounter3", f, unit: null, description: null, tags: observableCounter3TagList);
 		}
 	}
 }

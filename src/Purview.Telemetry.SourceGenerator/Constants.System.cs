@@ -41,6 +41,6 @@ partial class Constants {
 		readonly static public TypeInfo IDisposable = TypeInfo.Create("System.IDisposable");
 		readonly static public TypeInfo Exception = TypeInfo.Create("System.Exception");
 
-		readonly static public TypeInfo Lazy = TypeInfo.Create("System.Lazy"); // <T>
+		readonly static public TypeInfo TagList = TypeInfo.Create(SystemDiagnosticsNamespace + ".TagList");
 	}
 }

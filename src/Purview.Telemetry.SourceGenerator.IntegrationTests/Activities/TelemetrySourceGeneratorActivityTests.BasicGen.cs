@@ -11,7 +11,7 @@ namespace Testing;
 
 [ActivityTarget(""testing-activity-source"")]
 public interface ITestActivities {
-	[Activity]
+	[ActivityGen]
 	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[ActivityEvent]
@@ -31,13 +31,13 @@ public interface ITestActivities {
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
-using System.Diagnostics.Activities;
+using System.Diagnostics;
 
 namespace Testing;
 
 [ActivityTarget(""testing-activity-source"")]
 public interface ITestActivities {
-	[Activity]
+	[ActivityGen]
 	Activity Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[ActivityEvent]
@@ -57,16 +57,16 @@ public interface ITestActivities {
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
-using System.Diagnostics.Activities;
+using System.Diagnostics;
 
 namespace Testing;
 
 [ActivityTarget(""testing-activity-source"")]
 public interface ITestActivities {
-	[Activity]
+	[ActivityGen]
 	Activity? Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
-	[ActivityEvent]
+	[ActivityGen]
 	Activity? Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";

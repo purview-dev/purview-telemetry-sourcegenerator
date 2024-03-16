@@ -9,6 +9,8 @@ partial class MeterTargetClassEmitter {
 	static int EmitMethods(MeterGenerationTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
 		indent++;
 
+		EmitPartialTag(builder, indent, target, context, logger);
+
 		foreach (var methodTarget in target.InstrumentationMethods) {
 			context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -18,14 +20,32 @@ partial class MeterTargetClassEmitter {
 		return --indent;
 	}
 
+	static void EmitPartialTag(StringBuilder builder, int indent, MeterGenerationTarget target, SourceProductionContext context, IGenerationLogger? logger) {
+		context.CancellationToken.ThrowIfCancellationRequested();
+
+		logger?.Debug($"Emitting partial method for populating tags: {_partialMeterTagsMethod}.");
+
+		builder
+			.AppendLine()
+			.Append(indent, "partial void ", withNewLine: false)
+			.Append(_partialMeterTagsMethod)
+			.Append('(')
+			.Append(Constants.System.Dictionary
+				.MakeGeneric(Constants.System.StringKeyword, Constants.System.ObjectKeyword + "?"))
+			.AppendLine(" meterTags);")
+		;
+	}
+
 	static void EmitMethod(StringBuilder builder, int indent, InstrumentMethodGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
+
+		logger?.Debug($"Emitting instrument method: {methodTarget.MethodName}.");
 
 		builder
 			.AppendLine()
 			.Append(indent, "public ", withNewLine: false)
 			.Append(methodTarget.ReturnType)
-;
+	;
 
 		if (methodTarget.IsNullableReturn) {
 			builder.Append('?');
@@ -135,13 +155,13 @@ partial class MeterTargetClassEmitter {
 		;
 	}
 
-	static void EmitObservableInstrumentBody(StringBuilder builder, int indent, InstrumentMethodGenerationTarget method, string tagVariableName, IGenerationLogger? logger) {
+	static void EmitObservableInstrumentBody(StringBuilder builder, int indent, InstrumentMethodGenerationTarget method, string? tagVariableName, IGenerationLogger? logger) {
 		indent++;
 
 		builder
 			.Append(indent, method.FieldName, withNewLine: false)
 			.Append(" = ")
-			.Append(_meterFactoryFieldName)
+			.Append(_meterFieldName)
 			.Append(".Create")
 			.Append(method.InstrumentAttribute!.InstrumentType)
 			.Append('<')
@@ -150,13 +170,25 @@ partial class MeterTargetClassEmitter {
 			.Append(method.MetricName.Wrap())
 			.Append(", ")
 			.Append(method.MeasurementParameter!.ParameterName)
-			.Append(", tags: ")
-			.Append(tagVariableName)
+			.Append(", unit: ")
+			.Append(method.InstrumentAttribute!.Unit!.Or(Constants.System.NullKeyword))
+			.Append(", description: ")
+			.Append(method.InstrumentAttribute!.Description!.Or(Constants.System.NullKeyword))
+		;
+
+		if (tagVariableName != null) {
+			builder
+				.Append(", tags: ")
+				.Append(tagVariableName)
+			;
+		}
+
+		builder
 			.AppendLine(");")
 		;
 	}
 
-	static void EmitInstrumentBody(StringBuilder builder, int indent, InstrumentMethodGenerationTarget methodTarget, string tagVariableName, IGenerationLogger? logger) {
+	static void EmitInstrumentBody(StringBuilder builder, int indent, InstrumentMethodGenerationTarget methodTarget, string? tagVariableName, IGenerationLogger? logger) {
 		indent++;
 
 		var instrumentMeasureMethodName = methodTarget.InstrumentAttribute!.InstrumentType == InstrumentTypes.Histogram
@@ -169,32 +201,37 @@ partial class MeterTargetClassEmitter {
 			.Append(instrumentMeasureMethodName)
 			.Append('(')
 			.Append(methodTarget.MeasurementParameter?.ParameterName ?? "1")
-			.Append(", tags: ")
-			.Append(tagVariableName)
+			.Append(", tagList: ")
+		;
+
+		if (tagVariableName == null) {
+			builder.Append("default");
+		}
+		else {
+			builder
+				.Append(tagVariableName)
+			;
+		}
+
+		builder
 			.AppendLine(");")
 		;
 	}
 
-	static string EmitTags(StringBuilder builder, int indent, InstrumentMethodGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
+	static string? EmitTags(StringBuilder builder, int indent, InstrumentMethodGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
 		if (methodTarget.Tags.Length == 0) {
-			return "null";
+			return null;
 		}
 
 		indent++;
 
-		var tagVariableName = Utilities.LowercaseFirstChar(methodTarget.MethodName + "TagsList");
-		var tagType = Constants.System.Dictionary
-				.MakeGeneric(
-					Constants.System.StringKeyword,
-					Constants.System.ObjectKeyword + "?"
-				);
-
+		var tagVariableName = Utilities.LowercaseFirstChar(methodTarget.MethodName + "TagList");
 		builder
-			.Append(indent, tagType, withNewLine: false)
+			.Append(indent, Constants.System.TagList, withNewLine: false)
 			.Append(' ')
 			.Append(tagVariableName)
 			.Append(" = new ")
-			.Append(tagType)
+			.Append(Constants.System.TagList)
 			.AppendLine("();")
 			.AppendLine()
 		;

@@ -89,17 +89,22 @@ partial class PipelineHelpers {
 
 			logger?.Debug($"Found method {interfaceSymbol.Name}.{method.Name}.");
 
+			var isScoped = !method.ReturnsVoid;
 			var methodParameters = GetLoggerMethodParameters(method, logger, token);
 			var logEntry = SharedHelpers.GetLogEntryAttribute(method, semanticModel, logger, token);
 			var isKnownReturnType = method.ReturnsVoid || Constants.System.IDisposable.Equals(method.ReturnType);
 			var loggerActionFieldName = $"_{Utilities.LowercaseFirstChar(method.Name)}Action";
 
 			var logEntryName = GetLogEntryName(interfaceSymbol.Name, className, loggerTarget, logEntry, method.Name);
-			var messageTemplate = logEntry?.MessageTemplate?.Value ?? GenerateTemplateMessage(logEntryName, methodParameters);
-			var hasMultipleExceptions = methodParameters.Count(m => m.IsException) > 1;
+			var messageTemplate = logEntry?.MessageTemplate?.Value ?? GenerateTemplateMessage(logEntryName, isScoped, methodParameters);
+			var hasMultipleExceptions = isScoped
+				? false
+				: methodParameters.Count(m => m.IsException) > 1;
 			var exceptionParam = hasMultipleExceptions
 				? null
-				: methodParameters.FirstOrDefault(m => m.IsException);
+				: isScoped
+					? null
+					: methodParameters.FirstOrDefault(m => m.IsException);
 
 			var inferredErrorLevel = exceptionParam != null;
 			if (logEntry?.Level?.IsSet ?? false == true) {
@@ -115,7 +120,7 @@ partial class PipelineHelpers {
 
 			methodTargets.Add(new(
 				MethodName: method.Name,
-				IsScoped: !method.ReturnsVoid,
+				IsScoped: isScoped,
 				LoggerActionFieldName: loggerActionFieldName,
 
 				UnknownReturnType: !isKnownReturnType,
@@ -128,7 +133,9 @@ partial class PipelineHelpers {
 				MSLevel: Utilities.ConvertToMSLogLevel(level),
 
 				AllParameters: methodParameters,
-				ParametersSansException: [.. methodParameters.Where(m => !m.IsException)],
+				ParametersSansException: isScoped
+					? methodParameters
+					: [.. methodParameters.Where(m => !m.IsException)],
 				ExceptionParameter: exceptionParam,
 
 				HasMultipleExceptions: hasMultipleExceptions,
@@ -183,7 +190,7 @@ partial class PipelineHelpers {
 		return methodName;
 	}
 
-	static string GenerateTemplateMessage(string logEntryName, ImmutableArray<LogEntryMethodParameterTarget> methodParameters) {
+	static string GenerateTemplateMessage(string logEntryName, bool isScoped, ImmutableArray<LogEntryMethodParameterTarget> methodParameters) {
 		StringBuilder builder = new();
 
 		builder.Append(logEntryName);
@@ -195,7 +202,7 @@ partial class PipelineHelpers {
 
 		var index = 0;
 		foreach (var parameter in methodParameters) {
-			if (parameter.IsException) {
+			if (!isScoped && parameter.IsException) {
 				continue;
 			}
 

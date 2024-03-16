@@ -47,7 +47,9 @@
 		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Activities\**\*.cs" LinkBase="Templates\Sources\Activities\" />
 		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Logging\**\*.cs" LinkBase="Templates\Sources\Logging\" />
 		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Metrics\**\*.cs" LinkBase="Templates\Sources\Metrics\" />
+
 		<EmbeddedResource Include="..\Purview.Telemetry.Shared\TagAttribute.cs" Link="Templates\Sources\TagAttribute.cs" />
+		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Constants.cs" Link="Templates\Sources\Constants.cs" />
 
 	</ItemGroup>
 

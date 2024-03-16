@@ -108,7 +108,10 @@ public interface ITestLogger {
 		GenerationResult generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
-		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(), validateNonEmptyDiagnostics: true);
+		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(),
+			validateNonEmptyDiagnostics: true,
+			validationCompilation: false
+		);
 	}
 
 	[Fact]
@@ -129,7 +132,10 @@ public interface ITestLogger {
 		GenerationResult generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
-		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(), validateNonEmptyDiagnostics: true);
+		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(),
+			validateNonEmptyDiagnostics: true,
+			validationCompilation: false
+		);
 	}
 
 	[Fact]
@@ -171,7 +177,7 @@ public interface ITestLogger {
 		GenerationResult generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
-		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(), validateNonEmptyDiagnostics: true);
+		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids());
 	}
 
 	[Fact]

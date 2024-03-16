@@ -16,6 +16,7 @@
 namespace Purview.Telemetry.Activities;
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed class ActivityEventAttribute : Attribute {
 

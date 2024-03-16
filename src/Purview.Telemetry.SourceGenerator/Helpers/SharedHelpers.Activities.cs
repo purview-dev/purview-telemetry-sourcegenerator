@@ -104,7 +104,7 @@ partial class SharedHelpers {
 		);
 	}
 
-	static public ActivityAttributeRecord? GetActivityAttribute(
+	static public ActivityGenAttributeRecord? GetActivityGenAttribute(
 		AttributeData attributeData,
 		SemanticModel semanticModel,
 		IGenerationLogger? logger,
@@ -116,13 +116,13 @@ partial class SharedHelpers {
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(ActivityAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
+			if (name.Equals(nameof(ActivityGenAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
 				nameValue = new((string)value);
 			}
-			else if (name.Equals(nameof(ActivityAttribute.Kind), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals(nameof(ActivityGenAttribute.Kind), StringComparison.OrdinalIgnoreCase)) {
 				kind = new((ActivityGeneratedKind)value);
 			}
-			else if (name.Equals(nameof(ActivityAttribute.CreateOnly), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals(nameof(ActivityGenAttribute.CreateOnly), StringComparison.OrdinalIgnoreCase)) {
 				createOnly = new((bool)value);
 			}
 		}, semanticModel, logger, token)) {

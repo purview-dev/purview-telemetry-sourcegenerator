@@ -19,16 +19,13 @@ namespace Testing
 	{
 		readonly static System.Diagnostics.ActivitySource _activitySource = new System.Diagnostics.ActivitySource("testing-activity-source");
 
-		public Activity? Activity(string stringParam, int intParam, bool boolParam)
+		public System.Diagnostics.Activity? Activity(string stringParam, int intParam, bool boolParam)
 		{
-			System.Diagnostics.Activity activityActivity = _activitySource.StartActivity(name: "Activity", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
+			System.Diagnostics.Activity? activityActivity = _activitySource.StartActivity(name: "Activity", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
 
 			if (activityActivity != null)
 			{
-				if (intParam != default)
-				{
-					activityActivity.SetTag("intparam", intParam);
-				}
+				activityActivity.SetTag("intparam", intParam);
 				if (boolParam != default)
 				{
 					activityActivity.SetTag("boolparam", boolParam);
@@ -37,42 +34,31 @@ namespace Testing
 
 			if (activityActivity != null)
 			{
-				if (stringParam != default)
-				{
-					activityActivity.SetBaggage("stringparam", stringParam);
-				}
+				activityActivity.SetBaggage("stringparam", stringParam);
 			}
 
 			return activityActivity;
 		}
 
-		public Activity? Event(string stringParam, int intParam, bool boolParam)
+		public System.Diagnostics.Activity? Event(string stringParam, int intParam, bool boolParam)
 		{
-			if (System.Diagnostics.Activity.Current != null)
+			System.Diagnostics.Activity? activityEvent = _activitySource.StartActivity(name: "Event", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
+
+			if (activityEvent != null)
 			{
-				System.Collections.Generic.List<string, object?> tagsListEvent = new System.Collections.Generic.List<string, object?>();
-				if (intParam != default)
-				{
-					tagsListEvent.Add("intparam", intParam);
-				}
+				activityEvent.SetTag("intparam", intParam);
 				if (boolParam != default)
 				{
-					tagsListEvent.Add("boolparam", boolParam);
-				}
-				System.Diagnostics.ActivityEvent activityEventEvent = new System.Diagnostics.ActivityEvent(name: "Event", timestamp: default, tags: tagsListEvent);
-
-				System.Diagnostics.Activity.Current.AddEvent(activityEventEvent);
-
-				if (System.Diagnostics.Activity.Current != null)
-				{
-					if (stringParam != default)
-					{
-						System.Diagnostics.Activity.Current.SetBaggage("stringparam", stringParam);
-					}
+					activityEvent.SetTag("boolparam", boolParam);
 				}
 			}
 
-			return System.Diagnostics.Activity.Current;
+			if (activityEvent != null)
+			{
+				activityEvent.SetBaggage("stringparam", stringParam);
+			}
+
+			return activityEvent;
 		}
 
 	}

@@ -107,25 +107,35 @@ partial class PipelineHelpers {
 				metricName = method.Name;
 			}
 
+			var isObservable = instrumentAttribute?.InstrumentType is
+				InstrumentTypes.ObservableCounter or InstrumentTypes.ObservableGauge or InstrumentTypes.ObservableUpDownCounter;
+			var validAutoCounter = instrumentAttribute?.InstrumentType is InstrumentTypes.Counter && instrumentAttribute.AutoIncrement?.Value == true;
+
 			List<TelemetryDiagnosticDescriptor> errorDiagnostics = [];
 			if (instrumentAttribute == null) {
 				errorDiagnostics.Add(TelemetryDiagnostics.Metrics.NoInstrumentDefined);
 			}
+			else if (!validAutoCounter && measurementParameter == null) {
+				errorDiagnostics.Add(TelemetryDiagnostics.Metrics.NoMeasurementValueDefined);
+			}
 			else {
-				if ((instrumentAttribute.InstrumentType is InstrumentTypes.Counter)
-					&& (instrumentAttribute.AutoIncrement?.Value == true && measurementParameters.Length > 0)) {
-					errorDiagnostics.Add(TelemetryDiagnostics.Metrics.AutoIncrementCountAndMeasurementParam);
+				if (validAutoCounter) {
+					if (measurementParameters.Length > 0) {
+						errorDiagnostics.Add(TelemetryDiagnostics.Metrics.AutoIncrementCountAndMeasurementParam);
+					}
 				}
 				else {
 					// Validate the parameters and type.
-					if (instrumentAttribute.InstrumentType is InstrumentTypes.Counter or InstrumentTypes.Histogram or InstrumentTypes.Histogram) {
-						if (measurementParameters.Length > 1) {
-							errorDiagnostics.Add(TelemetryDiagnostics.Metrics.AutoIncrementCountAndMeasurementParam);
+					if (isObservable) {
+						if (isObservable) {
+							if (!measurementParameter!.IsFunc) {
+								errorDiagnostics.Add(TelemetryDiagnostics.Metrics.ObservableRequiredFunc);
+							}
 						}
-						else {
-							//if (measurementParameter.ParameterType
-
-							//measurementParameter.Equals;
+					}
+					else {
+						if (measurementParameters.Length != 1) {
+							errorDiagnostics.Add(TelemetryDiagnostics.Metrics.MoreThanOneMeasurementValueDefined);
 						}
 					}
 				}
@@ -133,12 +143,13 @@ partial class PipelineHelpers {
 
 			var instrumentMeasurementType = measurementParameter?.InstrumentType ?? Constants.System.Int32;
 
+			if (measurementParameter != null && !measurementParameter.IsValidInstrumentType) {
+				errorDiagnostics.Add(TelemetryDiagnostics.Metrics.InvalidMeasurementType);
+			}
+
 			if (!method.ReturnsVoid) {
 				errorDiagnostics.Add(TelemetryDiagnostics.Metrics.DoesNotReturnVoid);
 			}
-
-			var isObservable = instrumentAttribute?.InstrumentType is
-			InstrumentTypes.ObservableCounter or InstrumentTypes.ObservableGauge or InstrumentTypes.ObservableUpDownCounter;
 
 			methodTargets.Add(new(
 				MethodName: method.Name,
@@ -185,7 +196,7 @@ partial class PipelineHelpers {
 
 				tagAttribute = SharedHelpers.GetTagOrBaggageAttribute(attribute!, semanticModel, logger, token);
 			}
-			else if (Utilities.TryContainsAttribute(parameter, Constants.Metrics.InstrumentMeasurementAttribute, token, out attribute)) {
+			else if (Utilities.ContainsAttribute(parameter, Constants.Metrics.InstrumentMeasurementAttribute, token)) {
 				logger?.Debug($"Found explicit instrument measurement: {parameter.Name}.");
 				destination = InstrumentParameterDestination.Measurement;
 			}

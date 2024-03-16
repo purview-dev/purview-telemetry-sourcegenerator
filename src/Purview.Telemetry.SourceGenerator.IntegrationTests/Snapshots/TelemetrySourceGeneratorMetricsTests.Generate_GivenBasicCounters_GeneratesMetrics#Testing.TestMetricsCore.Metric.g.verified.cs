@@ -17,7 +17,7 @@ namespace Testing
 {
 	sealed partial class TestMetricsCore : Testing.ITestMetrics
 	{
-		readonly System.Diagnostics.Metrics.IMeterFactory _meterFactory;
+		readonly System.Diagnostics.Metrics.Meter _meter;
 
 		readonly System.Diagnostics.Metrics.Counter<System.Int32> _counterInstrument;
 		readonly System.Diagnostics.Metrics.Counter<System.Int32> _counter2Instrument;
@@ -26,62 +26,62 @@ namespace Testing
 
 		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
-			_meterFactory = meterFactory;
-
 			System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateMeterTags(meterTags);
 
-			System.Diagnostics.Metrics.Meter meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
+			_meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
 			{
 				Version = null,
 				Tags = meterTags
 			});
 
-			_counterInstrument = meter.CreateCounter<System.Int32>(name: "Counter", unit: null, description: null, tags: null);
-			_counter2Instrument = meter.CreateCounter<System.Int32>(name: "Counter2", unit: null, description: null, tags: null);
-			_counter3Instrument = meter.CreateCounter<System.Int32>(name: "Counter3", unit: null, description: null, tags: null);
-			_counter4Instrument = meter.CreateCounter<System.Int32>(name: "Counter4", unit: null, description: null, tags: null);
+			_counterInstrument = _meter.CreateCounter<System.Int32>(name: "Counter", unit: null, description: null, tags: null);
+			_counter2Instrument = _meter.CreateCounter<System.Int32>(name: "Counter2", unit: null, description: null, tags: null);
+			_counter3Instrument = _meter.CreateCounter<System.Int32>(name: "Counter3", unit: null, description: null, tags: null);
+			_counter4Instrument = _meter.CreateCounter<System.Int32>(name: "Counter4", unit: null, description: null, tags: null);
 		}
+
+		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
 
 		public void Counter(int counterValue, int intParam, bool boolParam)
 		{
-			System.Collections.Generic.Dictionary<string, object?> counterTagsList = new System.Collections.Generic.Dictionary<string, object?>();
+			System.Diagnostics.TagList counterTagList = new System.Diagnostics.TagList();
 
-			counterTagsList.Add("intparam", intParam);
-			counterTagsList.Add("boolparam", boolParam);
+			counterTagList.Add("intparam", intParam);
+			counterTagList.Add("boolparam", boolParam);
 
-			_counterInstrument.Add(counterValue, tags: counterTagsList);
+			_counterInstrument.Add(counterValue, tagList: counterTagList);
 		}
 
 		public void Counter2(int intParam, bool boolParam)
 		{
-			System.Collections.Generic.Dictionary<string, object?> counter2TagsList = new System.Collections.Generic.Dictionary<string, object?>();
+			System.Diagnostics.TagList counter2TagList = new System.Diagnostics.TagList();
 
-			counter2TagsList.Add("intparam", intParam);
-			counter2TagsList.Add("boolparam", boolParam);
+			counter2TagList.Add("intparam", intParam);
+			counter2TagList.Add("boolparam", boolParam);
 
-			_counter2Instrument.Add(1, tags: counter2TagsList);
+			_counter2Instrument.Add(1, tagList: counter2TagList);
 		}
 
 		public void Counter3(int intParam, bool boolParam)
 		{
-			System.Collections.Generic.Dictionary<string, object?> counter3TagsList = new System.Collections.Generic.Dictionary<string, object?>();
+			System.Diagnostics.TagList counter3TagList = new System.Diagnostics.TagList();
 
-			counter3TagsList.Add("intparam", intParam);
-			counter3TagsList.Add("boolparam", boolParam);
+			counter3TagList.Add("intparam", intParam);
+			counter3TagList.Add("boolparam", boolParam);
 
-			_counter3Instrument.Add(1, tags: counter3TagsList);
+			_counter3Instrument.Add(1, tagList: counter3TagList);
 		}
 
 		public void Counter4(int counterValue, int intParam, bool boolParam)
 		{
-			System.Collections.Generic.Dictionary<string, object?> counter4TagsList = new System.Collections.Generic.Dictionary<string, object?>();
+			System.Diagnostics.TagList counter4TagList = new System.Diagnostics.TagList();
 
-			counter4TagsList.Add("intparam", intParam);
-			counter4TagsList.Add("boolparam", boolParam);
+			counter4TagList.Add("intparam", intParam);
+			counter4TagList.Add("boolparam", boolParam);
 
-			_counter4Instrument.Add(counterValue, tags: counter4TagsList);
+			_counter4Instrument.Add(counterValue, tagList: counter4TagList);
 		}
 	}
 }

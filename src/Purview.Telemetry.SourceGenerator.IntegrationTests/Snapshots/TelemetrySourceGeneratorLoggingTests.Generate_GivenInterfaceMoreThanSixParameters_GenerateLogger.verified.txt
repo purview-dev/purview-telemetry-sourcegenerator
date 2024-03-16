@@ -5,10 +5,10 @@
       Title: More than 6 parameters,
       Severity: Error,
       WarningLevel: 0,
-      Location: Guid_1: (10,6)-(10,9),
+      Location: Guid_1: (11,6)-(11,9),
       MessageFormat: The maximum number of parameters (excluding optional Exception) is 6,
       Message: The maximum number of parameters (excluding optional Exception) is 6,
-      Category: Activity.Usage
+      Category: Logging.Usage
     }
   ]
 }

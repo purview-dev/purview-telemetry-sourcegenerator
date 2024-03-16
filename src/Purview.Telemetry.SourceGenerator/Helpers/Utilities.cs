@@ -128,19 +128,19 @@ static class Utilities {
 
 	static public string? GetParentClassesAsNamespace(TypeDeclarationSyntax classDeclaration) {
 		var parentClass = classDeclaration.Parent as ClassDeclarationSyntax;
-		string? parentClasses = null;
 
+		List<string> parentClasses = [];
 		while (parentClass != null) {
-			if (parentClasses != null) {
-				parentClasses += "+";
-			}
-
-			parentClasses += parentClass.Identifier.Text;
+			parentClasses.Insert(0, parentClass.Identifier.Text);
 
 			parentClass = parentClass.Parent as ClassDeclarationSyntax;
 		}
 
-		return parentClasses;
+		if (parentClasses.Count == 0) {
+			return null;
+		}
+
+		return string.Join(".", parentClasses);
 	}
 
 	static public string GetNamespace(TypeDeclarationSyntax typeSymbol) {
@@ -198,7 +198,7 @@ static class Utilities {
 			fullNamespace += parentClasses;
 
 			if (includeTrailingSeparator) {
-				fullNamespace += "+";
+				fullNamespace += ".";
 			}
 		}
 		else if (includeTrailingSeparator && fullNamespace != null) {

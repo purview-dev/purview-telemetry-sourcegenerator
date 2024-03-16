@@ -21,14 +21,11 @@ namespace Testing
 
 		public void Activity(string stringParam, int intParam, bool boolParam)
 		{
-			System.Diagnostics.Activity activityActivity = _activitySource.StartActivity(name: "Activity", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
+			System.Diagnostics.Activity? activityActivity = _activitySource.StartActivity(name: "Activity", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
 
 			if (activityActivity != null)
 			{
-				if (intParam != default)
-				{
-					activityActivity.SetTag("intparam", intParam);
-				}
+				activityActivity.SetTag("intparam", intParam);
 				if (boolParam != default)
 				{
 					activityActivity.SetTag("boolparam", boolParam);
@@ -37,10 +34,7 @@ namespace Testing
 
 			if (activityActivity != null)
 			{
-				if (stringParam != default)
-				{
-					activityActivity.SetBaggage("stringparam", stringParam);
-				}
+				activityActivity.SetBaggage("stringparam", stringParam);
 			}
 		}
 
@@ -48,25 +42,19 @@ namespace Testing
 		{
 			if (System.Diagnostics.Activity.Current != null)
 			{
-				System.Collections.Generic.List<string, object?> tagsListEvent = new System.Collections.Generic.List<string, object?>();
-				if (intParam != default)
-				{
-					tagsListEvent.Add("intparam", intParam);
-				}
+				System.Diagnostics.ActivityTagsCollection tagsCollectionEvent = new System.Diagnostics.ActivityTagsCollection();
+				tagsCollectionEvent.Add("intparam", intParam);
 				if (boolParam != default)
 				{
-					tagsListEvent.Add("boolparam", boolParam);
+					tagsCollectionEvent.Add("boolparam", boolParam);
 				}
-				System.Diagnostics.ActivityEvent activityEventEvent = new System.Diagnostics.ActivityEvent(name: "Event", timestamp: default, tags: tagsListEvent);
+				System.Diagnostics.ActivityEvent activityEventEvent = new System.Diagnostics.ActivityEvent(name: "Event", timestamp: default, tags: tagsCollectionEvent);
 
 				System.Diagnostics.Activity.Current.AddEvent(activityEventEvent);
 
 				if (System.Diagnostics.Activity.Current != null)
 				{
-					if (stringParam != default)
-					{
-						System.Diagnostics.Activity.Current.SetBaggage("stringparam", stringParam);
-					}
+					System.Diagnostics.Activity.Current.SetBaggage("stringparam", stringParam);
 				}
 			}
 		}

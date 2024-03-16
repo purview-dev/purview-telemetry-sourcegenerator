@@ -14,9 +14,9 @@ partial class MeterTargetClassEmitter {
 
 		builder
 			.Append(indent, "readonly ", withNewLine: false)
-			.Append(Constants.Metrics.SystemDiagnostics.IMeterFactory)
+			.Append(Constants.Metrics.SystemDiagnostics.Meter)
 			.Append(' ')
-			.Append(_meterFactoryFieldName)
+			.Append(_meterFieldName)
 			.AppendLine(';')
 			.AppendLine()
 		;

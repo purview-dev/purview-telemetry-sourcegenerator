@@ -29,14 +29,6 @@ partial class MeterTargetClassEmitter {
 		indent++;
 
 		builder
-			.Append(indent, _meterFactoryFieldName, withNewLine: false)
-			.Append(" = ")
-			.Append(meterFactoryParameterName)
-			.AppendLine(';')
-			.AppendLine()
-		;
-
-		builder
 			.Append(indent, _dictionaryStringObject, withNewLine: false)
 			.Append(' ')
 			.Append(meterTagsVariableName)
@@ -55,9 +47,7 @@ partial class MeterTargetClassEmitter {
 		;
 
 		builder
-			.Append(indent, Constants.Metrics.SystemDiagnostics.Meter, withNewLine: false)
-			.Append(' ')
-			.Append(_meterVariableName)
+			.Append(indent, _meterFieldName, withNewLine: false)
 			.Append(" = ")
 			.Append(meterFactoryParameterName)
 			.Append(".Create(new ")
@@ -97,7 +87,7 @@ partial class MeterTargetClassEmitter {
 			builder
 				.Append(indent, method.FieldName, withNewLine: false)
 				.Append(" = ")
-				.Append(_meterVariableName)
+				.Append(_meterFieldName)
 				.Append(".Create")
 				.Append(method.InstrumentAttribute!.InstrumentType)
 				.Append('<')

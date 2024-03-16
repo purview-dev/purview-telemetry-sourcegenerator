@@ -46,11 +46,9 @@ static class EmitHelpers {
 			}
 		}
 
-		if (parentClasses != null) {
-			builder
-				.Append('}')
-			;
-		}
+		builder
+			.Append('}')
+		;
 	}
 
 	static public int EmitClassStart(string className, string fullyQualifiedInterface, StringBuilder builder, int indent, CancellationToken token) {

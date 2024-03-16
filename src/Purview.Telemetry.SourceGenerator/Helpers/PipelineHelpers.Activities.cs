@@ -93,8 +93,11 @@ partial class PipelineHelpers {
 				continue;
 			}
 
-			var isActivity = IsActivity(method, semanticModel, logger, token, out var activityAttribute, out var activityEventAttribute);
-			var activityOrEventName = activityAttribute?.Name?.Value ?? activityEventAttribute?.Name?.Value;
+			var isActivity = IsActivity(method, semanticModel, logger, token,
+				out var activityGenAttribute,
+				out var activityEventAttribute
+			);
+			var activityOrEventName = activityGenAttribute?.Name?.Value ?? activityEventAttribute?.Name?.Value;
 			if (string.IsNullOrWhiteSpace(activityOrEventName)) {
 				activityOrEventName = method.Name;
 			}
@@ -116,7 +119,7 @@ partial class PipelineHelpers {
 				ActivityOrEventName: activityOrEventName!,
 				MethodLocation: method.Locations.FirstOrDefault(),
 
-				ActivityAttribute: activityAttribute,
+				ActivityAttribute: activityGenAttribute,
 				ActivityEventAttribute: activityEventAttribute,
 
 				IsActivity: isActivity,
@@ -156,7 +159,7 @@ partial class PipelineHelpers {
 			}
 			else if (Constants.Activities.SystemDiagnostics.ActivityTagsCollection.Equals(parameter.Type)
 				|| Constants.Activities.SystemDiagnostics.ActivityTagIEnumerable.Equals(parameter.Type)
-				|| Constants.Activities.SystemDiagnostics.TagList.Equals(parameter.Type)) {
+				|| Constants.System.TagList.Equals(parameter.Type)) {
 				destination = ActivityParameterDestination.TagsEnumerable;
 			}
 			else if (Constants.Activities.SystemDiagnostics.ActivityContext.Equals(parameter.Type)
@@ -200,14 +203,14 @@ partial class PipelineHelpers {
 		return [.. parameterTargets];
 	}
 
-	static bool IsActivity(IMethodSymbol method, SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token, out ActivityAttributeRecord? activityAttribute, out ActivityEventAttributeRecord? eventAttribute) {
-		activityAttribute = null;
+	static bool IsActivity(IMethodSymbol method, SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token, out ActivityGenAttributeRecord? activityGenAttribute, out ActivityEventAttributeRecord? eventAttribute) {
+		activityGenAttribute = null;
 		eventAttribute = null;
 
 		token.ThrowIfCancellationRequested();
 
-		if (Utilities.TryContainsAttribute(method, Constants.Activities.ActivityAttribute, token, out var attributeData)) {
-			activityAttribute = SharedHelpers.GetActivityAttribute(attributeData!, semanticModel, logger, token);
+		if (Utilities.TryContainsAttribute(method, Constants.Activities.ActivityGenAttribute, token, out var attributeData)) {
+			activityGenAttribute = SharedHelpers.GetActivityGenAttribute(attributeData!, semanticModel, logger, token);
 
 			logger?.Debug($"Found explicit activity: {method.Name}.");
 

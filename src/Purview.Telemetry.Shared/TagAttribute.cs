@@ -1,6 +1,7 @@
 ﻿namespace Purview.Telemetry;
 
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed public class TagAttribute : Attribute {
 	public TagAttribute() {

@@ -20,7 +20,7 @@ partial class Constants {
 
 		readonly static public TemplateInfo ActivitySourceAttribute = TemplateInfo.Create<Telemetry.Activities.ActivitySourceAttribute>();
 		readonly static public TemplateInfo ActivityTargetAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityTargetAttribute>();
-		readonly static public TemplateInfo ActivityAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityAttribute>();
+		readonly static public TemplateInfo ActivityGenAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityGenAttribute>();
 		readonly static public TemplateInfo ActivityEventAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityEventAttribute>();
 		readonly static public TemplateInfo ActivityGeneratedKind = TemplateInfo.Create<Telemetry.Activities.ActivityGeneratedKind>();
 		readonly static public TemplateInfo ActivityExcludeAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityExcludeAttribute>();
@@ -29,7 +29,7 @@ partial class Constants {
 		static public TemplateInfo[] GetTemplates() => [
 				ActivitySourceAttribute,
 				ActivityTargetAttribute,
-				ActivityAttribute,
+				ActivityGenAttribute,
 				ActivityEventAttribute,
 				ActivityGeneratedKind,
 				ActivityExcludeAttribute,
@@ -48,8 +48,6 @@ partial class Constants {
 			readonly static public TypeInfo ActivityLink = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityLink");
 			readonly static public TypeInfo ActivityLinkIEnumerable = TypeInfo.Create("System.Collections.Generic.IEnumerable<System.Diagnostics.ActivityLink>");
 			readonly static public TypeInfo ActivityLinkArray = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityLink[]");
-
-			readonly static public TypeInfo TagList = TypeInfo.Create(SystemDiagnosticsNamespace + ".TagList");
 		}
 	}
 }

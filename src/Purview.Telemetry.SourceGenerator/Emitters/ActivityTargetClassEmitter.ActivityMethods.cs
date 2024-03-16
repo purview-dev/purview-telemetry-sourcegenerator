@@ -9,7 +9,13 @@ partial class ActivityTargetClassEmitter {
 	static void EmitActivityMethodBody(StringBuilder builder, int indent, ActivityMethodGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
-		if (!GuardParameters(methodTarget, context, logger, out var activityParam, out var parentContextOrId, out var tagsParam, out var linksParam, out var startTimeParam, out var timestampParam)) {
+		if (!GuardParameters(methodTarget, context, logger,
+			out var activityParam,
+			out var parentContextOrId,
+			out var tagsParam,
+			out var linksParam,
+			out var startTimeParam,
+			out var timestampParam)) {
 			return;
 		}
 
@@ -41,7 +47,7 @@ partial class ActivityTargetClassEmitter {
 
 		builder
 			.Append(indent, Constants.Activities.SystemDiagnostics.Activity, withNewLine: false)
-			.Append(' ')
+			.Append("? ")
 			.Append(activityVariableName)
 			.Append(" = ")
 			.Append(Constants.Activities.ActivitySourceFieldName)

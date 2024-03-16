@@ -62,14 +62,14 @@ partial class ActivityTargetClassEmitter {
 
 		var tagsParameterName = tagsParam?.ParameterName ?? "default";
 		if (methodTarget.Tags.Length > 0) {
-			var tagsListVariableName = "tagsList" + methodTarget.MethodName;
+			var tagsListVariableName = "tagsCollection" + methodTarget.MethodName;
 			builder
-				.Append(indent, Constants.System.List, withNewLine: false)
-				.Append("<string, object?> ")
+				.Append(indent, Constants.Activities.SystemDiagnostics.ActivityTagsCollection, withNewLine: false)
+				.Append(' ')
 				.Append(tagsListVariableName)
 				.Append(" = new ")
-				.Append(Constants.System.List)
-				.Append("<string, object?>(")
+				.Append(Constants.Activities.SystemDiagnostics.ActivityTagsCollection)
+				.Append('(')
 			;
 
 			if (tagsParam != null) {

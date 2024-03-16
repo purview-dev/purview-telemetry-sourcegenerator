@@ -5,13 +5,27 @@ using TelemetryRoslynTestHarness.Interfaces.Telemetry;
 namespace TelemetryRoslynTestHarness;
 
 class Program {
+
+	static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.String, System.Int32, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.String, System.Int32>("Test.Log: stringParam: {StringParam}, intParam: {IntParam}");
+
 	static void Main(string[] args) {
 		Console.WriteLine("Hello, World!");
 
 		IBasicLogger logger = new BasicLoggerCore(null);
 
+		ActivitySource xx = new("asda");
+
+		var at = new ActivityTagsCollection();
+
+		xx.StartActivity("", kind: ActivityKind.Internal, parentId: "", tags: at);
+
 		var a = Activity.Current;
 
+
+
+		ActivityEvent e = new("", tags: at);
+
+		a.AddEvent(e);
 	}
 }
 
@@ -34,23 +48,23 @@ partial class Service {
 			Tags = meterTags
 		});
 
+		TagList counterTagsList = new();
 		_counter = meter.CreateCounter<int>("");
-		//_counter.Add(delta: 1, tags: list) or auto
+		_counter.Add(1, tagList: counterTagsList);
 
 		_histogram = meter.CreateHistogram<float>("");
-		//_histogram.Record(value: 1, tags: list)
+		_histogram.Record(value: 1, tagList: counterTagsList);
 
 		_upDownCounter = meter.CreateUpDownCounter<int>("");
-		//_upDownCounter.Add(delta: 1, tags: list)
+		_upDownCounter.Add(1, tagList: counterTagsList);
 
-		Func<float> f1;
-		Func<Measurement<float>> f2;
-		Func<IEnumerable<Measurement<float>>> f3;
+		Func<float> f1 = null!;
+		Func<Measurement<int>> f2 = null!;
+		Func<IEnumerable<Measurement<int>>> f3 = null!;
 
-		_observableCounter = meter.CreateObservableCounter<float>("", () => 1);
-
-		_observableGauge = meter.CreateObservableGauge<int>("", () => 1);
-		_observableUpDownCounter = meter.CreateObservableUpDownCounter<int>("", () => 1);
+		_observableCounter = meter.CreateObservableCounter<float>("", f1, null, null, tags: counterTagsList);
+		_observableGauge = meter.CreateObservableGauge<System.Int32>("", f2, null, null, tags: counterTagsList);
+		_observableUpDownCounter = meter.CreateObservableUpDownCounter<int>("", f3, null, null, tags: counterTagsList);
 	}
 
 	partial void MeterTags(Dictionary<string, object?> meterTags);

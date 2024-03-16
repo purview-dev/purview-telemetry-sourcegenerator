@@ -12,8 +12,7 @@ static partial class MeterTargetClassEmitter {
 		Constants.System.ObjectKeyword.WithNull()
 	);
 
-	const string _meterFactoryFieldName = "_meterFactory";
-	const string _meterVariableName = "meter";
+	const string _meterFieldName = "_meter";
 	const string _partialMeterTagsMethod = "PopulateMeterTags";
 
 	static public void GenerateImplementation(MeterGenerationTarget target, SourceProductionContext context, IGenerationLogger? logger) {

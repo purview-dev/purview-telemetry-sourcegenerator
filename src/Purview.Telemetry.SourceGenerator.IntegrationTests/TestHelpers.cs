@@ -112,7 +112,11 @@ using Purview.Telemetry;
 		EmitResult result = generationResult.Compilation.Emit(ms);
 
 		if (!result.Success) {
-			result.Diagnostics.Should().NotBeEmpty();
+			result
+				.Diagnostics
+				.Where(m => !m.Id.StartsWith("TSG", StringComparison.Ordinal))
+				.Should()
+				.BeEmpty();
 		}
 	}
 }

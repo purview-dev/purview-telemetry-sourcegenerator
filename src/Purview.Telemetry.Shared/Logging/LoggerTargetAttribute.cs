@@ -4,6 +4,7 @@
 /// Marker attribute required for Log generation.
 /// </summary>
 [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
+[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed public class LoggerTargetAttribute : Attribute {
 	public LoggerTargetAttribute() {
