@@ -69,7 +69,8 @@ jobs:
       # If some rules are not applicable, you can disable them
       # using the --excluded-rules or --excluded-rule-ids option
       - name: Validate package
-        run: meziantou.validate-nuget-package (Get-ChildItem "${{ env.NuGetDirectory }}/*.nupkg")
+        working-directory: ${{ env.NuGetDirectory }}
+        run: meziantou.validate-nuget-package (Get-ChildItem "*.nupkg")
 
   run_test:
     runs-on: ubuntu-latest
