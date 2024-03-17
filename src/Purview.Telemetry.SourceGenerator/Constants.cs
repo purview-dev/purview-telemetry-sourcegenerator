@@ -17,12 +17,24 @@ static partial class Constants {
 
 	static public partial class Shared {
 		readonly static public TemplateInfo TagAttribute = TemplateInfo.Create<TagAttribute>();
+		readonly static public TemplateInfo TelemetryGenerationAttribute = TemplateInfo.Create<TelemetryGenerationAttribute>();
 		readonly static public TemplateInfo Constants = TemplateInfo.Create(typeof(Constants).FullName);
 
 		static public TemplateInfo[] GetTemplates() => [
 			TagAttribute,
+			TelemetryGenerationAttribute,
 			Constants
 		];
+	}
+
+	static public partial class DependencyInjection {
+		public const string DependencyInjectionNamespace = "Microsoft.Extensions.DependencyInjection";
+
+		readonly static public TypeInfo IServiceCollection = TypeInfo.Create(DependencyInjectionNamespace + ".IServiceCollection");
+		readonly static public TypeInfo ServiceDescriptor = TypeInfo.Create(DependencyInjectionNamespace + ".ServiceDescriptor");
+		readonly static public TypeInfo ServiceLifetime = TypeInfo.Create(DependencyInjectionNamespace + ".ServiceLifetime");
+
+		readonly static public string Singleton = ServiceLifetime + "." + nameof(Singleton);
 	}
 
 	static public class Diagnostics {

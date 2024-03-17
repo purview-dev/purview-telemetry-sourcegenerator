@@ -4,6 +4,8 @@ using Microsoft.CodeAnalysis;
 namespace Purview.Telemetry.SourceGenerator.Records;
 
 record MeterGenerationTarget(
+	TelemetryGenerationAttributeRecord TelemetryGeneration,
+
 	string ClassNameToGenerate,
 	string ClassNamespace,
 

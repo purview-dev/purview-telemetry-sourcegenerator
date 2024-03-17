@@ -23,6 +23,10 @@ static partial class Constants {
 
 	static public partial class Shared {
 		public const bool SkipOnNullOrEmptyDefault = false;
+
+		public const bool GenerateDependencyExtensionDefault = true;
+
+		public const string ClassNameTemplateDefault = "{GeneratedClassName}Extensions";
 	}
 }
 

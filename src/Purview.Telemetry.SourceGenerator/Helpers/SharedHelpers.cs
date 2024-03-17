@@ -156,4 +156,51 @@ static partial class SharedHelpers {
 			SkipOnNullOrEmpty: skipOnNullOrEmpty ?? new(Constants.Shared.SkipOnNullOrEmptyDefault)
 		);
 	}
+
+	static public TelemetryGenerationAttributeRecord GetTelemetryGenerationAttribute(ISymbol type, SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token) {
+		token.ThrowIfCancellationRequested();
+
+		if (!Utilities.TryContainsAttribute(type, Constants.Shared.TelemetryGenerationAttribute, token, out var attributeData)) {
+			if (!Utilities.TryContainsAttribute(semanticModel.Compilation.Assembly, Constants.Shared.TelemetryGenerationAttribute, token, out attributeData)) {
+				return createDefault();
+			}
+		}
+
+		return GetTelemetryGenerationAttribute(attributeData!, semanticModel, logger, token)
+			?? createDefault();
+
+		static TelemetryGenerationAttributeRecord createDefault()
+			=> new(
+				GenerateDependencyExtension: new(Constants.Shared.GenerateDependencyExtensionDefault),
+				ClassNameTemplate: new(Constants.Shared.ClassNameTemplateDefault)
+			);
+	}
+
+	static TelemetryGenerationAttributeRecord? GetTelemetryGenerationAttribute(
+		AttributeData attributeData,
+		SemanticModel semanticModel,
+		IGenerationLogger? logger,
+		CancellationToken token) {
+
+		AttributeValue<bool>? generateDependencyExtension = null;
+		AttributeStringValue? classNameTemplate = null;
+
+		if (!AttributeParser(attributeData,
+		(name, value) => {
+			if (name.Equals(nameof(TelemetryGenerationAttribute.GenerateDependencyExtension), StringComparison.OrdinalIgnoreCase)) {
+				generateDependencyExtension = new((bool)value);
+			}
+			else if (name.Equals(nameof(TelemetryGenerationAttribute.ClassNameTemplate), StringComparison.OrdinalIgnoreCase)) {
+				classNameTemplate = new((string)value);
+			}
+		}, semanticModel, logger, token)) {
+			// Failed to parse correctly, so null it out.
+			return null;
+		}
+
+		return new(
+			GenerateDependencyExtension: generateDependencyExtension ?? new(Constants.Shared.GenerateDependencyExtensionDefault),
+			ClassNameTemplate: classNameTemplate ?? new(Constants.Shared.ClassNameTemplateDefault)
+		);
+	}
 }

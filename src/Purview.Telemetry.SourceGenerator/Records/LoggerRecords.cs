@@ -5,6 +5,8 @@ using Purview.Telemetry.SourceGenerator.Templates;
 namespace Purview.Telemetry.SourceGenerator.Records;
 
 record LoggerGenerationTarget(
+	TelemetryGenerationAttributeRecord TelemetryGeneration,
+
 	string ClassNameToGenerate,
 	string? ClassNamespace, string[] ParentClasses,
 	string? FullNamespace, string FullyQualifiedName,

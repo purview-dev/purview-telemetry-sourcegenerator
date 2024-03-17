@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using Microsoft.Extensions.DependencyInjection;
 using TelemetryRoslynTestHarness.Interfaces.Telemetry;
 
 namespace TelemetryRoslynTestHarness;
@@ -22,6 +23,9 @@ class Program {
 		var a = Activity.Current;
 
 		ActivityEvent e = new("", tags: at);
+
+		IServiceCollection xxxxxx;
+		//new ServiceDescriptor(typeof(IINTERFACE), typeof(CLASSIMPL), ServiceLifetime.Singleton);
 
 		a?.AddEvent(e);
 	}

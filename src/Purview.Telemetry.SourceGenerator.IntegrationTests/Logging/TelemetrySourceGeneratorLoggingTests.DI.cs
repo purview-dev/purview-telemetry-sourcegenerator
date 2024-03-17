@@ -1,0 +1,104 @@
+﻿namespace Purview.Telemetry.SourceGenerator.Logging;
+
+partial class TelemetrySourceGeneratorLoggingTests {
+	[Fact]
+	async public Task Generate_GivenAssemblyEnableDI_GeneratesLog() {
+		// Arrange
+		const string basicLog = @"
+using Purview.Telemetry;
+using Purview.Telemetry.Logging;
+
+[assembly: TelemetryGeneration(GenerateDependencyExtension = true)]
+
+namespace Testing;
+
+[LoggerTarget]
+public interface ITestLogger {
+	[LogEntry]
+	void Log(string stringParam, int intParam, bool boolParam);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicLog, disableDependencyInjection: false);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
+	async public Task Generate_GivenInterfaceEnableDI_GeneratesLog() {
+		// Arrange
+		const string basicLog = @"
+using Purview.Telemetry;
+using Purview.Telemetry.Logging;
+
+namespace Testing;
+
+[TelemetryGeneration(GenerateDependencyExtension = true)]
+[LoggerTarget]
+public interface ITestLogger {
+	[LogEntry]
+	void Log(string stringParam, int intParam, bool boolParam);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicLog, disableDependencyInjection: false);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
+	async public Task Generate_GivenDIDisabledAtAssemblyAndInterfaceEnableDI_GeneratesLog() {
+		// Arrange
+		const string basicLog = @"
+using Purview.Telemetry;
+using Purview.Telemetry.Logging;
+
+[assembly: TelemetryGeneration(GenerateDependencyExtension = false)]
+
+namespace Testing;
+
+[TelemetryGeneration(GenerateDependencyExtension = true)]
+[LoggerTarget]
+public interface ITestLogger {
+	[LogEntry]
+	void Log(string stringParam, int intParam, bool boolParam);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicLog, disableDependencyInjection: false);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
+	async public Task Generate_GivenDIEnabledAtAssemblyAndInterfaceDisabledDI_GeneratesLog() {
+		// Arrange
+		const string basicLog = @"
+using Purview.Telemetry;
+using Purview.Telemetry.Logging;
+
+[assembly: TelemetryGeneration(GenerateDependencyExtension = true)]
+
+namespace Testing;
+
+[TelemetryGeneration(GenerateDependencyExtension = false)]
+[LoggerTarget]
+public interface ITestLogger {
+	[LogEntry]
+	void Log(string stringParam, int intParam, bool boolParam);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicLog, disableDependencyInjection: false);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+}

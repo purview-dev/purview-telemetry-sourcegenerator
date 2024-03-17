@@ -39,5 +39,13 @@ static partial class MeterTargetClassEmitter {
 		var hintName = $"{target.FullyQualifiedName}.Metric.g.cs";
 
 		context.AddSource(hintName, Microsoft.CodeAnalysis.Text.SourceText.From(sourceText, Encoding.UTF8));
+
+		SharedEmitter.GenerateImplementation(
+			target.TelemetryGeneration,
+			target.ClassNameToGenerate,
+			target.InterfaceName,
+			target.FullNamespace,
+			context,
+			logger);
 	}
 }

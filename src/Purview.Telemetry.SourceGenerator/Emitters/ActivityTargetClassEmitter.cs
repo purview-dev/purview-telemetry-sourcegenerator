@@ -30,5 +30,13 @@ static partial class ActivityTargetClassEmitter {
 		var hintName = $"{target.FullyQualifiedName}.Activity.g.cs";
 
 		context.AddSource(hintName, Microsoft.CodeAnalysis.Text.SourceText.From(sourceText, Encoding.UTF8));
+
+		SharedEmitter.GenerateImplementation(
+			target.TelemetryGeneration,
+			target.ClassNameToGenerate,
+			target.InterfaceName,
+			target.FullNamespace,
+			context,
+			logger);
 	}
 }

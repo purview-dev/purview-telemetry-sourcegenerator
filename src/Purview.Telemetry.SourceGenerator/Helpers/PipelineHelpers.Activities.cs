@@ -48,7 +48,11 @@ partial class PipelineHelpers {
 			logger,
 			token);
 
+		var telemetryGeneration = SharedHelpers.GetTelemetryGenerationAttribute(interfaceSymbol, semanticModel, logger, token);
+
 		return new(
+			TelemetryGeneration: telemetryGeneration,
+
 			ClassNameToGenerate: className,
 			ClassNamespace: Utilities.GetNamespace(interfaceDeclaration),
 
