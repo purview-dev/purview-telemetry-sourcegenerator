@@ -77,4 +77,30 @@ public interface ITestActivities {
 		// Assert
 		await TestHelpers.Verify(generationResult);
 	}
+
+	[Fact]
+	async public Task Generate_GivenBasicGenWithNullableParams_GeneratesActivity() {
+		// Arrange
+		const string basicActivity = @"
+using Purview.Telemetry.Activities;
+using System.Diagnostics;
+
+namespace Testing;
+
+[ActivityTarget(""testing-activity-source"")]
+public interface ITestActivities {
+	[ActivityGen]
+	Activity? Activity([Baggage]string? stringParam, [Tag]int? intParam, bool? boolParam);
+
+	[ActivityGen]
+	Activity? Event([Baggage]string? stringParam, [Tag]int? intParam, bool? boolParam);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicActivity);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
 }

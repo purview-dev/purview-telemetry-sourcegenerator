@@ -7,19 +7,22 @@ using Purview.Telemetry.SourceGenerator.Records;
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class ActivityTargetClassEmitter {
-	static void EmitTagsOrBaggageParameters(StringBuilder builder, int indent, string activityVariableName, bool isTag, ImmutableArray<ActivityMethodParameterTarget> parameters) {
+	static void EmitTagsOrBaggageParameters(StringBuilder builder, int indent, string activityVariableName, bool isTag, ImmutableArray<ActivityMethodParameterTarget> parameters, bool checkForNullableActivity) {
 		if (parameters.Length == 0) {
 			return;
 		}
 
-		builder
-			.AppendLine()
-			.Append(indent, "if (", withNewLine: false)
-			.Append(activityVariableName)
-			.AppendLine(" != null)")
-			.Append(indent, '{');
+		if (checkForNullableActivity) {
+			builder
+				.AppendLine()
+				.Append(indent, "if (", withNewLine: false)
+				.Append(activityVariableName)
+				.AppendLine(" != null)")
+				.Append(indent, '{');
 
-		indent++;
+			indent++;
+		}
+
 		foreach (var param in parameters) {
 			if (param.SkipOnNullOrEmpty) {
 				builder
@@ -52,9 +55,11 @@ partial class ActivityTargetClassEmitter {
 			}
 		}
 
-		builder
-			.Append(--indent, '}')
-		;
+		if (checkForNullableActivity) {
+			builder
+				.Append(--indent, '}')
+			;
+		}
 	}
 
 	static bool GuardParameters(ActivityMethodGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger,

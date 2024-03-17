@@ -84,6 +84,9 @@ partial class MeterTargetClassEmitter {
 		}
 
 		if (!method.IsObservable) {
+			var unit = method.InstrumentAttribute!.Unit?.Value?.Wrap();
+			var description = method.InstrumentAttribute!.Description?.Value?.Wrap();
+
 			builder
 				.Append(indent, method.FieldName, withNewLine: false)
 				.Append(" = ")
@@ -95,9 +98,9 @@ partial class MeterTargetClassEmitter {
 				.Append(">(name: ")
 				.Append(method.MetricName.Wrap())
 				.Append(", unit: ")
-				.Append(method.InstrumentAttribute!.Unit!.Or(Constants.System.NullKeyword))
+				.Append(unit ?? Constants.System.NullKeyword)
 				.Append(", description: ")
-				.Append(method.InstrumentAttribute!.Description!.Or(Constants.System.NullKeyword))
+				.Append(description ?? Constants.System.NullKeyword)
 				.AppendLine(", tags: null);")
 			;
 		}

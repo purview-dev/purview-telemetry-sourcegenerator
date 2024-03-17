@@ -227,6 +227,10 @@ static class Utilities {
 		=> parameterType == (Constants.System.IEnumerable.FullName + "<" + fullTypeName + ">")
 		|| parameterType.StartsWith(Constants.System.IEnumerable.FullName + "<" + fullTypeName, StringComparison.Ordinal);
 
+	static public bool IsBoolean(ITypeSymbol type)
+		=> type.ToDisplayString() == Constants.System.Boolean
+			|| Constants.System.Boolean.Equals(type);
+
 	static public bool IsString(ITypeSymbol type)
 		=> type.ToDisplayString() == Constants.System.StringKeyword
 			|| Constants.System.String.Equals(type);

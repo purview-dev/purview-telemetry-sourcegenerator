@@ -21,11 +21,9 @@ class Program {
 
 		var a = Activity.Current;
 
-
-
 		ActivityEvent e = new("", tags: at);
 
-		a.AddEvent(e);
+		a?.AddEvent(e);
 	}
 }
 

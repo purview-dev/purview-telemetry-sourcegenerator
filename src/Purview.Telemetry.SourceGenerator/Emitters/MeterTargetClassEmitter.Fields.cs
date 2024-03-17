@@ -24,6 +24,8 @@ partial class MeterTargetClassEmitter {
 		foreach (var method in target.InstrumentationMethods) {
 			if (method.ErrorDiagnostics.Length > 0) {
 				foreach (var diagnostic in method.ErrorDiagnostics) {
+					logger?.Diagnostic($"{diagnostic.Id}: {diagnostic.Description}");
+
 					TelemetryDiagnostics.Report(context.ReportDiagnostic, diagnostic, method.MethodLocation);
 				}
 

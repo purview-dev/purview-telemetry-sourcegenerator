@@ -20,9 +20,12 @@ namespace Testing
 		readonly System.Diagnostics.Metrics.Meter _meter;
 
 		readonly System.Diagnostics.Metrics.Counter<System.Int32> _counterInstrument;
-		readonly System.Diagnostics.Metrics.Counter<System.Int32> _counter2Instrument;
-		readonly System.Diagnostics.Metrics.Counter<System.Int32> _counter3Instrument;
-		readonly System.Diagnostics.Metrics.Counter<System.Int32> _counter4Instrument;
+		readonly System.Diagnostics.Metrics.Counter<System.Byte> _counter2Instrument;
+		readonly System.Diagnostics.Metrics.Counter<System.Int64> _counter3Instrument;
+		readonly System.Diagnostics.Metrics.Counter<System.Int16> _counter4Instrument;
+		readonly System.Diagnostics.Metrics.Counter<System.Double> _counter5Instrument;
+		readonly System.Diagnostics.Metrics.Counter<System.Single> _counter6Instrument;
+		readonly System.Diagnostics.Metrics.Counter<System.Decimal> _counter7Instrument;
 
 		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
@@ -37,9 +40,12 @@ namespace Testing
 			});
 
 			_counterInstrument = _meter.CreateCounter<System.Int32>(name: "Counter", unit: null, description: null, tags: null);
-			_counter2Instrument = _meter.CreateCounter<System.Int32>(name: "Counter2", unit: null, description: null, tags: null);
-			_counter3Instrument = _meter.CreateCounter<System.Int32>(name: "Counter3", unit: null, description: null, tags: null);
-			_counter4Instrument = _meter.CreateCounter<System.Int32>(name: "Counter4", unit: null, description: null, tags: null);
+			_counter2Instrument = _meter.CreateCounter<System.Byte>(name: "Counter2", unit: null, description: null, tags: null);
+			_counter3Instrument = _meter.CreateCounter<System.Int64>(name: "Counter3", unit: null, description: null, tags: null);
+			_counter4Instrument = _meter.CreateCounter<System.Int16>(name: "Counter4", unit: null, description: null, tags: null);
+			_counter5Instrument = _meter.CreateCounter<System.Double>(name: "Counter5", unit: null, description: null, tags: null);
+			_counter6Instrument = _meter.CreateCounter<System.Single>(name: "Counter6", unit: null, description: null, tags: null);
+			_counter7Instrument = _meter.CreateCounter<System.Decimal>(name: "Counter7", unit: null, description: null, tags: null);
 		}
 
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
@@ -54,27 +60,27 @@ namespace Testing
 			_counterInstrument.Add(counterValue, tagList: counterTagList);
 		}
 
-		public void Counter2(int intParam, bool boolParam)
+		public void Counter2(byte counterValue, int intParam, bool boolParam)
 		{
 			System.Diagnostics.TagList counter2TagList = new System.Diagnostics.TagList();
 
 			counter2TagList.Add("intparam", intParam);
 			counter2TagList.Add("boolparam", boolParam);
 
-			_counter2Instrument.Add(1, tagList: counter2TagList);
+			_counter2Instrument.Add(counterValue, tagList: counter2TagList);
 		}
 
-		public void Counter3(int intParam, bool boolParam)
+		public void Counter3(long counterValue, int intParam, bool boolParam)
 		{
 			System.Diagnostics.TagList counter3TagList = new System.Diagnostics.TagList();
 
 			counter3TagList.Add("intparam", intParam);
 			counter3TagList.Add("boolparam", boolParam);
 
-			_counter3Instrument.Add(1, tagList: counter3TagList);
+			_counter3Instrument.Add(counterValue, tagList: counter3TagList);
 		}
 
-		public void Counter4(int counterValue, int intParam, bool boolParam)
+		public void Counter4(short counterValue, int intParam, bool boolParam)
 		{
 			System.Diagnostics.TagList counter4TagList = new System.Diagnostics.TagList();
 
@@ -82,6 +88,36 @@ namespace Testing
 			counter4TagList.Add("boolparam", boolParam);
 
 			_counter4Instrument.Add(counterValue, tagList: counter4TagList);
+		}
+
+		public void Counter5(double counterValue, int intParam, bool boolParam)
+		{
+			System.Diagnostics.TagList counter5TagList = new System.Diagnostics.TagList();
+
+			counter5TagList.Add("intparam", intParam);
+			counter5TagList.Add("boolparam", boolParam);
+
+			_counter5Instrument.Add(counterValue, tagList: counter5TagList);
+		}
+
+		public void Counter6(float counterValue, int intParam, bool boolParam)
+		{
+			System.Diagnostics.TagList counter6TagList = new System.Diagnostics.TagList();
+
+			counter6TagList.Add("intparam", intParam);
+			counter6TagList.Add("boolparam", boolParam);
+
+			_counter6Instrument.Add(counterValue, tagList: counter6TagList);
+		}
+
+		public void Counter7(decimal counterValue, int intParam, bool boolParam)
+		{
+			System.Diagnostics.TagList counter7TagList = new System.Diagnostics.TagList();
+
+			counter7TagList.Add("intparam", intParam);
+			counter7TagList.Add("boolparam", boolParam);
+
+			_counter7Instrument.Add(counterValue, tagList: counter7TagList);
 		}
 	}
 }

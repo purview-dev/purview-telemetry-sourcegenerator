@@ -14,14 +14,48 @@ public interface ITestMetrics {
 	[Counter]
 	void Counter(int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[Counter(autoIncrement: true)]
-	void Counter2([Tag]int intParam, [Tag]bool boolParam);
-
-	[Counter(AutoIncrement = true)]
-	void Counter3([Tag]int intParam, [Tag]bool boolParam);
+	[Counter]
+	void Counter2(byte counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
 	[Counter]
-	void Counter4([InstrumentMeasurement]int counterValue, [Tag]int intParam, [Tag]bool boolParam);
+	void Counter3(long counterValue, [Tag]int intParam, [Tag]bool boolParam);
+
+	[Counter]
+	void Counter4([InstrumentMeasurement]short counterValue, [Tag]int intParam, [Tag]bool boolParam);
+
+	[Counter]
+	void Counter5([InstrumentMeasurement]double counterValue, [Tag]int intParam, [Tag]bool boolParam);
+
+	[Counter]
+	void Counter6([InstrumentMeasurement]float counterValue, [Tag]int intParam, [Tag]bool boolParam);
+
+	[Counter]
+	void Counter7([InstrumentMeasurement]decimal counterValue, [Tag]int intParam, [Tag]bool boolParam);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicMetric);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
+	async public Task Generate_GivenBasicCountersWithAutoIncrement_GeneratesMetrics() {
+		// Arrange
+		const string basicMetric = @"
+using Purview.Telemetry.Metrics;
+
+namespace Testing;
+
+[MeterTarget(""testing-meter"")]
+public interface ITestMetrics {
+	[Counter(autoIncrement: true)]
+	void Counter1([Tag]int intParam, [Tag]bool boolParam);
+
+	[Counter(AutoIncrement = true)]
+	void Counter2([Tag]int intParam, [Tag]bool boolParam);
 }
 ";
 

@@ -10,11 +10,15 @@ sealed public partial class TelemetrySourceGenerator : IIncrementalGenerator, IL
 	public void Initialize(IncrementalGeneratorInitializationContext context) {
 		// Register all of the shared attributes we need.
 		context.RegisterPostInitializationOutput(ctx => {
+			_logger?.Debug("--- Adding templates.");
+
 			foreach (var template in Constants.GetAllTemplates()) {
 				_logger?.Debug($"Adding {template.Name} as {template.GetGeneratedFilename()}.");
 
 				ctx.AddSource(template.GetGeneratedFilename(), template.TemplateData);
 			}
+
+			_logger?.Debug("--- Finished adding templates.");
 		});
 
 		RegisterActivitiesGeneration(context, _logger);

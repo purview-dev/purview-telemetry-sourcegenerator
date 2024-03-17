@@ -26,10 +26,7 @@ namespace Testing
 			if (activityActivity != null)
 			{
 				activityActivity.SetTag("intparam", intParam);
-				if (boolParam != default)
-				{
-					activityActivity.SetTag("boolparam", boolParam);
-				}
+				activityActivity.SetTag("boolparam", boolParam);
 			}
 
 			if (activityActivity != null)
@@ -44,18 +41,11 @@ namespace Testing
 			{
 				System.Diagnostics.ActivityTagsCollection tagsCollectionEvent = new System.Diagnostics.ActivityTagsCollection();
 				tagsCollectionEvent.Add("intparam", intParam);
-				if (boolParam != default)
-				{
-					tagsCollectionEvent.Add("boolparam", boolParam);
-				}
+				tagsCollectionEvent.Add("boolparam", boolParam);
 				System.Diagnostics.ActivityEvent activityEventEvent = new System.Diagnostics.ActivityEvent(name: "Event", timestamp: default, tags: tagsCollectionEvent);
 
 				System.Diagnostics.Activity.Current.AddEvent(activityEventEvent);
-
-				if (System.Diagnostics.Activity.Current != null)
-				{
-					System.Diagnostics.Activity.Current.SetBaggage("stringparam", stringParam);
-				}
+				System.Diagnostics.Activity.Current.SetBaggage("stringparam", stringParam);
 			}
 		}
 

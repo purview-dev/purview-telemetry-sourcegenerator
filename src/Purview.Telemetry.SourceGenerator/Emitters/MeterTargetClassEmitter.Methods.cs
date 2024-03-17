@@ -41,6 +41,16 @@ partial class MeterTargetClassEmitter {
 
 		logger?.Debug($"Emitting instrument method: {methodTarget.MethodName}.");
 
+		if (methodTarget.InstrumentAttribute == null) {
+			// Bad things are afoot.
+			return;
+		}
+
+		if (!methodTarget.InstrumentAttribute.IsAutoIncrement && methodTarget.MeasurementParameter == null) {
+			// Already pushed the diagnostic somewhere else.
+			return;
+		}
+
 		builder
 			.AppendLine()
 			.Append(indent, "public ", withNewLine: false)
@@ -48,7 +58,10 @@ partial class MeterTargetClassEmitter {
 	;
 
 		if (methodTarget.IsNullableReturn) {
-			builder.Append('?');
+			// This is incase we support something like this in the fure.
+			builder
+				.Append('?')
+			;
 		}
 
 		builder
@@ -145,8 +158,15 @@ partial class MeterTargetClassEmitter {
 		}
 		else {
 			builder
-				.Append(indent + 1, "return;")
+				.Append(indent + 1, "return", withNewLine: false)
 			;
+
+			if (method.ReturnsBool) {
+				builder.AppendLine(" false;");
+			}
+			else {
+				builder.AppendLine(';');
+			}
 		}
 
 		builder
@@ -157,6 +177,9 @@ partial class MeterTargetClassEmitter {
 
 	static void EmitObservableInstrumentBody(StringBuilder builder, int indent, InstrumentMethodGenerationTarget method, string? tagVariableName, IGenerationLogger? logger) {
 		indent++;
+
+		var unit = method.InstrumentAttribute!.Unit?.Value?.Wrap();
+		var description = method.InstrumentAttribute!.Description?.Value?.Wrap();
 
 		builder
 			.Append(indent, method.FieldName, withNewLine: false)
@@ -171,9 +194,9 @@ partial class MeterTargetClassEmitter {
 			.Append(", ")
 			.Append(method.MeasurementParameter!.ParameterName)
 			.Append(", unit: ")
-			.Append(method.InstrumentAttribute!.Unit!.Or(Constants.System.NullKeyword))
+			.Append(unit ?? Constants.System.NullKeyword)
 			.Append(", description: ")
-			.Append(method.InstrumentAttribute!.Description!.Or(Constants.System.NullKeyword))
+			.Append(description ?? Constants.System.NullKeyword)
 		;
 
 		if (tagVariableName != null) {
@@ -186,6 +209,13 @@ partial class MeterTargetClassEmitter {
 		builder
 			.AppendLine(");")
 		;
+
+		if (method.ReturnsBool) {
+			builder
+				.AppendLine()
+				.Append(indent, "return true;")
+			;
+		}
 	}
 
 	static void EmitInstrumentBody(StringBuilder builder, int indent, InstrumentMethodGenerationTarget methodTarget, string? tagVariableName, IGenerationLogger? logger) {

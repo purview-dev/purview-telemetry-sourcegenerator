@@ -143,7 +143,7 @@ partial class ActivityTargetClassEmitter {
 			.AppendLine(");")
 		;
 
-		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, false, methodTarget.Baggage);
+		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, false, methodTarget.Baggage, false);
 
 		builder
 			.Append(--indent, '}')

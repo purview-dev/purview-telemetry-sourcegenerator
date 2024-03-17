@@ -24,6 +24,7 @@ record MeterGenerationTarget(
 record InstrumentMethodGenerationTarget(
 	string MethodName,
 	string ReturnType,
+	bool ReturnsBool,
 	bool IsNullableReturn,
 
 	string FieldName,
@@ -50,7 +51,11 @@ record InstrumentAttributeRecord(
 	AttributeValue<bool>? AutoIncrement,
 	AttributeValue<bool>? ThrowOnAlreadyInitialized,
 	InstrumentTypes InstrumentType
-);
+) {
+	public bool IsAutoIncrement => AutoIncrement?.Value ?? false;
+
+	public bool IsObservable => InstrumentType is InstrumentTypes.ObservableCounter or InstrumentTypes.ObservableGauge or InstrumentTypes.ObservableUpDownCounter;
+}
 
 record InstrumentMethodParameterTarget(
 	string ParameterName,

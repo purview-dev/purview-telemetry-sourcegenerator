@@ -26,10 +26,7 @@ namespace Testing
 			if (activityActivity != null)
 			{
 				activityActivity.SetTag("intparam", intParam);
-				if (boolParam != default)
-				{
-					activityActivity.SetTag("boolparam", boolParam);
-				}
+				activityActivity.SetTag("boolparam", boolParam);
 			}
 
 			if (activityActivity != null)
@@ -47,10 +44,7 @@ namespace Testing
 			if (activityEvent != null)
 			{
 				activityEvent.SetTag("intparam", intParam);
-				if (boolParam != default)
-				{
-					activityEvent.SetTag("boolparam", boolParam);
-				}
+				activityEvent.SetTag("boolparam", boolParam);
 			}
 
 			if (activityEvent != null)

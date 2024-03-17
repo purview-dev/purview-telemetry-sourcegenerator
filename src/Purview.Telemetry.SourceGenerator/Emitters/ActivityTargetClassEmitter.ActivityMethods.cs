@@ -111,8 +111,8 @@ partial class ActivityTargetClassEmitter {
 
 		context.CancellationToken.ThrowIfCancellationRequested();
 
-		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, true, methodTarget.Tags);
-		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, false, methodTarget.Baggage);
+		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, true, methodTarget.Tags, true);
+		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, false, methodTarget.Baggage, true);
 
 		context.CancellationToken.ThrowIfCancellationRequested();
 

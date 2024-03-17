@@ -107,9 +107,7 @@ partial class PipelineHelpers {
 				metricName = method.Name;
 			}
 
-			var isObservable = instrumentAttribute?.InstrumentType is
-				InstrumentTypes.ObservableCounter or InstrumentTypes.ObservableGauge or InstrumentTypes.ObservableUpDownCounter;
-			var validAutoCounter = instrumentAttribute?.InstrumentType is InstrumentTypes.Counter && instrumentAttribute.AutoIncrement?.Value == true;
+			var validAutoCounter = instrumentAttribute?.InstrumentType is InstrumentTypes.Counter && instrumentAttribute.IsAutoIncrement;
 
 			List<TelemetryDiagnosticDescriptor> errorDiagnostics = [];
 			if (instrumentAttribute == null) {
@@ -126,11 +124,9 @@ partial class PipelineHelpers {
 				}
 				else {
 					// Validate the parameters and type.
-					if (isObservable) {
-						if (isObservable) {
-							if (!measurementParameter!.IsFunc) {
-								errorDiagnostics.Add(TelemetryDiagnostics.Metrics.ObservableRequiredFunc);
-							}
+					if (instrumentAttribute.IsObservable) {
+						if (!measurementParameter!.IsFunc) {
+							errorDiagnostics.Add(TelemetryDiagnostics.Metrics.ObservableRequiredFunc);
 						}
 					}
 					else {
@@ -147,16 +143,21 @@ partial class PipelineHelpers {
 				errorDiagnostics.Add(TelemetryDiagnostics.Metrics.InvalidMeasurementType);
 			}
 
+			var returnsBool = Utilities.IsBoolean(method.ReturnType);
+
 			if (!method.ReturnsVoid) {
-				errorDiagnostics.Add(TelemetryDiagnostics.Metrics.DoesNotReturnVoid);
+				if (!(instrumentAttribute?.IsObservable == true && returnsBool)) {
+					errorDiagnostics.Add(TelemetryDiagnostics.Metrics.DoesNotReturnVoid);
+				}
 			}
 
 			methodTargets.Add(new(
 				MethodName: method.Name,
 				ReturnType: returnType,
+				ReturnsBool: returnsBool,
 				IsNullableReturn: method.ReturnType.NullableAnnotation == NullableAnnotation.Annotated,
 				FieldName: fieldName,
-				IsObservable: isObservable,
+				IsObservable: instrumentAttribute?.IsObservable == true,
 
 				MetricName: metricName!,
 				InstrumentMeasurementType: instrumentMeasurementType,
@@ -224,6 +225,8 @@ partial class PipelineHelpers {
 											if (isValidInstrumentType) {
 												instrumentType = Utilities.GetFullyQualifiedName(measurementType.TypeArguments[0]);
 												destination = InstrumentParameterDestination.Measurement;
+
+												logger?.Debug($"Found valid instrument type: Func -> IEnumerable -> Measurement -> {instrumentType}");
 											}
 										}
 									}
@@ -235,11 +238,17 @@ partial class PipelineHelpers {
 								if (isValidInstrumentType) {
 									instrumentType = Utilities.GetFullyQualifiedName(typeArg.TypeArguments[0]);
 									destination = InstrumentParameterDestination.Measurement;
+
+									logger?.Debug($"Found valid instrument type: Func -> Measurement -> {instrumentType}");
 								}
 							}
 							else if (SharedHelpers.IsValidMeasurementValueType(typeArg)) {
 								isValidInstrumentType = true;
+
+								instrumentType = Utilities.GetFullyQualifiedName(typeArg);
 								destination = InstrumentParameterDestination.Measurement;
+
+								logger?.Debug($"Found valid instrument type: Func -> {instrumentType}");
 							}
 						}
 						else {
@@ -247,6 +256,8 @@ partial class PipelineHelpers {
 							if (isValidInstrumentType) {
 								instrumentType = Utilities.GetFullyQualifiedName(parameterType.TypeArguments[0]);
 								destination = InstrumentParameterDestination.Measurement;
+
+								logger?.Debug($"Found valid instrument type: Func -> {instrumentType}");
 							}
 						}
 					}
@@ -256,13 +267,25 @@ partial class PipelineHelpers {
 						if (isValidInstrumentType) {
 							instrumentType = Utilities.GetFullyQualifiedName(parameterType);
 							destination = InstrumentParameterDestination.Measurement;
+
+							logger?.Debug($"Found valid instrument type: {instrumentType}");
 						}
 					}
 				}
 			}
 
+			if (destination == InstrumentParameterDestination.Unknown) {
+				logger?.Debug($"Unable to match parameter {parameter.Name}, inferring tag.");
+				destination = InstrumentParameterDestination.Tag;
+			}
+
 			var parameterName = parameter.Name;
 			var generatedName = GenerateParameterName(tagAttribute?.Name?.Value ?? parameterName, prefix, lowercaseTagKeys);
+
+			// Don't 'simplify' this as changing the default value of the skipOnNullOrEmpty parameter will change the behavior.
+			var skipOnNullOrEmpty = tagAttribute?.SkipOnNullOrEmpty?.IsSet == true
+				? tagAttribute!.SkipOnNullOrEmpty!.Value!.Value
+				: Constants.Shared.SkipOnNullOrEmptyDefault;
 
 			parameterTargets.Add(new(
 				ParameterName: parameterName,
@@ -278,8 +301,7 @@ partial class PipelineHelpers {
 				IsNullable: parameter.NullableAnnotation == NullableAnnotation.Annotated,
 				GeneratedName: generatedName,
 				ParamDestination: destination,
-				SkipOnNullOrEmpty: (tagAttribute?.SkipOnNullOrEmpty?.IsSet) != true
-					|| tagAttribute!.SkipOnNullOrEmpty!.Value!.Value,
+				SkipOnNullOrEmpty: skipOnNullOrEmpty,
 
 				Location: parameter.Locations.FirstOrDefault()
 			));
