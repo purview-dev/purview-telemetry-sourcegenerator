@@ -188,18 +188,13 @@ partial class PipelineHelpers {
 			var parameterType = parameter.Type.ToDisplayString().TrimEnd('?');
 			var generatedName = GenerateParameterName(tagOrBaggageAttribute?.Name?.Value ?? parameterName, prefix, lowercaseBaggageAndTagKeys);
 
-			// Don't 'simplify' this as changing the default value of the skipOnNullOrEmpty parameter will change the behavior.
-			var skipOnNullOrEmpty = tagOrBaggageAttribute?.SkipOnNullOrEmpty?.IsSet == true
-				? tagOrBaggageAttribute!.SkipOnNullOrEmpty!.Value!.Value
-				: Constants.Shared.SkipOnNullOrEmptyDefault;
-
 			parameterTargets.Add(new(
 				ParameterName: parameterName,
 				ParameterType: parameterType,
 				IsNullable: parameter.Type.NullableAnnotation == NullableAnnotation.Annotated,
 				GeneratedName: generatedName,
 				ParamDestination: destination,
-				SkipOnNullOrEmpty: skipOnNullOrEmpty,
+				SkipOnNullOrEmpty: GetSkipOnNullOrEmptyValue(tagOrBaggageAttribute),
 				Location: parameter.Locations.FirstOrDefault()
 			));
 		}

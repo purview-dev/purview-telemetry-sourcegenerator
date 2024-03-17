@@ -28,12 +28,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Include="purview-logo.png" Pack="true" PackagePath="" />
 		<EmbeddedResource Remove="bin\**" />
 		<None Remove="bin\**" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Include="..\Purview.Telemetry.Shared\Constants.cs" Link="CoreConstants.cs" />
+		<Compile Include="..\Purview.Telemetry.Shared\CoreConstants.cs" Link="CoreConstants.cs" />
 
 		<Compile Remove="Templates\Sources\**\*.cs" />
 		<EmbeddedResource Include="Templates\Sources\**\*.cs" />
@@ -49,7 +50,7 @@
 		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Metrics\**\*.cs" LinkBase="Templates\Sources\Metrics\" />
 
 		<EmbeddedResource Include="..\Purview.Telemetry.Shared\TagAttribute.cs" Link="Templates\Sources\TagAttribute.cs" />
-		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Constants.cs" Link="Templates\Sources\Constants.cs" />
+		<EmbeddedResource Include="..\Purview.Telemetry.Shared\CoreConstants.cs" Link="Templates\Sources\Constants.cs" />
 
 	</ItemGroup>
 

@@ -282,11 +282,6 @@ partial class PipelineHelpers {
 			var parameterName = parameter.Name;
 			var generatedName = GenerateParameterName(tagAttribute?.Name?.Value ?? parameterName, prefix, lowercaseTagKeys);
 
-			// Don't 'simplify' this as changing the default value of the skipOnNullOrEmpty parameter will change the behavior.
-			var skipOnNullOrEmpty = tagAttribute?.SkipOnNullOrEmpty?.IsSet == true
-				? tagAttribute!.SkipOnNullOrEmpty!.Value!.Value
-				: Constants.Shared.SkipOnNullOrEmptyDefault;
-
 			parameterTargets.Add(new(
 				ParameterName: parameterName,
 				ParameterType: parameter.Type.ToDisplayString(),
@@ -301,7 +296,7 @@ partial class PipelineHelpers {
 				IsNullable: parameter.NullableAnnotation == NullableAnnotation.Annotated,
 				GeneratedName: generatedName,
 				ParamDestination: destination,
-				SkipOnNullOrEmpty: skipOnNullOrEmpty,
+				SkipOnNullOrEmpty: GetSkipOnNullOrEmptyValue(tagAttribute),
 
 				Location: parameter.Locations.FirstOrDefault()
 			));

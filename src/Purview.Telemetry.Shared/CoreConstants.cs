@@ -1,5 +1,6 @@
 ﻿namespace Purview.Telemetry;
 
+// Do not rename to filename.
 static partial class Constants {
 	public const string EmbedAttributesHashDefineName = "PURVIEW_TELEMETRY_EMBED_ATTRIBUTES";
 

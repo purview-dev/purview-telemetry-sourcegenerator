@@ -6,12 +6,12 @@ namespace TelemetryRoslynTestHarness;
 
 class Program {
 
-	static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.String, System.Int32, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.String, System.Int32>("Test.Log: stringParam: {StringParam}, intParam: {IntParam}");
+	readonly static System.Func<Microsoft.Extensions.Logging.ILogger, System.String, System.Int32, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.String, System.Int32>("Test.Log: stringParam: {StringParam}, intParam: {IntParam}");
 
 	static void Main(string[] args) {
 		Console.WriteLine("Hello, World!");
 
-		IBasicLogger logger = new BasicLoggerCore(null);
+		IBasicLogger logger = new BasicLoggerCore(default!);
 
 		ActivitySource xx = new("asda");
 
