@@ -22,7 +22,7 @@ env:
 defaults:
   run:
     shell: pwsh
-    working-directory: ./src
+    working-directory: /src
 
 jobs:
   create_nuget:
