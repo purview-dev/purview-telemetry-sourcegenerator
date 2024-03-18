@@ -5,6 +5,8 @@ using Purview.Telemetry.Activities;
 namespace Purview.Telemetry.SourceGenerator.Records;
 
 record ActivityGenerationTarget(
+	TelemetryGenerationAttributeRecord TelemetryGeneration,
+
 	string ClassNameToGenerate,
 	string ClassNamespace,
 

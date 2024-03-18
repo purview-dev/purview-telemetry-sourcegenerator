@@ -1,9 +1,6 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.Metrics;
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.Extensions.Logging;
 using Purview.Telemetry.Logging;
 using Purview.Telemetry.SourceGenerator.BuildTools;
 using Purview.Telemetry.SourceGenerator.Helpers;
@@ -112,9 +109,10 @@ abstract public class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 		AdditionalText[]? additionalTexts = null,
 		ImmutableDictionary<string, string>? globalOptions = null,
 		Func<Project, Project>? projectModifier = null,
+		bool disableDependencyInjection = true,
 		bool autoIncludeUsings = true,
 		bool debugLog = true) {
-		return await GenerateAsync(Text(csharpDocument, autoIncludeUsings: autoIncludeUsings), additionalTexts, globalOptions, projectModifier, debugLog);
+		return await GenerateAsync(Text(csharpDocument, autoIncludeUsings: autoIncludeUsings), additionalTexts, globalOptions, projectModifier, disableDependencyInjection, debugLog);
 	}
 
 	async protected Task<GenerationResult> GenerateAsync(
@@ -122,8 +120,9 @@ abstract public class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 		AdditionalText[]? additionalTexts = null,
 		ImmutableDictionary<string, string>? globalOptions = null,
 		Func<Project, Project>? projectModifier = null,
+		bool disableDependencyInjection = true,
 		bool debugLog = true) {
-		return await GenerateAsync([csharpDocument], additionalTexts, globalOptions, projectModifier, debugLog);
+		return await GenerateAsync([csharpDocument], additionalTexts, globalOptions, projectModifier, disableDependencyInjection, debugLog);
 	}
 
 	async protected Task<GenerationResult> GenerateAsync(
@@ -131,6 +130,7 @@ abstract public class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 			AdditionalText[]? additionalTexts = null,
 			ImmutableDictionary<string, string>? globalOptions = null,
 			Func<Project, Project>? projectModifier = null,
+			bool disableDependencyInjection = true,
 			bool debugLog = true) {
 
 		CSharpParseOptions parseOptions = new(kind: SourceCodeKind.Regular, documentationMode: DocumentationMode.Parse);
@@ -140,8 +140,18 @@ abstract public class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 			globalOptions = globalOptions.SetItem("purview_debug_log", "true");
 		}
 
-		var optionsProvider = TestAnalyzerConfigOptionsProvider.Empty
+		var optionsProvider = TestAnalyzerConfigOptionsProvider
+			.Empty
 			.WithGlobalOptions(new TestAnalyzerConfigOptions(globalOptions));
+
+		if (disableDependencyInjection) {
+			csharpDocuments =
+			[
+				.. csharpDocuments,
+				Text("[assembly: Purview.Telemetry.TelemetryGeneration(GenerateDependencyExtension = false)]", autoIncludeUsings: false)
+			];
+		}
+
 		if (additionalTexts is not null && additionalTexts.Length != 0) {
 			var map = ImmutableDictionary.CreateBuilder<object, AnalyzerConfigOptions>();
 			foreach (var text in additionalTexts) {
@@ -205,11 +215,15 @@ abstract public class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 				.AddMetadataReference(MetadataReference.CreateFromFile(Assembly.Load("netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51").Location))
 				.AddMetadataReference(MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location))
 
+				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(System.ComponentModel.EditorBrowsableAttribute).Assembly.Location))
+				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(IServiceProvider).Assembly.Location))
+
 				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(LogGeneratedLevel).Assembly.Location))
 
-				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(LogLevel).Assembly.Location))
-				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(Activity).Assembly.Location))
-				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(Meter).Assembly.Location))
+				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(Microsoft.Extensions.Logging.LogLevel).Assembly.Location))
+				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(System.Diagnostics.Activity).Assembly.Location))
+				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(System.Diagnostics.Metrics.Meter).Assembly.Location))
+				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(Microsoft.Extensions.DependencyInjection.IServiceCollection).Assembly.Location))
 			;
 		}
 
