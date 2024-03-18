@@ -11,7 +11,7 @@ partial class SharedHelpers {
 		IGenerationLogger? logger,
 		CancellationToken token
 	) {
-		if (!Utilities.TryContainsAttribute(symbol, Constants.Logging.LogEntryAttribute, token, out var attributeData)) {
+		if (!Utilities.TryContainsAttribute(symbol, Constants.Logging.LogTargetAttribute, token, out var attributeData)) {
 			return null;
 		}
 
@@ -22,16 +22,16 @@ partial class SharedHelpers {
 
 		if (!AttributeParser(attributeData!,
 		(name, value) => {
-			if (name.Equals(nameof(LogEntryAttribute.Level), StringComparison.OrdinalIgnoreCase)) {
+			if (name.Equals(nameof(LogTargetAttribute.Level), StringComparison.OrdinalIgnoreCase)) {
 				level = new((LogGeneratedLevel)value);
 			}
-			else if (name.Equals(nameof(LogEntryAttribute.MessageTemplate), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals(nameof(LogTargetAttribute.MessageTemplate), StringComparison.OrdinalIgnoreCase)) {
 				messageTemplate = new((string)value);
 			}
-			else if (name.Equals(nameof(LogEntryAttribute.EventId), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals(nameof(LogTargetAttribute.EventId), StringComparison.OrdinalIgnoreCase)) {
 				eventId = new((int)value);
 			}
-			else if (name.Equals(nameof(LogEntryAttribute.EntryName), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals(nameof(LogTargetAttribute.EntryName), StringComparison.OrdinalIgnoreCase)) {
 				nameValue = new((string)value);
 			}
 		}, semanticModel, logger, token)) {
@@ -95,7 +95,7 @@ partial class SharedHelpers {
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(LoggerDefaultsAttribute.DefaultLevel), StringComparison.OrdinalIgnoreCase)) {
+			if (name.Equals(nameof(LoggerGenerationAttribute.DefaultLevel), StringComparison.OrdinalIgnoreCase)) {
 				defaultLevel = new((LogGeneratedLevel)value);
 			}
 		}, semanticModel, logger, token)) {

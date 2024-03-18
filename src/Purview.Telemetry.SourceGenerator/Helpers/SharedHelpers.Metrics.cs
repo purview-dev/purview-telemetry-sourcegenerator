@@ -8,7 +8,7 @@ partial class SharedHelpers {
 	static public MeterAssemblyAttributeRecord? GetMeterAssemblyAttribute(SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token) {
 		token.ThrowIfCancellationRequested();
 
-		if (!Utilities.TryContainsAttribute(semanticModel.Compilation.Assembly, Constants.Metrics.MeterAssemblyAttribute, token, out var attributeData))
+		if (!Utilities.TryContainsAttribute(semanticModel.Compilation.Assembly, Constants.Metrics.MeterGenerationAttribute, token, out var attributeData))
 			return null;
 
 		return GetMeterAssemblyAttribute(attributeData!, semanticModel, logger, token);
@@ -75,16 +75,16 @@ partial class SharedHelpers {
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(MeterAssemblyAttribute.InstrumentPrefix), StringComparison.OrdinalIgnoreCase)) {
+			if (name.Equals(nameof(MeterGenerationAttribute.InstrumentPrefix), StringComparison.OrdinalIgnoreCase)) {
 				instrumentPrefix = new((string)value);
 			}
-			else if (name.Equals(nameof(MeterAssemblyAttribute.InstrumentSeparator), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals(nameof(MeterGenerationAttribute.InstrumentSeparator), StringComparison.OrdinalIgnoreCase)) {
 				instrumentSeparator = new((string)value);
 			}
-			else if (name.Equals(nameof(MeterAssemblyAttribute.LowercaseInstrumentName), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals(nameof(MeterGenerationAttribute.LowercaseInstrumentName), StringComparison.OrdinalIgnoreCase)) {
 				lowercaseInstrumentName = new((bool)value);
 			}
-			else if (name.Equals(nameof(MeterAssemblyAttribute.LowercaseTagKeys), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals(nameof(MeterGenerationAttribute.LowercaseTagKeys), StringComparison.OrdinalIgnoreCase)) {
 				lowercaseTagKeys = new((bool)value);
 			}
 		}, semanticModel, logger, token)) {
@@ -128,10 +128,10 @@ partial class SharedHelpers {
 			else if (name.Equals(nameof(InstrumentAttributeBase.Description), StringComparison.OrdinalIgnoreCase)) {
 				description = new((string)value);
 			}
-			else if (name.Equals(nameof(CounterAttribute.AutoIncrement), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals(nameof(CounterTargetAttribute.AutoIncrement), StringComparison.OrdinalIgnoreCase)) {
 				autoIncrement = new((bool)value);
 			}
-			else if (name.Equals(nameof(ObservableCounterAttribute.ThrowOnAlreadyInitialized), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals(nameof(ObservableCounterTargetAttribute.ThrowOnAlreadyInitialized), StringComparison.OrdinalIgnoreCase)) {
 				throwOnAlreadyInitialized = new((bool)value);
 			}
 		}, semanticModel, logger, token)) {
@@ -140,22 +140,22 @@ partial class SharedHelpers {
 		}
 
 		InstrumentTypes instrumentType;
-		if (Constants.Metrics.CounterAttribute.Equals(attributeData.AttributeClass)) {
+		if (Constants.Metrics.CounterTargetAttribute.Equals(attributeData.AttributeClass)) {
 			instrumentType = InstrumentTypes.Counter;
 		}
-		else if (Constants.Metrics.HistogramAttribute.Equals(attributeData.AttributeClass)) {
+		else if (Constants.Metrics.HistogramTargetAttribute.Equals(attributeData.AttributeClass)) {
 			instrumentType = InstrumentTypes.Histogram;
 		}
-		else if (Constants.Metrics.UpDownCounterAttribute.Equals(attributeData.AttributeClass)) {
+		else if (Constants.Metrics.UpDownCounterTargetAttribute.Equals(attributeData.AttributeClass)) {
 			instrumentType = InstrumentTypes.UpDownCounter;
 		}
-		else if (Constants.Metrics.ObservableCounterAttribute.Equals(attributeData.AttributeClass)) {
+		else if (Constants.Metrics.ObservableCounterTargetAttribute.Equals(attributeData.AttributeClass)) {
 			instrumentType = InstrumentTypes.ObservableCounter;
 		}
-		else if (Constants.Metrics.ObservableUpDownCounterAttribute.Equals(attributeData.AttributeClass)) {
+		else if (Constants.Metrics.ObservableUpDownCounterTargetAttribute.Equals(attributeData.AttributeClass)) {
 			instrumentType = InstrumentTypes.ObservableUpDownCounter;
 		}
-		else if (Constants.Metrics.ObservableGaugeAttribute.Equals(attributeData.AttributeClass)) {
+		else if (Constants.Metrics.ObservableGaugeTargetAttribute.Equals(attributeData.AttributeClass)) {
 			instrumentType = InstrumentTypes.ObservableGauge;
 		}
 		else {

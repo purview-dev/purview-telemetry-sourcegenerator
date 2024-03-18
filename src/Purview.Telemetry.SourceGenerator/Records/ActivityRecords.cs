@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Purview.Telemetry.Activities;
 
 namespace Purview.Telemetry.SourceGenerator.Records;
 
@@ -23,23 +22,6 @@ record ActivityGenerationTarget(
 	ImmutableArray<ActivityMethodGenerationTarget> ActivityMethods
 ,
 	ActivityTargetAttributeRecord ActivityTargetAttributeRecord
-);
-
-record ActivityTargetAttributeRecord(
-	AttributeStringValue ActivitySource,
-	AttributeStringValue ClassName,
-	AttributeValue<bool> DefaultToTags,
-	AttributeStringValue BaggageAndTagPrefix,
-	AttributeValue<bool> IncludeActivitySourcePrefix,
-	AttributeValue<bool> LowercaseBaggageAndTagKeys
-);
-
-record ActivitySourceAttributeRecord(
-	AttributeStringValue Name,
-	AttributeValue<bool> DefaultToTags,
-	AttributeStringValue BaggageAndTagPrefix,
-	AttributeStringValue BaggageAndTagSeparator,
-	AttributeValue<bool> LowercaseBaggageAndTagKeys
 );
 
 record ActivityMethodGenerationTarget(
@@ -80,13 +62,3 @@ enum ActivityParameterDestination {
 	StartTime,
 	Timestamp
 }
-
-record ActivityGenAttributeRecord(
-	AttributeStringValue Name,
-	AttributeValue<ActivityGeneratedKind> Kind,
-	AttributeValue<bool> CreateOnly
-);
-
-record ActivityEventAttributeRecord(
-	AttributeStringValue Name
-);

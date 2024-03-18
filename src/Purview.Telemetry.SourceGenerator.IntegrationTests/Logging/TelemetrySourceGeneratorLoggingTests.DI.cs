@@ -14,7 +14,7 @@ namespace Testing;
 
 [LoggerTarget]
 public interface ITestLogger {
-	[LogEntry]
+	[LogTarget]
 	void Log(string stringParam, int intParam, bool boolParam);
 }
 ";
@@ -38,7 +38,7 @@ namespace Testing;
 [TelemetryGeneration(GenerateDependencyExtension = true)]
 [LoggerTarget]
 public interface ITestLogger {
-	[LogEntry]
+	[LogTarget]
 	void Log(string stringParam, int intParam, bool boolParam);
 }
 ";
@@ -64,7 +64,7 @@ namespace Testing;
 [TelemetryGeneration(GenerateDependencyExtension = true)]
 [LoggerTarget]
 public interface ITestLogger {
-	[LogEntry]
+	[LogTarget]
 	void Log(string stringParam, int intParam, bool boolParam);
 }
 ";
@@ -90,7 +90,7 @@ namespace Testing;
 [TelemetryGeneration(GenerateDependencyExtension = false)]
 [LoggerTarget]
 public interface ITestLogger {
-	[LogEntry]
+	[LogTarget]
 	void Log(string stringParam, int intParam, bool boolParam);
 }
 ";

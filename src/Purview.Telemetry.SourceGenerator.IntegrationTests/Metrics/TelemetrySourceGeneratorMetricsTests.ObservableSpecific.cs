@@ -11,13 +11,13 @@ namespace Testing;
 
 [MeterTarget(""testing-meter"")]
 public interface ITestMetrics {
-	[ObservableCounter]
+	[ObservableCounterTarget]
 	bool Counter(Func<int> counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableGauge]
+	[ObservableGaugeTarget]
 	bool Gauge(Func<int> counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableUpDownCounter]
+	[ObservableUpDownCounterTarget]
 	bool UpDown(Func<int> counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";
@@ -39,13 +39,13 @@ namespace Testing;
 
 [MeterTarget(""testing-meter"")]
 public interface ITestMetrics {
-	[ObservableCounter(ThrowOnAlreadyInitialized = true)]
+	[ObservableCounterTarget(ThrowOnAlreadyInitialized = true)]
 	bool Counter(Func<int> counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableGauge(ThrowOnAlreadyInitialized = true)]
+	[ObservableGaugeTarget(ThrowOnAlreadyInitialized = true)]
 	bool Gauge(Func<int> counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableUpDownCounter(ThrowOnAlreadyInitialized = true)]
+	[ObservableUpDownCounterTarget(ThrowOnAlreadyInitialized = true)]
 	bool UpDown(Func<int> counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";

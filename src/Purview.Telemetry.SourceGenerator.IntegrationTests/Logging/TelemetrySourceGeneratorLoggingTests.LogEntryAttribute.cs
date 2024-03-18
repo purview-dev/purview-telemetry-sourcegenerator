@@ -4,7 +4,7 @@ namespace Purview.Telemetry.SourceGenerator.Logging;
 partial class TelemetrySourceGeneratorLoggingTests {
 	[Theory]
 	[MemberData(nameof(GetEntryNames))]
-	async public Task Generate_GivenLogEntryWithEntryName_GenerateLogger(string logEntryName) {
+	async public Task Generate_GivenLogTargetWithEntryName_GenerateLogger(string LogTargetName) {
 		// Arrange
 		string basicLogger = @$"
 using Purview.Telemetry.Logging;
@@ -13,7 +13,7 @@ namespace Testing;
 
 [LoggerTarget]
 public interface ITestLogger {{
-	[LogEntry(EntryName = ""{logEntryName}"")]
+	[LogTarget(EntryName = ""{LogTargetName}"")]
 	void Log(string stringParam, int intParam, bool boolParam);
 }}
 ";
@@ -22,12 +22,12 @@ public interface ITestLogger {{
 		GenerationResult generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
-		await TestHelpers.Verify(generationResult, c => c.UseHashedParameters(logEntryName));
+		await TestHelpers.Verify(generationResult, c => c.UseHashedParameters(LogTargetName));
 	}
 
 	[Theory]
 	[MemberData(nameof(GetPrefixAndEntryNames))]
-	async public Task Generate_GivenLogEntryWithPrefixAndEntryName_GenerateLogger(LogPrefixType type, string logEntryName) {
+	async public Task Generate_GivenLogTargetWithPrefixAndEntryName_GenerateLogger(LogPrefixType type, string LogTargetName) {
 		// Arrange
 		string prefixType = type switch {
 			LogPrefixType.Default => "",
@@ -42,7 +42,7 @@ namespace Testing;
 
 [LoggerTarget(PrefixType = LogPrefixType.{type}{prefixType})]
 public interface ITestLogger {{
-	[LogEntry(EntryName = ""{logEntryName}"")]
+	[LogTarget(EntryName = ""{LogTargetName}"")]
 	void Log(string stringParam, int intParam, bool boolParam);
 }}
 ";
@@ -51,7 +51,7 @@ public interface ITestLogger {{
 		GenerationResult generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
-		await TestHelpers.Verify(generationResult, c => c.UseHashedParameters(type, logEntryName));
+		await TestHelpers.Verify(generationResult, c => c.UseHashedParameters(type, LogTargetName));
 	}
 
 	static public TheoryData<LogPrefixType, string> GetPrefixAndEntryNames() {
@@ -77,8 +77,8 @@ public interface ITestLogger {{
 	}
 
 	readonly static string[] _testEntryNames = [
-		"LogNameSetViaLogEntryAttribute",
-		"CustomLogNameSetViaLogEntryAttribute",
+		"LogNameSetViaLogTargetAttribute",
+		"CustomLogNameSetViaLogTargetAttribute",
 		"123",
 		"custom-log-entry-name"
 	];

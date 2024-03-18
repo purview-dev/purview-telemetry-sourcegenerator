@@ -18,19 +18,19 @@ partial class Constants {
 		public const string Tag_ExceptionMessage = "exception.message";
 		public const string Tag_ExceptionStackTrace = "exception.stacktrace";
 
-		readonly static public TemplateInfo ActivitySourceAttribute = TemplateInfo.Create<Telemetry.Activities.ActivitySourceAttribute>();
+		readonly static public TemplateInfo ActivitySourceGenerationAttribute = TemplateInfo.Create<Telemetry.Activities.ActivitySourceGenerationAttribute>();
+		readonly static public TemplateInfo ActivitySourceTargetAttribute = TemplateInfo.Create<Telemetry.Activities.ActivitySourceTargetAttribute>();
 		readonly static public TemplateInfo ActivityTargetAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityTargetAttribute>();
-		readonly static public TemplateInfo ActivityGenAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityGenAttribute>();
-		readonly static public TemplateInfo ActivityEventAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityEventAttribute>();
+		readonly static public TemplateInfo EventTargetAttribute = TemplateInfo.Create<Telemetry.Activities.EventTargetAttribute>();
 		readonly static public TemplateInfo ActivityGeneratedKind = TemplateInfo.Create<Telemetry.Activities.ActivityGeneratedKind>();
 		readonly static public TemplateInfo ActivityExcludeAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityExcludeAttribute>();
 		readonly static public TemplateInfo BaggageAttribute = TemplateInfo.Create<Telemetry.Activities.BaggageAttribute>();
 
 		static public TemplateInfo[] GetTemplates() => [
-				ActivitySourceAttribute,
+				ActivitySourceGenerationAttribute,
+				ActivitySourceTargetAttribute,
 				ActivityTargetAttribute,
-				ActivityGenAttribute,
-				ActivityEventAttribute,
+				EventTargetAttribute,
 				ActivityGeneratedKind,
 				ActivityExcludeAttribute,
 				BaggageAttribute

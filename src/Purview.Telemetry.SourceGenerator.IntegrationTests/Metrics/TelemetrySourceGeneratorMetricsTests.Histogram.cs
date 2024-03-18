@@ -11,10 +11,10 @@ namespace Testing;
 
 [MeterTarget(""testing-meter"")]
 public interface ITestMetrics {
-	[Histogram]
+	[HistogramTarget]
 	void Histogram(int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[Histogram]
+	[HistogramTarget]
 	void Histogram1([InstrumentMeasurement]int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";

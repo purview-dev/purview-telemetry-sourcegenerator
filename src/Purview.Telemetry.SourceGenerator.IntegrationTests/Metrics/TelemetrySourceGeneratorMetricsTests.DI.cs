@@ -14,7 +14,7 @@ namespace Testing;
 
 [MeterTarget(""testing-meter"")]
 public interface ITestMetrics {
-	[Counter]
+	[CounterTarget]
 	void Counter(int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";
@@ -38,7 +38,7 @@ namespace Testing;
 [MeterTarget(""testing-meter"")]
 [TelemetryGeneration(GenerateDependencyExtension = true)]
 public interface ITestMetrics {
-	[Counter]
+	[CounterTarget]
 	void Counter(int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";
@@ -64,7 +64,7 @@ namespace Testing;
 [MeterTarget(""testing-meter"")]
 [TelemetryGeneration(GenerateDependencyExtension = true)]
 public interface ITestMetrics {
-	[Counter]
+	[CounterTarget]
 	void Counter(int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";
@@ -90,7 +90,7 @@ namespace Testing;
 [MeterTarget(""testing-meter"")]
 [TelemetryGeneration(GenerateDependencyExtension = false)]
 public interface ITestMetrics {
-	[Counter]
+	[CounterTarget]
 	void Counter(int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";

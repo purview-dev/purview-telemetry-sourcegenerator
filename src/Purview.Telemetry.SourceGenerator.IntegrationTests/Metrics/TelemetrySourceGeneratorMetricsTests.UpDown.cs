@@ -12,10 +12,10 @@ namespace Testing;
 
 [MeterTarget(""testing-meter"")]
 public interface ITestMetrics {
-	[UpDownCounter]
+	[UpDownCounterTarget]
 	void UpDown(int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[UpDownCounter]
+	[UpDownCounterTarget]
 	void UpDown2([InstrumentMeasurement]int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";
@@ -39,13 +39,13 @@ namespace Testing;
 
 [MeterTarget(""testing-observable-meter"")]
 public interface ITestMetrics {
-	[ObservableUpDownCounter]
+	[ObservableUpDownCounterTarget]
 	void ObservableUpDown(Func<int> f, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableUpDownCounter(ThrowOnAlreadyInitialized = true)]
+	[ObservableUpDownCounterTarget(ThrowOnAlreadyInitialized = true)]
 	void ObservableUpDown2(Func<Measurement<int>> f, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableUpDownCounter]
+	[ObservableUpDownCounterTarget]
 	void ObservableUpDown3(Func<IEnumerable<Measurement<int>>> f, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";

@@ -11,25 +11,25 @@ namespace Testing;
 
 [MeterTarget(""testing-meter"")]
 public interface ITestMetrics {
-	[Counter]
+	[CounterTarget]
 	void Counter(int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[Counter]
+	[CounterTarget]
 	void Counter2(byte counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[Counter]
+	[CounterTarget]
 	void Counter3(long counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[Counter]
+	[CounterTarget]
 	void Counter4([InstrumentMeasurement]short counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[Counter]
+	[CounterTarget]
 	void Counter5([InstrumentMeasurement]double counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[Counter]
+	[CounterTarget]
 	void Counter6([InstrumentMeasurement]float counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[Counter]
+	[CounterTarget]
 	void Counter7([InstrumentMeasurement]decimal counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";
@@ -51,10 +51,10 @@ namespace Testing;
 
 [MeterTarget(""testing-meter"")]
 public interface ITestMetrics {
-	[Counter(autoIncrement: true)]
+	[CounterTarget(autoIncrement: true)]
 	void Counter1([Tag]int intParam, [Tag]bool boolParam);
 
-	[Counter(AutoIncrement = true)]
+	[CounterTarget(AutoIncrement = true)]
 	void Counter2([Tag]int intParam, [Tag]bool boolParam);
 }
 ";
@@ -78,13 +78,13 @@ namespace Testing;
 
 [MeterTarget(""testing-observable-meter"")]
 public interface ITestMetrics {
-	[ObservableCounter]
+	[ObservableCounterTarget]
 	void ObservableCounter(Func<int> f, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableCounter(ThrowOnAlreadyInitialized = true)]
+	[ObservableCounterTarget(ThrowOnAlreadyInitialized = true)]
 	void ObservableCounter2(Func<Measurement<int>> f, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableCounter]
+	[ObservableCounterTarget]
 	void ObservableCounter3(Func<IEnumerable<Measurement<int>>> f, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";

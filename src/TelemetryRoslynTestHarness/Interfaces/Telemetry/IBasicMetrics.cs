@@ -5,6 +5,6 @@ namespace TelemetryRoslynTestHarness.Interfaces.Telemetry;
 
 [MeterTarget]
 public interface IBasicMetrics {
-	[ObservableCounter]
+	[ObservableCounterTarget]
 	void ObservableCounter(Func<int> f, [Tag] int intParam, bool boolParam);
 }

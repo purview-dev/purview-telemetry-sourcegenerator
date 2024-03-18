@@ -13,13 +13,13 @@ namespace Testing;
 
 [MeterTarget(""testing-meter"")]
 public interface ITestMetrics {
-	[ObservableGauge]
+	[ObservableGaugeTarget]
 	void ObservableGauge(Func<int> f, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableGauge(ThrowOnAlreadyInitialized = true)]
+	[ObservableGaugeTarget(ThrowOnAlreadyInitialized = true)]
 	void ObservableGauge2(Func<Measurement<int>> f, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableGauge]
+	[ObservableGaugeTarget]
 	void ObservableGauge3(Func<IEnumerable<Measurement<int>>> f, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";

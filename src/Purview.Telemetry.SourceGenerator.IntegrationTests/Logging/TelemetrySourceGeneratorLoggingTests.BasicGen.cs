@@ -11,7 +11,7 @@ namespace Testing;
 
 [LoggerTarget]
 public interface ITestLogger {
-	[LogEntry]
+	[LogTarget]
 	void Log(string stringParam, int intParam, bool boolParam);
 }
 ";
@@ -57,7 +57,7 @@ namespace Testing;
 
 [LoggerTarget]
 public interface ITestLogger {{
-	[LogEntry({level})]
+	[LogTarget({level})]
 	void Log(string stringParam, int intParam, bool boolParam, Exception exception);
 }}
 ";

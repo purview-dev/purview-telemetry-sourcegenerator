@@ -252,7 +252,7 @@ partial class PipelineHelpers {
 	static LoggerDefaultsAttributeRecord? GetLoggerDefaultsAttribute(SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token) {
 		token.ThrowIfCancellationRequested();
 
-		if (!Utilities.TryContainsAttribute(semanticModel.Compilation.Assembly, Constants.Logging.LoggerDefaultsAttribute, token, out var attributeData))
+		if (!Utilities.TryContainsAttribute(semanticModel.Compilation.Assembly, Constants.Logging.LoggerGenerationAttribute, token, out var attributeData))
 			return null;
 
 		return SharedHelpers.GetLoggerDefaultsAttribute(attributeData!, semanticModel, logger, token);

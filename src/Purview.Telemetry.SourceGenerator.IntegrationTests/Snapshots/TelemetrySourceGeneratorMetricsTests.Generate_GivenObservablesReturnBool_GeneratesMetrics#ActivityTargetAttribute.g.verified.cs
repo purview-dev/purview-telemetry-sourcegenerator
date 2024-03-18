@@ -15,46 +15,44 @@
 
 namespace Purview.Telemetry.Activities;
 
-/// <summary>
-/// Marker attribute required for Activity generation.
-/// </summary>
-[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Assembly, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 [System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed class ActivityTargetAttribute : Attribute {
-	/// <summary>
-	/// Constructs a new <see cref="ActivityTargetAttribute"/>.
-	/// </summary>
+
 	public ActivityTargetAttribute() {
 	}
 
-	/// <summary>
-	/// Constructs a new <see cref="ActivityTargetAttribute"/>.
-	/// </summary>
-	/// <param name="activitySource">The <see cref="ActivitySource"/>.</param>
-	/// <param name="className">An optional <see cref="ClassName"/>.</param>
-	public ActivityTargetAttribute(string activitySource, string? className = null) {
-		ActivitySource = activitySource;
-		ClassName = className;
+	public ActivityTargetAttribute(string name) {
+		Name = name;
+	}
+
+	public ActivityTargetAttribute(ActivityGeneratedKind kind) {
+		Kind = kind;
+	}
+
+	public ActivityTargetAttribute(string name, ActivityGeneratedKind kind, bool createOnly = false) {
+		Name = name;
+		Kind = kind;
+		CreateOnly = createOnly;
 	}
 
 	/// <summary>
-	/// Overrides the generated activity source name.
+	/// Optional. Gets the name of the activity.
 	/// </summary>
-	public string? ActivitySource { get; set; }
+	public string? Name { get; set; }
 
 	/// <summary>
-	/// Overrides the class name generated for this activity target.
+	/// Optional. Gets the <see cref="ActivityGeneratedKind">kind</see> of the
+	/// activity. Defaults to <see cref="ActivityGeneratedKind.Internal"/>.
 	/// </summary>
-	public string? ClassName { get; set; }
+	public ActivityGeneratedKind Kind { get; set; } = ActivityGeneratedKind.Internal;
 
-	public bool DefaultToTags { get; set; } = true;
-
-	public string? BaggageAndTagPrefix { get; set; }
-
-	public bool IncludeActivitySourcePrefix { get; set; } = true;
-
-	public bool LowercaseBaggageAndTagKeys { get; set; } = true;
+	/// <summary>
+	/// If true, the Activity is crated via ActivitySource.CreateActivity, meaning it is not started by default. Otherwise
+	/// ActivitySource.StartActivity is used. The default is false.
+	/// </summary>
+	public bool CreateOnly { get; set; }
 }
 
 #endif

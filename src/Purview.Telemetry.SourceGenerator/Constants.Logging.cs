@@ -9,17 +9,17 @@ partial class Constants {
 
 		public const Telemetry.Logging.LogGeneratedLevel DefaultLevel = Telemetry.Logging.LogGeneratedLevel.Information;
 
-		readonly static public TemplateInfo LogEntryAttribute = TemplateInfo.Create<Telemetry.Logging.LogEntryAttribute>();
+		readonly static public TemplateInfo LogTargetAttribute = TemplateInfo.Create<Telemetry.Logging.LogTargetAttribute>();
 		readonly static public TemplateInfo LogGeneratedLevel = TemplateInfo.Create<Telemetry.Logging.LogGeneratedLevel>();
-		readonly static public TemplateInfo LoggerDefaultsAttribute = TemplateInfo.Create<Telemetry.Logging.LoggerDefaultsAttribute>();
+		readonly static public TemplateInfo LoggerGenerationAttribute = TemplateInfo.Create<Telemetry.Logging.LoggerGenerationAttribute>();
 		readonly static public TemplateInfo LoggerTargetAttribute = TemplateInfo.Create<Telemetry.Logging.LoggerTargetAttribute>();
 		readonly static public TemplateInfo LogPrefixType = TemplateInfo.Create<Telemetry.Logging.LogPrefixType>();
 		readonly static public TemplateInfo LogExcludeAttribute = TemplateInfo.Create<Telemetry.Logging.LogExcludeAttribute>();
 
 		static public TemplateInfo[] GetTemplates() => [
-			LogEntryAttribute,
+			LogTargetAttribute,
 			LogGeneratedLevel,
-			LoggerDefaultsAttribute,
+			LoggerGenerationAttribute,
 			LoggerTargetAttribute,
 			LogPrefixType,
 			LogExcludeAttribute

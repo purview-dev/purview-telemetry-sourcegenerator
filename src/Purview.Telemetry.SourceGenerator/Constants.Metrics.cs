@@ -7,27 +7,27 @@ namespace Purview.Telemetry;
 partial class Constants {
 	static public class Metrics {
 		readonly static public TemplateInfo MeterTargetAttribute = TemplateInfo.Create<Telemetry.Metrics.MeterTargetAttribute>();
-		readonly static public TemplateInfo MeterAssemblyAttribute = TemplateInfo.Create<Telemetry.Metrics.MeterAssemblyAttribute>();
+		readonly static public TemplateInfo MeterGenerationAttribute = TemplateInfo.Create<Telemetry.Metrics.MeterGenerationAttribute>();
 
 		readonly static public TemplateInfo InstrumentMeasurementAttribute = TemplateInfo.Create<Telemetry.Metrics.InstrumentMeasurementAttribute>();
 
-		readonly static public TemplateInfo CounterAttribute = TemplateInfo.Create<Telemetry.Metrics.CounterAttribute>();
-		readonly static public TemplateInfo UpDownCounterAttribute = TemplateInfo.Create<Telemetry.Metrics.UpDownCounterAttribute>();
-		readonly static public TemplateInfo HistogramAttribute = TemplateInfo.Create<Telemetry.Metrics.HistogramAttribute>();
+		readonly static public TemplateInfo CounterTargetAttribute = TemplateInfo.Create<Telemetry.Metrics.CounterTargetAttribute>();
+		readonly static public TemplateInfo UpDownCounterTargetAttribute = TemplateInfo.Create<Telemetry.Metrics.UpDownCounterTargetAttribute>();
+		readonly static public TemplateInfo HistogramTargetAttribute = TemplateInfo.Create<Telemetry.Metrics.HistogramTargetAttribute>();
 
-		readonly static public TemplateInfo ObservableCounterAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableCounterAttribute>();
-		readonly static public TemplateInfo ObservableUpDownCounterAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableUpDownCounterAttribute>();
-		readonly static public TemplateInfo ObservableGaugeAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableGaugeAttribute>();
+		readonly static public TemplateInfo ObservableCounterTargetAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableCounterTargetAttribute>();
+		readonly static public TemplateInfo ObservableUpDownCounterTargetAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableUpDownCounterTargetAttribute>();
+		readonly static public TemplateInfo ObservableGaugeTargetAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableGaugeTargetAttribute>();
 
 		readonly static public TemplateInfo MeterExcludeAttribute = TemplateInfo.Create<Telemetry.Metrics.MeterExcludeAttribute>();
 
 		readonly static public TemplateInfo[] ValidInstrumentAttributes = [
-			CounterAttribute,
-			UpDownCounterAttribute,
-			HistogramAttribute,
-			ObservableCounterAttribute,
-			ObservableUpDownCounterAttribute,
-			ObservableGaugeAttribute,
+			CounterTargetAttribute,
+			UpDownCounterTargetAttribute,
+			HistogramTargetAttribute,
+			ObservableCounterTargetAttribute,
+			ObservableUpDownCounterTargetAttribute,
+			ObservableGaugeTargetAttribute,
 		];
 
 		readonly static public string[] ValidMeasurementKeywordTypes = [
@@ -84,17 +84,17 @@ partial class Constants {
 
 		static public TemplateInfo[] GetTemplates() => [
 			MeterTargetAttribute,
-			MeterAssemblyAttribute,
+			MeterGenerationAttribute,
 
 			InstrumentMeasurementAttribute,
 
-			CounterAttribute,
-			UpDownCounterAttribute,
-			HistogramAttribute,
+			CounterTargetAttribute,
+			UpDownCounterTargetAttribute,
+			HistogramTargetAttribute,
 
-			ObservableCounterAttribute,
-			ObservableGaugeAttribute,
-			ObservableUpDownCounterAttribute,
+			ObservableCounterTargetAttribute,
+			ObservableGaugeTargetAttribute,
+			ObservableUpDownCounterTargetAttribute,
 
 			MeterExcludeAttribute
 		];

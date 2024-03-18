@@ -19,27 +19,6 @@ record LoggerGenerationTarget(
 	ImmutableArray<LogEntryMethodGenerationTarget> LogEntryMethods
 );
 
-record LoggerTargetAttributeRecord(
-	AttributeValue<LogGeneratedLevel> DefaultLevel,
-
-	AttributeStringValue ClassName,
-
-	AttributeStringValue CustomPrefix,
-	AttributeValue<LogPrefixType> PrefixType
-);
-
-record LoggerDefaultsAttributeRecord(
-	AttributeValue<LogGeneratedLevel> DefaultLevel
-);
-
-record LogEntryAttributeRecord(
-	AttributeValue<LogGeneratedLevel> Level,
-	AttributeStringValue MessageTemplate,
-	AttributeValue<int> EventId,
-
-	AttributeStringValue Name
-);
-
 record LogEntryMethodGenerationTarget(
 	string MethodName,
 	bool IsScoped,
@@ -75,5 +54,4 @@ record LogEntryMethodParameterTarget(
 	bool IsNullable,
 
 	bool IsException
-) {
-}
+);

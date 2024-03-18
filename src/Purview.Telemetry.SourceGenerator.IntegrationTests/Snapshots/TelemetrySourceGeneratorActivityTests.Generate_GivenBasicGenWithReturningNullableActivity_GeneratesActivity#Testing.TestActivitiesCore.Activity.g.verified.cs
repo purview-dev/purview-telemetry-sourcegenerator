@@ -37,22 +37,22 @@ namespace Testing
 			return activityActivity;
 		}
 
-		public System.Diagnostics.Activity? Event(string stringParam, int intParam, bool boolParam)
+		public System.Diagnostics.Activity? ActivityWithNullableReturnActivity(string stringParam, int intParam, bool boolParam)
 		{
-			System.Diagnostics.Activity? activityEvent = _activitySource.StartActivity(name: "Event", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
+			System.Diagnostics.Activity? activityActivityWithNullableReturnActivity = _activitySource.StartActivity(name: "ActivityWithNullableReturnActivity", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
 
-			if (activityEvent != null)
+			if (activityActivityWithNullableReturnActivity != null)
 			{
-				activityEvent.SetTag("intparam", intParam);
-				activityEvent.SetTag("boolparam", boolParam);
+				activityActivityWithNullableReturnActivity.SetTag("intparam", intParam);
+				activityActivityWithNullableReturnActivity.SetTag("boolparam", boolParam);
 			}
 
-			if (activityEvent != null)
+			if (activityActivityWithNullableReturnActivity != null)
 			{
-				activityEvent.SetBaggage("stringparam", stringParam);
+				activityActivityWithNullableReturnActivity.SetBaggage("stringparam", stringParam);
 			}
 
-			return activityEvent;
+			return activityActivityWithNullableReturnActivity;
 		}
 
 	}

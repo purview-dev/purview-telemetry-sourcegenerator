@@ -24,7 +24,7 @@ partial class PipelineHelpers {
 		var semanticModel = context.SemanticModel;
 		var activityTargetAttribute = SharedHelpers.GetActivityTargetAttribute(context.Attributes[0], semanticModel, logger, token);
 		if (activityTargetAttribute == null) {
-			logger?.Error($"Could not find {Constants.Activities.ActivityTargetAttribute} when one was expected '{interfaceDeclaration.Flatten()}'.");
+			logger?.Error($"Could not find {Constants.Activities.ActivitySourceTargetAttribute} when one was expected '{interfaceDeclaration.Flatten()}'.");
 			return null;
 		}
 
@@ -212,7 +212,7 @@ partial class PipelineHelpers {
 
 		token.ThrowIfCancellationRequested();
 
-		if (Utilities.TryContainsAttribute(method, Constants.Activities.ActivityGenAttribute, token, out var attributeData)) {
+		if (Utilities.TryContainsAttribute(method, Constants.Activities.ActivityTargetAttribute, token, out var attributeData)) {
 			activityGenAttribute = SharedHelpers.GetActivityGenAttribute(attributeData!, semanticModel, logger, token);
 
 			logger?.Debug($"Found explicit activity: {method.Name}.");
@@ -220,7 +220,7 @@ partial class PipelineHelpers {
 			return true;
 		}
 
-		if (Utilities.TryContainsAttribute(method, Constants.Activities.ActivityEventAttribute, token, out attributeData)) {
+		if (Utilities.TryContainsAttribute(method, Constants.Activities.EventTargetAttribute, token, out attributeData)) {
 			eventAttribute = SharedHelpers.GetActivityEventAttribute(attributeData!, semanticModel, logger, token);
 
 			logger?.Debug($"Found explicit event: {method.Name}.");
