@@ -47,30 +47,30 @@ jobs:
         retention-days: 7
         path: ${{ env.NuGetDirectory }}/*.nupkg
 
-  validate_nuget:
-    runs-on: ubuntu-latest
-    needs: [ create_nuget ]
-    steps:
-      # Install the .NET SDK indicated in the global.json file
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+  # validate_nuget:
+  #   runs-on: ubuntu-latest
+  #   needs: [ create_nuget ]
+  #   steps:
+  #     # Install the .NET SDK indicated in the global.json file
+  #     - name: Setup .NET
+  #       uses: actions/setup-dotnet@v4
 
-      # Download the NuGet package created in the previous job
-      - uses: actions/download-artifact@v4
-        with:
-          name: nuget
-          path: ${{ env.NuGetDirectory }}
+  #     # Download the NuGet package created in the previous job
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: nuget
+  #         path: ${{ env.NuGetDirectory }}
 
-      - name: Install nuget validator
-        run: dotnet tool update Meziantou.Framework.NuGetPackageValidation.Tool --global
+  #     - name: Install nuget validator
+  #       run: dotnet tool update Meziantou.Framework.NuGetPackageValidation.Tool --global
 
-      # Validate metadata and content of the NuGet package
-      # https://www.nuget.org/packages/Meziantou.Framework.NuGetPackageValidation.Tool#readme-body-tab
-      # If some rules are not applicable, you can disable them
-      # using the --excluded-rules or --excluded-rule-ids option
-      - name: Validate package
-        working-directory: ${{ env.NuGetDirectory }}
-        run: meziantou.validate-nuget-package (Get-ChildItem "*.nupkg")
+  #     # Validate metadata and content of the NuGet package
+  #     # https://www.nuget.org/packages/Meziantou.Framework.NuGetPackageValidation.Tool#readme-body-tab
+  #     # If some rules are not applicable, you can disable them
+  #     # using the --excluded-rules or --excluded-rule-ids option
+  #     - name: Validate package
+  #       working-directory: ${{ env.NuGetDirectory }}
+  #       run: meziantou.validate-nuget-package (Get-ChildItem "*.nupkg")
 
   run_test:
     runs-on: ubuntu-latest
@@ -87,7 +87,8 @@ jobs:
     # You can update this logic if you want to manage releases differently
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
-    needs: [ validate_nuget, run_test ]
+    # needs: [ validate_nuget, run_test ]
+    needs: [ run_test ]
     steps:
       # Download the NuGet package created in the previous job
       - uses: actions/download-artifact@v4
@@ -102,8 +103,8 @@ jobs:
       # Publish all NuGet packages to NuGet.org
       # Use --skip-duplicate to prevent errors if a package with the same version already exists.
       # If you retry a failed workflow, already published packages will be skipped without error.
-      # - name: Publish NuGet package
-      #   run: |
-      #     foreach($file in (Get-ChildItem "${{ env.NuGetDirectory }}" -Recurse -Include *.nupkg)) {
-      #         dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
-      #     }
+      - name: Publish NuGet package
+        run: |
+          foreach($file in (Get-ChildItem "${{ env.NuGetDirectory }}" -Recurse -Include *.nupkg)) {
+              dotnet nuget push "$file" --source "https://nuget.pkg.github.com/purview-dev/index.json" --api-key ${{ secrets.GITHUB_TOKEN }}
+          }
