@@ -40,9 +40,9 @@ sealed class EventAttribute : Attribute {
 	public bool UseRecordExceptionRules { get; set; } = Constants.Activities.UseRecordExceptionRulesDefault;
 
 	/// <summary>
-	/// Determines if a recorded exception (when <see cref="UseRecordExceptionRules"/> and an exception exists)
+	/// Determines if a recorded exception (when <see cref="UseRecordExceptionRules"/> is true and an exception parameter exists)
 	/// if the exception prevented the operation from completing (true) or if the exception was caught and handled (false)
-	/// and did not affect the operation.
+	/// and did not affect the operation. Alternatives using the <see cref="EscapeAttribute"/> can override this value dynamically.
 	/// </summary>
 	public bool RecordExceptionEscape { get; set; } = Constants.Activities.RecordExceptionEscapeDefault;
 }

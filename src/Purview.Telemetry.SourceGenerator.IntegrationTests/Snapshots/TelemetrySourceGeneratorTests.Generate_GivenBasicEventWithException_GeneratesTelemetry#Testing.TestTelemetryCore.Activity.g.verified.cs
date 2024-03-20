@@ -37,14 +37,14 @@ namespace Testing
 			activity.AddEvent(recordExceptionEvent);
 		}
 
-		public void Event(string stringParam, int intParam, bool boolParam, System.Exception ex)
+		public void Event(string stringParam, int intParam, bool boolParam, System.Exception anException)
 		{
 			if (System.Diagnostics.Activity.Current != null)
 			{
 				System.Diagnostics.ActivityTagsCollection tagsCollectionEvent = new System.Diagnostics.ActivityTagsCollection();
 				tagsCollectionEvent.Add("intparam", intParam);
 				tagsCollectionEvent.Add("boolparam", boolParam);
-				RecordExceptionInternal(activity: System.Diagnostics.Activity.Current, exception: ex, escape: true);
+				RecordExceptionInternal(activity: System.Diagnostics.Activity.Current, exception: anException, escape: true);
 				System.Diagnostics.ActivityEvent activityEventEvent = new System.Diagnostics.ActivityEvent(name: "Event", timestamp: default, tags: tagsCollectionEvent);
 
 				System.Diagnostics.Activity.Current.AddEvent(activityEventEvent);

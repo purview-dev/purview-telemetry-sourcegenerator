@@ -19,6 +19,24 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 	{
 		readonly static System.Diagnostics.ActivitySource _activitySource = new System.Diagnostics.ActivitySource("purview");
 
+		static void RecordExceptionInternal(System.Diagnostics.Activity? activity, System.Exception? exception, bool escape)
+		{
+			if (activity == null || exception == null)
+			{
+				return;
+			}
+
+			System.Diagnostics.ActivityTagsCollection tagsCollection = new System.Diagnostics.ActivityTagsCollection();
+			tagsCollection.Add("exception.escaped", escape);
+			tagsCollection.Add("exception.message", exception.Message);
+			tagsCollection.Add("exception.type", exception.GetType().FullName);
+			tagsCollection.Add("exception.stacktrace", exception.StackTrace);
+
+			System.Diagnostics.ActivityEvent recordExceptionEvent = new System.Diagnostics.ActivityEvent(name: "exception", timestamp: default, tags: tagsCollection);
+
+			activity.AddEvent(recordExceptionEvent);
+		}
+
 		public System.Diagnostics.Activity? GetFromCache()
 		{
 			System.Diagnostics.Activity? activityGetFromCache = _activitySource.StartActivity(name: "GetFromCache", kind: System.Diagnostics.ActivityKind.Client, parentId: default, tags: default, links: default, startTime: default);
@@ -30,6 +48,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		{
 			if (System.Diagnostics.Activity.Current != null)
 			{
+
 				System.Diagnostics.ActivityEvent activityEventNoValueProvided = new System.Diagnostics.ActivityEvent(name: "NoValueProvided", timestamp: default, tags: default);
 
 				System.Diagnostics.Activity.Current.AddEvent(activityEventNoValueProvided);
@@ -72,6 +91,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		{
 			if (System.Diagnostics.Activity.Current != null)
 			{
+
 				System.Diagnostics.ActivityEvent activityEventValueCached = new System.Diagnostics.ActivityEvent(name: "ValueCached", timestamp: default, tags: default);
 
 				System.Diagnostics.Activity.Current.AddEvent(activityEventValueCached);
@@ -82,6 +102,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		{
 			if (System.Diagnostics.Activity.Current != null)
 			{
+
 				System.Diagnostics.ActivityEvent activityEventRequestingValueFromCache = new System.Diagnostics.ActivityEvent(name: "RequestingValueFromCache", timestamp: default, tags: default);
 
 				System.Diagnostics.Activity.Current.AddEvent(activityEventRequestingValueFromCache);
@@ -94,6 +115,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 			{
 				System.Diagnostics.ActivityTagsCollection tagsCollectionCacheHit = new System.Diagnostics.ActivityTagsCollection();
 				tagsCollectionCacheHit.Add("datalength", dataLength);
+
 				System.Diagnostics.ActivityEvent activityEventCacheHit = new System.Diagnostics.ActivityEvent(name: "CacheHit", timestamp: default, tags: tagsCollectionCacheHit);
 
 				System.Diagnostics.Activity.Current.AddEvent(activityEventCacheHit);
@@ -104,6 +126,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		{
 			if (System.Diagnostics.Activity.Current != null)
 			{
+
 				System.Diagnostics.ActivityEvent activityEventCacheMiss = new System.Diagnostics.ActivityEvent(name: "CacheMiss", timestamp: default, tags: default);
 
 				System.Diagnostics.Activity.Current.AddEvent(activityEventCacheMiss);

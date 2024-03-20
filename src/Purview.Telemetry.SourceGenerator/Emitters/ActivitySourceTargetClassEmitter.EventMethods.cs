@@ -112,17 +112,35 @@ partial class ActivitySourceTargetClassEmitter {
 					indent++;
 				}
 
-				if (useRecordedExceptionRules && tagParam.IsException) {
-					builder
-						.Append(indent, Constants.Activities.RecordExceptionMethodName, withNewLine: false)
-						.Append("(activity: ")
-						.Append(activityVariableName)
-						.Append(", exception: ")
-						.Append(tagParam.ParameterName)
-						.Append(", escape: ")
-						.Append(escapeValue)
-						.Append(");")
-					;
+				if (tagParam.IsException) {
+					if (methodTarget.ActivityOrEventName == Constants.Activities.Tag_ExceptionEventName) {
+						// We want the details inside of the current event.
+						EmitExceptionParam(builder, indent, tagsListVariableName, escapeValue, tagParam.ParameterName);
+					}
+					else {
+						if (useRecordedExceptionRules) {
+							builder
+								.Append(indent, Constants.Activities.RecordExceptionMethodName, withNewLine: false)
+								.Append("(activity: ")
+								.Append(activityVariableName)
+								.Append(", exception: ")
+								.Append(tagParam.ParameterName)
+								.Append(", escape: ")
+								.Append(escapeValue)
+								.Append(");")
+							;
+						}
+						else {
+							builder
+								.Append(indent, tagsListVariableName, withNewLine: false)
+								.Append(".Add(")
+								.Append(tagParam.GeneratedName.Wrap())
+								.Append(", ")
+								.Append(tagParam.ParameterName)
+								.AppendLine(".ToString());")
+							;
+						}
+					}
 				}
 				else {
 					builder
@@ -151,30 +169,30 @@ partial class ActivitySourceTargetClassEmitter {
 
 		builder
 			.AppendLine()
-			.Append(indent, Constants.Activities.SystemDiagnostics.ActivityEvent, withNewLine: false)
-			.Append(' ')
-			.Append(eventVariableName)
-			.Append(" = new ")
-			.Append(Constants.Activities.SystemDiagnostics.ActivityEvent)
-			// name:
-			.Append("(name: ")
-			.Append(methodTarget.ActivityOrEventName.Wrap())
-			// timestamp:
-			.Append(", timestamp: ")
-			.Append(timestampParam?.ParameterName ?? "default")
-			// tags:
-			.Append(", tags: ")
-			.Append(tagsParameterName)
-			.AppendLine(");")
-		;
+					.Append(indent, Constants.Activities.SystemDiagnostics.ActivityEvent, withNewLine: false)
+					.Append(' ')
+					.Append(eventVariableName)
+					.Append(" = new ")
+					.Append(Constants.Activities.SystemDiagnostics.ActivityEvent)
+					// name:
+					.Append("(name: ")
+					.Append(methodTarget.ActivityOrEventName.Wrap())
+					// timestamp:
+					.Append(", timestamp: ")
+					.Append(timestampParam?.ParameterName ?? "default")
+					// tags:
+					.Append(", tags: ")
+					.Append(tagsParameterName)
+					.AppendLine(");")
+				;
 
 		builder
 			.AppendLine()
-			.Append(indent, activityVariableName, withNewLine: false)
-			.Append(".AddEvent(")
-			.Append(eventVariableName)
-			.AppendLine(");")
-		;
+					.Append(indent, activityVariableName, withNewLine: false)
+					.Append(".AddEvent(")
+					.Append(eventVariableName)
+					.AppendLine(");")
+				;
 
 		if (methodTarget.Baggage.Length > 0) {
 			builder.AppendLine();
@@ -184,7 +202,7 @@ partial class ActivitySourceTargetClassEmitter {
 
 		builder
 			.Append(--indent, '}')
-		;
+						;
 
 		context.CancellationToken.ThrowIfCancellationRequested();
 

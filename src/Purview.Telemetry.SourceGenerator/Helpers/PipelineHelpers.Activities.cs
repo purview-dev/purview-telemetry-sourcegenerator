@@ -164,7 +164,7 @@ partial class PipelineHelpers {
 				logger?.Debug($"Found explicit baggage: {parameter.Name}.");
 				destination = ActivityParameterDestination.Baggage;
 			}
-			else if (Utilities.ContainsAttribute(parameter, Constants.Activities.EscapedAttribute, token)) {
+			else if (Utilities.ContainsAttribute(parameter, Constants.Activities.EscapeAttribute, token)) {
 				logger?.Debug($"Found escape parameter: {parameter.Name}.");
 				destination = ActivityParameterDestination.Escape;
 			}

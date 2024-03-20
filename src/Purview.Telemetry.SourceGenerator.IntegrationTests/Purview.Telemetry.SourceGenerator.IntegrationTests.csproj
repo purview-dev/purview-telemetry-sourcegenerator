@@ -2,7 +2,13 @@
 
 	<ItemGroup>
 		<Compile Remove="Resources/**/*" />
+		<Compile Remove="Snapshots\**" />
 		<EmbeddedResource Include="Resources/**/*" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Remove="Snapshots\**" />
+	  <None Remove="Snapshots\**" />
 	</ItemGroup>
 
 	<ItemGroup>

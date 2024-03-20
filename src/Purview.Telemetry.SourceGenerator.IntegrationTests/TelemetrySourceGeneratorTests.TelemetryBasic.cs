@@ -57,7 +57,107 @@ namespace Testing;
 public interface ITestTelemetry
 {
 	[Event]
-	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception ex);
+	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicTelemetry);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
+	async public Task Generate_GivenBasicEventWithExceptionAndEscape_GeneratesTelemetry() {
+		// Arrange
+		const string basicTelemetry = @"
+using Purview.Telemetry.Activities;
+using Purview.Telemetry.Logging;
+using Purview.Telemetry.Metrics;
+
+namespace Testing;
+
+[ActivitySource(""activity-source"")]
+public interface ITestTelemetry
+{
+	[Event]
+	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicTelemetry);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
+	async public Task Generate_GivenBasicEventWithExceptionAndDisabledOTelExceptionRulesAndEscape_GeneratesTelemetry() {
+		// Arrange
+		const string basicTelemetry = @"
+using Purview.Telemetry.Activities;
+using Purview.Telemetry.Logging;
+using Purview.Telemetry.Metrics;
+
+namespace Testing;
+
+[ActivitySource(""activity-source"")]
+public interface ITestTelemetry
+{
+	[Event(UseRecordExceptionRules = false)]
+	void EventMethod([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicTelemetry);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
+	async public Task Generate_GivenBasicEventWithExplicitExceptionAndNamedexceptionAndRulesAreFalse_GeneratesTelemetry() {
+		// Arrange
+		const string basicTelemetry = @"
+using Purview.Telemetry.Activities;
+using Purview.Telemetry.Logging;
+using Purview.Telemetry.Metrics;
+
+namespace Testing;
+
+[ActivitySource(""activity-source"")]
+public interface ITestTelemetry
+{
+	[Event(name: ""exception"", UseRecordExceptionRules = false)]
+	void EventMethod([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicTelemetry);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
+	async public Task Generate_GivenBasicEventWithExplicitExceptionAndNamedexceptionAndRulesAreTrue_GeneratesTelemetry() {
+		// Arrange
+		const string basicTelemetry = @"
+using Purview.Telemetry.Activities;
+using Purview.Telemetry.Logging;
+using Purview.Telemetry.Metrics;
+
+namespace Testing;
+	
+[ActivitySource(""activity-source"")]
+public interface ITestTelemetry
+{
+	[Event(name: ""exception"", UseRecordExceptionRules = true)]
+	void EventMethod([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
 }
 ";
 

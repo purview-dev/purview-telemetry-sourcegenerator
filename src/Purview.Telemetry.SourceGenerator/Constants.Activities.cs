@@ -29,7 +29,7 @@ partial class Constants {
 		readonly static public TemplateInfo EventAttribute = TemplateInfo.Create<Telemetry.Activities.EventAttribute>();
 		readonly static public TemplateInfo ContextAttribute = TemplateInfo.Create<Telemetry.Activities.ContextAttribute>();
 		readonly static public TemplateInfo BaggageAttribute = TemplateInfo.Create<Telemetry.Activities.BaggageAttribute>();
-		readonly static public TemplateInfo EscapedAttribute = TemplateInfo.Create<Telemetry.Activities.EscapedAttribute>();
+		readonly static public TemplateInfo EscapeAttribute = TemplateInfo.Create<Telemetry.Activities.EscapeAttribute>();
 		readonly static public TemplateInfo ActivityGeneratedKind = TemplateInfo.Create<Telemetry.Activities.ActivityGeneratedKind>();
 
 		static public TemplateInfo[] GetTemplates() => [
@@ -39,7 +39,7 @@ partial class Constants {
 				EventAttribute,
 				ContextAttribute,
 				BaggageAttribute,
-				EscapedAttribute,
+				EscapeAttribute,
 				ActivityGeneratedKind
 			];
 

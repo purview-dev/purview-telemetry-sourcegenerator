@@ -56,33 +56,7 @@ partial class ActivitySourceTargetClassEmitter {
 			.AppendLine("();")
 		;
 
-		builder
-			.Append(indent, tagsListVariableName, withNewLine: false)
-			.Append(".Add(")
-			.Append(Constants.Activities.Tag_ExceptionEscaped.Wrap())
-			.AppendLine(", escape);")
-		;
-
-		builder
-			.Append(indent, tagsListVariableName, withNewLine: false)
-			.Append(".Add(")
-			.Append(Constants.Activities.Tag_ExceptionMessage.Wrap())
-			.AppendLine(", exception.Message);")
-		;
-
-		builder
-			.Append(indent, tagsListVariableName, withNewLine: false)
-			.Append(".Add(")
-			.Append(Constants.Activities.Tag_ExceptionType.Wrap())
-			.AppendLine(", exception.GetType().FullName);")
-		;
-
-		builder
-			.Append(indent, tagsListVariableName, withNewLine: false)
-			.Append(".Add(")
-			.Append(Constants.Activities.Tag_ExceptionStackTrace.Wrap())
-			.AppendLine(", exception.StackTrace);")
-		;
+		EmitExceptionParam(builder, indent, tagsListVariableName, "escape", "exception");
 
 		const string eventVariableName = "recordExceptionEvent";
 
@@ -114,6 +88,47 @@ partial class ActivitySourceTargetClassEmitter {
 		builder
 			.Append(--indent, '}')
 			.AppendLine()
+		;
+	}
+
+	static void EmitExceptionParam(StringBuilder builder, int indent,
+		string tagsListVariableName,
+		string escapeParam, string exceptionParam) {
+		builder
+
+			.Append(indent, tagsListVariableName, withNewLine: false)
+			.Append(".Add(")
+			.Append(Constants.Activities.Tag_ExceptionEscaped.Wrap())
+			.Append(", ")
+			.Append(escapeParam)
+			.AppendLine(");")
+		;
+
+		builder
+			.Append(indent, tagsListVariableName, withNewLine: false)
+			.Append(".Add(")
+			.Append(Constants.Activities.Tag_ExceptionMessage.Wrap())
+			.Append(", ")
+			.Append(exceptionParam)
+			.AppendLine(".Message);")
+		;
+
+		builder
+			.Append(indent, tagsListVariableName, withNewLine: false)
+			.Append(".Add(")
+			.Append(Constants.Activities.Tag_ExceptionType.Wrap())
+			.Append(", ")
+			.Append(exceptionParam)
+			.AppendLine(".GetType().FullName);")
+		;
+
+		builder
+			.Append(indent, tagsListVariableName, withNewLine: false)
+			.Append(".Add(")
+			.Append(Constants.Activities.Tag_ExceptionStackTrace.Wrap())
+			.Append(", ")
+			.Append(exceptionParam)
+			.AppendLine(".StackTrace);")
 		;
 	}
 
