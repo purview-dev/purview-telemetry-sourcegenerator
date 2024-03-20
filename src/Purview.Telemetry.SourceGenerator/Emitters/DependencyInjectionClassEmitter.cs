@@ -91,6 +91,8 @@ static class DependencyInjectionClassEmitter {
 	static void EmitMethod(StringBuilder builder, int indent, string className, string interfaceName, string? fullyQualifiedNamespace, IGenerationLogger? logger, CancellationToken token) {
 		token.ThrowIfCancellationRequested();
 
+		logger?.Debug($"Emitting DI method for {interfaceName}.");
+
 		builder
 			.Append(indent, "static public ", withNewLine: false)
 			.Append(Constants.DependencyInjection.IServiceCollection)
