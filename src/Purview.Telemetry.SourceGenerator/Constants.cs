@@ -17,11 +17,13 @@ static partial class Constants {
 
 	static public partial class Shared {
 		readonly static public TemplateInfo TagAttribute = TemplateInfo.Create<TagAttribute>();
+		readonly static public TemplateInfo ExcludeAttribute = TemplateInfo.Create<ExcludeAttribute>();
 		readonly static public TemplateInfo TelemetryGenerationAttribute = TemplateInfo.Create<TelemetryGenerationAttribute>();
 		readonly static public TemplateInfo Constants = TemplateInfo.Create(typeof(Constants).FullName);
 
 		static public TemplateInfo[] GetTemplates() => [
 			TagAttribute,
+			ExcludeAttribute,
 			TelemetryGenerationAttribute,
 			Constants
 		];

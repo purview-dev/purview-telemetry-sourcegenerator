@@ -6,6 +6,54 @@ using Purview.Telemetry.SourceGenerator.Records;
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 
 static partial class SharedHelpers {
+	static public GenerationType GetGenerationTypes(ISymbol symbol, CancellationToken token) {
+		token.ThrowIfCancellationRequested();
+
+		var generationType = GenerationType.None;
+
+		if (Utilities.ContainsAttribute(symbol, Constants.Activities.ActivitySourceAttribute, token)) {
+			generationType |= GenerationType.Activities;
+		}
+
+		if (Utilities.ContainsAttribute(symbol, Constants.Logging.LoggerAttribute, token)) {
+			generationType |= GenerationType.Logging;
+		}
+
+		if (Utilities.ContainsAttribute(symbol, Constants.Metrics.MeterAttribute, token)) {
+			generationType |= GenerationType.Metrics;
+		}
+
+		return generationType;
+	}
+
+	static public bool ShouldEmit(GenerationType requestingType, GenerationType generationType) {
+		if (requestingType == generationType) {
+			// There's only one type to generate, so we should always emit.
+			return true;
+		}
+
+		var hasActivities = generationType.HasFlag(GenerationType.Activities);
+		var hasLogging = generationType.HasFlag(GenerationType.Logging);
+		var hasMetrics = generationType.HasFlag(GenerationType.Metrics);
+
+		if (hasMetrics) {
+			// Metrics are the lead. We'll always emit if metrics are requested.
+			// (we needed to pick one, so why not).
+			return requestingType == GenerationType.Metrics;
+		}
+
+		if (hasLogging && (!hasActivities || !hasMetrics)) {
+			return requestingType == GenerationType.Logging;
+		}
+
+		if (hasActivities && (!hasLogging || !hasMetrics)) {
+			return requestingType == GenerationType.Activities;
+		}
+
+		// Should really get here unless the generation type is None.
+		return false;
+	}
+
 	static public bool AttributeParser(
 		AttributeData attributeData,
 		Action<string, object> namedArguments,
@@ -160,19 +208,36 @@ static partial class SharedHelpers {
 	static public TelemetryGenerationAttributeRecord GetTelemetryGenerationAttribute(ISymbol type, SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token) {
 		token.ThrowIfCancellationRequested();
 
-		if (!Utilities.TryContainsAttribute(type, Constants.Shared.TelemetryGenerationAttribute, token, out var attributeData)) {
-			if (!Utilities.TryContainsAttribute(semanticModel.Compilation.Assembly, Constants.Shared.TelemetryGenerationAttribute, token, out attributeData)) {
+		AttributeData? assemblyAttribute = null;
+		if (!Utilities.TryContainsAttribute(type, Constants.Shared.TelemetryGenerationAttribute, token, out var typeAttribute)) {
+			if (!Utilities.TryContainsAttribute(semanticModel.Compilation.Assembly, Constants.Shared.TelemetryGenerationAttribute, token, out assemblyAttribute)) {
 				return createDefault();
 			}
 		}
 
-		return GetTelemetryGenerationAttribute(attributeData!, semanticModel, logger, token)
-			?? createDefault();
+		var assemblyTelemetryGeneration = assemblyAttribute == null
+			? null
+			: GetTelemetryGenerationAttribute(assemblyAttribute, semanticModel, logger, token);
+		var typeGeneration = typeAttribute == null
+			? null
+			: GetTelemetryGenerationAttribute(typeAttribute, semanticModel, logger, token);
+
+		if (assemblyAttribute == null && typeGeneration == null) {
+			// This would be in the case of error at this point.
+			return createDefault();
+		}
+
+		return new(
+			GenerateDependencyExtension: typeGeneration?.GenerateDependencyExtension ?? assemblyTelemetryGeneration?.GenerateDependencyExtension ?? new(Constants.Shared.GenerateDependencyExtensionDefault),
+			ClassName: typeGeneration?.ClassName ?? assemblyTelemetryGeneration?.ClassName ?? new(),
+			DependencyInjectionClassName: typeGeneration?.DependencyInjectionClassName ?? assemblyTelemetryGeneration?.DependencyInjectionClassName ?? new()
+		);
 
 		static TelemetryGenerationAttributeRecord createDefault()
 			=> new(
 				GenerateDependencyExtension: new(Constants.Shared.GenerateDependencyExtensionDefault),
-				ClassNameTemplate: new(Constants.Shared.ClassNameTemplateDefault)
+				ClassName: new(),
+				DependencyInjectionClassName: new()
 			);
 	}
 
@@ -183,15 +248,19 @@ static partial class SharedHelpers {
 		CancellationToken token) {
 
 		AttributeValue<bool>? generateDependencyExtension = null;
-		AttributeStringValue? classNameTemplate = null;
+		AttributeStringValue? className = null;
+		AttributeStringValue? dependencyInjectionClassName = null;
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
 			if (name.Equals(nameof(TelemetryGenerationAttribute.GenerateDependencyExtension), StringComparison.OrdinalIgnoreCase)) {
 				generateDependencyExtension = new((bool)value);
 			}
-			else if (name.Equals(nameof(TelemetryGenerationAttribute.ClassNameTemplate), StringComparison.OrdinalIgnoreCase)) {
-				classNameTemplate = new((string)value);
+			else if (name.Equals(nameof(TelemetryGenerationAttribute.ClassName), StringComparison.OrdinalIgnoreCase)) {
+				className = new((string)value);
+			}
+			else if (name.Equals(nameof(TelemetryGenerationAttribute.DependencyInjectionClassName), StringComparison.OrdinalIgnoreCase)) {
+				dependencyInjectionClassName = new((string)value);
 			}
 		}, semanticModel, logger, token)) {
 			// Failed to parse correctly, so null it out.
@@ -200,7 +269,8 @@ static partial class SharedHelpers {
 
 		return new(
 			GenerateDependencyExtension: generateDependencyExtension ?? new(Constants.Shared.GenerateDependencyExtensionDefault),
-			ClassNameTemplate: classNameTemplate ?? new(Constants.Shared.ClassNameTemplateDefault)
+			ClassName: className ?? new(),
+			DependencyInjectionClassName: dependencyInjectionClassName ?? new()
 		);
 	}
 }

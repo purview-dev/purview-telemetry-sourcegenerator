@@ -9,12 +9,12 @@ using Purview.Telemetry.Metrics;
 
 namespace Testing;
 
-[MeterTarget(""testing-meter"")]
+[Meter(""testing-meter"")]
 public interface ITestMetrics {
-	[HistogramTarget]
+	[Histogram]
 	void Histogram(int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[HistogramTarget]
+	[Histogram]
 	void Histogram1([InstrumentMeasurement]int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";

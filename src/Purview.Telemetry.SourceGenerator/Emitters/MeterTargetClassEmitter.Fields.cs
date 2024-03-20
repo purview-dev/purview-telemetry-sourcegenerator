@@ -13,8 +13,7 @@ partial class MeterTargetClassEmitter {
 		indent++;
 
 		builder
-			.Append(indent, "readonly ", withNewLine: false)
-			.Append(Constants.Metrics.SystemDiagnostics.Meter)
+			.Append(indent, Constants.Metrics.SystemDiagnostics.Meter, withNewLine: false)
 			.Append(' ')
 			.Append(_meterFieldName)
 			.AppendLine(';')
@@ -23,13 +22,20 @@ partial class MeterTargetClassEmitter {
 
 		foreach (var method in target.InstrumentationMethods) {
 			if (method.ErrorDiagnostics.Length > 0) {
+				var isError = false;
 				foreach (var diagnostic in method.ErrorDiagnostics) {
 					logger?.Diagnostic($"{diagnostic.Id}: {diagnostic.Description}");
 
 					TelemetryDiagnostics.Report(context.ReportDiagnostic, diagnostic, method.MethodLocation);
+
+					if (diagnostic.Severity == DiagnosticSeverity.Error) {
+						isError = true;
+					}
 				}
 
-				continue;
+				if (isError) {
+					continue;
+				}
 			}
 
 			if (method.InstrumentAttribute == null) {
@@ -41,21 +47,10 @@ partial class MeterTargetClassEmitter {
 					.MakeGeneric(method.InstrumentMeasurementType);
 
 			builder
-				.Append(indent, method.IsObservable ? "" : "readonly ", withNewLine: false)
-				.Append(type)
-				.Append(method.IsObservable ? "?" : "")
+				.Append(indent, type, withNewLine: false)
 				.Append(' ')
 				.Append(method.FieldName)
-			;
-
-			if (method.IsObservable) {
-				builder
-					.Append(" = null")
-				;
-			}
-
-			builder
-				.AppendLine(';');
+				.AppendLine(';')
 			;
 		}
 

@@ -9,27 +9,27 @@ using Purview.Telemetry.Metrics;
 
 namespace Testing;
 
-[MeterTarget(""testing-meter"")]
+[Meter(""testing-meter"")]
 public interface ITestMetrics {
-	[CounterTarget]
+	[Counter]
 	void Counter(int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[CounterTarget]
+	[Counter]
 	void Counter2(byte counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[CounterTarget]
+	[Counter]
 	void Counter3(long counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[CounterTarget]
+	[Counter]
 	void Counter4([InstrumentMeasurement]short counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[CounterTarget]
+	[Counter]
 	void Counter5([InstrumentMeasurement]double counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[CounterTarget]
+	[Counter]
 	void Counter6([InstrumentMeasurement]float counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[CounterTarget]
+	[Counter]
 	void Counter7([InstrumentMeasurement]decimal counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";
@@ -49,12 +49,12 @@ using Purview.Telemetry.Metrics;
 
 namespace Testing;
 
-[MeterTarget(""testing-meter"")]
+[Meter(""testing-meter"")]
 public interface ITestMetrics {
-	[CounterTarget(autoIncrement: true)]
+	[Counter(autoIncrement: true)]
 	void Counter1([Tag]int intParam, [Tag]bool boolParam);
 
-	[CounterTarget(AutoIncrement = true)]
+	[Counter(AutoIncrement = true)]
 	void Counter2([Tag]int intParam, [Tag]bool boolParam);
 }
 ";
@@ -76,15 +76,15 @@ using System.Collections.Generic;
 
 namespace Testing;
 
-[MeterTarget(""testing-observable-meter"")]
+[Meter(""testing-observable-meter"")]
 public interface ITestMetrics {
-	[ObservableCounterTarget]
+	[ObservableCounter]
 	void ObservableCounter(Func<int> f, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableCounterTarget(ThrowOnAlreadyInitialized = true)]
+	[ObservableCounter(ThrowOnAlreadyInitialized = true)]
 	void ObservableCounter2(Func<Measurement<int>> f, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableCounterTarget]
+	[ObservableCounter]
 	void ObservableCounter3(Func<IEnumerable<Measurement<int>>> f, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";

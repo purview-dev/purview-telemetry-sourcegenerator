@@ -67,6 +67,7 @@ using Purview.Telemetry;
 	async static public Task Verify(GenerationResult generationResult,
 		Action<SettingsTask>? config = null,
 		bool validateNonEmptyDiagnostics = false,
+		bool whenValidatingDiagnosticsIgnoreNonErrors = false,
 		bool validationCompilation = true,
 		bool autoVerifyTemplates = true) {
 
@@ -97,11 +98,16 @@ using Purview.Telemetry;
 
 		await verifierTask;
 
+		var diag = generationResult.Diagnostics.AsEnumerable();
+		if (whenValidatingDiagnosticsIgnoreNonErrors) {
+			diag = diag.Where(m => m.Severity == DiagnosticSeverity.Error);
+		}
+
 		if (validateNonEmptyDiagnostics) {
-			generationResult.Diagnostics.Should().NotBeEmpty();
+			diag.Should().NotBeEmpty();
 		}
 		else {
-			generationResult.Diagnostics.Should().BeEmpty();
+			diag.Should().BeEmpty();
 		}
 
 		if (!validationCompilation) {

@@ -11,15 +11,15 @@ using System.Collections.Generic;
 
 namespace Testing;
 
-[MeterTarget(""testing-meter"")]
+[Meter(""testing-meter"")]
 public interface ITestMetrics {
-	[ObservableGaugeTarget]
+	[ObservableGauge]
 	void ObservableGauge(Func<int> f, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableGaugeTarget(ThrowOnAlreadyInitialized = true)]
+	[ObservableGauge(ThrowOnAlreadyInitialized = true)]
 	void ObservableGauge2(Func<Measurement<int>> f, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableGaugeTarget]
+	[ObservableGauge]
 	void ObservableGauge3(Func<IEnumerable<Measurement<int>>> f, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";

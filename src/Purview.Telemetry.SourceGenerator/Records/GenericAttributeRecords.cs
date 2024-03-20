@@ -7,5 +7,6 @@ record TagOrBaggageAttributeRecord(
 
 record TelemetryGenerationAttributeRecord(
 	AttributeValue<bool> GenerateDependencyExtension,
-	AttributeStringValue ClassNameTemplate
+	AttributeStringValue ClassName,
+	AttributeStringValue DependencyInjectionClassName
 );

@@ -21,7 +21,18 @@ static partial class LoggerTargetClassEmitter {
 		indent = EmitHelpers.EmitClassStart(target.ClassNameToGenerate, target.FullyQualifiedInterfaceName, builder, indent, context.CancellationToken);
 
 		indent = EmitFields(target, builder, indent, context, logger);
-		indent = EmitCtor(target, builder, indent, context, logger);
+
+		indent = ConstructorEmitter.EmitCtor(
+			GenerationType.Logging,
+			target.GenerationType,
+			target.ClassNameToGenerate,
+			target.FullyQualifiedInterfaceName,
+			builder,
+			indent,
+			context,
+			logger
+		);
+
 		indent = EmitMethods(target, builder, indent, context, logger);
 
 		EmitHelpers.EmitClassEnd(builder, indent);
@@ -32,8 +43,10 @@ static partial class LoggerTargetClassEmitter {
 
 		context.AddSource(hintName, Microsoft.CodeAnalysis.Text.SourceText.From(sourceText, Encoding.UTF8));
 
-		SharedEmitter.GenerateImplementation(
+		DependencyInjectionClassEmitter.GenerateImplementation(
+			GenerationType.Logging,
 			target.TelemetryGeneration,
+			target.GenerationType,
 			target.ClassNameToGenerate,
 			target.InterfaceName,
 			target.FullNamespace,

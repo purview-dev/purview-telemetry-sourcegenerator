@@ -17,8 +17,6 @@ namespace Testing
 {
 	sealed partial class TestLoggerCore : Testing.ITestLogger
 	{
-		const Microsoft.Extensions.Logging.LogLevel DEFAULT_LOGLEVEL = Microsoft.Extensions.Logging.LogLevel.Information;
-
 		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
 
 		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.String, System.Int32, System.Boolean, System.Exception?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.String, System.Int32, System.Boolean>(Microsoft.Extensions.Logging.LogLevel.Information, default, "Test.custom-log-entry-name: stringParam: {StringParam}, intParam: {IntParam}, boolParam: {BoolParam}");

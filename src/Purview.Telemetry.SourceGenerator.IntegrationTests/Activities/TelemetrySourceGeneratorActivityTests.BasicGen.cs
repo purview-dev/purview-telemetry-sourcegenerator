@@ -9,12 +9,12 @@ using Purview.Telemetry.Activities;
 
 namespace Testing;
 
-[ActivitySourceTarget(""testing-activity-source"")]
+[ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
-	[ActivityTarget]
+	[Activity]
 	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
-	[EventTarget]
+	[Event]
 	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
@@ -35,12 +35,12 @@ using System.Diagnostics;
 
 namespace Testing;
 
-[ActivitySourceTarget(""testing-activity-source"")]
+[ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
-	[ActivityTarget]
+	[Activity]
 	Activity Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
-	[EventTarget]
+	[Event]
 	Activity Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
@@ -61,12 +61,12 @@ using System.Diagnostics;
 
 namespace Testing;
 
-[ActivitySourceTarget(""testing-activity-source"")]
+[ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
-	[ActivityTarget]
-	Activity? Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	[Activity]
+	Activity Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
-	[ActivityTarget]
+	[Activity]
 	Activity? ActivityWithNullableReturnActivity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
@@ -87,12 +87,12 @@ using System.Diagnostics;
 
 namespace Testing;
 
-[ActivitySourceTarget(""testing-activity-source"")]
+[ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
-	[ActivityTarget]
+	[Activity]
 	Activity? Activity([Baggage]string? stringParam, [Tag]int? intParam, bool? boolParam);
 
-	[ActivityTarget]
+	[Activity]
 	Activity? ActivityWithNullableParams([Baggage]string? stringParam, [Tag]int? intParam, bool? boolParam);
 }
 ";

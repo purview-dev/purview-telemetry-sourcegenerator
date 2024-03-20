@@ -17,8 +17,6 @@ namespace Testing
 {
 	sealed partial class TestLoggerCore : Testing.ITestLogger
 	{
-		const Microsoft.Extensions.Logging.LogLevel DEFAULT_LOGLEVEL = Microsoft.Extensions.Logging.LogLevel.Information;
-
 		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
 
 		static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.String, System.Int32, System.Exception, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.String, System.Int32, System.Exception>("Test.Log: stringParam: {StringParam}, intParam: {IntParam}exception: {Exception}");

@@ -25,8 +25,6 @@ static partial class Constants {
 		public const bool SkipOnNullOrEmptyDefault = false;
 
 		public const bool GenerateDependencyExtensionDefault = true;
-
-		public const string ClassNameTemplateDefault = "{GeneratedClassName}Extensions";
 	}
 }
 

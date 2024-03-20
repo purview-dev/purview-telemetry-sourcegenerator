@@ -9,9 +9,9 @@ using Purview.Telemetry.Logging;
 
 namespace Testing;
 
-[LoggerTarget]
+[Logger]
 public interface ITestLogger {
-	[LogTarget]
+	[Log]
 	void Log(string stringParam, int intParam, bool boolParam);
 }
 ";
@@ -31,7 +31,7 @@ using Purview.Telemetry.Logging;
 
 namespace Testing;
 
-[LoggerTarget]
+[Logger]
 public interface ITestLogger {
 	void Log(string stringParam, int intParam, bool boolParam);
 }
@@ -55,9 +55,9 @@ using Purview.Telemetry.Logging;
 
 namespace Testing;
 
-[LoggerTarget]
+[Logger]
 public interface ITestLogger {{
-	[LogTarget({level})]
+	[Log({level})]
 	void Log(string stringParam, int intParam, bool boolParam, Exception exception);
 }}
 ";
@@ -77,7 +77,7 @@ using Purview.Telemetry.Logging;
 
 namespace Testing;
 
-[LoggerTarget]
+[Logger]
 public interface ITestLogger {
 	void Log(string stringParam, int intParam, bool boolParam, Exception exception);
 }
@@ -98,7 +98,7 @@ using Purview.Telemetry.Logging;
 
 namespace Testing;
 
-[LoggerTarget]
+[Logger]
 public interface ITestLogger {
 	void Log(string stringParam, int intParam, bool boolParam, string stringParam1, int intParam1, bool boolParam1, string stringParam2, int intParam2, bool boolParam2);
 }
@@ -122,7 +122,7 @@ using Purview.Telemetry.Logging;
 
 namespace Testing;
 
-[LoggerTarget]
+[Logger]
 public interface ITestLogger {
 	void Log(string stringParam, Exception exception1, Exception exception2);
 }
@@ -146,7 +146,7 @@ using Purview.Telemetry.Logging;
 
 namespace Testing;
 
-[LoggerTarget]
+[Logger]
 public interface ITestLogger {
 	IDisposable Log();
 }
@@ -167,7 +167,7 @@ using Purview.Telemetry.Logging;
 
 namespace Testing;
 
-[LoggerTarget]
+[Logger]
 public interface ITestLogger {
 	IDisposable Log(string stringParam, int intParam, Exception exception);
 }
@@ -188,7 +188,7 @@ using Purview.Telemetry.Logging;
 
 namespace Testing;
 
-[LoggerTarget]
+[Logger]
 public interface ITestLogger {
 	IDisposable Log(string stringParam, int intParam);
 }

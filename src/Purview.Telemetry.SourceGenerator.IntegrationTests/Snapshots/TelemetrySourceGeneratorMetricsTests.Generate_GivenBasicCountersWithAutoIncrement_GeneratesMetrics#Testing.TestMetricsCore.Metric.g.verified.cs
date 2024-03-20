@@ -17,13 +17,23 @@ namespace Testing
 {
 	sealed partial class TestMetricsCore : Testing.ITestMetrics
 	{
-		readonly System.Diagnostics.Metrics.Meter _meter;
+		System.Diagnostics.Metrics.Meter _meter;
 
-		readonly System.Diagnostics.Metrics.Counter<System.Int32> _counter1Instrument;
-		readonly System.Diagnostics.Metrics.Counter<System.Int32> _counter2Instrument;
+		System.Diagnostics.Metrics.Counter<System.Int32> _counter1Instrument;
+		System.Diagnostics.Metrics.Counter<System.Int32> _counter2Instrument;
 
 		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
+			InitializeMeters(meterFactory);
+		}
+
+		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
+		{
+			if (_meter != null)
+			{
+				throw new System.Exception("The metrics have already been initialized.");
+			}
+
 			System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateMeterTags(meterTags);

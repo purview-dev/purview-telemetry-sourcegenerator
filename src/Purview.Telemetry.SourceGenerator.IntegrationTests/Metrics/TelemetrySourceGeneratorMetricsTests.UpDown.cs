@@ -10,12 +10,12 @@ using Purview.Telemetry.Metrics;
 
 namespace Testing;
 
-[MeterTarget(""testing-meter"")]
+[Meter(""testing-meter"")]
 public interface ITestMetrics {
-	[UpDownCounterTarget]
+	[UpDownCounter]
 	void UpDown(int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[UpDownCounterTarget]
+	[UpDownCounter]
 	void UpDown2([InstrumentMeasurement]int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";
@@ -37,15 +37,15 @@ using System.Collections.Generic;
 
 namespace Testing;
 
-[MeterTarget(""testing-observable-meter"")]
+[Meter(""testing-observable-meter"")]
 public interface ITestMetrics {
-	[ObservableUpDownCounterTarget]
+	[ObservableUpDownCounter]
 	void ObservableUpDown(Func<int> f, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableUpDownCounterTarget(ThrowOnAlreadyInitialized = true)]
+	[ObservableUpDownCounter(ThrowOnAlreadyInitialized = true)]
 	void ObservableUpDown2(Func<Measurement<int>> f, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableUpDownCounterTarget]
+	[ObservableUpDownCounter]
 	void ObservableUpDown3(Func<IEnumerable<Measurement<int>>> f, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";

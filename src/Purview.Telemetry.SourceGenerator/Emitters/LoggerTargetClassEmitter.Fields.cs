@@ -12,35 +12,40 @@ partial class LoggerTargetClassEmitter {
 		indent++;
 
 		builder
-			.Append(indent, "const ", withNewLine: false)
-			.Append(Constants.Logging.MicrosoftExtensions.LogLevel)
-			.Append(' ')
-			.Append(Constants.Logging.DefaultLogLevelConstantName)
-			.Append(" = ")
-			.Append(Utilities.ConvertToMSLogLevel(target.DefaultLevel))
-			.AppendLine(';');
-		;
-
-		builder
-			.AppendLine()
 			.Append(indent, "readonly ", withNewLine: false)
 			.Append(Constants.Logging.MicrosoftExtensions.ILogger)
 			.Append('<')
 			.Append(target.FullyQualifiedInterfaceName)
 			.Append('>')
 			.Append(' ')
-			.Append("_logger;")
+			.Append(Constants.Logging.LoggerFieldName)
+			.Append(';')
 			.AppendLine()
 			.AppendLine()
 		;
 
-		foreach (var methodTarget in target.LogEntryMethods) {
+		foreach (var methodTarget in target.LogMethods) {
 			context.CancellationToken.ThrowIfCancellationRequested();
+
+			if (!methodTarget.TargetGenerationState.IsValid) {
+				if (methodTarget.TargetGenerationState.RaiseMultiGenerationTargetsNotSupported) {
+					logger?.Debug($"Identified {target.InterfaceName}.{methodTarget.MethodName} as problematic as it has another target types.");
+
+					TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.General.MultiGenerationTargetsNotSupported, methodTarget.MethodLocation);
+				}
+				else if (methodTarget.TargetGenerationState.RaiseInferenceNotSupportedWithMultiTargeting) {
+					logger?.Debug($"Identified {target.InterfaceName}.{methodTarget.MethodName} as problematic as it is inferred.");
+
+					TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.General.InferenceNotSupportedWithMultiTargeting, methodTarget.MethodLocation);
+				}
+
+				continue;
+			}
 
 			if (methodTarget.HasMultipleExceptions) {
 				logger?.Diagnostic($"Method has multiple exception parameters, only a single one is permitted.");
 
-				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.MultipleExceptionsDefined, methodTarget.Location);
+				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.MultipleExceptionsDefined, methodTarget.MethodLocation);
 
 				continue;
 			}
@@ -48,7 +53,7 @@ partial class LoggerTargetClassEmitter {
 			if (methodTarget.ParameterCount > Constants.Logging.MaxNonExceptionParameters) {
 				logger?.Diagnostic($"Method has more than 6 parameters.");
 
-				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.MaximumLogEntryParametersExceeded, methodTarget.Location);
+				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.MaximumLogEntryParametersExceeded, methodTarget.MethodLocation);
 
 				continue;
 			}
@@ -56,7 +61,7 @@ partial class LoggerTargetClassEmitter {
 			if (methodTarget.InferredErrorLevel) {
 				logger?.Diagnostic($"Inferring error log level.");
 
-				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.InferringErrorLogLevel, methodTarget.Location);
+				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.InferringErrorLogLevel, methodTarget.MethodLocation);
 			}
 
 			EmitLogActionField(builder, indent, methodTarget);
@@ -65,7 +70,7 @@ partial class LoggerTargetClassEmitter {
 		return --indent;
 	}
 
-	static void EmitLogActionField(StringBuilder builder, int indent, LogEntryMethodGenerationTarget methodTarget) {
+	static void EmitLogActionField(StringBuilder builder, int indent, LogMethodGenerationTarget methodTarget) {
 		builder
 			.Append(indent, "static readonly ", withNewLine: false)
 			.Append(methodTarget.IsScoped ? Constants.System.Func : Constants.System.Action)
@@ -152,7 +157,7 @@ partial class LoggerTargetClassEmitter {
 					.Append('(')
 					.Append(methodTarget.EventId.Value)
 					.Append(", \"")
-					.Append(methodTarget.LogEntryName)
+					.Append(methodTarget.LogName)
 					.Append("\"), ")
 				;
 			}

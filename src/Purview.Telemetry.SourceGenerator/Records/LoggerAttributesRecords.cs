@@ -2,20 +2,18 @@
 
 namespace Purview.Telemetry.SourceGenerator.Records;
 
-record LoggerTargetAttributeRecord(
+record LoggerAttributeRecord(
 	AttributeValue<LogGeneratedLevel> DefaultLevel,
-
-	AttributeStringValue ClassName,
 
 	AttributeStringValue CustomPrefix,
 	AttributeValue<LogPrefixType> PrefixType
 );
 
-record LoggerDefaultsAttributeRecord(
+record LoggerGenerationAttributeRecord(
 	AttributeValue<LogGeneratedLevel> DefaultLevel
 );
 
-record LogEntryAttributeRecord(
+record LogAttributeRecord(
 	AttributeValue<LogGeneratedLevel> Level,
 	AttributeStringValue MessageTemplate,
 	AttributeValue<int> EventId,

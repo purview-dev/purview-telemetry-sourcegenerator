@@ -18,12 +18,12 @@ partial class TelemetrySourceGenerator {
 		// Register
 		var meterTargetsPredicate = context.SyntaxProvider
 			.ForAttributeWithMetadataName(
-				Constants.Metrics.MeterTargetAttribute,
+				Constants.Metrics.MeterAttribute,
 				static (node, token) => PipelineHelpers.HasMeterTargetAttribute(node, token),
 				meterTargetTransform
 			)
 			.WhereNotNull()
-			.WithTrackingName($"{nameof(TelemetrySourceGenerator)}_{nameof(MeterTargetAttribute)}");
+			.WithTrackingName($"{nameof(TelemetrySourceGenerator)}_{nameof(MeterAttribute)}");
 
 		// Build generation (static vs. non-static is for the logger).
 		Action<SourceProductionContext, (Compilation Compilation, ImmutableArray<MeterGenerationTarget?> Targets)> generationMeterAction =

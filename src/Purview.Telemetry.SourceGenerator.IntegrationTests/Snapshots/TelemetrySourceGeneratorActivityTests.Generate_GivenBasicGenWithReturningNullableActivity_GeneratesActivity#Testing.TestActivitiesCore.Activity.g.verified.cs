@@ -19,7 +19,7 @@ namespace Testing
 	{
 		readonly static System.Diagnostics.ActivitySource _activitySource = new System.Diagnostics.ActivitySource("testing-activity-source");
 
-		public System.Diagnostics.Activity? Activity(string stringParam, int intParam, bool boolParam)
+		public System.Diagnostics.Activity Activity(string stringParam, int intParam, bool boolParam)
 		{
 			System.Diagnostics.Activity? activityActivity = _activitySource.StartActivity(name: "Activity", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
 

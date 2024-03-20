@@ -17,8 +17,6 @@ namespace Testing
 {
 	sealed partial class TestLoggerCore : Testing.ITestLogger
 	{
-		const Microsoft.Extensions.Logging.LogLevel DEFAULT_LOGLEVEL = Microsoft.Extensions.Logging.LogLevel.Information;
-
 		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
 
 

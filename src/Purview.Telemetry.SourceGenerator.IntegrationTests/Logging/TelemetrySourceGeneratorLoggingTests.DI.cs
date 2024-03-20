@@ -12,9 +12,9 @@ using Purview.Telemetry.Logging;
 
 namespace Testing;
 
-[LoggerTarget]
+[Logger]
 public interface ITestLogger {
-	[LogTarget]
+	[Log]
 	void Log(string stringParam, int intParam, bool boolParam);
 }
 ";
@@ -36,9 +36,9 @@ using Purview.Telemetry.Logging;
 namespace Testing;
 
 [TelemetryGeneration(GenerateDependencyExtension = true)]
-[LoggerTarget]
+[Logger]
 public interface ITestLogger {
-	[LogTarget]
+	[Log]
 	void Log(string stringParam, int intParam, bool boolParam);
 }
 ";
@@ -62,9 +62,9 @@ using Purview.Telemetry.Logging;
 namespace Testing;
 
 [TelemetryGeneration(GenerateDependencyExtension = true)]
-[LoggerTarget]
+[Logger]
 public interface ITestLogger {
-	[LogTarget]
+	[Log]
 	void Log(string stringParam, int intParam, bool boolParam);
 }
 ";
@@ -88,9 +88,9 @@ using Purview.Telemetry.Logging;
 namespace Testing;
 
 [TelemetryGeneration(GenerateDependencyExtension = false)]
-[LoggerTarget]
+[Logger]
 public interface ITestLogger {
-	[LogTarget]
+	[Log]
 	void Log(string stringParam, int intParam, bool boolParam);
 }
 ";

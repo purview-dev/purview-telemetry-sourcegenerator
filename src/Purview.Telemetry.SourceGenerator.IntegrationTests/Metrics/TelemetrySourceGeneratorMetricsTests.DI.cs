@@ -12,9 +12,9 @@ using Purview.Telemetry.Metrics;
 
 namespace Testing;
 
-[MeterTarget(""testing-meter"")]
+[Meter(""testing-meter"")]
 public interface ITestMetrics {
-	[CounterTarget]
+	[Counter]
 	void Counter(int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";
@@ -35,10 +35,10 @@ using Purview.Telemetry.Metrics;
 
 namespace Testing;
 
-[MeterTarget(""testing-meter"")]
+[Meter(""testing-meter"")]
 [TelemetryGeneration(GenerateDependencyExtension = true)]
 public interface ITestMetrics {
-	[CounterTarget]
+	[Counter]
 	void Counter(int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";
@@ -61,10 +61,10 @@ using Purview.Telemetry.Metrics;
 
 namespace Testing;
 
-[MeterTarget(""testing-meter"")]
+[Meter(""testing-meter"")]
 [TelemetryGeneration(GenerateDependencyExtension = true)]
 public interface ITestMetrics {
-	[CounterTarget]
+	[Counter]
 	void Counter(int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";
@@ -87,10 +87,10 @@ using Purview.Telemetry.Metrics;
 
 namespace Testing;
 
-[MeterTarget(""testing-meter"")]
+[Meter(""testing-meter"")]
 [TelemetryGeneration(GenerateDependencyExtension = false)]
 public interface ITestMetrics {
-	[CounterTarget]
+	[Counter]
 	void Counter(int counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";

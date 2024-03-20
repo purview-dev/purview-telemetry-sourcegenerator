@@ -11,12 +11,12 @@ using Purview.Telemetry.Activities;
 
 namespace Testing;
 
-[ActivitySourceTarget(""testing-activity-source"")]
+[ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
-	[ActivityTarget]
+	[Activity]
 	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
-	[EventTarget]
+	[Event]
 	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
@@ -37,12 +37,12 @@ using Purview.Telemetry.Activities;
 namespace Testing;
 
 [TelemetryGeneration(GenerateDependencyExtension = true)]
-[ActivitySourceTarget(""testing-activity-source"")]
+[ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
-	[ActivityTarget]
+	[Activity]
 	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
-	[EventTarget]
+	[Event]
 	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
@@ -65,12 +65,12 @@ using Purview.Telemetry.Activities;
 namespace Testing;
 
 [TelemetryGeneration(GenerateDependencyExtension = true)]
-[ActivitySourceTarget(""testing-activity-source"")]
+[ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
-	[ActivityTarget]
+	[Activity]
 	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
-	[EventTarget]
+	[Event]
 	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
@@ -93,12 +93,12 @@ using Purview.Telemetry.Activities;
 namespace Testing;
 
 [TelemetryGeneration(GenerateDependencyExtension = false)]
-[ActivitySourceTarget(""testing-activity-source"")]
+[ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
-	[ActivityTarget]
+	[Activity]
 	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
-	[EventTarget]
+	[Event]
 	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";

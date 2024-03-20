@@ -2,7 +2,7 @@
 
 namespace TelemetryRoslynTestHarness.Interfaces.Telemetry;
 
-[LoggerTarget]
+[Logger]
 public interface IBasicLogger {
 	void BasicNoAttributeOrParams();
 }

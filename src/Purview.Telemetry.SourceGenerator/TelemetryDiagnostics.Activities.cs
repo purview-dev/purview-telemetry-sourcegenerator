@@ -73,8 +73,16 @@ partial class TelemetryDiagnostics {
 
 		readonly static public TelemetryDiagnosticDescriptor LinksParameterNotAllowed = new(
 			Id: "TSG3008",
-			Title: "Activity links parameters are not valid on events.",
-			Description: "The {0} parameter is not allowed when defining an activity event, only on the activity start/ create method.",
+			Title: "Activity links parameters are not valid on events or context methods.",
+			Description: "The {0} parameter is not allowed when defining an activity event or context, only on the activity start/ create method.",
+			Category: Constants.Diagnostics.Activity.Usage,
+			Severity: DiagnosticSeverity.Error
+		);
+
+		readonly static public TelemetryDiagnosticDescriptor TagsParameterNotAllowed = new(
+			Id: "TSG3009",
+			Title: "Activity tags parameter are not valid on context methods.",
+			Description: "The {0} parameter is not allowed when defining an activity context, only on the activity start/ create methods or events.",
 			Category: Constants.Diagnostics.Activity.Usage,
 			Severity: DiagnosticSeverity.Error
 		);

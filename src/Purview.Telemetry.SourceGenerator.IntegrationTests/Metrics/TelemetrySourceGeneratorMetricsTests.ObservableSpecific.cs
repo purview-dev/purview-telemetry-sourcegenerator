@@ -9,15 +9,15 @@ using Purview.Telemetry.Metrics;
 
 namespace Testing;
 
-[MeterTarget(""testing-meter"")]
+[Meter(""testing-meter"")]
 public interface ITestMetrics {
-	[ObservableCounterTarget]
+	[ObservableCounter]
 	bool Counter(Func<int> counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableGaugeTarget]
+	[ObservableGauge]
 	bool Gauge(Func<int> counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableUpDownCounterTarget]
+	[ObservableUpDownCounter]
 	bool UpDown(Func<int> counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";
@@ -37,15 +37,15 @@ using Purview.Telemetry.Metrics;
 
 namespace Testing;
 
-[MeterTarget(""testing-meter"")]
+[Meter(""testing-meter"")]
 public interface ITestMetrics {
-	[ObservableCounterTarget(ThrowOnAlreadyInitialized = true)]
+	[ObservableCounter(ThrowOnAlreadyInitialized = true)]
 	bool Counter(Func<int> counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableGaugeTarget(ThrowOnAlreadyInitialized = true)]
+	[ObservableGauge(ThrowOnAlreadyInitialized = true)]
 	bool Gauge(Func<int> counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
-	[ObservableUpDownCounterTarget(ThrowOnAlreadyInitialized = true)]
+	[ObservableUpDownCounter(ThrowOnAlreadyInitialized = true)]
 	bool UpDown(Func<int> counterValue, [Tag]int intParam, [Tag]bool boolParam);
 }
 ";

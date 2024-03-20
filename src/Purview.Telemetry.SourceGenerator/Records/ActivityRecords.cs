@@ -5,6 +5,7 @@ namespace Purview.Telemetry.SourceGenerator.Records;
 
 record ActivityGenerationTarget(
 	TelemetryGenerationAttributeRecord TelemetryGeneration,
+	GenerationType GenerationType,
 
 	string ClassNameToGenerate,
 	string ClassNamespace,
@@ -16,12 +17,12 @@ record ActivityGenerationTarget(
 	string InterfaceName,
 	string FullyQualifiedInterfaceName,
 
-	ActivitySourceAttributeRecord? ActivitySourceAttribute,
+	ActivitySourceGenerationAttributeRecord? ActivitySourceAttribute,
 	string? ActivitySourceName,
 
 	ImmutableArray<ActivityMethodGenerationTarget> ActivityMethods
 ,
-	ActivityTargetAttributeRecord ActivityTargetAttributeRecord
+	ActivitySourceAttributeRecord ActivityTargetAttributeRecord
 );
 
 record ActivityMethodGenerationTarget(
@@ -32,14 +33,16 @@ record ActivityMethodGenerationTarget(
 
 	Location? MethodLocation,
 
-	ActivityGenAttributeRecord? ActivityAttribute,
-	ActivityEventAttributeRecord? ActivityEventAttribute,
+	ActivityAttributeRecord? ActivityAttribute,
+	EventAttributeRecord? EventAttribute,
 
-	bool IsActivity,
+	ActivityMethodType MethodType,
 
 	ImmutableArray<ActivityMethodParameterTarget> Parameters,
 	ImmutableArray<ActivityMethodParameterTarget> Baggage,
-	ImmutableArray<ActivityMethodParameterTarget> Tags
+	ImmutableArray<ActivityMethodParameterTarget> Tags,
+
+	TargetGeneration TargetGenerationState
 );
 
 record ActivityMethodParameterTarget(
@@ -61,4 +64,10 @@ enum ActivityParameterDestination {
 	Activity,
 	StartTime,
 	Timestamp
+}
+
+enum ActivityMethodType {
+	Activity,
+	Event,
+	Context
 }

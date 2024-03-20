@@ -29,7 +29,18 @@ static partial class MeterTargetClassEmitter {
 		indent = EmitHelpers.EmitClassStart(target.ClassNameToGenerate, target.FullyQualifiedInterfaceName, builder, indent, context.CancellationToken);
 
 		indent = EmitFields(target, builder, indent, context, logger);
-		indent = EmitCtor(target, builder, indent, context, logger);
+		indent = ConstructorEmitter.EmitCtor(
+			GenerationType.Metrics,
+			target.GenerationType,
+			target.ClassNameToGenerate,
+			target.FullyQualifiedInterfaceName,
+			builder,
+			indent,
+			context,
+			logger
+		);
+
+		indent = EmitInitializationMethod(target, builder, indent, context, logger);
 		indent = EmitMethods(target, builder, indent, context, logger);
 
 		EmitHelpers.EmitClassEnd(builder, indent);
@@ -40,8 +51,10 @@ static partial class MeterTargetClassEmitter {
 
 		context.AddSource(hintName, Microsoft.CodeAnalysis.Text.SourceText.From(sourceText, Encoding.UTF8));
 
-		SharedEmitter.GenerateImplementation(
+		DependencyInjectionClassEmitter.GenerateImplementation(
+			GenerationType.Metrics,
 			target.TelemetryGeneration,
+			target.GenerationType,
 			target.ClassNameToGenerate,
 			target.InterfaceName,
 			target.FullNamespace,

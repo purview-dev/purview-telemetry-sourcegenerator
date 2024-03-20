@@ -3,8 +3,8 @@ using Purview.Telemetry.Metrics;
 
 namespace TelemetryRoslynTestHarness.Interfaces.Telemetry;
 
-[MeterTarget]
+[Meter]
 public interface IBasicMetrics {
-	[ObservableCounterTarget]
+	[ObservableCounter]
 	void ObservableCounter(Func<int> f, [Tag] int intParam, bool boolParam);
 }

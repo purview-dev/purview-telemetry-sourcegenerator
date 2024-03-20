@@ -18,12 +18,12 @@ partial class TelemetrySourceGenerator {
 		// Register
 		var activityTargetsPredicate = context.SyntaxProvider
 			.ForAttributeWithMetadataName(
-				Constants.Activities.ActivitySourceTargetAttribute,
+				Constants.Activities.ActivitySourceAttribute,
 				static (node, token) => PipelineHelpers.HasActivityTargetAttribute(node, token),
 				activityTargetTransform
 			)
 			.WhereNotNull()
-			.WithTrackingName($"{nameof(TelemetrySourceGenerator)}_{nameof(ActivitySourceTargetAttribute)}");
+			.WithTrackingName($"{nameof(TelemetrySourceGenerator)}_{nameof(ActivitySourceAttribute)}");
 
 		// Build generation (static vs. non-static is for the logger).
 		Action<SourceProductionContext, (Compilation Compilation, ImmutableArray<ActivityGenerationTarget?> Targets)> generationActivityAction =
@@ -50,7 +50,7 @@ partial class TelemetrySourceGenerator {
 			foreach (var target in targets) {
 				logger?.Debug($"Activity generation target: {target!.FullyQualifiedName}");
 
-				ActivityTargetClassEmitter.GenerateImplementation(target!, spc, logger);
+				ActivitySourceTargetClassEmitter.GenerateImplementation(target!, spc, logger);
 			}
 		}
 		catch (Exception ex) {

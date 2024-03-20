@@ -2,16 +2,15 @@
 
 namespace Purview.Telemetry.SourceGenerator.Records;
 
-record ActivityTargetAttributeRecord(
-	AttributeStringValue ActivitySource,
-	AttributeStringValue ClassName,
+record ActivitySourceAttributeRecord(
+	AttributeStringValue Name,
 	AttributeValue<bool> DefaultToTags,
 	AttributeStringValue BaggageAndTagPrefix,
 	AttributeValue<bool> IncludeActivitySourcePrefix,
 	AttributeValue<bool> LowercaseBaggageAndTagKeys
 );
 
-record ActivitySourceAttributeRecord(
+record ActivitySourceGenerationAttributeRecord(
 	AttributeStringValue Name,
 	AttributeValue<bool> DefaultToTags,
 	AttributeStringValue BaggageAndTagPrefix,
@@ -19,12 +18,12 @@ record ActivitySourceAttributeRecord(
 	AttributeValue<bool> LowercaseBaggageAndTagKeys
 );
 
-record ActivityGenAttributeRecord(
+record ActivityAttributeRecord(
 	AttributeStringValue Name,
 	AttributeValue<ActivityGeneratedKind> Kind,
 	AttributeValue<bool> CreateOnly
 );
 
-record ActivityEventAttributeRecord(
+record EventAttributeRecord(
 	AttributeStringValue Name
 );

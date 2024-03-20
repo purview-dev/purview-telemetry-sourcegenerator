@@ -10,9 +10,9 @@ using System.Diagnostics;
 
 namespace Testing;
 
-[ActivitySourceTarget(""testing-activity-source"")]
+[ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
-	[EventTarget]
+	[Event]
 	void Event(Activity activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
@@ -33,9 +33,9 @@ using System.Diagnostics;
 
 namespace Testing;
 
-[ActivitySourceTarget(""testing-activity-source"")]
+[ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
-	[EventTarget]
+	[Event]
 	void Event(Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";

@@ -11,9 +11,9 @@ using Purview.Telemetry.Logging;
 
 namespace Testing;
 
-[LoggerTarget]
+[Logger]
 public interface ITestLogger {{
-	[LogTarget(EntryName = ""{LogTargetName}"")]
+	[Log(Name = ""{LogTargetName}"")]
 	void Log(string stringParam, int intParam, bool boolParam);
 }}
 ";
@@ -40,9 +40,9 @@ using Purview.Telemetry.Logging;
 
 namespace Testing;
 
-[LoggerTarget(PrefixType = LogPrefixType.{type}{prefixType})]
+[Logger(PrefixType = LogPrefixType.{type}{prefixType})]
 public interface ITestLogger {{
-	[LogTarget(EntryName = ""{LogTargetName}"")]
+	[Log(Name = ""{LogTargetName}"")]
 	void Log(string stringParam, int intParam, bool boolParam);
 }}
 ";

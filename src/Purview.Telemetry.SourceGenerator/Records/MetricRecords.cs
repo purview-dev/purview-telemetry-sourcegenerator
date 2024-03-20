@@ -5,6 +5,7 @@ namespace Purview.Telemetry.SourceGenerator.Records;
 
 record MeterGenerationTarget(
 	TelemetryGenerationAttributeRecord TelemetryGeneration,
+	GenerationType GenerationType,
 
 	string ClassNameToGenerate,
 	string ClassNamespace,
@@ -18,12 +19,12 @@ record MeterGenerationTarget(
 
 	string? MeterName,
 
-	MeterAssemblyAttributeRecord? MeterAssembly,
+	MeterGenerationAttributeRecord? MeterGeneration,
 
-	ImmutableArray<InstrumentMethodGenerationTarget> InstrumentationMethods
+	ImmutableArray<InstrumentMethodTarget> InstrumentationMethods
 );
 
-record InstrumentMethodGenerationTarget(
+record InstrumentMethodTarget(
 	string MethodName,
 	string ReturnType,
 	bool ReturnsBool,
@@ -43,7 +44,9 @@ record InstrumentMethodGenerationTarget(
 	ImmutableArray<InstrumentMethodParameterTarget> Tags,
 	InstrumentMethodParameterTarget? MeasurementParameter,
 
-	ImmutableArray<TelemetryDiagnosticDescriptor> ErrorDiagnostics
+	ImmutableArray<TelemetryDiagnosticDescriptor> ErrorDiagnostics,
+
+	TargetGeneration TargetGenerationState
 );
 
 record InstrumentMethodParameterTarget(

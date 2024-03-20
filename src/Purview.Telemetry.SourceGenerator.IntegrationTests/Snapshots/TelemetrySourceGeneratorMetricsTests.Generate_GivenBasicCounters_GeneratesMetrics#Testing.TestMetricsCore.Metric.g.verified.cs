@@ -17,18 +17,28 @@ namespace Testing
 {
 	sealed partial class TestMetricsCore : Testing.ITestMetrics
 	{
-		readonly System.Diagnostics.Metrics.Meter _meter;
+		System.Diagnostics.Metrics.Meter _meter;
 
-		readonly System.Diagnostics.Metrics.Counter<System.Int32> _counterInstrument;
-		readonly System.Diagnostics.Metrics.Counter<System.Byte> _counter2Instrument;
-		readonly System.Diagnostics.Metrics.Counter<System.Int64> _counter3Instrument;
-		readonly System.Diagnostics.Metrics.Counter<System.Int16> _counter4Instrument;
-		readonly System.Diagnostics.Metrics.Counter<System.Double> _counter5Instrument;
-		readonly System.Diagnostics.Metrics.Counter<System.Single> _counter6Instrument;
-		readonly System.Diagnostics.Metrics.Counter<System.Decimal> _counter7Instrument;
+		System.Diagnostics.Metrics.Counter<System.Int32> _counterInstrument;
+		System.Diagnostics.Metrics.Counter<System.Byte> _counter2Instrument;
+		System.Diagnostics.Metrics.Counter<System.Int64> _counter3Instrument;
+		System.Diagnostics.Metrics.Counter<System.Int16> _counter4Instrument;
+		System.Diagnostics.Metrics.Counter<System.Double> _counter5Instrument;
+		System.Diagnostics.Metrics.Counter<System.Single> _counter6Instrument;
+		System.Diagnostics.Metrics.Counter<System.Decimal> _counter7Instrument;
 
 		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
+			InitializeMeters(meterFactory);
+		}
+
+		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
+		{
+			if (_meter != null)
+			{
+				throw new System.Exception("The metrics have already been initialized.");
+			}
+
 			System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateMeterTags(meterTags);

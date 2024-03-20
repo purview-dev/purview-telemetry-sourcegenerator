@@ -6,6 +6,7 @@ namespace Purview.Telemetry.SourceGenerator.Records;
 
 record LoggerGenerationTarget(
 	TelemetryGenerationAttributeRecord TelemetryGeneration,
+	GenerationType GenerationType,
 
 	string ClassNameToGenerate,
 	string? ClassNamespace, string[] ParentClasses,
@@ -13,13 +14,13 @@ record LoggerGenerationTarget(
 
 	string InterfaceName, string FullyQualifiedInterfaceName,
 
-	LoggerTargetAttributeRecord LoggerTargetAttribute,
+	LoggerAttributeRecord LoggerAttribute,
 	LogGeneratedLevel DefaultLevel,
 
-	ImmutableArray<LogEntryMethodGenerationTarget> LogEntryMethods
+	ImmutableArray<LogMethodGenerationTarget> LogMethods
 );
 
-record LogEntryMethodGenerationTarget(
+record LogMethodGenerationTarget(
 	string MethodName,
 	bool IsScoped,
 	string LoggerActionFieldName,
@@ -29,25 +30,28 @@ record LogEntryMethodGenerationTarget(
 	int? EventId,
 	LogGeneratedLevel Level,
 	string MessageTemplate,
-	string LogEntryName,
+	string LogName,
 
 	TypeInfo MSLevel,
 
-	ImmutableArray<LogEntryMethodParameterTarget> AllParameters,
-	ImmutableArray<LogEntryMethodParameterTarget> ParametersSansException,
+	ImmutableArray<LogMethodParameterTarget> Parameters,
+	ImmutableArray<LogMethodParameterTarget> ParametersSansException,
 
-	LogEntryMethodParameterTarget? ExceptionParameter,
+	LogMethodParameterTarget? ExceptionParameter,
 	bool HasMultipleExceptions,
 
-	Microsoft.CodeAnalysis.Location? Location
+	Microsoft.CodeAnalysis.Location? MethodLocation
 ,
-	bool InferredErrorLevel) {
-	public int TotalParameterCount => AllParameters.Length;
+	bool InferredErrorLevel,
+
+	TargetGeneration TargetGenerationState
+) {
+	public int TotalParameterCount => Parameters.Length;
 
 	public int ParameterCount => ParametersSansException.Length;
 }
 
-record LogEntryMethodParameterTarget(
+record LogMethodParameterTarget(
 	string Name,
 	string UpperCasedName,
 	string FullyQualifiedType,

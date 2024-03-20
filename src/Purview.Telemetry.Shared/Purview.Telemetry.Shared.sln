@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Purview.Telemetry.Shared", "Purview.Telemetry.Shared.csproj", "{90A5249F-D09B-41FA-BB4E-3A6993A91F66}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90A5249F-D09B-41FA-BB4E-3A6993A91F66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90A5249F-D09B-41FA-BB4E-3A6993A91F66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90A5249F-D09B-41FA-BB4E-3A6993A91F66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90A5249F-D09B-41FA-BB4E-3A6993A91F66}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6111374E-D182-4CAA-84C3-290A5DC6DBA6}
+	EndGlobalSection
+EndGlobal

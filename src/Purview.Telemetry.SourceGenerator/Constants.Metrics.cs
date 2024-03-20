@@ -6,28 +6,29 @@ namespace Purview.Telemetry;
 
 partial class Constants {
 	static public class Metrics {
-		readonly static public TemplateInfo MeterTargetAttribute = TemplateInfo.Create<Telemetry.Metrics.MeterTargetAttribute>();
+		public const string MeterInitializationMethod = "InitializeMeters";
+		public const string MeterFactoryParameterName = "meterFactory";
+
 		readonly static public TemplateInfo MeterGenerationAttribute = TemplateInfo.Create<Telemetry.Metrics.MeterGenerationAttribute>();
+		readonly static public TemplateInfo MeterAttribute = TemplateInfo.Create<Telemetry.Metrics.MeterAttribute>();
 
 		readonly static public TemplateInfo InstrumentMeasurementAttribute = TemplateInfo.Create<Telemetry.Metrics.InstrumentMeasurementAttribute>();
 
-		readonly static public TemplateInfo CounterTargetAttribute = TemplateInfo.Create<Telemetry.Metrics.CounterTargetAttribute>();
-		readonly static public TemplateInfo UpDownCounterTargetAttribute = TemplateInfo.Create<Telemetry.Metrics.UpDownCounterTargetAttribute>();
-		readonly static public TemplateInfo HistogramTargetAttribute = TemplateInfo.Create<Telemetry.Metrics.HistogramTargetAttribute>();
+		readonly static public TemplateInfo CounterAttribute = TemplateInfo.Create<Telemetry.Metrics.CounterAttribute>();
+		readonly static public TemplateInfo UpDownCounterAttribute = TemplateInfo.Create<Telemetry.Metrics.UpDownCounterAttribute>();
+		readonly static public TemplateInfo HistogramAttribute = TemplateInfo.Create<Telemetry.Metrics.HistogramAttribute>();
 
-		readonly static public TemplateInfo ObservableCounterTargetAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableCounterTargetAttribute>();
-		readonly static public TemplateInfo ObservableUpDownCounterTargetAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableUpDownCounterTargetAttribute>();
-		readonly static public TemplateInfo ObservableGaugeTargetAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableGaugeTargetAttribute>();
-
-		readonly static public TemplateInfo MeterExcludeAttribute = TemplateInfo.Create<Telemetry.Metrics.MeterExcludeAttribute>();
+		readonly static public TemplateInfo ObservableCounterAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableCounterAttribute>();
+		readonly static public TemplateInfo ObservableUpDownCounterAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableUpDownCounterAttribute>();
+		readonly static public TemplateInfo ObservableGaugeAttribute = TemplateInfo.Create<Telemetry.Metrics.ObservableGaugeAttribute>();
 
 		readonly static public TemplateInfo[] ValidInstrumentAttributes = [
-			CounterTargetAttribute,
-			UpDownCounterTargetAttribute,
-			HistogramTargetAttribute,
-			ObservableCounterTargetAttribute,
-			ObservableUpDownCounterTargetAttribute,
-			ObservableGaugeTargetAttribute,
+			CounterAttribute,
+			UpDownCounterAttribute,
+			HistogramAttribute,
+			ObservableCounterAttribute,
+			ObservableUpDownCounterAttribute,
+			ObservableGaugeAttribute,
 		];
 
 		readonly static public string[] ValidMeasurementKeywordTypes = [
@@ -59,6 +60,21 @@ partial class Constants {
 			{ InstrumentTypes.ObservableUpDownCounter, SystemDiagnostics.ObservableUpDownCounter },
 		}.ToImmutableDictionary();
 
+		static public TemplateInfo[] GetTemplates() => [
+			MeterGenerationAttribute,
+			MeterAttribute,
+
+			InstrumentMeasurementAttribute,
+
+			CounterAttribute,
+			UpDownCounterAttribute,
+			HistogramAttribute,
+
+			ObservableCounterAttribute,
+			ObservableGaugeAttribute,
+			ObservableUpDownCounterAttribute
+		];
+
 		static public class SystemDiagnostics {
 			public const string ObservableCounterNoun = "ObservableCounter";
 			public const string ObservableGaugeNoun = "ObservableGauge";
@@ -81,22 +97,5 @@ partial class Constants {
 			// Also supports IEnumerable<Measurement>.
 			readonly static public TypeInfo Measurement = TypeInfo.Create(SystemDiagnosticsMetricsNamespace + ".Measurement"); // <>
 		}
-
-		static public TemplateInfo[] GetTemplates() => [
-			MeterTargetAttribute,
-			MeterGenerationAttribute,
-
-			InstrumentMeasurementAttribute,
-
-			CounterTargetAttribute,
-			UpDownCounterTargetAttribute,
-			HistogramTargetAttribute,
-
-			ObservableCounterTargetAttribute,
-			ObservableGaugeTargetAttribute,
-			ObservableUpDownCounterTargetAttribute,
-
-			MeterExcludeAttribute
-		];
 	}
 }

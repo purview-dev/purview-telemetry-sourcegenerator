@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 
@@ -9,6 +10,60 @@ static class Utilities {
 	readonly static SymbolDisplayFormat _symbolDisplayFormat = new(
 		typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces
 	);
+
+	static public TargetGeneration IsValidGenerationTarget(IMethodSymbol method, GenerationType generationType, GenerationType requestedType) {
+		var attributes = method.GetAttributes();
+		var activityCount = attributes.Count(m =>
+			Constants.Activities.ActivityAttribute.Equals(m)
+			|| Constants.Activities.EventAttribute.Equals(m)
+			|| Constants.Activities.ContextAttribute.Equals(m)
+		);
+		var loggingCount = attributes.Count(Constants.Logging.LogAttribute.Equals);
+		var metricsCount = attributes.Count(m =>
+			Constants.Metrics.CounterAttribute.Equals(m)
+			|| Constants.Metrics.UpDownCounterAttribute.Equals(m)
+			|| Constants.Metrics.HistogramAttribute.Equals(m)
+			|| Constants.Metrics.ObservableCounterAttribute.Equals(m)
+			|| Constants.Metrics.ObservableGaugeAttribute.Equals(m)
+			|| Constants.Metrics.ObservableUpDownCounterAttribute.Equals(m)
+		);
+
+		var count = activityCount + loggingCount + metricsCount;
+		var inferenceNotSupportedWithMultiTargeting = false;
+		var multiGenerationTargetsNotSupported = false;
+		if (generationType != requestedType) {
+			// This means it's multi-target generation so we need everything to be explicit.
+			if (count == 0) {
+				inferenceNotSupportedWithMultiTargeting = true;
+			}
+		}
+
+		if (count > 1) {
+			multiGenerationTargetsNotSupported = true;
+		}
+
+		var isValid = !multiGenerationTargetsNotSupported && !inferenceNotSupportedWithMultiTargeting;
+		if (isValid) {
+
+			if (generationType.HasFlag(GenerationType.Activities) && requestedType == GenerationType.Activities) {
+				isValid = loggingCount == 0 && metricsCount == 0;
+			}
+
+			if (generationType.HasFlag(GenerationType.Logging) && requestedType == GenerationType.Logging) {
+				isValid = activityCount == 0 && metricsCount == 0;
+			}
+
+			if (generationType.HasFlag(GenerationType.Metrics) && requestedType == GenerationType.Metrics) {
+				isValid = activityCount == 0 && loggingCount == 0;
+			}
+		}
+
+		return new(
+			IsValid: isValid,
+			RaiseInferenceNotSupportedWithMultiTargeting: inferenceNotSupportedWithMultiTargeting,
+			RaiseMultiGenerationTargetsNotSupported: multiGenerationTargetsNotSupported
+		);
+	}
 
 	static public string WithNull(this string value)
 		=> value + "?";

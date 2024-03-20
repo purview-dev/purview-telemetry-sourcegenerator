@@ -7,21 +7,20 @@ sealed public class TelemetryGenerationAttribute : Attribute {
 	public TelemetryGenerationAttribute() {
 	}
 
-	public TelemetryGenerationAttribute(bool generateDependencyExtension, string classNameTemplate = Constants.Shared.ClassNameTemplateDefault) {
+	public TelemetryGenerationAttribute(bool generateDependencyExtension, string? className = null, string? dependencyInjectionClassName = null) {
 		GenerateDependencyExtension = generateDependencyExtension;
-		ClassNameTemplate = classNameTemplate ?? throw new ArgumentNullException(nameof(classNameTemplate));
+		ClassName = className;
+		DependencyInjectionClassName = dependencyInjectionClassName;
+	}
+
+	public TelemetryGenerationAttribute(string className, string? dependencyInjectionClassName = null) {
+		ClassName = className;
+		DependencyInjectionClassName = dependencyInjectionClassName;
 	}
 
 	public bool GenerateDependencyExtension { get; set; } = Constants.Shared.GenerateDependencyExtensionDefault;
 
-	/// <summary>
-	/// <![CDATA[
-	/// Replacement options:
-	/// <ul>
-	///     <li>{GeneratedClassName} the generated class</li>
-	///     <li>{InterfaceName} the source interface name</li>
-	/// </ul>
-	/// ]]>
-	/// </summary>
-	public string ClassNameTemplate { get; set; } = Constants.Shared.ClassNameTemplateDefault;
+	public string? ClassName { get; set; }
+
+	public string? DependencyInjectionClassName { get; set; }
 }

@@ -17,14 +17,24 @@ namespace Testing
 {
 	sealed partial class TestMetricsCore : Testing.ITestMetrics
 	{
-		readonly System.Diagnostics.Metrics.Meter _meter;
+		System.Diagnostics.Metrics.Meter _meter;
 
-		System.Diagnostics.Metrics.ObservableUpDownCounter<System.Int32>? _observableUpDownInstrument = null;
-		System.Diagnostics.Metrics.ObservableUpDownCounter<System.Int32>? _observableUpDown2Instrument = null;
-		System.Diagnostics.Metrics.ObservableUpDownCounter<System.Int32>? _observableUpDown3Instrument = null;
+		System.Diagnostics.Metrics.ObservableUpDownCounter<System.Int32> _observableUpDownInstrument;
+		System.Diagnostics.Metrics.ObservableUpDownCounter<System.Int32> _observableUpDown2Instrument;
+		System.Diagnostics.Metrics.ObservableUpDownCounter<System.Int32> _observableUpDown3Instrument;
 
 		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
+			InitializeMeters(meterFactory);
+		}
+
+		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
+		{
+			if (_meter != null)
+			{
+				throw new System.Exception("The metrics have already been initialized.");
+			}
+
 			System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateMeterTags(meterTags);

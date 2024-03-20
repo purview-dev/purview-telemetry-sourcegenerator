@@ -19,21 +19,21 @@ partial class Constants {
 		public const string Tag_ExceptionStackTrace = "exception.stacktrace";
 
 		readonly static public TemplateInfo ActivitySourceGenerationAttribute = TemplateInfo.Create<Telemetry.Activities.ActivitySourceGenerationAttribute>();
-		readonly static public TemplateInfo ActivitySourceTargetAttribute = TemplateInfo.Create<Telemetry.Activities.ActivitySourceTargetAttribute>();
-		readonly static public TemplateInfo ActivityTargetAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityTargetAttribute>();
-		readonly static public TemplateInfo EventTargetAttribute = TemplateInfo.Create<Telemetry.Activities.EventTargetAttribute>();
-		readonly static public TemplateInfo ActivityGeneratedKind = TemplateInfo.Create<Telemetry.Activities.ActivityGeneratedKind>();
-		readonly static public TemplateInfo ActivityExcludeAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityExcludeAttribute>();
+		readonly static public TemplateInfo ActivitySourceAttribute = TemplateInfo.Create<Telemetry.Activities.ActivitySourceAttribute>();
+		readonly static public TemplateInfo ActivityAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityAttribute>();
+		readonly static public TemplateInfo EventAttribute = TemplateInfo.Create<Telemetry.Activities.EventAttribute>();
+		readonly static public TemplateInfo ContextAttribute = TemplateInfo.Create<Telemetry.Activities.ContextAttribute>();
 		readonly static public TemplateInfo BaggageAttribute = TemplateInfo.Create<Telemetry.Activities.BaggageAttribute>();
+		readonly static public TemplateInfo ActivityGeneratedKind = TemplateInfo.Create<Telemetry.Activities.ActivityGeneratedKind>();
 
 		static public TemplateInfo[] GetTemplates() => [
 				ActivitySourceGenerationAttribute,
-				ActivitySourceTargetAttribute,
-				ActivityTargetAttribute,
-				EventTargetAttribute,
-				ActivityGeneratedKind,
-				ActivityExcludeAttribute,
-				BaggageAttribute
+				ActivitySourceAttribute,
+				ActivityAttribute,
+				EventAttribute,
+				ContextAttribute,
+				BaggageAttribute,
+				ActivityGeneratedKind
 			];
 
 		static public class SystemDiagnostics {

@@ -12,7 +12,7 @@ using Purview.Telemetry.Logging;
 
 namespace {@namespace};
 
-[LoggerTarget]
+[Logger]
 public interface ITestLogger {{
 	IDisposable Log(string stringParam, int intParam);
 }}
@@ -37,7 +37,7 @@ using Purview.Telemetry.Logging;
 namespace {@namespace};
 
 public partial class TestClass1 {{
-	[LoggerTarget]
+	[Logger]
 	public interface ITestLogger {{
 		IDisposable Log(string stringParam, int intParam);
 	}}
@@ -65,7 +65,7 @@ namespace {@namespace};
 public partial class TestClass1 {{
 	public partial class TestClass2 {{
 		public partial class TestClass3 {{
-			[LoggerTarget]
+			[Logger]
 			public interface ITestLogger {{
 				IDisposable Log(string stringParam, int intParam);
 			}}

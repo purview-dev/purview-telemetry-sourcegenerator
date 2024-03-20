@@ -9,8 +9,12 @@ partial class LoggerTargetClassEmitter {
 	static int EmitMethods(LoggerGenerationTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
 		indent++;
 
-		foreach (var methodTarget in target.LogEntryMethods) {
+		foreach (var methodTarget in target.LogMethods) {
 			context.CancellationToken.ThrowIfCancellationRequested();
+
+			if (!methodTarget.TargetGenerationState.IsValid) {
+				continue;
+			}
 
 			if (methodTarget.HasMultipleExceptions) {
 				continue;
@@ -26,7 +30,7 @@ partial class LoggerTargetClassEmitter {
 		return --indent;
 	}
 
-	static void EmitLogActionMethod(StringBuilder builder, int indent, LogEntryMethodGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
+	static void EmitLogActionMethod(StringBuilder builder, int indent, LogMethodGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		logger?.Debug($"Building logging method: {methodTarget.MethodName}");
@@ -61,11 +65,15 @@ partial class LoggerTargetClassEmitter {
 			builder
 				.Append(indent + 1, "return ", withNewLine: false)
 				.Append(methodTarget.LoggerActionFieldName)
-				.Append("(_logger");
+				.Append('(')
+				.Append(Constants.Logging.LoggerFieldName)
+			;
 		}
 		else {
 			builder
-				.Append(indent + 1, "if (!_logger.IsEnabled(", withNewLine: false)
+				.Append(indent + 1, "if (!", withNewLine: false)
+				.Append(Constants.Logging.LoggerFieldName)
+				.Append(".IsEnabled(")
 				.Append(methodTarget.MSLevel)
 				.Append(')')
 				.Append(')')
@@ -73,7 +81,8 @@ partial class LoggerTargetClassEmitter {
 				.Append(indent + 2, "return;")
 				.AppendLine()
 				.Append(indent + 1, methodTarget.LoggerActionFieldName, withNewLine: false)
-				.Append("(_logger")
+				.Append('(')
+				.Append(Constants.Logging.LoggerFieldName)
 			;
 		}
 
@@ -106,15 +115,15 @@ partial class LoggerTargetClassEmitter {
 		;
 	}
 
-	static void EmitParametersAsMethodArgumentList(LogEntryMethodGenerationTarget methodTarget, StringBuilder builder, SourceProductionContext context) {
+	static void EmitParametersAsMethodArgumentList(LogMethodGenerationTarget methodTarget, StringBuilder builder, SourceProductionContext context) {
 		for (var i = 0; i < methodTarget.TotalParameterCount; i++) {
 			context.CancellationToken.ThrowIfCancellationRequested();
 
 			builder
-				.Append(methodTarget.AllParameters[i].FullyQualifiedType)
+				.Append(methodTarget.Parameters[i].FullyQualifiedType)
 			;
 
-			if (methodTarget.AllParameters[i].IsNullable) {
+			if (methodTarget.Parameters[i].IsNullable) {
 				builder
 					.Append('?')
 				;
@@ -122,7 +131,7 @@ partial class LoggerTargetClassEmitter {
 
 			builder
 				.Append(' ')
-				.Append(methodTarget.AllParameters[i].Name);
+				.Append(methodTarget.Parameters[i].Name);
 
 			if (i < methodTarget.TotalParameterCount - 1) {
 				builder.Append(", ");

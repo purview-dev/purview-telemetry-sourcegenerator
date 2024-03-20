@@ -1,5 +1,19 @@
 ﻿namespace Purview.Telemetry.SourceGenerator.Records;
 
+[Flags]
+enum GenerationType {
+	None,
+	Activities = 1,
+	Logging = 2,
+	Metrics = 4
+}
+
+record TargetGeneration(
+	bool IsValid,
+	bool RaiseInferenceNotSupportedWithMultiTargeting,
+	bool RaiseMultiGenerationTargetsNotSupported
+);
+
 record AttributeValue<T>
 	where T : struct {
 	public AttributeValue(T? value) {
