@@ -6,7 +6,7 @@ using Purview.Telemetry.SourceGenerator.Records;
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class MeterTargetClassEmitter {
-	static int EmitInitializationMethod(MeterGenerationTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
+	static int EmitInitializationMethod(MeterTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		indent++;
@@ -88,7 +88,7 @@ partial class MeterTargetClassEmitter {
 		return --indent;
 	}
 
-	static void EmitInitialiseInstrumentVariable(InstrumentMethodTarget method, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
+	static void EmitInitialiseInstrumentVariable(InstrumentTarget method, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
 		if (method.ErrorDiagnostics.Length > 0) {
 			// Already raised diagnostic.
 			return;

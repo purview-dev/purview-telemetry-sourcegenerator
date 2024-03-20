@@ -139,11 +139,19 @@ partial class SharedHelpers {
 		CancellationToken token) {
 
 		AttributeStringValue? nameValue = null;
+		AttributeValue<bool>? useRecordExceptionRules = null;
+		AttributeValue<bool>? recordExceptionEscape = null;
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
 			if (name.Equals(nameof(EventAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
 				nameValue = new((string)value);
+			}
+			else if (name.Equals(nameof(EventAttribute.UseRecordExceptionRules), StringComparison.OrdinalIgnoreCase)) {
+				useRecordExceptionRules = new((bool)value);
+			}
+			else if (name.Equals(nameof(EventAttribute.RecordExceptionEscape), StringComparison.OrdinalIgnoreCase)) {
+				recordExceptionEscape = new((bool)value);
 			}
 		}, semanticModel, logger, token)) {
 			// Failed to parse correctly, so null it out.
@@ -151,7 +159,9 @@ partial class SharedHelpers {
 		}
 
 		return new(
-			Name: nameValue ?? new()
+			Name: nameValue ?? new(),
+			UseRecordExceptionRules: useRecordExceptionRules ?? new(),
+			RecordExceptionEscape: recordExceptionEscape ?? new()
 		);
 	}
 

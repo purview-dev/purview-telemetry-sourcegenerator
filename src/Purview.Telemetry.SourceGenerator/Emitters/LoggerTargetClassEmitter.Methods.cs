@@ -6,7 +6,7 @@ using Purview.Telemetry.SourceGenerator.Records;
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class LoggerTargetClassEmitter {
-	static int EmitMethods(LoggerGenerationTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
+	static int EmitMethods(LoggerTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
 		indent++;
 
 		foreach (var methodTarget in target.LogMethods) {
@@ -30,7 +30,7 @@ partial class LoggerTargetClassEmitter {
 		return --indent;
 	}
 
-	static void EmitLogActionMethod(StringBuilder builder, int indent, LogMethodGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
+	static void EmitLogActionMethod(StringBuilder builder, int indent, LogTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		logger?.Debug($"Building logging method: {methodTarget.MethodName}");
@@ -115,7 +115,7 @@ partial class LoggerTargetClassEmitter {
 		;
 	}
 
-	static void EmitParametersAsMethodArgumentList(LogMethodGenerationTarget methodTarget, StringBuilder builder, SourceProductionContext context) {
+	static void EmitParametersAsMethodArgumentList(LogTarget methodTarget, StringBuilder builder, SourceProductionContext context) {
 		for (var i = 0; i < methodTarget.TotalParameterCount; i++) {
 			context.CancellationToken.ThrowIfCancellationRequested();
 

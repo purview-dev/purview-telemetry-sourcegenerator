@@ -6,7 +6,7 @@ using Purview.Telemetry.SourceGenerator.Records;
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class LoggerTargetClassEmitter {
-	static int EmitFields(LoggerGenerationTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
+	static int EmitFields(LoggerTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		indent++;
@@ -70,7 +70,7 @@ partial class LoggerTargetClassEmitter {
 		return --indent;
 	}
 
-	static void EmitLogActionField(StringBuilder builder, int indent, LogMethodGenerationTarget methodTarget) {
+	static void EmitLogActionField(StringBuilder builder, int indent, LogTarget methodTarget) {
 		builder
 			.Append(indent, "static readonly ", withNewLine: false)
 			.Append(methodTarget.IsScoped ? Constants.System.Func : Constants.System.Action)

@@ -7,7 +7,7 @@ using Purview.Telemetry.SourceGenerator.Templates;
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 static partial class LoggerTargetClassEmitter {
-	static public void GenerateImplementation(LoggerGenerationTarget target, SourceProductionContext context, IGenerationLogger? logger) {
+	static public void GenerateImplementation(LoggerTarget target, SourceProductionContext context, IGenerationLogger? logger) {
 		StringBuilder builder = new();
 
 		builder

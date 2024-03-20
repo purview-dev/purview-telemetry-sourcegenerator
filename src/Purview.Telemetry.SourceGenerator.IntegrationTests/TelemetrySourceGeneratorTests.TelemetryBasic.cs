@@ -44,6 +44,31 @@ public interface ITestTelemetry
 	}
 
 	[Fact]
+	async public Task Generate_GivenBasicEventWithException_GeneratesTelemetry() {
+		// Arrange
+		const string basicTelemetry = @"
+using Purview.Telemetry.Activities;
+using Purview.Telemetry.Logging;
+using Purview.Telemetry.Metrics;
+
+namespace Testing;
+
+[ActivitySource(""activity-source"")]
+public interface ITestTelemetry
+{
+	[Event]
+	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception ex);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicTelemetry);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
 	async public Task Generate_GivenDuplicateTelemetryGen_GeneratesDiagnostics() {
 		// Arrange
 		const string basicTelemetry = @"

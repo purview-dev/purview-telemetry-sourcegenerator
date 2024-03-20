@@ -18,7 +18,7 @@ partial class TelemetryDiagnostics {
 		readonly static public TelemetryDiagnosticDescriptor NoActivitySourceSpecified = new(
 			Id: "TSG3001",
 			Title: "No activity source specified.",
-			Description: $"An activity source helps to identify your application and it's telemetry. Defaulting to '{Constants.DefaultActivitySourceName}'.",
+			Description: $"An activity source helps to identify your application and it's telemetry. Defaulting to '{Constants.Activities.DefaultActivitySourceName}'.",
 			Category: Constants.Diagnostics.Activity.Usage,
 			Severity: DiagnosticSeverity.Info
 		);
@@ -83,6 +83,22 @@ partial class TelemetryDiagnostics {
 			Id: "TSG3009",
 			Title: "Activity tags parameter are not valid on context methods.",
 			Description: "The {0} parameter is not allowed when defining an activity context, only on the activity start/ create methods or events.",
+			Category: Constants.Diagnostics.Activity.Usage,
+			Severity: DiagnosticSeverity.Error
+		);
+
+		readonly static public TelemetryDiagnosticDescriptor EscapedParameterInvalidType = new(
+			Id: "TSG3010",
+			Title: "Escaped parameters must be a boolean.",
+			Description: "Only boolean parameter types are valid for the escape parameter.",
+			Category: Constants.Diagnostics.Activity.Usage,
+			Severity: DiagnosticSeverity.Error
+		);
+
+		readonly static public TelemetryDiagnosticDescriptor EscapedParameterIsOnlyValidOnEvent = new(
+			Id: "TSG3010",
+			Title: "Escaped parameters are only valid on Events, not Activity or Context methods.",
+			Description: "The parameters {0} is not valid on Activity or Context methods, only on Events.",
 			Category: Constants.Diagnostics.Activity.Usage,
 			Severity: DiagnosticSeverity.Error
 		);

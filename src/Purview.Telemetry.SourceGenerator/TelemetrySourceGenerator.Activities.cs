@@ -10,7 +10,7 @@ namespace Purview.Telemetry.SourceGenerator;
 partial class TelemetrySourceGenerator {
 	static void RegisterActivitiesGeneration(IncrementalGeneratorInitializationContext context, IGenerationLogger? logger) {
 		// Transform
-		Func<GeneratorAttributeSyntaxContext, CancellationToken, ActivityGenerationTarget?> activityTargetTransform =
+		Func<GeneratorAttributeSyntaxContext, CancellationToken, ActivitySourceTarget?> activityTargetTransform =
 			logger == null
 				? static (context, cancellationToken) => PipelineHelpers.BuildActivityTransform(context, null, cancellationToken)
 				: (context, cancellationToken) => PipelineHelpers.BuildActivityTransform(context, logger, cancellationToken);
@@ -26,7 +26,7 @@ partial class TelemetrySourceGenerator {
 			.WithTrackingName($"{nameof(TelemetrySourceGenerator)}_{nameof(ActivitySourceAttribute)}");
 
 		// Build generation (static vs. non-static is for the logger).
-		Action<SourceProductionContext, (Compilation Compilation, ImmutableArray<ActivityGenerationTarget?> Targets)> generationActivityAction =
+		Action<SourceProductionContext, (Compilation Compilation, ImmutableArray<ActivitySourceTarget?> Targets)> generationActivityAction =
 			logger == null
 				? static (spc, source) => GenerateActivitiesTargets(source.Targets, spc, null)
 				: (spc, source) => GenerateActivitiesTargets(source.Targets, spc, logger);
@@ -41,7 +41,7 @@ partial class TelemetrySourceGenerator {
 		);
 	}
 
-	static void GenerateActivitiesTargets(ImmutableArray<ActivityGenerationTarget?> targets, SourceProductionContext spc, IGenerationLogger? logger) {
+	static void GenerateActivitiesTargets(ImmutableArray<ActivitySourceTarget?> targets, SourceProductionContext spc, IGenerationLogger? logger) {
 		if (targets.Length == 0) {
 			return;
 		}

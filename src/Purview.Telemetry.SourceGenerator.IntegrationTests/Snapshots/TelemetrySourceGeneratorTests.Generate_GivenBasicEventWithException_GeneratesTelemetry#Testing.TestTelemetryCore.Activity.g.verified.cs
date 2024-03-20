@@ -37,44 +37,18 @@ namespace Testing
 			activity.AddEvent(recordExceptionEvent);
 		}
 
-		public void Activity(string stringParam, int intParam, bool boolParam)
-		{
-			System.Diagnostics.Activity? activityActivity = _activitySource.StartActivity(name: "Activity", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
-
-			if (activityActivity != null)
-			{
-				activityActivity.SetTag("intparam", intParam);
-				activityActivity.SetTag("boolparam", boolParam);
-			}
-
-			if (activityActivity != null)
-			{
-				activityActivity.SetBaggage("stringparam", stringParam);
-			}
-		}
-
-		public void Event(string stringParam, int intParam, bool boolParam)
+		public void Event(string stringParam, int intParam, bool boolParam, System.Exception ex)
 		{
 			if (System.Diagnostics.Activity.Current != null)
 			{
 				System.Diagnostics.ActivityTagsCollection tagsCollectionEvent = new System.Diagnostics.ActivityTagsCollection();
 				tagsCollectionEvent.Add("intparam", intParam);
 				tagsCollectionEvent.Add("boolparam", boolParam);
-
+				RecordExceptionInternal(activity: System.Diagnostics.Activity.Current, exception: ex, escape: true);
 				System.Diagnostics.ActivityEvent activityEventEvent = new System.Diagnostics.ActivityEvent(name: "Event", timestamp: default, tags: tagsCollectionEvent);
 
 				System.Diagnostics.Activity.Current.AddEvent(activityEventEvent);
 
-				System.Diagnostics.Activity.Current.SetBaggage("stringparam", stringParam);
-			}
-		}
-
-		public void Context(string stringParam, int intParam, bool boolParam)
-		{
-			if (System.Diagnostics.Activity.Current != null)
-			{
-				System.Diagnostics.Activity.Current.SetTag("intparam", intParam);
-				System.Diagnostics.Activity.Current.SetTag("boolparam", boolParam);
 				System.Diagnostics.Activity.Current.SetBaggage("stringparam", stringParam);
 			}
 		}

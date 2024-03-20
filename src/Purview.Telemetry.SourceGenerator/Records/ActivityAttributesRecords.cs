@@ -25,5 +25,7 @@ record ActivityAttributeRecord(
 );
 
 record EventAttributeRecord(
-	AttributeStringValue Name
+	AttributeStringValue Name,
+	AttributeValue<bool> UseRecordExceptionRules,
+	AttributeValue<bool> RecordExceptionEscape
 );

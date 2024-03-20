@@ -3,7 +3,9 @@
 namespace Purview.Telemetry;
 
 partial class Constants {
-	static public class Activities {
+	static public partial class Activities {
+		static public string DefaultActivitySourceName { get; set; } = "purview";
+
 		public const string ActivitySourceFieldName = "_activitySource";
 		public const string ActivityVariableName = "activity";
 
@@ -14,9 +16,12 @@ partial class Constants {
 		public const string StatusDescription_Key = "otel.status_description";
 
 		public const string Tag_ExceptionEventName = "exception";
+		public const string Tag_ExceptionEscaped = "exception.escaped";
 		public const string Tag_ExceptionType = "exception.type";
 		public const string Tag_ExceptionMessage = "exception.message";
 		public const string Tag_ExceptionStackTrace = "exception.stacktrace";
+
+		public const string RecordExceptionMethodName = "RecordExceptionInternal";
 
 		readonly static public TemplateInfo ActivitySourceGenerationAttribute = TemplateInfo.Create<Telemetry.Activities.ActivitySourceGenerationAttribute>();
 		readonly static public TemplateInfo ActivitySourceAttribute = TemplateInfo.Create<Telemetry.Activities.ActivitySourceAttribute>();
@@ -24,6 +29,7 @@ partial class Constants {
 		readonly static public TemplateInfo EventAttribute = TemplateInfo.Create<Telemetry.Activities.EventAttribute>();
 		readonly static public TemplateInfo ContextAttribute = TemplateInfo.Create<Telemetry.Activities.ContextAttribute>();
 		readonly static public TemplateInfo BaggageAttribute = TemplateInfo.Create<Telemetry.Activities.BaggageAttribute>();
+		readonly static public TemplateInfo EscapedAttribute = TemplateInfo.Create<Telemetry.Activities.EscapedAttribute>();
 		readonly static public TemplateInfo ActivityGeneratedKind = TemplateInfo.Create<Telemetry.Activities.ActivityGeneratedKind>();
 
 		static public TemplateInfo[] GetTemplates() => [
@@ -33,6 +39,7 @@ partial class Constants {
 				EventAttribute,
 				ContextAttribute,
 				BaggageAttribute,
+				EscapedAttribute,
 				ActivityGeneratedKind
 			];
 

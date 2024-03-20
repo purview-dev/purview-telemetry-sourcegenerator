@@ -7,7 +7,13 @@ using Purview.Telemetry.SourceGenerator.Records;
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class ActivitySourceTargetClassEmitter {
-	static void EmitTagsOrBaggageParameters(StringBuilder builder, int indent, string activityVariableName, bool isTag, ImmutableArray<ActivityMethodParameterTarget> parameters, bool checkForNullableActivity) {
+	static void EmitTagsOrBaggageParameters(StringBuilder builder, int indent,
+		string activityVariableName,
+		bool populateTags,
+		ActivityBasedGenerationTarget method,
+		bool checkForNullableActivity) {
+
+		var parameters = populateTags ? method.Tags : method.Baggage;
 		if (parameters.Length == 0) {
 			return;
 		}
@@ -23,7 +29,16 @@ partial class ActivitySourceTargetClassEmitter {
 			indent++;
 		}
 
+		var useRecordedExceptionRules = Constants.Activities.UseRecordExceptionRulesDefault;
+		if (method.EventAttribute?.UseRecordExceptionRules?.IsSet == true) {
+			useRecordedExceptionRules = method.EventAttribute!.UseRecordExceptionRules!.Value!.Value;
+		}
+
 		foreach (var param in parameters) {
+			if (populateTags && param.IsException && useRecordedExceptionRules) {
+				continue;
+			}
+
 			if (param.SkipOnNullOrEmpty) {
 				builder
 					.Append(indent, "if (", withNewLine: false)
@@ -38,7 +53,7 @@ partial class ActivitySourceTargetClassEmitter {
 			builder
 				.Append(indent, activityVariableName, withNewLine: false)
 				.Append('.')
-				.Append(isTag ? "SetTag" : "SetBaggage")
+				.Append(populateTags ? "SetTag" : "SetBaggage")
 				.Append('(')
 				.Append(param.GeneratedName.Wrap())
 				.Append(", ")
@@ -62,13 +77,14 @@ partial class ActivitySourceTargetClassEmitter {
 		}
 	}
 
-	static bool GuardParameters(ActivityMethodGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger,
-		out ActivityMethodParameterTarget? activityParam,
-		out ActivityMethodParameterTarget? parentContextOrId,
-		out ActivityMethodParameterTarget? tagsParam,
-		out ActivityMethodParameterTarget? linksParam,
-		out ActivityMethodParameterTarget? startTimeParam,
-		out ActivityMethodParameterTarget? timestampParam
+	static bool GuardParameters(ActivityBasedGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger,
+		out ActivityBasedParameterTarget? activityParam,
+		out ActivityBasedParameterTarget? parentContextOrId,
+		out ActivityBasedParameterTarget? tagsParam,
+		out ActivityBasedParameterTarget? linksParam,
+		out ActivityBasedParameterTarget? startTimeParam,
+		out ActivityBasedParameterTarget? timestampParam,
+		out ActivityBasedParameterTarget? escapeParam
 		) {
 
 		activityParam = null;
@@ -77,6 +93,7 @@ partial class ActivitySourceTargetClassEmitter {
 		linksParam = null;
 		startTimeParam = null;
 		timestampParam = null;
+		escapeParam = null;
 
 		var activityParams = methodTarget.Parameters.Where(m => m.ParamDestination == ActivityParameterDestination.Activity).ToImmutableArray();
 		var parentContextOrIdParams = methodTarget.Parameters.Where(m => m.ParamDestination == ActivityParameterDestination.ParentContextOrId).ToImmutableArray();
@@ -84,6 +101,7 @@ partial class ActivitySourceTargetClassEmitter {
 		var linksParams = methodTarget.Parameters.Where(m => m.ParamDestination == ActivityParameterDestination.LinksEnumerable).ToImmutableArray();
 		var startTimeParams = methodTarget.Parameters.Where(m => m.ParamDestination == ActivityParameterDestination.StartTime).ToImmutableArray();
 		var timestampParams = methodTarget.Parameters.Where(m => m.ParamDestination == ActivityParameterDestination.Timestamp).ToImmutableArray();
+		var escapeParams = methodTarget.Parameters.Where(m => m.ParamDestination == ActivityParameterDestination.Escape).ToImmutableArray();
 
 		if (activityParams.Length > 1) {
 			logger?.Diagnostic("More than one activity parameter defined.");
@@ -147,6 +165,44 @@ partial class ActivitySourceTargetClassEmitter {
 		}
 		else {
 			linksParam = linksParams.FirstOrDefault();
+		}
+
+		if (escapeParams.Length > 1) {
+			logger?.Diagnostic("More than one Escape parameter defined.");
+
+			TelemetryDiagnostics.Report(context.ReportDiagnostic,
+				TelemetryDiagnostics.Activities.DuplicateParameterTypes,
+				escapeParams.First().Location,
+				string.Join(", ", escapeParams.Select(m => m.ParameterName)),
+				"escape parameters"
+			);
+
+			return false;
+		}
+		else {
+			escapeParam = escapeParams.FirstOrDefault();
+			if (escapeParam != null) {
+				if (!Utilities.IsBoolean(escapeParam.ParameterType)) {
+					TelemetryDiagnostics.Report(context.ReportDiagnostic,
+						TelemetryDiagnostics.Activities.EscapedParameterInvalidType,
+						escapeParams.First().Location,
+						string.Join(", ", escapeParams.Select(m => m.ParameterName)),
+						"escape parameters"
+					);
+
+					return false;
+				}
+
+				if (methodTarget.MethodType != ActivityMethodType.Event) {
+					TelemetryDiagnostics.Report(context.ReportDiagnostic,
+						TelemetryDiagnostics.Activities.EscapedParameterInvalidType,
+						escapeParams.First().Location,
+						escapeParam.ParameterName
+					);
+
+					return false;
+				}
+			}
 		}
 
 		// There can be only one as it's checked on the

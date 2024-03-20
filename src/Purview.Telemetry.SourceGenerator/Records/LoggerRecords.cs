@@ -4,7 +4,7 @@ using Purview.Telemetry.SourceGenerator.Templates;
 
 namespace Purview.Telemetry.SourceGenerator.Records;
 
-record LoggerGenerationTarget(
+record LoggerTarget(
 	TelemetryGenerationAttributeRecord TelemetryGeneration,
 	GenerationType GenerationType,
 
@@ -17,10 +17,10 @@ record LoggerGenerationTarget(
 	LoggerAttributeRecord LoggerAttribute,
 	LogGeneratedLevel DefaultLevel,
 
-	ImmutableArray<LogMethodGenerationTarget> LogMethods
+	ImmutableArray<LogTarget> LogMethods
 );
 
-record LogMethodGenerationTarget(
+record LogTarget(
 	string MethodName,
 	bool IsScoped,
 	string LoggerActionFieldName,
@@ -34,10 +34,10 @@ record LogMethodGenerationTarget(
 
 	TypeInfo MSLevel,
 
-	ImmutableArray<LogMethodParameterTarget> Parameters,
-	ImmutableArray<LogMethodParameterTarget> ParametersSansException,
+	ImmutableArray<LogParameterTarget> Parameters,
+	ImmutableArray<LogParameterTarget> ParametersSansException,
 
-	LogMethodParameterTarget? ExceptionParameter,
+	LogParameterTarget? ExceptionParameter,
 	bool HasMultipleExceptions,
 
 	Microsoft.CodeAnalysis.Location? MethodLocation
@@ -51,7 +51,7 @@ record LogMethodGenerationTarget(
 	public int ParameterCount => ParametersSansException.Length;
 }
 
-record LogMethodParameterTarget(
+record LogParameterTarget(
 	string Name,
 	string UpperCasedName,
 	string FullyQualifiedType,

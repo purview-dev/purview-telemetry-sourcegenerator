@@ -10,7 +10,7 @@ namespace Purview.Telemetry.SourceGenerator;
 partial class TelemetrySourceGenerator {
 	static void RegisterMetricsGeneration(IncrementalGeneratorInitializationContext context, IGenerationLogger? logger) {
 		// Transform
-		Func<GeneratorAttributeSyntaxContext, CancellationToken, MeterGenerationTarget?> meterTargetTransform =
+		Func<GeneratorAttributeSyntaxContext, CancellationToken, MeterTarget?> meterTargetTransform =
 			logger == null
 				? static (context, cancellationToken) => PipelineHelpers.BuildMeterTransform(context, null, cancellationToken)
 				: (context, cancellationToken) => PipelineHelpers.BuildMeterTransform(context, logger, cancellationToken);
@@ -26,7 +26,7 @@ partial class TelemetrySourceGenerator {
 			.WithTrackingName($"{nameof(TelemetrySourceGenerator)}_{nameof(MeterAttribute)}");
 
 		// Build generation (static vs. non-static is for the logger).
-		Action<SourceProductionContext, (Compilation Compilation, ImmutableArray<MeterGenerationTarget?> Targets)> generationMeterAction =
+		Action<SourceProductionContext, (Compilation Compilation, ImmutableArray<MeterTarget?> Targets)> generationMeterAction =
 			logger == null
 				? static (spc, source) => GenerateMeterTargets(source.Targets, spc, null)
 				: (spc, source) => GenerateMeterTargets(source.Targets, spc, logger);
@@ -41,7 +41,7 @@ partial class TelemetrySourceGenerator {
 		);
 	}
 
-	static void GenerateMeterTargets(ImmutableArray<MeterGenerationTarget?> targets, SourceProductionContext spc, IGenerationLogger? logger) {
+	static void GenerateMeterTargets(ImmutableArray<MeterTarget?> targets, SourceProductionContext spc, IGenerationLogger? logger) {
 		if (targets.Length == 0) {
 			return;
 		}

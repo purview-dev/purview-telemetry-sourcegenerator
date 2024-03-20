@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Purview.Telemetry.SourceGenerator.Records;
 
-record ActivityGenerationTarget(
+record ActivitySourceTarget(
 	TelemetryGenerationAttributeRecord TelemetryGeneration,
 	GenerationType GenerationType,
 
@@ -20,12 +20,12 @@ record ActivityGenerationTarget(
 	ActivitySourceGenerationAttributeRecord? ActivitySourceAttribute,
 	string? ActivitySourceName,
 
-	ImmutableArray<ActivityMethodGenerationTarget> ActivityMethods
+	ImmutableArray<ActivityBasedGenerationTarget> ActivityMethods
 ,
 	ActivitySourceAttributeRecord ActivityTargetAttributeRecord
 );
 
-record ActivityMethodGenerationTarget(
+record ActivityBasedGenerationTarget(
 	string MethodName,
 	string ReturnType,
 	bool IsNullableReturn,
@@ -38,20 +38,21 @@ record ActivityMethodGenerationTarget(
 
 	ActivityMethodType MethodType,
 
-	ImmutableArray<ActivityMethodParameterTarget> Parameters,
-	ImmutableArray<ActivityMethodParameterTarget> Baggage,
-	ImmutableArray<ActivityMethodParameterTarget> Tags,
+	ImmutableArray<ActivityBasedParameterTarget> Parameters,
+	ImmutableArray<ActivityBasedParameterTarget> Baggage,
+	ImmutableArray<ActivityBasedParameterTarget> Tags,
 
 	TargetGeneration TargetGenerationState
 );
 
-record ActivityMethodParameterTarget(
+record ActivityBasedParameterTarget(
 	string ParameterName,
 	string ParameterType,
 	bool IsNullable,
 	string GeneratedName,
 	ActivityParameterDestination ParamDestination,
 	bool SkipOnNullOrEmpty,
+	bool IsException,
 	Location? Location
 );
 
@@ -63,7 +64,8 @@ enum ActivityParameterDestination {
 	LinksEnumerable,
 	Activity,
 	StartTime,
-	Timestamp
+	Timestamp,
+	Escape
 }
 
 enum ActivityMethodType {

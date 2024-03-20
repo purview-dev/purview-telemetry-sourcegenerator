@@ -6,7 +6,7 @@ using Purview.Telemetry.SourceGenerator.Records;
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class MeterTargetClassEmitter {
-	static int EmitMethods(MeterGenerationTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
+	static int EmitMethods(MeterTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
 		indent++;
 
 		EmitPartialTag(builder, indent, target, context, logger);
@@ -25,7 +25,7 @@ partial class MeterTargetClassEmitter {
 		return --indent;
 	}
 
-	static void EmitPartialTag(StringBuilder builder, int indent, MeterGenerationTarget target, SourceProductionContext context, IGenerationLogger? logger) {
+	static void EmitPartialTag(StringBuilder builder, int indent, MeterTarget target, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		logger?.Debug($"Emitting partial method for populating tags: {_partialMeterTagsMethod}.");
@@ -41,7 +41,7 @@ partial class MeterTargetClassEmitter {
 		;
 	}
 
-	static void EmitMethod(StringBuilder builder, int indent, InstrumentMethodTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
+	static void EmitMethod(StringBuilder builder, int indent, InstrumentTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		if (methodTarget.InstrumentAttribute == null) {
@@ -142,7 +142,7 @@ partial class MeterTargetClassEmitter {
 		;
 	}
 
-	static void EmitObservableInstrumentBodyTest(StringBuilder builder, int indent, InstrumentMethodTarget method, IGenerationLogger? logger) {
+	static void EmitObservableInstrumentBodyTest(StringBuilder builder, int indent, InstrumentTarget method, IGenerationLogger? logger) {
 		indent++;
 
 		builder
@@ -180,7 +180,7 @@ partial class MeterTargetClassEmitter {
 		;
 	}
 
-	static void EmitObservableInstrumentBody(StringBuilder builder, int indent, InstrumentMethodTarget method, string? tagVariableName, IGenerationLogger? logger) {
+	static void EmitObservableInstrumentBody(StringBuilder builder, int indent, InstrumentTarget method, string? tagVariableName, IGenerationLogger? logger) {
 		indent++;
 
 		var unit = method.InstrumentAttribute!.Unit?.Value?.Wrap();
@@ -223,7 +223,7 @@ partial class MeterTargetClassEmitter {
 		}
 	}
 
-	static void EmitInstrumentBody(StringBuilder builder, int indent, InstrumentMethodTarget methodTarget, string? tagVariableName, IGenerationLogger? logger) {
+	static void EmitInstrumentBody(StringBuilder builder, int indent, InstrumentTarget methodTarget, string? tagVariableName, IGenerationLogger? logger) {
 		indent++;
 
 		var instrumentMeasureMethodName = methodTarget.InstrumentAttribute!.InstrumentType == InstrumentTypes.Histogram
@@ -253,7 +253,7 @@ partial class MeterTargetClassEmitter {
 		;
 	}
 
-	static string? EmitTags(StringBuilder builder, int indent, InstrumentMethodTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
+	static string? EmitTags(StringBuilder builder, int indent, InstrumentTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
 		if (methodTarget.Tags.Length == 0) {
 			return null;
 		}

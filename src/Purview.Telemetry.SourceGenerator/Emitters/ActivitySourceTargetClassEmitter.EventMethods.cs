@@ -6,10 +6,17 @@ using Purview.Telemetry.SourceGenerator.Records;
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class ActivitySourceTargetClassEmitter {
-	static void EmitEventMethodBody(StringBuilder builder, int indent, ActivityMethodGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
+	static void EmitEventMethodBody(StringBuilder builder, int indent, ActivityBasedGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
-		if (!GuardParameters(methodTarget, context, logger, out var activityParam, out var parentContextOrId, out var tagsParam, out var linksParam, out var startTimeParam, out var timestampParam)) {
+		if (!GuardParameters(methodTarget, context, logger,
+			out var activityParam,
+			out var parentContextOrId,
+			out var tagsParam,
+			out var linksParam,
+			out var startTimeParam,
+			out var timestampParam,
+			out var escapeParam)) {
 			return;
 		}
 
@@ -82,6 +89,17 @@ partial class ActivitySourceTargetClassEmitter {
 				.AppendLine(");")
 			;
 
+			var useRecordedExceptionRules = Constants.Activities.UseRecordExceptionRulesDefault;
+			var emitExceptionEscape = escapeParam != null || Constants.Activities.RecordExceptionEscapeDefault;
+			if (methodTarget.EventAttribute?.UseRecordExceptionRules?.IsSet == true) {
+				useRecordedExceptionRules = methodTarget.EventAttribute!.UseRecordExceptionRules!.Value!.Value;
+			}
+
+			if (methodTarget.EventAttribute?.RecordExceptionEscape?.IsSet == true) {
+				emitExceptionEscape = methodTarget.EventAttribute!.RecordExceptionEscape!.Value!.Value;
+			}
+
+			var escapeValue = escapeParam?.ParameterName ?? "true";
 			foreach (var tagParam in methodTarget.Tags) {
 				if (tagParam.SkipOnNullOrEmpty) {
 					builder
@@ -94,14 +112,28 @@ partial class ActivitySourceTargetClassEmitter {
 					indent++;
 				}
 
-				builder
-					.Append(indent, tagsListVariableName, withNewLine: false)
-					.Append(".Add(")
-					.Append(tagParam.GeneratedName.Wrap())
-					.Append(", ")
-					.Append(tagParam.ParameterName)
-					.AppendLine(");")
-				;
+				if (useRecordedExceptionRules && tagParam.IsException) {
+					builder
+						.Append(indent, Constants.Activities.RecordExceptionMethodName, withNewLine: false)
+						.Append("(activity: ")
+						.Append(activityVariableName)
+						.Append(", exception: ")
+						.Append(tagParam.ParameterName)
+						.Append(", escape: ")
+						.Append(escapeValue)
+						.Append(");")
+					;
+				}
+				else {
+					builder
+						.Append(indent, tagsListVariableName, withNewLine: false)
+						.Append(".Add(")
+						.Append(tagParam.GeneratedName.Wrap())
+						.Append(", ")
+						.Append(tagParam.ParameterName)
+						.AppendLine(");")
+					;
+				}
 
 				if (tagParam.SkipOnNullOrEmpty) {
 					indent--;
@@ -118,6 +150,7 @@ partial class ActivitySourceTargetClassEmitter {
 		var eventVariableName = "activityEvent" + methodTarget.MethodName;
 
 		builder
+			.AppendLine()
 			.Append(indent, Constants.Activities.SystemDiagnostics.ActivityEvent, withNewLine: false)
 			.Append(' ')
 			.Append(eventVariableName)
@@ -143,7 +176,11 @@ partial class ActivitySourceTargetClassEmitter {
 			.AppendLine(");")
 		;
 
-		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, false, methodTarget.Baggage, false);
+		if (methodTarget.Baggage.Length > 0) {
+			builder.AppendLine();
+
+			EmitTagsOrBaggageParameters(builder, indent, activityVariableName, false, methodTarget, false);
+		}
 
 		builder
 			.Append(--indent, '}')

@@ -283,7 +283,10 @@ static class Utilities {
 		|| parameterType.StartsWith(Constants.System.IEnumerable.FullName + "<" + fullTypeName, StringComparison.Ordinal);
 
 	static public bool IsBoolean(ITypeSymbol type)
-		=> type.ToDisplayString() == Constants.System.Boolean
+		=> Constants.System.Boolean.Equals(type);
+
+	static public bool IsBoolean(string type)
+		=> type == Constants.System.BoolKeyword
 			|| Constants.System.Boolean.Equals(type);
 
 	static public bool IsString(ITypeSymbol type)
@@ -295,13 +298,15 @@ static class Utilities {
 			|| Constants.System.String.Equals(type);
 
 	static public bool IsExceptionType(ITypeSymbol? typeSymbol) {
-		if (typeSymbol == null)
-			return false;
+		while (typeSymbol != null) {
+			if (Constants.System.Exception.Equals(typeSymbol)) {
+				return true;
+			}
 
-		if (Constants.System.Exception.Equals(typeSymbol))
-			return true;
+			typeSymbol = typeSymbol.BaseType;
+		}
 
-		return IsExceptionType(typeSymbol.BaseType);
+		return false;
 	}
 
 	static public string Flatten(this SyntaxNode syntax)

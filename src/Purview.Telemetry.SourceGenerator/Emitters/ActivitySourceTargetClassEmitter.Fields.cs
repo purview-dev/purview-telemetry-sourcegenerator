@@ -6,7 +6,7 @@ using Purview.Telemetry.SourceGenerator.Records;
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class ActivitySourceTargetClassEmitter {
-	static int EmitFields(ActivityGenerationTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
+	static int EmitFields(ActivitySourceTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		indent++;
@@ -17,7 +17,7 @@ partial class ActivitySourceTargetClassEmitter {
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Activities.NoActivitySourceSpecified, location: null);
 
-			activitySourceName = Constants.DefaultActivitySourceName;
+			activitySourceName = Constants.Activities.DefaultActivitySourceName;
 		}
 
 		builder

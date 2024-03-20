@@ -15,7 +15,7 @@ partial class PipelineHelpers {
 
 	static public bool HasLoggerTargetAttribute(SyntaxNode _, CancellationToken __) => true;
 
-	static public LoggerGenerationTarget? BuildLoggerTransform(GeneratorAttributeSyntaxContext context, IGenerationLogger? logger, CancellationToken token) {
+	static public LoggerTarget? BuildLoggerTransform(GeneratorAttributeSyntaxContext context, IGenerationLogger? logger, CancellationToken token) {
 		token.ThrowIfCancellationRequested();
 
 		if (context.TargetNode is not InterfaceDeclarationSyntax interfaceDeclaration) {
@@ -80,7 +80,7 @@ partial class PipelineHelpers {
 		);
 	}
 
-	static ImmutableArray<LogMethodGenerationTarget> BuildLogMethods(
+	static ImmutableArray<LogTarget> BuildLogMethods(
 		GenerationType generationType,
 		string className,
 		LogGeneratedLevel? defaultLogLevel,
@@ -93,7 +93,7 @@ partial class PipelineHelpers {
 
 		token.ThrowIfCancellationRequested();
 
-		List<LogMethodGenerationTarget> methodTargets = [];
+		List<LogTarget> methodTargets = [];
 		foreach (var method in interfaceSymbol.GetMembers().OfType<IMethodSymbol>()) {
 			if (Utilities.ContainsAttribute(method, Constants.Shared.ExcludeAttribute, token)) {
 				logger?.Debug($"Skipping {interfaceSymbol.Name}.{method.Name}, explicitly excluded.");
@@ -200,7 +200,7 @@ partial class PipelineHelpers {
 		return methodName;
 	}
 
-	static string GenerateTemplateMessage(string logEntryName, bool isScoped, ImmutableArray<LogMethodParameterTarget> methodParameters) {
+	static string GenerateTemplateMessage(string logEntryName, bool isScoped, ImmutableArray<LogParameterTarget> methodParameters) {
 		StringBuilder builder = new();
 
 		builder.Append(logEntryName);
@@ -236,8 +236,8 @@ partial class PipelineHelpers {
 		return builder.ToString();
 	}
 
-	static ImmutableArray<LogMethodParameterTarget> GetLogMethodParameters(IMethodSymbol method, IGenerationLogger? logger, CancellationToken token) {
-		List<LogMethodParameterTarget> parameters = [];
+	static ImmutableArray<LogParameterTarget> GetLogMethodParameters(IMethodSymbol method, IGenerationLogger? logger, CancellationToken token) {
+		List<LogParameterTarget> parameters = [];
 		foreach (var parameter in method.Parameters) {
 			token.ThrowIfCancellationRequested();
 

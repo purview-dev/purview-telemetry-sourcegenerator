@@ -8,7 +8,7 @@ namespace Purview.Telemetry.SourceGenerator.Helpers;
 partial class PipelineHelpers {
 	static public bool HasMeterTargetAttribute(SyntaxNode _, CancellationToken __) => true;
 
-	static public MeterGenerationTarget? BuildMeterTransform(GeneratorAttributeSyntaxContext context, IGenerationLogger? logger, CancellationToken token) {
+	static public MeterTarget? BuildMeterTransform(GeneratorAttributeSyntaxContext context, IGenerationLogger? logger, CancellationToken token) {
 		token.ThrowIfCancellationRequested();
 
 		if (context.TargetNode is not InterfaceDeclarationSyntax interfaceDeclaration) {
@@ -68,7 +68,7 @@ partial class PipelineHelpers {
 		);
 	}
 
-	static ImmutableArray<InstrumentMethodTarget> BuildInstrumentationMethods(
+	static ImmutableArray<InstrumentTarget> BuildInstrumentationMethods(
 		GenerationType generationType,
 		MeterAttributeRecord meterAttribute,
 		MeterGenerationAttributeRecord? meterGenerationAttribute,
@@ -82,7 +82,7 @@ partial class PipelineHelpers {
 		var prefix = GeneratePrefix(meterGenerationAttribute, meterAttribute, token);
 		var lowercaseTagKeys = meterAttribute.LowercaseTagKeys!.Value!.Value;
 
-		List<InstrumentMethodTarget> methodTargets = [];
+		List<InstrumentTarget> methodTargets = [];
 		foreach (var method in interfaceSymbol.GetMembers().OfType<IMethodSymbol>()) {
 			token.ThrowIfCancellationRequested();
 
@@ -208,7 +208,7 @@ partial class PipelineHelpers {
 		return [.. methodTargets];
 	}
 
-	static ImmutableArray<InstrumentMethodParameterTarget> GetInstrumentParameters(
+	static ImmutableArray<InstrumentParameterTarget> GetInstrumentParameters(
 		IMethodSymbol method,
 		string? prefix,
 		bool lowercaseTagKeys,
@@ -216,7 +216,7 @@ partial class PipelineHelpers {
 		IGenerationLogger? logger,
 		CancellationToken token) {
 
-		List<InstrumentMethodParameterTarget> parameterTargets = [];
+		List<InstrumentParameterTarget> parameterTargets = [];
 		foreach (var parameter in method.Parameters) {
 			token.ThrowIfCancellationRequested();
 

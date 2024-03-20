@@ -6,7 +6,7 @@ using Purview.Telemetry.SourceGenerator.Records;
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class ActivitySourceTargetClassEmitter {
-	static void EmitContextMethodBody(StringBuilder builder, int indent, ActivityMethodGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
+	static void EmitContextMethodBody(StringBuilder builder, int indent, ActivityBasedGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		if (!GuardParameters(methodTarget, context, logger,
@@ -14,6 +14,7 @@ partial class ActivitySourceTargetClassEmitter {
 			out var _,
 			out var tagsParam,
 			out var linksParam,
+			out var _,
 			out var _,
 			out var _)) {
 			return;
@@ -54,8 +55,8 @@ partial class ActivitySourceTargetClassEmitter {
 
 		indent++;
 
-		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, true, methodTarget.Tags, false);
-		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, false, methodTarget.Baggage, false);
+		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, true, methodTarget, false);
+		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, false, methodTarget, false);
 
 		builder
 			.Append(--indent, '}')

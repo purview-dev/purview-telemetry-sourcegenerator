@@ -8,7 +8,7 @@ namespace Purview.Telemetry.SourceGenerator.Helpers;
 partial class PipelineHelpers {
 	static public bool HasActivityTargetAttribute(SyntaxNode _, CancellationToken __) => true;
 
-	static public ActivityGenerationTarget? BuildActivityTransform(GeneratorAttributeSyntaxContext context, IGenerationLogger? logger, CancellationToken token) {
+	static public ActivitySourceTarget? BuildActivityTransform(GeneratorAttributeSyntaxContext context, IGenerationLogger? logger, CancellationToken token) {
 		token.ThrowIfCancellationRequested();
 
 		if (context.TargetNode is not InterfaceDeclarationSyntax interfaceDeclaration) {
@@ -75,7 +75,7 @@ partial class PipelineHelpers {
 		);
 	}
 
-	static ImmutableArray<ActivityMethodGenerationTarget> BuildActivityMethods(
+	static ImmutableArray<ActivityBasedGenerationTarget> BuildActivityMethods(
 		GenerationType generationType,
 		ActivitySourceAttributeRecord activitySourceAttribute,
 		ActivitySourceGenerationAttributeRecord? activitySourceGenerationAttribute,
@@ -92,7 +92,7 @@ partial class PipelineHelpers {
 			: activitySourceAttribute.DefaultToTags.Value!.Value;
 		var lowercaseBaggageAndTagKeys = activitySourceAttribute.LowercaseBaggageAndTagKeys!.Value!.Value;
 
-		List<ActivityMethodGenerationTarget> methodTargets = [];
+		List<ActivityBasedGenerationTarget> methodTargets = [];
 		foreach (var method in interfaceSymbol.GetMembers().OfType<IMethodSymbol>()) {
 			token.ThrowIfCancellationRequested();
 
@@ -143,14 +143,14 @@ partial class PipelineHelpers {
 		return [.. methodTargets];
 	}
 
-	static ImmutableArray<ActivityMethodParameterTarget> GetActivityParameters(IMethodSymbol method,
+	static ImmutableArray<ActivityBasedParameterTarget> GetActivityParameters(IMethodSymbol method,
 		string? prefix,
 		bool defaultToTags,
 		bool lowercaseBaggageAndTagKeys,
 		SemanticModel semanticModel,
 		IGenerationLogger? logger,
 		CancellationToken token) {
-		List<ActivityMethodParameterTarget> parameterTargets = [];
+		List<ActivityBasedParameterTarget> parameterTargets = [];
 
 		foreach (var parameter in method.Parameters) {
 			token.ThrowIfCancellationRequested();
@@ -163,6 +163,10 @@ partial class PipelineHelpers {
 			else if (Utilities.TryContainsAttribute(parameter, Constants.Activities.BaggageAttribute, token, out attribute)) {
 				logger?.Debug($"Found explicit baggage: {parameter.Name}.");
 				destination = ActivityParameterDestination.Baggage;
+			}
+			else if (Utilities.ContainsAttribute(parameter, Constants.Activities.EscapedAttribute, token)) {
+				logger?.Debug($"Found escape parameter: {parameter.Name}.");
+				destination = ActivityParameterDestination.Escape;
 			}
 			else if (Constants.Activities.SystemDiagnostics.Activity.Equals(parameter.Type)) {
 				destination = ActivityParameterDestination.Activity;
@@ -202,6 +206,7 @@ partial class PipelineHelpers {
 				ParameterName: parameterName,
 				ParameterType: parameterType,
 				IsNullable: parameter.Type.NullableAnnotation == NullableAnnotation.Annotated,
+				IsException: Utilities.IsExceptionType(parameter.Type),
 				GeneratedName: generatedName,
 				ParamDestination: destination,
 				SkipOnNullOrEmpty: GetSkipOnNullOrEmptyValue(tagOrBaggageAttribute),

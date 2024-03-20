@@ -15,7 +15,7 @@ static partial class MeterTargetClassEmitter {
 	const string _meterFieldName = "_meter";
 	const string _partialMeterTagsMethod = "PopulateMeterTags";
 
-	static public void GenerateImplementation(MeterGenerationTarget target, SourceProductionContext context, IGenerationLogger? logger) {
+	static public void GenerateImplementation(MeterTarget target, SourceProductionContext context, IGenerationLogger? logger) {
 		StringBuilder builder = new();
 
 		builder

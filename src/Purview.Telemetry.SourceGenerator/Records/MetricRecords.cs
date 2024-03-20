@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Purview.Telemetry.SourceGenerator.Records;
 
-record MeterGenerationTarget(
+record MeterTarget(
 	TelemetryGenerationAttributeRecord TelemetryGeneration,
 	GenerationType GenerationType,
 
@@ -21,10 +21,10 @@ record MeterGenerationTarget(
 
 	MeterGenerationAttributeRecord? MeterGeneration,
 
-	ImmutableArray<InstrumentMethodTarget> InstrumentationMethods
+	ImmutableArray<InstrumentTarget> InstrumentationMethods
 );
 
-record InstrumentMethodTarget(
+record InstrumentTarget(
 	string MethodName,
 	string ReturnType,
 	bool ReturnsBool,
@@ -40,16 +40,16 @@ record InstrumentMethodTarget(
 
 	InstrumentAttributeRecord? InstrumentAttribute,
 
-	ImmutableArray<InstrumentMethodParameterTarget> Parameters,
-	ImmutableArray<InstrumentMethodParameterTarget> Tags,
-	InstrumentMethodParameterTarget? MeasurementParameter,
+	ImmutableArray<InstrumentParameterTarget> Parameters,
+	ImmutableArray<InstrumentParameterTarget> Tags,
+	InstrumentParameterTarget? MeasurementParameter,
 
 	ImmutableArray<TelemetryDiagnosticDescriptor> ErrorDiagnostics,
 
 	TargetGeneration TargetGenerationState
 );
 
-record InstrumentMethodParameterTarget(
+record InstrumentParameterTarget(
 	string ParameterName,
 	string ParameterType,
 
