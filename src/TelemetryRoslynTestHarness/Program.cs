@@ -12,7 +12,13 @@ class Program {
 	static void Main(string[] args) {
 		Console.WriteLine("Hello, World!");
 
-		IBasicLogger logger = new BasicLoggerCore(default!);
+		IServiceCollection col = new ServiceCollection();
+
+		//col.AddIBasicLogger();
+
+		var sP = col.BuildServiceProvider();
+
+		var logger = sP.GetService< IBasicLogger>();
 
 		ActivitySource xx = new("asda");
 

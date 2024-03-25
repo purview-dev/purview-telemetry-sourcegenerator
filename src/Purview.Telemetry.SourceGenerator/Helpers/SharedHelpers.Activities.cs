@@ -150,7 +150,7 @@ partial class SharedHelpers {
 			else if (name.Equals(nameof(EventAttribute.UseRecordExceptionRules), StringComparison.OrdinalIgnoreCase)) {
 				useRecordExceptionRules = new((bool)value);
 			}
-			else if (name.Equals(nameof(EventAttribute.RecordExceptionEscape), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals(nameof(EventAttribute.RecordExceptionAsEscaped), StringComparison.OrdinalIgnoreCase)) {
 				recordExceptionEscape = new((bool)value);
 			}
 		}, semanticModel, logger, token)) {

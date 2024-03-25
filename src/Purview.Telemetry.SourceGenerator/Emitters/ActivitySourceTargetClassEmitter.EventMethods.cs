@@ -90,7 +90,7 @@ partial class ActivitySourceTargetClassEmitter {
 			;
 
 			var useRecordedExceptionRules = Constants.Activities.UseRecordExceptionRulesDefault;
-			var emitExceptionEscape = escapeParam != null || Constants.Activities.RecordExceptionEscapeDefault;
+			var emitExceptionEscape = escapeParam != null || Constants.Activities.RecordExceptionEscapedDefault;
 			if (methodTarget.EventAttribute?.UseRecordExceptionRules?.IsSet == true) {
 				useRecordedExceptionRules = methodTarget.EventAttribute!.UseRecordExceptionRules!.Value!.Value;
 			}
@@ -101,7 +101,7 @@ partial class ActivitySourceTargetClassEmitter {
 
 			var escapeValue = escapeParam?.ParameterName ?? "true";
 			foreach (var tagParam in methodTarget.Tags) {
-				if (tagParam.SkipOnNullOrEmpty) {
+				if (tagParam.SkipOnNullOrEmpty || tagParam.IsException) {
 					builder
 						.Append(indent, "if (", withNewLine: false)
 						.Append(tagParam.ParameterName)
