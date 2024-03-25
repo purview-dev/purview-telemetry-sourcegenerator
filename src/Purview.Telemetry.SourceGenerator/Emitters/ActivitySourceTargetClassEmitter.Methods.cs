@@ -93,7 +93,8 @@ partial class ActivitySourceTargetClassEmitter {
 
 	static void EmitExceptionParam(StringBuilder builder, int indent,
 		string tagsListVariableName,
-		string escapeParam, string exceptionParam) {
+		string escapeParam,
+		string exceptionParam) {
 		builder
 
 			.Append(indent, tagsListVariableName, withNewLine: false)

@@ -119,7 +119,7 @@ public interface ITestTelemetry
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicEventWithExplicitExceptionAndNamedexceptionAndRulesAreFalse_GeneratesTelemetry() {
+	async public Task Generate_GivenBasicEventWithExplicitExceptionAndNamedExceptionAndRulesAreFalse_GeneratesTelemetry() {
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
@@ -144,7 +144,7 @@ public interface ITestTelemetry
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicEventWithExplicitExceptionAndNamedexceptionAndRulesAreTrue_GeneratesTelemetry() {
+	async public Task Generate_GivenBasicEventWithExplicitExceptionAndNamedExceptionAndRulesAreTrue_GeneratesTelemetry() {
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
