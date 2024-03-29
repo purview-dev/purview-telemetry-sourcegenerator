@@ -28,7 +28,7 @@ static partial class Constants {
 	static public partial class Activities {
 		public const bool UseRecordExceptionRulesDefault = true;
 
-		public const bool RecordExceptionEscapeDefault = true;
+		public const bool RecordExceptionEscapedDefault = true;
 	}
 }
 

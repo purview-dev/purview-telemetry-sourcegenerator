@@ -37,23 +37,19 @@ namespace Testing
 			activity.AddEvent(recordExceptionEvent);
 		}
 
-		public void EventMethod(string stringParam, int intParam, bool boolParam, System.Exception anException, bool escape)
+		public void Event(string stringParam, int intParam, bool boolParam, System.Exception anException)
 		{
 			if (System.Diagnostics.Activity.Current != null)
 			{
-				System.Diagnostics.ActivityTagsCollection tagsCollectionEventMethod = new System.Diagnostics.ActivityTagsCollection();
-				tagsCollectionEventMethod.Add("intparam", intParam);
-				tagsCollectionEventMethod.Add("boolparam", boolParam);
+				System.Diagnostics.ActivityTagsCollection tagsCollectionEvent = new System.Diagnostics.ActivityTagsCollection();
+				tagsCollectionEvent.Add("intparam", intParam);
+				tagsCollectionEvent.Add("boolparam", boolParam);
 				if (anException != default)
 				{
-					tagsCollectionEventMethod.Add("exception.escaped", escape);
-					tagsCollectionEventMethod.Add("exception.message", anException.Message);
-					tagsCollectionEventMethod.Add("exception.type", anException.GetType().FullName);
-					tagsCollectionEventMethod.Add("exception.stacktrace", anException.StackTrace);
+					RecordExceptionInternal(activity: System.Diagnostics.Activity.Current, exception: anException, escape: true);
+					System.Diagnostics.ActivityEvent activityEventEvent = new System.Diagnostics.ActivityEvent(name: "Event", timestamp: default, tags: tagsCollectionEvent);
 
-					System.Diagnostics.ActivityEvent activityEventEventMethod = new System.Diagnostics.ActivityEvent(name: "exception", timestamp: default, tags: tagsCollectionEventMethod);
-
-					System.Diagnostics.Activity.Current.AddEvent(activityEventEventMethod);
+					System.Diagnostics.Activity.Current.AddEvent(activityEventEvent);
 
 					System.Diagnostics.Activity.Current.SetBaggage("stringparam", stringParam);
 				}

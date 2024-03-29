@@ -23,10 +23,10 @@ sealed class EventAttribute : Attribute {
 	public EventAttribute() {
 	}
 
-	public EventAttribute(string name, bool useRecordExceptionRules = Constants.Activities.UseRecordExceptionRulesDefault, bool recordExceptionEscape = Constants.Activities.RecordExceptionEscapeDefault) {
+	public EventAttribute(string name, bool useRecordExceptionRules = Constants.Activities.UseRecordExceptionRulesDefault, bool recordExceptionEscape = Constants.Activities.RecordExceptionEscapedDefault) {
 		Name = name;
 		UseRecordExceptionRules = useRecordExceptionRules;
-		RecordExceptionEscape = recordExceptionEscape;
+		RecordExceptionAsEscaped = recordExceptionEscape;
 	}
 
 	/// <summary>
@@ -42,9 +42,10 @@ sealed class EventAttribute : Attribute {
 	/// <summary>
 	/// Determines if a recorded exception (when <see cref="UseRecordExceptionRules"/> is true and an exception parameter exists)
 	/// if the exception prevented the operation from completing (true) or if the exception was caught and handled (false)
-	/// and did not affect the operation. Alternatives using the <see cref="EscapeAttribute"/> can override this value dynamically.
+	/// and did not affect the operation. Alternatively, use the <see cref="EscapeAttribute"/> to override this value by
+	/// providing a value dynamically.
 	/// </summary>
-	public bool RecordExceptionEscape { get; set; } = Constants.Activities.RecordExceptionEscapeDefault;
+	public bool RecordExceptionAsEscaped { get; set; } = Constants.Activities.RecordExceptionEscapedDefault;
 }
 
 #endif

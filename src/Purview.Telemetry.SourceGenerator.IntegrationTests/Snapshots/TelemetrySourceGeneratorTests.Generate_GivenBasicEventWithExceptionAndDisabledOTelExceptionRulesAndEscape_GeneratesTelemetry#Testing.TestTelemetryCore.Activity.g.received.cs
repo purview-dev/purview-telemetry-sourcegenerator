@@ -46,12 +46,9 @@ namespace Testing
 				tagsCollectionEventMethod.Add("boolparam", boolParam);
 				if (anException != default)
 				{
-					tagsCollectionEventMethod.Add("exception.escaped", escape);
-					tagsCollectionEventMethod.Add("exception.message", anException.Message);
-					tagsCollectionEventMethod.Add("exception.type", anException.GetType().FullName);
-					tagsCollectionEventMethod.Add("exception.stacktrace", anException.StackTrace);
+					tagsCollectionEventMethod.Add("anexception", anException.ToString());
 
-					System.Diagnostics.ActivityEvent activityEventEventMethod = new System.Diagnostics.ActivityEvent(name: "exception", timestamp: default, tags: tagsCollectionEventMethod);
+					System.Diagnostics.ActivityEvent activityEventEventMethod = new System.Diagnostics.ActivityEvent(name: "EventMethod", timestamp: default, tags: tagsCollectionEventMethod);
 
 					System.Diagnostics.Activity.Current.AddEvent(activityEventEventMethod);
 
