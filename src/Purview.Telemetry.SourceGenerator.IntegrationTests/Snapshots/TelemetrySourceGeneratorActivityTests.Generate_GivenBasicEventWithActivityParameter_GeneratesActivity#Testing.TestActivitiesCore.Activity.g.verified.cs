@@ -19,6 +19,7 @@ namespace Testing
 	{
 		readonly static System.Diagnostics.ActivitySource _activitySource = new System.Diagnostics.ActivitySource("testing-activity-source");
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		static void RecordExceptionInternal(System.Diagnostics.Activity? activity, System.Exception? exception, bool escape)
 		{
 			if (activity == null || exception == null)
@@ -37,6 +38,7 @@ namespace Testing
 			activity.AddEvent(recordExceptionEvent);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Event(System.Diagnostics.Activity activity, string stringParam, int intParam, bool boolParam)
 		{
 			if (activity != null)

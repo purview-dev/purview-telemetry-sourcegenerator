@@ -58,6 +58,7 @@ partial class MeterTargetClassEmitter {
 
 		builder
 			.AppendLine()
+			.AgressiveInlining(indent)
 			.Append(indent, "public ", withNewLine: false)
 			.Append(methodTarget.ReturnType)
 	;

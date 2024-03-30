@@ -24,6 +24,7 @@ partial class ActivitySourceTargetClassEmitter {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		builder
+			.AgressiveInlining(indent)
 			.Append(indent, "static void ", withNewLine: false)
 			.Append(Constants.Activities.RecordExceptionMethodName)
 			.Append('(')
@@ -161,6 +162,7 @@ partial class ActivitySourceTargetClassEmitter {
 		}
 
 		builder
+			.AgressiveInlining(indent)
 			.Append(indent, "public ", withNewLine: false)
 			.Append(methodTarget.ReturnType)
 		;

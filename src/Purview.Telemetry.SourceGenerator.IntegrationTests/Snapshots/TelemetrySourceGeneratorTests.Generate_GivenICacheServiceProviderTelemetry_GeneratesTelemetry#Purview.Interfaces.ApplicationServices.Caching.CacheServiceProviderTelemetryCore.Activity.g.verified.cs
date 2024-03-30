@@ -19,6 +19,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 	{
 		readonly static System.Diagnostics.ActivitySource _activitySource = new System.Diagnostics.ActivitySource("purview");
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		static void RecordExceptionInternal(System.Diagnostics.Activity? activity, System.Exception? exception, bool escape)
 		{
 			if (activity == null || exception == null)
@@ -37,6 +38,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 			activity.AddEvent(recordExceptionEvent);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public System.Diagnostics.Activity? GetFromCache()
 		{
 			System.Diagnostics.Activity? activityGetFromCache = _activitySource.StartActivity(name: "GetFromCache", kind: System.Diagnostics.ActivityKind.Client, parentId: default, tags: default, links: default, startTime: default);
@@ -44,6 +46,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 			return activityGetFromCache;
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void NoValueProvided()
 		{
 			if (System.Diagnostics.Activity.Current != null)
@@ -55,6 +58,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 			}
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public System.Diagnostics.Activity? SerializePayload()
 		{
 			System.Diagnostics.Activity? activitySerializePayload = _activitySource.StartActivity(name: "SerializePayload", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
@@ -62,6 +66,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 			return activitySerializePayload;
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void SerializePayloadResult(int payloadStringLength)
 		{
 			if (System.Diagnostics.Activity.Current != null)
@@ -70,6 +75,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 			}
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public System.Diagnostics.Activity? SetInCache()
 		{
 			System.Diagnostics.Activity? activitySetInCache = _activitySource.StartActivity(name: "SetInCache", kind: System.Diagnostics.ActivityKind.Client, parentId: default, tags: default, links: default, startTime: default);
@@ -77,6 +83,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 			return activitySetInCache;
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void SetDefaultTags(string distributedCacheType, string cacheKey, string? entityType)
 		{
 			if (System.Diagnostics.Activity.Current != null)
@@ -87,6 +94,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 			}
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ValueCached()
 		{
 			if (System.Diagnostics.Activity.Current != null)
@@ -98,6 +106,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 			}
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void RequestingValueFromCache()
 		{
 			if (System.Diagnostics.Activity.Current != null)
@@ -109,6 +118,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 			}
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void CacheHit(int? dataLength)
 		{
 			if (System.Diagnostics.Activity.Current != null)
@@ -122,6 +132,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 			}
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void CacheMiss()
 		{
 			if (System.Diagnostics.Activity.Current != null)
@@ -133,6 +144,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 			}
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public System.Diagnostics.Activity? DeserializePayload()
 		{
 			System.Diagnostics.Activity? activityDeserializePayload = _activitySource.StartActivity(name: "DeserializePayload", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
@@ -140,6 +152,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 			return activityDeserializePayload;
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public System.Diagnostics.Activity? Refresh()
 		{
 			System.Diagnostics.Activity? activityRefresh = _activitySource.StartActivity(name: "Refresh", kind: System.Diagnostics.ActivityKind.Client, parentId: default, tags: default, links: default, startTime: default);
@@ -147,6 +160,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 			return activityRefresh;
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public System.Diagnostics.Activity? Remove()
 		{
 			System.Diagnostics.Activity? activityRemove = _activitySource.StartActivity(name: "Remove", kind: System.Diagnostics.ActivityKind.Client, parentId: default, tags: default, links: default, startTime: default);

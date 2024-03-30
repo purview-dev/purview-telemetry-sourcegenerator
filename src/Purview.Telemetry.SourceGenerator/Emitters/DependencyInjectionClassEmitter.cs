@@ -94,6 +94,7 @@ static class DependencyInjectionClassEmitter {
 		logger?.Debug($"Emitting DI method for {interfaceName}.");
 
 		builder
+			.AgressiveInlining(indent)
 			.Append(indent, "static public ", withNewLine: false)
 			.Append(Constants.DependencyInjection.IServiceCollection)
 			.Append(" Add")

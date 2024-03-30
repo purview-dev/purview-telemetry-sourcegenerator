@@ -18,6 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 	static class TestLoggerCore
 	{
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		static public Microsoft.Extensions.DependencyInjection.IServiceCollection AddITestLogger(this Microsoft.Extensions.DependencyInjection.IServiceCollection services)
 		{
 			services.Add(new Microsoft.Extensions.DependencyInjection.ServiceDescriptor(typeof(Testing.ITestLogger), typeof(Testing.TestLoggerCore), Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton));

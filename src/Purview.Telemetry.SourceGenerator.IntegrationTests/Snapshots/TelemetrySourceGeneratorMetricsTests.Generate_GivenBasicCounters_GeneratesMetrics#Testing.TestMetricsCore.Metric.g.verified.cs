@@ -32,6 +32,7 @@ namespace Testing
 			InitializeMeters(meterFactory);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
@@ -60,6 +61,7 @@ namespace Testing
 
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter(int counterValue, int intParam, bool boolParam)
 		{
 			System.Diagnostics.TagList counterTagList = new System.Diagnostics.TagList();
@@ -70,6 +72,7 @@ namespace Testing
 			_counterInstrument.Add(counterValue, tagList: counterTagList);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter2(byte counterValue, int intParam, bool boolParam)
 		{
 			System.Diagnostics.TagList counter2TagList = new System.Diagnostics.TagList();
@@ -80,6 +83,7 @@ namespace Testing
 			_counter2Instrument.Add(counterValue, tagList: counter2TagList);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter3(long counterValue, int intParam, bool boolParam)
 		{
 			System.Diagnostics.TagList counter3TagList = new System.Diagnostics.TagList();
@@ -90,6 +94,7 @@ namespace Testing
 			_counter3Instrument.Add(counterValue, tagList: counter3TagList);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter4(short counterValue, int intParam, bool boolParam)
 		{
 			System.Diagnostics.TagList counter4TagList = new System.Diagnostics.TagList();
@@ -100,6 +105,7 @@ namespace Testing
 			_counter4Instrument.Add(counterValue, tagList: counter4TagList);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter5(double counterValue, int intParam, bool boolParam)
 		{
 			System.Diagnostics.TagList counter5TagList = new System.Diagnostics.TagList();
@@ -110,6 +116,7 @@ namespace Testing
 			_counter5Instrument.Add(counterValue, tagList: counter5TagList);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter6(float counterValue, int intParam, bool boolParam)
 		{
 			System.Diagnostics.TagList counter6TagList = new System.Diagnostics.TagList();
@@ -120,6 +127,7 @@ namespace Testing
 			_counter6Instrument.Add(counterValue, tagList: counter6TagList);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter7(decimal counterValue, int intParam, bool boolParam)
 		{
 			System.Diagnostics.TagList counter7TagList = new System.Diagnostics.TagList();

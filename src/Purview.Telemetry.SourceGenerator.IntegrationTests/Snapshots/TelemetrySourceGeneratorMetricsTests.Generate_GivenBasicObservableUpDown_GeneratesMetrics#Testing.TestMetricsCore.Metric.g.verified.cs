@@ -28,6 +28,7 @@ namespace Testing
 			InitializeMeters(meterFactory);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
@@ -49,6 +50,7 @@ namespace Testing
 
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableUpDown(System.Func<int> f, int intParam, bool boolParam)
 		{
 			if (_observableUpDownInstrument != null)
@@ -64,6 +66,7 @@ namespace Testing
 			_observableUpDownInstrument = _meter.CreateObservableUpDownCounter<System.Int32>("ObservableUpDown", f, unit: null, description: null, tags: observableUpDownTagList);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableUpDown2(System.Func<System.Diagnostics.Metrics.Measurement<System.Int32>> f, int intParam, bool boolParam)
 		{
 			if (_observableUpDown2Instrument != null)
@@ -79,6 +82,7 @@ namespace Testing
 			_observableUpDown2Instrument = _meter.CreateObservableUpDownCounter<System.Int32>("ObservableUpDown2", f, unit: null, description: null, tags: observableUpDown2TagList);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableUpDown3(System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<System.Int32>>> f, int intParam, bool boolParam)
 		{
 			if (_observableUpDown3Instrument != null)

@@ -28,6 +28,7 @@ namespace Testing
 			InitializeMeters(meterFactory);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
@@ -49,6 +50,7 @@ namespace Testing
 
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public System.Boolean Counter(System.Func<int> counterValue, int intParam, bool boolParam)
 		{
 			if (_counterInstrument != null)
@@ -66,6 +68,7 @@ namespace Testing
 			return true;
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public System.Boolean Gauge(System.Func<int> counterValue, int intParam, bool boolParam)
 		{
 			if (_gaugeInstrument != null)
@@ -83,6 +86,7 @@ namespace Testing
 			return true;
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public System.Boolean UpDown(System.Func<int> counterValue, int intParam, bool boolParam)
 		{
 			if (_upDownInstrument != null)

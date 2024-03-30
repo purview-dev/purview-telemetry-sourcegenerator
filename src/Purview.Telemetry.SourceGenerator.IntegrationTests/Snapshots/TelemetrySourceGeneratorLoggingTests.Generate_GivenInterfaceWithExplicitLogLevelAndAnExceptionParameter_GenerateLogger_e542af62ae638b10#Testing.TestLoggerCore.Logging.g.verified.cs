@@ -26,6 +26,7 @@ namespace Testing
 			_logger = logger;
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Log(System.String stringParam, System.Int32 intParam, System.Boolean boolParam, System.Exception exception)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Trace))

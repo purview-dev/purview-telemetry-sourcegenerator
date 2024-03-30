@@ -28,6 +28,7 @@ namespace Testing
 			InitializeMeters(meterFactory);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
@@ -49,6 +50,7 @@ namespace Testing
 
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableGauge(System.Func<int> f, int intParam, bool boolParam)
 		{
 			if (_observableGaugeInstrument != null)
@@ -64,6 +66,7 @@ namespace Testing
 			_observableGaugeInstrument = _meter.CreateObservableGauge<System.Int32>("ObservableGauge", f, unit: null, description: null, tags: observableGaugeTagList);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableGauge2(System.Func<System.Diagnostics.Metrics.Measurement<System.Int32>> f, int intParam, bool boolParam)
 		{
 			if (_observableGauge2Instrument != null)
@@ -79,6 +82,7 @@ namespace Testing
 			_observableGauge2Instrument = _meter.CreateObservableGauge<System.Int32>("ObservableGauge2", f, unit: null, description: null, tags: observableGauge2TagList);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableGauge3(System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<System.Int32>>> f, int intParam, bool boolParam)
 		{
 			if (_observableGauge3Instrument != null)

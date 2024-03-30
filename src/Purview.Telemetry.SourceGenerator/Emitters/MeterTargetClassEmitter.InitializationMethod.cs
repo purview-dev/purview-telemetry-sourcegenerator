@@ -15,6 +15,7 @@ partial class MeterTargetClassEmitter {
 
 		builder
 			.AppendLine()
+			.AgressiveInlining(indent)
 			.Append(indent, "void ", withNewLine: false)
 			.Append(Constants.Metrics.MeterInitializationMethod)
 			.Append('(')

@@ -18,6 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 	static class CacheServiceProviderTelemetryCore
 	{
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		static public Microsoft.Extensions.DependencyInjection.IServiceCollection AddICacheServiceProviderTelemetry(this Microsoft.Extensions.DependencyInjection.IServiceCollection services)
 		{
 			services.Add(new Microsoft.Extensions.DependencyInjection.ServiceDescriptor(typeof(Purview.Interfaces.ApplicationServices.Caching.ICacheServiceProviderTelemetry), typeof(Purview.Interfaces.ApplicationServices.Caching.CacheServiceProviderTelemetryCore), Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton));

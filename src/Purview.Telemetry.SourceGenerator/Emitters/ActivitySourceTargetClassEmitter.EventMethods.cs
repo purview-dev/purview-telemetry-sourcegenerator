@@ -101,7 +101,7 @@ partial class ActivitySourceTargetClassEmitter {
 
 			var escapeValue = escapeParam?.ParameterName ?? "true";
 			foreach (var tagParam in methodTarget.Tags) {
-				if (tagParam.SkipOnNullOrEmpty || tagParam.IsException) {
+				if (tagParam.SkipOnNullOrEmpty) {
 					builder
 						.Append(indent, "if (", withNewLine: false)
 						.Append(tagParam.ParameterName)
@@ -120,6 +120,7 @@ partial class ActivitySourceTargetClassEmitter {
 					else {
 						if (useRecordedExceptionRules) {
 							builder
+								.AppendLine()
 								.Append(indent, Constants.Activities.RecordExceptionMethodName, withNewLine: false)
 								.Append("(activity: ")
 								.Append(activityVariableName)
@@ -127,7 +128,7 @@ partial class ActivitySourceTargetClassEmitter {
 								.Append(tagParam.ParameterName)
 								.Append(", escape: ")
 								.Append(escapeValue)
-								.Append(");")
+								.AppendLine(");")
 							;
 						}
 						else {

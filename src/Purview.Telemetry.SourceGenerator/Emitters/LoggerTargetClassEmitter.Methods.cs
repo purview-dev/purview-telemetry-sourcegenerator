@@ -37,6 +37,7 @@ partial class LoggerTargetClassEmitter {
 
 		builder
 			.AppendLine()
+			.AgressiveInlining(indent)
 			.Append(indent, "public ", withNewLine: false)
 		;
 

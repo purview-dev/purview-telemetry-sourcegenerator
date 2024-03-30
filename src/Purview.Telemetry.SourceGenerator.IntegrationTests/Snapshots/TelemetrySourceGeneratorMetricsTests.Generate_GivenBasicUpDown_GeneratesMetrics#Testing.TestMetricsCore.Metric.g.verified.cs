@@ -27,6 +27,7 @@ namespace Testing
 			InitializeMeters(meterFactory);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
@@ -50,6 +51,7 @@ namespace Testing
 
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void UpDown(int counterValue, int intParam, bool boolParam)
 		{
 			System.Diagnostics.TagList upDownTagList = new System.Diagnostics.TagList();
@@ -60,6 +62,7 @@ namespace Testing
 			_upDownInstrument.Add(counterValue, tagList: upDownTagList);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void UpDown2(int counterValue, int intParam, bool boolParam)
 		{
 			System.Diagnostics.TagList upDown2TagList = new System.Diagnostics.TagList();

@@ -23,10 +23,10 @@ sealed class EventAttribute : Attribute {
 	public EventAttribute() {
 	}
 
-	public EventAttribute(string name, bool useRecordExceptionRules = Constants.Activities.UseRecordExceptionRulesDefault, bool recordExceptionEscape = Constants.Activities.RecordExceptionEscapedDefault) {
+	public EventAttribute(string name, bool useRecordExceptionRules = Constants.Activities.UseRecordExceptionRulesDefault, bool recordExceptionAsEscaped = Constants.Activities.RecordExceptionEscapedDefault) {
 		Name = name;
 		UseRecordExceptionRules = useRecordExceptionRules;
-		RecordExceptionAsEscaped = recordExceptionEscape;
+		RecordExceptionAsEscaped = recordExceptionAsEscaped;
 	}
 
 	/// <summary>

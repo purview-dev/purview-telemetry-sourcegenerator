@@ -3,6 +3,9 @@
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 
 static class EmitHelpers {
+	static public StringBuilder AgressiveInlining(this StringBuilder builder, int indent)
+		=> builder.Append(indent, "[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]");
+
 	static public int EmitNamespaceStart(string? classNamespace, string[] parentClasses, StringBuilder builder, CancellationToken token) {
 		token.ThrowIfCancellationRequested();
 

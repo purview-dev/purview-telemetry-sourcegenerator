@@ -28,6 +28,7 @@ namespace Testing
 			InitializeMeters(meterFactory);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
@@ -49,6 +50,7 @@ namespace Testing
 
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableCounter(System.Func<int> f, int intParam, bool boolParam)
 		{
 			if (_observableCounterInstrument != null)
@@ -64,6 +66,7 @@ namespace Testing
 			_observableCounterInstrument = _meter.CreateObservableCounter<System.Int32>("ObservableCounter", f, unit: null, description: null, tags: observableCounterTagList);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableCounter2(System.Func<System.Diagnostics.Metrics.Measurement<System.Int32>> f, int intParam, bool boolParam)
 		{
 			if (_observableCounter2Instrument != null)
@@ -79,6 +82,7 @@ namespace Testing
 			_observableCounter2Instrument = _meter.CreateObservableCounter<System.Int32>("ObservableCounter2", f, unit: null, description: null, tags: observableCounter2TagList);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableCounter3(System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<System.Int32>>> f, int intParam, bool boolParam)
 		{
 			if (_observableCounter3Instrument != null)

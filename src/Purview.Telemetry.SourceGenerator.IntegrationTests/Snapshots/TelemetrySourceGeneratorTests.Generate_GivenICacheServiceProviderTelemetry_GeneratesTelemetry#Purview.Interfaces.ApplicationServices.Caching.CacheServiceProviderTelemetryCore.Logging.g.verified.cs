@@ -32,6 +32,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 			_logger = logger;
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void FailedToDeserializePayload(System.Int32 dataLength, System.Exception ex)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Error))
@@ -41,6 +42,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		}
 
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void FailedToGetFromCache(System.String key, System.Exception ex)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Error))
@@ -50,6 +52,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		}
 
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void FailedToRefresh(System.String cacheKey, System.Exception ex)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Error))
@@ -59,6 +62,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		}
 
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void FailedToRemove(System.String key, System.Exception ex)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Error))
@@ -68,6 +72,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		}
 
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void FailedToSerializePayload(System.String? fullName, System.Exception ex)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Error))
@@ -77,6 +82,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		}
 
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void FailedToSetValueInCache(System.String key, System.Exception ex)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Error))
@@ -86,6 +92,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		}
 
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void UsingDistributedCache(System.String? fullName, System.Boolean isNullCache)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))

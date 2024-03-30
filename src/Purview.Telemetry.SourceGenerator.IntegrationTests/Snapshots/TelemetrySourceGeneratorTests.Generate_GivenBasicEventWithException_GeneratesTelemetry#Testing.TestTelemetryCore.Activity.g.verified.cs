@@ -19,6 +19,7 @@ namespace Testing
 	{
 		readonly static System.Diagnostics.ActivitySource _activitySource = new System.Diagnostics.ActivitySource("activity-source");
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		static void RecordExceptionInternal(System.Diagnostics.Activity? activity, System.Exception? exception, bool escape)
 		{
 			if (activity == null || exception == null)
@@ -37,6 +38,7 @@ namespace Testing
 			activity.AddEvent(recordExceptionEvent);
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Event(string stringParam, int intParam, bool boolParam, System.Exception anException)
 		{
 			if (System.Diagnostics.Activity.Current != null)
@@ -44,7 +46,9 @@ namespace Testing
 				System.Diagnostics.ActivityTagsCollection tagsCollectionEvent = new System.Diagnostics.ActivityTagsCollection();
 				tagsCollectionEvent.Add("intparam", intParam);
 				tagsCollectionEvent.Add("boolparam", boolParam);
+
 				RecordExceptionInternal(activity: System.Diagnostics.Activity.Current, exception: anException, escape: true);
+
 				System.Diagnostics.ActivityEvent activityEventEvent = new System.Diagnostics.ActivityEvent(name: "Event", timestamp: default, tags: tagsCollectionEvent);
 
 				System.Diagnostics.Activity.Current.AddEvent(activityEventEvent);

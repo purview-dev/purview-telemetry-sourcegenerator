@@ -26,6 +26,7 @@ namespace Testing
 			_logger = logger;
 		}
 
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public System.IDisposable Log()
 		{
 			return _logAction(_logger);
