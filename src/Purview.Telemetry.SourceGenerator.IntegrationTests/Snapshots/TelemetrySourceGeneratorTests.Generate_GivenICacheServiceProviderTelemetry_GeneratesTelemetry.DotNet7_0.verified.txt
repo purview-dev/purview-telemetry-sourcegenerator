@@ -1,0 +1,74 @@
+﻿{
+  Diagnostics: [
+    {
+      Id: TSG3001,
+      Title: No activity source specified.,
+      Severity: Info,
+      WarningLevel: 1,
+      Location: : (0,0)-(0,0),
+      MessageFormat: An activity source helps to identify your application and it's telemetry. Defaulting to 'purview'.,
+      Message: An activity source helps to identify your application and it's telemetry. Defaulting to 'purview'.,
+      Category: Activity.Usage
+    },
+    {
+      Id: TSG2002,
+      Title: Inferring error log level,
+      Severity: Info,
+      WarningLevel: 1,
+      Location: Guid_1: (16,6)-(16,32),
+      MessageFormat: Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.,
+      Message: Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.,
+      Category: Logging.Usage
+    },
+    {
+      Id: TSG2002,
+      Title: Inferring error log level,
+      Severity: Info,
+      WarningLevel: 1,
+      Location: Guid_1: (19,6)-(19,26),
+      MessageFormat: Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.,
+      Message: Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.,
+      Category: Logging.Usage
+    },
+    {
+      Id: TSG2002,
+      Title: Inferring error log level,
+      Severity: Info,
+      WarningLevel: 1,
+      Location: Guid_1: (22,6)-(22,21),
+      MessageFormat: Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.,
+      Message: Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.,
+      Category: Logging.Usage
+    },
+    {
+      Id: TSG2002,
+      Title: Inferring error log level,
+      Severity: Info,
+      WarningLevel: 1,
+      Location: Guid_1: (25,6)-(25,20),
+      MessageFormat: Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.,
+      Message: Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.,
+      Category: Logging.Usage
+    },
+    {
+      Id: TSG2002,
+      Title: Inferring error log level,
+      Severity: Info,
+      WarningLevel: 1,
+      Location: Guid_1: (28,6)-(28,30),
+      MessageFormat: Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.,
+      Message: Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.,
+      Category: Logging.Usage
+    },
+    {
+      Id: TSG2002,
+      Title: Inferring error log level,
+      Severity: Info,
+      WarningLevel: 1,
+      Location: Guid_1: (31,6)-(31,29),
+      MessageFormat: Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.,
+      Message: Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.,
+      Category: Logging.Usage
+    }
+  ]
+}

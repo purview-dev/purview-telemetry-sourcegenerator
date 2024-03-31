@@ -1,5 +1,7 @@
 ﻿namespace Purview.Telemetry.Metrics;
 
+#if NETSTANDARD1_6_OR_GREATER
+
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 [System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
 sealed public class HistogramAttribute : InstrumentAttributeBase {
@@ -10,3 +12,5 @@ sealed public class HistogramAttribute : InstrumentAttributeBase {
 		: base(name, unit, description) {
 	}
 }
+
+#endif

@@ -16,8 +16,8 @@ partial class TelemetryDiagnostics {
 
 		readonly static public TelemetryDiagnosticDescriptor DoesNotReturnVoid = new(
 			Id: "TSG4001",
-			Title: "Must return void or bool (for observable).",
-			Description: "Instrument methods can only return void, unless they are observable then bool or void valid.",
+			Title: "Must return void or bool.",
+			Description: "Instrument methods can only return void or bool.",
 			Category: Constants.Diagnostics.Metrics.Usage,
 			Severity: DiagnosticSeverity.Error
 		);

@@ -37,12 +37,15 @@ partial class LoggerTargetClassEmitter {
 
 		builder
 			.AppendLine()
-			.AgressiveInlining(indent)
+			.AggressiveInlining(indent)
 			.Append(indent, "public ", withNewLine: false)
 		;
 
 		if (methodTarget.IsScoped) {
-			builder.Append(Constants.System.IDisposable);
+			builder
+				.Append(Constants.System.IDisposable)
+				.Append('?')
+			;
 		}
 		else {
 			builder.Append(Constants.System.VoidKeyword);

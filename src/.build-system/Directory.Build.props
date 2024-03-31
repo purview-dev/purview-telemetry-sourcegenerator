@@ -123,7 +123,6 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="Microsoft.CodeCoverage" />
 
-		<PackageReference Include="AutoFixture" />
 		<PackageReference Include="FluentAssertions" />
 		<PackageReference Include="NCrunch.Framework" />
 		<PackageReference Include="NSubstitute" />
@@ -141,36 +140,5 @@
 		</PackageReference>
 
 	</ItemGroup>
-
-	<ItemGroup Label="Scenario Testing NuGet Packages" Condition="'$(TestingType)' == 'Scenario' OR '$(TestingType)' == 'Acceptance'">
-
-		<!-- Implicit usings for tests. -->
-		<Using Include="TechTalk.SpecFlow" />
-
-		<!-- Scenario NuGet packages. -->
-		<PackageReference Include="SpecFlow.Plus.LivingDocPlugin" />
-		<PackageReference Include="SpecFlow.xUnit" />
-
-	</ItemGroup>
-
-	<ItemGroup Label="Performance Testing NuGet Packages" Condition="'$(TestingType)' == 'Performance'">
-
-		<Using Include="BenchmarkDotNet" />
-
-		<!-- Scenario NuGet packages. -->
-		<PackageReference Include="BenchmarkDotNet" />
-		<PackageReference Include="BenchmarkDotNet.TestAdapter" />
-
-	</ItemGroup>
-
-	<PropertyGroup Label="Performance Testing NuGet Packages" Condition="'$(TestingType)' == 'Performance'">
-
-	 	<OutputType>Exe</OutputType>
-		<Optimize>true</Optimize>
-
-		<!-- Disable entry point generation as this project has it's own entry point -->
-    	<GenerateProgramFile>false</GenerateProgramFile>
-
-	</PropertyGroup>
 
 </Project>

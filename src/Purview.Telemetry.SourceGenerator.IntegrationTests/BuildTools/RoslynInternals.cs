@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Text;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
@@ -30,7 +29,7 @@ sealed class InMemoryAdditionalText(string path, string content, (string key, st
 	private class InMemoryConfigOptions(ImmutableDictionary<string, string> values) : AnalyzerConfigOptions {
 		static public AnalyzerConfigOptions Empty { get; } = new InMemoryConfigOptions(ImmutableDictionary<string, string>.Empty);
 
-		override public bool TryGetValue(string key, [NotNullWhen(true)] out string? value)
+		override public bool TryGetValue(string key, [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out string? value)
 			=> values.TryGetValue(key, out value);
 	}
 }
@@ -67,6 +66,6 @@ sealed internal class TestAnalyzerConfigOptionsProvider : AnalyzerConfigOptionsP
 sealed internal class TestAnalyzerConfigOptions(ImmutableDictionary<string, string> properties) : AnalyzerConfigOptions {
 	static public TestAnalyzerConfigOptions Empty { get; } = new(ImmutableDictionary.Create<string, string>(KeyComparer));
 
-	override public bool TryGetValue(string key, [NotNullWhen(true)] out string? value)
+	override public bool TryGetValue(string key, [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out string? value)
 		=> properties.TryGetValue(key, out value);
 }

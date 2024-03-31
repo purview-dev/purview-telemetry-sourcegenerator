@@ -58,10 +58,10 @@
 
 	<!-- Package the build output into the "analyzer" slot in the NuGet package -->
 	<ItemGroup>
-		<!--<None Include="..\..\README.md" Pack="true" PackagePath="\" />-->
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
 		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 		<None Include="$(OutputPath)\Purview.Telemetry.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-		<None Include="$(OutputPath)\Purview.Telemetry.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
+		<!--<None Include="$(OutputPath)\Purview.Telemetry.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />-->
 	</ItemGroup>
 
 </Project>

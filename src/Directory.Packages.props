@@ -3,9 +3,6 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
     <MSCodeAnalysisCSharpVersion>4.9.2</MSCodeAnalysisCSharpVersion>
   </PropertyGroup>
-  <ItemGroup Label="C# Project Item Groups" Condition="'$(IsCSharpProject)' == 'true' AND $(IsTestProject) == 'false'">
-    <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
-  </ItemGroup>
   <ItemGroup Label="NuGet Package References" Condition="$(IsTestProject) == 'false'">
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
   </ItemGroup>
@@ -18,7 +15,6 @@
   </ItemGroup>
   <ItemGroup Label="Testing">
     <PackageVersion Include="CompareNETObjects" Version="4.83.0" />
-    <PackageVersion Include="AutoFixture" Version="4.18.1" />
     <PackageVersion Include="FluentAssertions" Version="6.12.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageVersion Include="Microsoft.CodeCoverage" Version="17.9.0" />
@@ -28,9 +24,6 @@
     <PackageVersion Include="xunit" Version="2.7.0" />
     <PackageVersion Include="xunit.analyzers" Version="1.11.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.7" />
-    <PackageVersion Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.57" />
-    <PackageVersion Include="SpecFlow.xUnit" Version="3.9.74" />
-    <PackageVersion Include="BenchmarkDotNet.TestAdapter" Version="0.13.12" />
     <PackageVersion Include="Verify.SourceGenerators" Version="2.2.0" />
     <PackageVersion Include="Verify.Xunit" Version="23.6.0" />
   </ItemGroup>

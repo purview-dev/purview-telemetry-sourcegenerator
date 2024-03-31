@@ -3,6 +3,9 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<TargetFramework></TargetFramework>
+		<TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+		<TargetFrameworks>$(TargetFrameworks);net472;net48</TargetFrameworks>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -10,7 +13,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Purview.Telemetry.Shared\Purview.Telemetry.Shared.csproj" />
 		<ProjectReference Include="..\Purview.Telemetry.SourceGenerator\Purview.Telemetry.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 

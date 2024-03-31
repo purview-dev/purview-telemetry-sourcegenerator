@@ -42,5 +42,7 @@ partial class Constants {
 		readonly static public TypeInfo Exception = TypeInfo.Create("System.Exception");
 
 		readonly static public TypeInfo TagList = TypeInfo.Create(SystemDiagnosticsNamespace + ".TagList");
+
+		public const string AggressiveInlining = "[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]";
 	}
 }

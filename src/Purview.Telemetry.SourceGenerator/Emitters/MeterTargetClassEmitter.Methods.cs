@@ -32,12 +32,14 @@ partial class MeterTargetClassEmitter {
 
 		builder
 			.AppendLine()
+			.AppendLine("#if NET8_OR_GREATER")
 			.Append(indent, "partial void ", withNewLine: false)
 			.Append(_partialMeterTagsMethod)
 			.Append('(')
 			.Append(Constants.System.Dictionary
 				.MakeGeneric(Constants.System.StringKeyword, Constants.System.ObjectKeyword + "?"))
 			.AppendLine(" meterTags);")
+			.AppendLine("#endif")
 		;
 	}
 
@@ -58,7 +60,7 @@ partial class MeterTargetClassEmitter {
 
 		builder
 			.AppendLine()
-			.AgressiveInlining(indent)
+			.AggressiveInlining(indent)
 			.Append(indent, "public ", withNewLine: false)
 			.Append(methodTarget.ReturnType)
 	;
@@ -128,6 +130,9 @@ partial class MeterTargetClassEmitter {
 		if (methodTarget.IsObservable) {
 			EmitObservableInstrumentBodyTest(builder, indent, methodTarget, logger);
 		}
+		else {
+			EmitInstrumentBodyTest(builder, indent, methodTarget, logger);
+		}
 
 		var tagVariableName = EmitTags(builder, indent, methodTarget, context, logger);
 
@@ -181,6 +186,33 @@ partial class MeterTargetClassEmitter {
 		;
 	}
 
+	static void EmitInstrumentBodyTest(StringBuilder builder, int indent, InstrumentTarget method, IGenerationLogger? logger) {
+		indent++;
+
+		builder
+			.Append(indent, "if (", withNewLine: false)
+			.Append(method.FieldName)
+			.AppendLine(" == null)")
+			.Append(indent, '{')
+		;
+
+		builder
+			.Append(indent + 1, "return", withNewLine: false)
+		;
+
+		if (method.ReturnsBool) {
+			builder.AppendLine(" false;");
+		}
+		else {
+			builder.AppendLine(';');
+		}
+
+		builder
+			.Append(indent, '}')
+			.AppendLine()
+		;
+	}
+
 	static void EmitObservableInstrumentBody(StringBuilder builder, int indent, InstrumentTarget method, string? tagVariableName, IGenerationLogger? logger) {
 		indent++;
 
@@ -207,8 +239,12 @@ partial class MeterTargetClassEmitter {
 
 		if (tagVariableName != null) {
 			builder
-				.Append(", tags: ")
-				.Append(tagVariableName)
+				.AppendLine()
+				.AppendLine("#if !NET7_0")
+				.Append(indent + 1, ", tags: ", withNewLine: false)
+				.AppendLine(tagVariableName)
+				.AppendLine("#endif")
+				.AppendTabs(indent)
 			;
 		}
 
@@ -252,6 +288,13 @@ partial class MeterTargetClassEmitter {
 		builder
 			.AppendLine(");")
 		;
+
+		if (methodTarget.ReturnsBool) {
+			builder
+				.AppendLine()
+				.Append(indent, "return true;")
+			;
+		}
 	}
 
 	static string? EmitTags(StringBuilder builder, int indent, InstrumentTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {

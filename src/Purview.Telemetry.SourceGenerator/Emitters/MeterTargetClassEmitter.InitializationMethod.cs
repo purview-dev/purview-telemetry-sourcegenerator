@@ -15,14 +15,12 @@ partial class MeterTargetClassEmitter {
 
 		builder
 			.AppendLine()
-			.AgressiveInlining(indent)
+			.AggressiveInlining(indent)
 			.Append(indent, "void ", withNewLine: false)
 			.Append(Constants.Metrics.MeterInitializationMethod)
 			.Append('(')
-			.Append(Constants.Metrics.SystemDiagnostics.IMeterFactory)
-			.Append(' ')
-			.Append(Constants.Metrics.MeterFactoryParameterName)
-			.AppendLine(')')
+			.IfDefines("NET8_0_OR_GREATER", indent + 1, Constants.Metrics.SystemDiagnostics.IMeterFactory, " ", Constants.Metrics.MeterFactoryParameterName)
+			.Append(indent, ')')
 			.Append(indent, '{')
 		;
 
@@ -35,12 +33,13 @@ partial class MeterTargetClassEmitter {
 			.Append(indent, '{')
 			.Append(indent + 1, "throw new ", withNewLine: false)
 			.Append(Constants.System.Exception)
-			.AppendLine("(\"The metrics have already been initialized.\");")
+			.AppendLine("(\"The meters have already been initialized.\");")
 			.Append(indent, '}')
 			.AppendLine()
 		;
 
 		builder
+			.AppendLine("#if NET8_0_OR_GREATER")
 			.Append(indent, _dictionaryStringObject, withNewLine: false)
 			.Append(' ')
 			.Append(meterTagsVariableName)
@@ -55,25 +54,41 @@ partial class MeterTargetClassEmitter {
 			.Append('(')
 			.Append(meterTagsVariableName)
 			.AppendLine(");")
+			.AppendLine("#endif")
 			.AppendLine()
 		;
 
 		builder
 			.Append(indent, _meterFieldName, withNewLine: false)
-			.Append(" = ")
-			.Append(Constants.Metrics.MeterFactoryParameterName)
+			.AppendLine(" = ")
+		;
+
+		builder
+			.AppendLine("#if NET8_0_OR_GREATER")
+			.Append(indent + 1, Constants.Metrics.MeterFactoryParameterName, withNewLine: false)
 			.Append(".Create(new ")
 			.Append(Constants.Metrics.SystemDiagnostics.MeterOptions)
 			.Append('(')
 			.Append(target.MeterName!.Wrap())
 			.AppendLine(')')
-			.Append(indent, '{')
-			.Append(indent + 1, "Version = ", withNewLine: false)
-			.AppendLine("null,")
-			.Append(indent + 1, "Tags = ", withNewLine: false)
+			.Append(indent + 1, '{')
+			.Append(indent + 2, "Version = ", withNewLine: false)
+			.AppendLine("null,") // We'll support version later.
+			.Append(indent + 2, "Tags = ", withNewLine: false)
 			.AppendLine(meterTagsVariableName)
-			.Append(indent, "});")
-			.AppendLine()
+			.Append(indent + 1, "});")
+			.AppendLine("#else")
+		;
+
+		builder
+			.Append(indent + 1, "new ", withNewLine: false)
+			.Append(Constants.Metrics.SystemDiagnostics.Meter)
+			.Append("(name: ")
+			.Append(target.MeterName!.Wrap())
+			.Append(", version: ")
+			.Append("null") // We'll support version later.
+			.AppendLine(");")
+			.AppendLine("#endif")
 		;
 
 		foreach (var method in target.InstrumentationMethods) {
@@ -105,20 +120,24 @@ partial class MeterTargetClassEmitter {
 
 			builder
 				.Append(indent, method.FieldName, withNewLine: false)
-						.Append(" = ")
-						.Append(_meterFieldName)
-						.Append(".Create")
-						.Append(method.InstrumentAttribute!.InstrumentType)
-						.Append('<')
-						.Append(method.InstrumentMeasurementType)
-						.Append(">(name: ")
-						.Append(method.MetricName.Wrap())
-						.Append(", unit: ")
-						.Append(unit ?? Constants.System.NullKeyword)
-						.Append(", description: ")
-						.Append(description ?? Constants.System.NullKeyword)
-						.AppendLine(", tags: null);")
-					;
+				.Append(" = ")
+				.Append(_meterFieldName)
+				.Append(".Create")
+				.Append(method.InstrumentAttribute!.InstrumentType)
+				.Append('<')
+				.Append(method.InstrumentMeasurementType)
+				.Append(">(name: ")
+				.Append(method.MetricName.Wrap())
+				.Append(", unit: ")
+				.Append(unit ?? Constants.System.NullKeyword)
+				.Append(", description: ")
+				.Append(description ?? Constants.System.NullKeyword)
+				.AppendLine()
+				.AppendLine("#if !NET7_0")
+				.Append(indent + 1, ", tags: null")
+				.AppendLine("#endif")
+				.Append(indent, ");")
+			;
 		}
 	}
 }

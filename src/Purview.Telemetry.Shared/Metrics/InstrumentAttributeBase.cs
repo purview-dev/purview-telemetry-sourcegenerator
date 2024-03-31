@@ -1,5 +1,7 @@
 ﻿namespace Purview.Telemetry.Metrics;
 
+#if NETSTANDARD1_6_OR_GREATER
+
 [System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
 abstract public class InstrumentAttributeBase : Attribute {
 	protected InstrumentAttributeBase() {
@@ -17,3 +19,5 @@ abstract public class InstrumentAttributeBase : Attribute {
 
 	public string? Description { get; set; }
 }
+
+#endif

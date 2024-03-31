@@ -35,7 +35,7 @@ static class ConstructorEmitter {
 			.Append('(')
 		;
 
-		EmitParameters(generationType, fullyQualifiedInterfaceName, builder);
+		EmitParameters(generationType, fullyQualifiedInterfaceName, builder, indent);
 
 		builder
 			.AppendLine(')')
@@ -51,7 +51,7 @@ static class ConstructorEmitter {
 		return --indent;
 	}
 
-	static void EmitParameters(GenerationType generationType, string? loggerFullyQualifiedInterfaceName, StringBuilder builder) {
+	static void EmitParameters(GenerationType generationType, string? loggerFullyQualifiedInterfaceName, StringBuilder builder, int indent) {
 		if (generationType.HasFlag(GenerationType.Logging)) {
 			builder
 				.Append(Constants.Logging.MicrosoftExtensions.ILogger)
@@ -63,6 +63,11 @@ static class ConstructorEmitter {
 		}
 
 		if (generationType.HasFlag(GenerationType.Metrics)) {
+			builder
+				.AppendLine()
+				.AppendLine("#if NET8_OR_GREATER")
+			;
+
 			if (generationType.HasFlag(GenerationType.Logging)) {
 				builder
 					.Append(", ")
@@ -70,9 +75,14 @@ static class ConstructorEmitter {
 			}
 
 			builder
-				.Append(Constants.Metrics.SystemDiagnostics.IMeterFactory)
+				.Append(indent + 1, Constants.Metrics.SystemDiagnostics.IMeterFactory, withNewLine: false)
 				.Append(' ')
-				.Append(Constants.Metrics.MeterFactoryParameterName)
+				.AppendLine(Constants.Metrics.MeterFactoryParameterName)
+			;
+
+			builder
+				.AppendLine("#endif")
+				.AppendTabs(indent)
 			;
 		}
 	}
@@ -90,9 +100,17 @@ static class ConstructorEmitter {
 		if (generationType.HasFlag(GenerationType.Metrics)) {
 			builder
 				.Append(indent + 1, Constants.Metrics.MeterInitializationMethod, withNewLine: false)
-				.Append('(')
-				.Append(Constants.Metrics.MeterFactoryParameterName)
-				.AppendLine(");")
+				.AppendLine('(')
+			;
+
+			builder
+				.AppendLine("#if NET8_OR_GREATER")
+				.Append(indent + 2, Constants.Metrics.MeterFactoryParameterName)
+				.AppendLine("#endif")
+			;
+
+			builder
+				.Append(indent + 1, ");")
 			;
 		}
 	}

@@ -57,7 +57,7 @@ public interface ITestLogger {{
 	static public TheoryData<LogPrefixType, string> GetPrefixAndEntryNames() {
 		TheoryData<LogPrefixType, string> data = [];
 
-		foreach (LogPrefixType type in Enum.GetValues<LogPrefixType>()) {
+		foreach (LogPrefixType type in Enum.GetValues(typeof(LogPrefixType))) {
 			foreach (string entryName in _testEntryNames) {
 				data.Add(type, entryName);
 			}

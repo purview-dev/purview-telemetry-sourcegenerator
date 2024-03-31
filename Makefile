@@ -20,4 +20,7 @@ pack:
 format:
 	dotnet format $(ROOT_FOLDER)
 
+act:
+	act -P ubuntu-latest=-self-hosted
+
 .PHONY: build test

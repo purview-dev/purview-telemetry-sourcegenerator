@@ -46,6 +46,14 @@ partial class PipelineHelpers {
 			token
 		);
 
+		var meterName = meterAttribute.Name?.Value;
+		if (string.IsNullOrWhiteSpace(meterName)) {
+			meterName = interfaceSymbol.Name;
+			if (meterName[0] == 'I') {
+				meterName = meterName.Substring(1);
+			}
+		}
+
 		return new(
 			TelemetryGeneration: telemetryGeneration,
 			GenerationType: generationType,
@@ -60,7 +68,7 @@ partial class PipelineHelpers {
 			InterfaceName: interfaceSymbol.Name,
 			FullyQualifiedInterfaceName: fullNamespace + interfaceSymbol.Name,
 
-			MeterName: meterAttribute.Name?.Value,
+			MeterName: meterName,
 
 			MeterGeneration: meterGenerationAttribute,
 
@@ -161,15 +169,8 @@ partial class PipelineHelpers {
 				}
 
 				if (instrumentAttribute != null) {
-					if (instrumentAttribute.IsObservable) {
-						if (!method.ReturnsVoid && !returnsBool) {
-							errorDiagnostics.Add(TelemetryDiagnostics.Metrics.DoesNotReturnVoid);
-						}
-					}
-					else {
-						if (!method.ReturnsVoid) {
-							errorDiagnostics.Add(TelemetryDiagnostics.Metrics.DoesNotReturnVoid);
-						}
+					if (!method.ReturnsVoid && !returnsBool) {
+						errorDiagnostics.Add(TelemetryDiagnostics.Metrics.DoesNotReturnVoid);
 					}
 				}
 			}

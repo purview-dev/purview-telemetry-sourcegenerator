@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Purview.Telemetry.Logging;
 using Purview.Telemetry.SourceGenerator.BuildTools;
 using Purview.Telemetry.SourceGenerator.Helpers;
 using Xunit.Abstractions;
@@ -213,12 +212,15 @@ abstract public class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 		if (ReferenceCore) {
 			project = project
 				.AddMetadataReference(MetadataReference.CreateFromFile(Assembly.Load("netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51").Location))
+
+#if NET7_0_OR_GREATER
 				.AddMetadataReference(MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location))
+#endif
 
 				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(System.ComponentModel.EditorBrowsableAttribute).Assembly.Location))
 				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(IServiceProvider).Assembly.Location))
 
-				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(LogGeneratedLevel).Assembly.Location))
+				//.AddMetadataReference(MetadataReference.CreateFromFile(typeof(LogGeneratedLevel).Assembly.Location))
 
 				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(Microsoft.Extensions.Logging.LogLevel).Assembly.Location))
 				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(System.Diagnostics.Activity).Assembly.Location))

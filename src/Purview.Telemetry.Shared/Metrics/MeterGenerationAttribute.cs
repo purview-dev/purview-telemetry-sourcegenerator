@@ -1,5 +1,7 @@
 ﻿namespace Purview.Telemetry.Metrics;
 
+#if NETSTANDARD1_6_OR_GREATER
+
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
 [System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
@@ -18,3 +20,5 @@ sealed public class MeterGenerationAttribute : Attribute {
 
 	public bool LowercaseTagKeys { get; set; } = true;
 }
+
+#endif

@@ -46,7 +46,7 @@ using Purview.Telemetry;
 		}
 
 		char currentChar = input[0];
-		string remainder = input[1..];
+		string remainder = input.Substring(1);
 		List<string> remainderPermutations = GetCasePermutations(remainder);
 
 		if (char.IsLetter(currentChar)) {
@@ -76,13 +76,14 @@ using Purview.Telemetry;
 			.UseDirectory("Snapshots")
 			.DisableRequireUniquePrefix()
 			.DisableDateCounting()
+			.UniqueForTargetFrameworkAndVersion(typeof(TestHelpers).Assembly)
 			.ScrubInlineDateTimeOffsets("yyyy-MM-dd HH:mm:ss zzzz") // 2024-22-02 14:43:22 +00:00
 			.AutoVerify(file => {
 				if (autoVerifyTemplates) {
 					foreach (TemplateInfo template in Constants.GetAllTemplates()) {
 						string potentialName = $"#{template.Name}.g.";
 
-						if (file.Contains(potentialName, StringComparison.Ordinal)) {
+						if (file.IndexOf(potentialName, StringComparison.Ordinal) > -1) {
 							return true;
 						}
 					}
@@ -114,7 +115,11 @@ using Purview.Telemetry;
 			return;
 		}
 
-		await using MemoryStream ms = new();
+#if NET7_0_OR_GREATER
+		await
+#endif
+			using MemoryStream ms = new();
+
 		EmitResult result = generationResult.Compilation.Emit(ms);
 
 		if (!result.Success) {
@@ -122,7 +127,7 @@ using Purview.Telemetry;
 				.Diagnostics
 				.Where(m => !m.Id.StartsWith("TSG", StringComparison.Ordinal))
 				.Should()
-				.BeEmpty();
+				.BeEmpty(string.Join(Environment.NewLine, result.Diagnostics.Select(d => d.ToString() + Environment.NewLine + "-----------------------------------------------------")));
 		}
 	}
 }

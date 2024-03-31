@@ -2,7 +2,7 @@
 
 // Do not rename to filename.
 static partial class Constants {
-	public const string EmbedAttributesHashDefineName = "PURVIEW_TELEMETRY_EMBED_ATTRIBUTES";
+	public const string EmbedAttributesHashDefineName = "PURVIEW_TELEMETRY_ATTRIBUTES";
 
 	static public partial class Shared {
 		public const bool SkipOnNullOrEmptyDefault = false;

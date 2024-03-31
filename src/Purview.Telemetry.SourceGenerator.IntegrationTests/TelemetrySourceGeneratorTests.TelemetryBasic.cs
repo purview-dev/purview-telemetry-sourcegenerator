@@ -32,7 +32,7 @@ public interface ITestTelemetry
 	IDisposable? LogScope([Tag]int intParam, bool boolParam);
 
 	[Counter]
-	void Counter(int counterValue, [Tag]int intParam, bool boolParam);
+	bool Counter(int counterValue, [Tag]int intParam, bool boolParam);
 }
 ";
 

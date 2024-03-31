@@ -68,6 +68,29 @@ static class Utilities {
 	static public string WithNull(this string value)
 		=> value + "?";
 
+	static public StringBuilder AggressiveInlining(this StringBuilder builder, int indent)
+	=> builder.Append(indent, Constants.System.AggressiveInlining);
+
+	static public StringBuilder IfDefines(this StringBuilder builder, string condition, int indent, params string[] values) {
+		builder
+			.AppendLine()
+			.Append("#if ")
+			.AppendLine(condition)
+			.AppendTabs(indent)
+		;
+
+		foreach (var value in values) {
+			builder.Append(value);
+		}
+
+		builder
+			.AppendLine()
+			.AppendLine("#endif")
+		;
+
+		return builder;
+	}
+
 	static public StringBuilder AppendTabs(this StringBuilder builder, int tabs) {
 		for (var i = 0; i < tabs; i++) {
 			builder.Append('\t');
