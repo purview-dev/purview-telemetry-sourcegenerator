@@ -2,9 +2,9 @@
 ROOT_FOLDER = src/
 SOLUTION_FILE = $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator.sln
 TEST_PROJECT = $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator.sln
-CONFIGURATION = Debug
+CONFIGURATION = Release
 
-PACK_VERSION = 0.0.8-prerelease
+PACK_VERSION = 0.0.9-prerelease
 ARTIFACT_FOLDER = p:/sync-projects/.local-nuget/
 
 # Targets
@@ -15,7 +15,7 @@ test:
 	dotnet test $(TEST_PROJECT) --configuration $(CONFIGURATION)
 
 pack:
-	dotnet pack -c $(CONFIGURATION) -o $(ARTIFACT_FOLDER) $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator/Purview.Telemetry.SourceGenerator.csproj --property:Version=$(PACK_VERSION)
+	dotnet pack -c $(CONFIGURATION) -o $(ARTIFACT_FOLDER) $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator/Purview.Telemetry.SourceGenerator.csproj --property:Version=$(PACK_VERSION) --include-symbols
 
 format:
 	dotnet format $(ROOT_FOLDER)

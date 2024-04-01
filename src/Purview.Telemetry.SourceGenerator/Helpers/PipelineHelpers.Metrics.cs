@@ -46,7 +46,7 @@ partial class PipelineHelpers {
 			token
 		);
 
-		var meterName = meterAttribute?.Name.Value;
+		var meterName = meterAttribute.Name.Value;
 		if (string.IsNullOrWhiteSpace(meterName)) {
 			meterName = interfaceSymbol.Name;
 			if (meterName[0] == 'I') {

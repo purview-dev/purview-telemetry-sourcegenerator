@@ -25,7 +25,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Purview.Telemetry.SourceGenerator\Purview.Telemetry.SourceGenerator.csproj" ReferenceOutputAssembly="true" />
+		<ProjectReference Include="..\Purview.Telemetry.SourceGenerator\Purview.Telemetry.SourceGenerator.csproj" />
 	</ItemGroup>
 
 </Project>
