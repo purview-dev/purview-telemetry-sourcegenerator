@@ -11,16 +11,14 @@
 
 #pragma warning disable 1591 // publicly visible type or member must be documented
 
-#if PURVIEW_TELEMETRY_ATTRIBUTES
+#nullable enable
 
 namespace Purview.Telemetry.Metrics;
 
-#if NETSTANDARD1_6_OR_GREATER
-
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
+[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class CounterAttribute : InstrumentAttributeBase {
+sealed class CounterAttribute : System.Attribute {
 	public CounterAttribute() {
 	}
 
@@ -28,14 +26,18 @@ sealed class CounterAttribute : InstrumentAttributeBase {
 		AutoIncrement = autoIncrement;
 	}
 
-	public CounterAttribute(string name, string? unit = null, string? description = null, bool autoIncrement = false)
-		: base(name, unit, description) {
+	public CounterAttribute(string name, string? unit = null, string? description = null, bool autoIncrement = false) {
+		Name = name;
+		Unit = unit;
+		Description = description;
 		AutoIncrement = autoIncrement;
 	}
 
+	public string? Name { get; set; }
+
+	public string? Unit { get; set; }
+
+	public string? Description { get; set; }
+
 	public bool AutoIncrement { get; set; }
 }
-
-#endif
-
-#endif

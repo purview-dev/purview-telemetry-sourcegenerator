@@ -10,11 +10,6 @@ static partial class LoggerTargetClassEmitter {
 	static public void GenerateImplementation(LoggerTarget target, SourceProductionContext context, IGenerationLogger? logger) {
 		StringBuilder builder = new();
 
-		builder
-			.AppendLine("#nullable enable")
-			.AppendLine()
-		;
-
 		logger?.Debug($"Generating logging class for: {target.FullyQualifiedName}");
 
 		var indent = EmitHelpers.EmitNamespaceStart(target.ClassNamespace, target.ParentClasses, builder, context.CancellationToken);

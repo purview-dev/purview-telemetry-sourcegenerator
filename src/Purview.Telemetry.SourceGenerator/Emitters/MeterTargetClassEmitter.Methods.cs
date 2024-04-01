@@ -9,7 +9,7 @@ partial class MeterTargetClassEmitter {
 	static int EmitMethods(MeterTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
 		indent++;
 
-		EmitPartialTag(builder, indent, target, context, logger);
+		EmitPartialMethods(builder, indent, target, context, logger);
 
 		foreach (var methodTarget in target.InstrumentationMethods) {
 			context.CancellationToken.ThrowIfCancellationRequested();
@@ -25,7 +25,7 @@ partial class MeterTargetClassEmitter {
 		return --indent;
 	}
 
-	static void EmitPartialTag(StringBuilder builder, int indent, MeterTarget target, SourceProductionContext context, IGenerationLogger? logger) {
+	static void EmitPartialMethods(StringBuilder builder, int indent, MeterTarget target, SourceProductionContext context, IGenerationLogger? logger) {
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		logger?.Debug($"Emitting partial method for populating tags: {_partialMeterTagsMethod}.");
@@ -33,12 +33,46 @@ partial class MeterTargetClassEmitter {
 		builder
 			.AppendLine()
 			.AppendLine("#if NET8_OR_GREATER")
+			.AppendLine()
+		;
+
+		builder
 			.Append(indent, "partial void ", withNewLine: false)
 			.Append(_partialMeterTagsMethod)
 			.Append('(')
 			.Append(Constants.System.Dictionary
 				.MakeGeneric(Constants.System.StringKeyword, Constants.System.ObjectKeyword + "?"))
 			.AppendLine(" meterTags);")
+			.AppendLine()
+		;
+
+		builder
+			.AppendLine("#endif")
+		;
+
+		builder
+			.AppendLine()
+			.AppendLine("#if !NET7_0")
+			.AppendLine()
+		;
+
+		foreach (var instrument in target.InstrumentationMethods) {
+			if (instrument.IsObservable) {
+				continue;
+			}
+
+			builder
+				.Append(indent, "partial void ", withNewLine: false)
+				.Append(instrument.TagPopulateMethodName)
+				.Append('(')
+				.Append(Constants.System.Dictionary
+					.MakeGeneric(Constants.System.StringKeyword, Constants.System.ObjectKeyword + "?"))
+				.AppendLine(" instrumentTags);")
+				.AppendLine()
+			;
+		}
+
+		builder
 			.AppendLine("#endif")
 		;
 	}
@@ -51,7 +85,7 @@ partial class MeterTargetClassEmitter {
 			return;
 		}
 
-		if (!methodTarget.InstrumentAttribute.IsAutoIncrement && methodTarget.MeasurementParameter == null) {
+		if (!methodTarget.InstrumentAttribute!.IsAutoIncrement && methodTarget.MeasurementParameter == null) {
 			// Already pushed the diagnostic somewhere else.
 			return;
 		}

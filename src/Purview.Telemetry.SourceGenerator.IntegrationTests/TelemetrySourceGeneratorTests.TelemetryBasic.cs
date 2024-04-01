@@ -48,8 +48,6 @@ public interface ITestTelemetry
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
-using Purview.Telemetry.Logging;
-using Purview.Telemetry.Metrics;
 
 namespace Testing;
 
@@ -73,8 +71,6 @@ public interface ITestTelemetry
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
-using Purview.Telemetry.Logging;
-using Purview.Telemetry.Metrics;
 
 namespace Testing;
 
@@ -98,8 +94,6 @@ public interface ITestTelemetry
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
-using Purview.Telemetry.Logging;
-using Purview.Telemetry.Metrics;
 
 namespace Testing;
 
@@ -123,8 +117,6 @@ public interface ITestTelemetry
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
-using Purview.Telemetry.Logging;
-using Purview.Telemetry.Metrics;
 
 namespace Testing;
 
@@ -144,12 +136,10 @@ public interface ITestTelemetry
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicEventWithExplicitExceptionAndNamedExceptionAndRulesAreTrue_GeneratesTelemetry() {
+	async public Task Generate_GivenBasicEventWithExplicitExceptionAndEventIsNamedExceptionAndRulesAreTrue_GeneratesTelemetry() {
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
-using Purview.Telemetry.Logging;
-using Purview.Telemetry.Metrics;
 
 namespace Testing;
 	

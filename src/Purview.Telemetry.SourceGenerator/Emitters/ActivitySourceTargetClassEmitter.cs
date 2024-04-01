@@ -10,11 +10,6 @@ static partial class ActivitySourceTargetClassEmitter {
 	static public void GenerateImplementation(ActivitySourceTarget target, SourceProductionContext context, IGenerationLogger? logger) {
 		StringBuilder builder = new();
 
-		builder
-			.AppendLine("#nullable enable")
-			.AppendLine()
-		;
-
 		logger?.Debug($"Generating activity class for: {target.FullyQualifiedName}");
 
 		var indent = EmitHelpers.EmitNamespaceStart(target.ClassNamespace, target.ParentClasses, builder, context.CancellationToken);

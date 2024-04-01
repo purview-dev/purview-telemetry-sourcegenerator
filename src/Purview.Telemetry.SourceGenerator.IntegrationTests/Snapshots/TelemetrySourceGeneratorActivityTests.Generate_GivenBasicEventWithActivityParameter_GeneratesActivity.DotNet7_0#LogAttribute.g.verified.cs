@@ -18,10 +18,10 @@ namespace Purview.Telemetry.Logging;
 /// <summary>
 /// Marker attribute required for Log generation.
 /// </summary>
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
+[System.AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class LogAttribute : Attribute {
+sealed class LogAttribute : System.Attribute {
 	public LogAttribute() {
 	}
 

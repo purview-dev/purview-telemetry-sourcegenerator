@@ -11,17 +11,15 @@
 
 #pragma warning disable 1591 // publicly visible type or member must be documented
 
-#if PURVIEW_TELEMETRY_ATTRIBUTES
-
 namespace Purview.Telemetry.Activities;
 
 /// <summary>
 /// Determines the default Activity Source name for generated Activities.
 /// </summary>
-[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
+[System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class ActivitySourceGenerationAttribute : Attribute {
+sealed class ActivitySourceGenerationAttribute : System.Attribute {
 	/// <summary>
 	/// Constructs a new <see cref="ActivitySourceGenerationAttribute"/>.
 	/// </summary>
@@ -30,7 +28,7 @@ sealed class ActivitySourceGenerationAttribute : Attribute {
 	/// <exception cref="ArgumentNullException">If the <paramref name="name"/> is null, empty or whitespace.</exception>
 	public ActivitySourceGenerationAttribute(string name, bool defaultToTags = true) {
 		if (string.IsNullOrWhiteSpace(name)) {
-			throw new ArgumentNullException(nameof(name));
+			throw new System.ArgumentNullException(nameof(name));
 		}
 
 		Name = name;
@@ -50,5 +48,3 @@ sealed class ActivitySourceGenerationAttribute : Attribute {
 
 	public bool LowercaseBaggageAndTagKeys { get; set; } = true;
 }
-
-#endif

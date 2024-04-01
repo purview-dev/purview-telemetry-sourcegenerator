@@ -1,11 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework></TargetFramework>
-		<TargetFrameworks>net7.0;net8.0;</TargetFrameworks>
-		<TargetFrameworks>$(TargetFrameworks);net472;net48;</TargetFrameworks>
-	</PropertyGroup>
-	
 	<ItemGroup>
 		<Compile Remove="Resources/**/*" />
 		<Compile Remove="Snapshots\**" />
@@ -31,8 +25,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Purview.Telemetry.Shared\Purview.Telemetry.Shared.csproj" />
-		<ProjectReference Include="..\Purview.Telemetry.SourceGenerator\Purview.Telemetry.SourceGenerator.csproj" ReferenceOutputAssembly="true" />
+		<ProjectReference Include="..\Purview.Telemetry.SourceGenerator\Purview.Telemetry.SourceGenerator.csproj" />
 	</ItemGroup>
 
 </Project>

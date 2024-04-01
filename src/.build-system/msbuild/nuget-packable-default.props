@@ -2,9 +2,10 @@
 
 	<PropertyGroup Label="NuGet Package Defaults">
 
-		<Authors>Purview</Authors>
-		<Company>Purview</Company>
-		<Copyright>Purview | All rights reserved.</Copyright>
+		<Authors>Kieron Lanning</Authors>
+		<Company>KJL Solutions Ltd.</Company>
+		<Copyright>KJL Solutions Ltd., 2024 | All rights reserved.</Copyright>
+		<RepositoryUrl>https://github.com/purview-dev/purview-telemetry-sourcegenerator/</RepositoryUrl>
 
 	</PropertyGroup>
 

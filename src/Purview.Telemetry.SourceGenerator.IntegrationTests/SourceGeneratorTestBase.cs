@@ -139,6 +139,8 @@ abstract public class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 			globalOptions = globalOptions.SetItem("purview_debug_log", "true");
 		}
 
+		globalOptions = globalOptions.SetItem("CompilerVersion", "v4.7");
+
 		var optionsProvider = TestAnalyzerConfigOptionsProvider
 			.Empty
 			.WithGlobalOptions(new TestAnalyzerConfigOptions(globalOptions));
@@ -219,8 +221,6 @@ abstract public class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 
 				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(System.ComponentModel.EditorBrowsableAttribute).Assembly.Location))
 				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(IServiceProvider).Assembly.Location))
-
-				//.AddMetadataReference(MetadataReference.CreateFromFile(typeof(LogGeneratedLevel).Assembly.Location))
 
 				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(Microsoft.Extensions.Logging.LogLevel).Assembly.Location))
 				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(System.Diagnostics.Activity).Assembly.Location))

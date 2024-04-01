@@ -36,19 +36,19 @@ public interface ICacheServiceProviderTelemetry {
 	[Log]
 	void UsingDistributedCache(string? fullName, bool isNullCache);
 
-	[Activity(ActivityGeneratedKind.Client)]
+	[Activity(ActivityKind.Client)]
 	Activity? GetFromCache();
 
 	[Event]
 	void NoValueProvided();
 
-	[Activity(ActivityGeneratedKind.Internal)]
+	[Activity(ActivityKind.Internal)]
 	Activity? SerializePayload();
 
 	[Context]
 	void SerializePayloadResult(int payloadStringLength);
 
-	[Activity(ActivityGeneratedKind.Client)]
+	[Activity(ActivityKind.Client)]
 	Activity? SetInCache();
 
 	[Context]
@@ -66,13 +66,13 @@ public interface ICacheServiceProviderTelemetry {
 	[Event]
 	void CacheMiss();
 
-	[Activity(ActivityGeneratedKind.Internal)]
+	[Activity(ActivityKind.Internal)]
 	Activity? DeserializePayload();
 
-	[Activity(ActivityGeneratedKind.Client)]
+	[Activity(ActivityKind.Client)]
 	Activity? Refresh();
 
-	[Activity(ActivityGeneratedKind.Client)]
+	[Activity(ActivityKind.Client)]
 	Activity? Remove();
 }
 ";

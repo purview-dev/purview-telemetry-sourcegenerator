@@ -1,6 +1,4 @@
-﻿using Purview.Telemetry.Activities;
-
-namespace Purview.Telemetry.SourceGenerator.Records;
+﻿namespace Purview.Telemetry.SourceGenerator.Records;
 
 record ActivitySourceAttributeRecord(
 	AttributeStringValue Name,
@@ -20,7 +18,7 @@ record ActivitySourceGenerationAttributeRecord(
 
 record ActivityAttributeRecord(
 	AttributeStringValue Name,
-	AttributeValue<ActivityGeneratedKind> Kind,
+	AttributeValue<int> Kind,
 	AttributeValue<bool> CreateOnly
 );
 

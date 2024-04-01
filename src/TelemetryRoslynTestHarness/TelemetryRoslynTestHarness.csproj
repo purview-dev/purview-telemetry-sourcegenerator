@@ -5,7 +5,7 @@
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 		<TargetFramework></TargetFramework>
 		<TargetFrameworks>net7.0;net8.0</TargetFrameworks>
-		<TargetFrameworks>$(TargetFrameworks);net472;net48</TargetFrameworks>
+		<TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">$(TargetFrameworks);net472;net48</TargetFrameworks>
 	</PropertyGroup>
 
 	<ItemGroup>

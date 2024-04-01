@@ -63,20 +63,48 @@ namespace Testing
 #else
 				new System.Diagnostics.Metrics.Meter(name: "testing-meter", version: null);
 #endif
+
+#if !NET7_0
+
+			System.Collections.Generic.Dictionary<string, object?> upDownTags = new System.Collections.Generic.Dictionary<string, object?>();
+
+			PopulateUpDownTags(upDownTags);
+
+#endif
+
 			_upDownInstrument = _meter.CreateUpDownCounter<System.Int32>(name: "UpDown", unit: null, description: null
 #if !NET7_0
-				, tags: null
+				, tags: upDownTags
 #endif
 			);
+
+#if !NET7_0
+
+			System.Collections.Generic.Dictionary<string, object?> upDown2Tags = new System.Collections.Generic.Dictionary<string, object?>();
+
+			PopulateUpDown2Tags(upDown2Tags);
+
+#endif
+
 			_upDown2Instrument = _meter.CreateUpDownCounter<System.Int32>(name: "UpDown2", unit: null, description: null
 #if !NET7_0
-				, tags: null
+				, tags: upDown2Tags
 #endif
 			);
 		}
 
 #if NET8_OR_GREATER
+
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
+
+#endif
+
+#if !NET7_0
+
+		partial void PopulateUpDownTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+
+		partial void PopulateUpDown2Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+
 #endif
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]

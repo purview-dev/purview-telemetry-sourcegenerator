@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Purview.Telemetry.Metrics;
 using Purview.Telemetry.SourceGenerator.Emitters;
 using Purview.Telemetry.SourceGenerator.Helpers;
 using Purview.Telemetry.SourceGenerator.Records;
@@ -23,7 +22,7 @@ partial class TelemetrySourceGenerator {
 				meterTargetTransform
 			)
 			.WhereNotNull()
-			.WithTrackingName($"{nameof(TelemetrySourceGenerator)}_{nameof(MeterAttribute)}");
+			.WithTrackingName($"{nameof(TelemetrySourceGenerator)}_Meters");
 
 		// Build generation (static vs. non-static is for the logger).
 		Action<SourceProductionContext, (Compilation Compilation, ImmutableArray<MeterTarget?> Targets)> generationMeterAction =
@@ -35,7 +34,7 @@ partial class TelemetrySourceGenerator {
 		var meterTargets
 			= context.CompilationProvider.Combine(meterTargetsPredicate.Collect());
 
-		context.RegisterSourceOutput(
+		context.RegisterImplementationSourceOutput(
 			source: meterTargets,
 			action: generationMeterAction
 		);

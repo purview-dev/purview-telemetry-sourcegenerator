@@ -56,6 +56,9 @@ public interface ITestMetrics {
 
 	[Counter(AutoIncrement = true)]
 	void Counter2([Tag]int intParam, [Tag]bool boolParam);
+
+	[Counter(true)]
+	void Counter3([Tag]int intParam, [Tag]bool boolParam);
 }
 ";
 

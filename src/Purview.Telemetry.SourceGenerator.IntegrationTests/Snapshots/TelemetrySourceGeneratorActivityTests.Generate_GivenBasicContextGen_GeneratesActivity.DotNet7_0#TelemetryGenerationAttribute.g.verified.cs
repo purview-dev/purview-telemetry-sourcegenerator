@@ -15,10 +15,10 @@
 
 namespace Purview.Telemetry;
 
-[AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Interface, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
+[System.AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Interface, AllowMultiple = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class TelemetryGenerationAttribute : Attribute {
+sealed class TelemetryGenerationAttribute : System.Attribute {
 	public TelemetryGenerationAttribute() {
 	}
 

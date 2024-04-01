@@ -2,7 +2,6 @@
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Purview.Telemetry.Logging;
 using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
@@ -42,16 +41,16 @@ partial class PipelineHelpers {
 			: GenerateClassName(interfaceSymbol.Name);
 
 		var loggerGenerationAttribute = SharedHelpers.GetLoggerDefaultsAttribute(semanticModel, logger, token);
-		var defaultLogLevel = loggerGenerationAttribute?.DefaultLevel?.IsSet == true
+		var defaultLogLevel = loggerGenerationAttribute?.DefaultLevel.IsSet == true
 			? loggerGenerationAttribute.DefaultLevel.Value!
-			: LogGeneratedLevel.Information;
+			: Constants.Logging.DefaultLevel;
 
 		var generationType = SharedHelpers.GetGenerationTypes(interfaceSymbol, token);
 		var fullNamespace = Utilities.GetFullNamespace(interfaceDeclaration, true);
 		var logMethods = BuildLogMethods(
 			generationType,
 			className,
-			defaultLogLevel,
+			defaultLogLevel.Value,
 			loggerAttribute,
 			context,
 			semanticModel,
@@ -74,7 +73,7 @@ partial class PipelineHelpers {
 			FullyQualifiedInterfaceName: fullNamespace + interfaceSymbol.Name,
 
 			LoggerAttribute: loggerAttribute,
-			DefaultLevel: (LogGeneratedLevel)defaultLogLevel,
+			DefaultLevel: defaultLogLevel.Value,
 
 			LogMethods: logMethods
 		);
@@ -83,7 +82,7 @@ partial class PipelineHelpers {
 	static ImmutableArray<LogTarget> BuildLogMethods(
 		GenerationType generationType,
 		string className,
-		LogGeneratedLevel? defaultLogLevel,
+		int defaultLogLevel,
 		LoggerAttributeRecord loggerTarget,
 		GeneratorAttributeSyntaxContext _,
 		SemanticModel semanticModel,
@@ -109,24 +108,24 @@ partial class PipelineHelpers {
 			var loggerActionFieldName = $"_{Utilities.LowercaseFirstChar(method.Name)}Action";
 
 			var logName = GetLogName(interfaceSymbol.Name, className, loggerTarget, logAttribute, method.Name);
-			var messageTemplate = logAttribute?.MessageTemplate?.Value ?? GenerateTemplateMessage(logName, isScoped, methodParameters);
+			var messageTemplate = logAttribute?.MessageTemplate.Value ?? GenerateTemplateMessage(logName, isScoped, methodParameters);
 			var hasMultipleExceptions = !isScoped && methodParameters.Count(m => m.IsException) > 1;
-			var exceptionParam = hasMultipleExceptions
+			LogParameterTarget? exceptionParam = hasMultipleExceptions
 				? null
 				: isScoped
 					? null
 					: methodParameters.FirstOrDefault(m => m.IsException);
 
 			var inferredErrorLevel = exceptionParam != null;
-			if (logAttribute?.Level?.IsSet ?? false == true) {
+			if ((logAttribute?.Level.IsSet ?? false) == true) {
 				inferredErrorLevel = false;
 			}
 
-			var level = (LogGeneratedLevel)(logAttribute?.Level?.IsSet == true
+			var level = (logAttribute?.Level.IsSet == true
 				? logAttribute.Level.Value!
 				: exceptionParam == null
 					? defaultLogLevel
-					: LogGeneratedLevel.Error
+					: 4 // Error
 				)!;
 
 			methodTargets.Add(new(
@@ -136,12 +135,10 @@ partial class PipelineHelpers {
 
 				UnknownReturnType: !isKnownReturnType,
 
-				EventId: logAttribute?.EventId?.Value,
-				Level: level,
-				MessageTemplate: messageTemplate,
-
 				LogName: logName,
-				MSLevel: Utilities.ConvertToMSLogLevel(level),
+				EventId: logAttribute?.EventId.Value,
+				MessageTemplate: messageTemplate,
+				MSLevel: Constants.Logging.LogLevelTypeMap[level.Value],
 
 				Parameters: methodParameters,
 				ParametersSansException: isScoped
@@ -162,15 +159,16 @@ partial class PipelineHelpers {
 	}
 
 	static string GetLogName(string interfaceName, string className, LoggerAttributeRecord loggerAttribute, LogAttributeRecord? logAttribute, string methodName) {
-		if (logAttribute?.Name?.Value != null) {
-			methodName = logAttribute.Name.Value;
+		if (logAttribute?.Name.IsSet == true) {
+			methodName = logAttribute!.Name.Value!;
 		};
 
 		var prefixType = loggerAttribute.PrefixType.IsSet
 			? loggerAttribute.PrefixType.Value
-			: LogPrefixType.Default;
+			: 0; // Default
 
-		if (prefixType == LogPrefixType.Default) {
+		if (prefixType == 0) {
+			// Default
 			if (interfaceName[0] == 'I') {
 				interfaceName = interfaceName.Substring(1);
 			}
@@ -184,13 +182,16 @@ partial class PipelineHelpers {
 
 			return $"{interfaceName}.{methodName}";
 		}
-		else if (prefixType == LogPrefixType.Interface) {
+		else if (prefixType == 1) {
+			// Interface
 			return $"{interfaceName}.{methodName}";
 		}
-		else if (prefixType == LogPrefixType.Class) {
+		else if (prefixType == 2) {
+			// Class
 			return $"{className}.{methodName}";
 		}
-		else if (prefixType == LogPrefixType.Custom) {
+		else if (prefixType == 3) {
+			// Custom
 			if (!string.IsNullOrWhiteSpace(loggerAttribute.CustomPrefix.Value)) {
 				return $"{loggerAttribute.CustomPrefix.Value}.{methodName}";
 			}
@@ -221,16 +222,15 @@ partial class PipelineHelpers {
 				.Append(": ")
 				.Append('{')
 				.Append(parameter.UpperCasedName)
-				.Append('}')
+				.Append("}, ")
 			;
 
-			if (index < count - 1) {
-				builder
-					.Append(", ")
-				;
-			}
-
 			index++;
+		}
+
+		if (index > 0) {
+			// Trim the last ", "
+			builder.Remove(builder.Length - 2, 2);
 		}
 
 		return builder.ToString();

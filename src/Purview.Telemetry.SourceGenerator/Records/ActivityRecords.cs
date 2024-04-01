@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 namespace Purview.Telemetry.SourceGenerator.Records;
 
 record ActivitySourceTarget(
-	TelemetryGenerationAttributeRecord TelemetryGeneration,
+	TelemetryGenerationAttributeRecord  TelemetryGeneration,
 	GenerationType GenerationType,
 
 	string ClassNameToGenerate,
@@ -22,7 +22,7 @@ record ActivitySourceTarget(
 
 	ImmutableArray<ActivityBasedGenerationTarget> ActivityMethods
 ,
-	ActivitySourceAttributeRecord ActivityTargetAttributeRecord
+	ActivitySourceAttributeRecord  ActivityTargetAttributeRecord
 );
 
 record ActivityBasedGenerationTarget(

@@ -26,7 +26,9 @@ namespace Testing
 		public void Log(System.Int32 intParam, System.Boolean boolParam)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
+			{
 				return;
+			}
 
 			_logAction(_logger, intParam, boolParam, null);
 		}

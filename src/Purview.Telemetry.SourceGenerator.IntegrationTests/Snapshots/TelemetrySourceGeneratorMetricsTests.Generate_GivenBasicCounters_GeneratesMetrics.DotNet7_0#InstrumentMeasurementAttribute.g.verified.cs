@@ -17,9 +17,9 @@ namespace Purview.Telemetry.Metrics;
 
 #if NETSTANDARD1_6_OR_GREATER
 
-[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
-sealed class InstrumentMeasurementAttribute : Attribute {
+[System.AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+sealed class InstrumentMeasurementAttribute : System.Attribute {
 }
 
 #endif

@@ -91,12 +91,12 @@ partial class ActivitySourceTargetClassEmitter {
 
 			var useRecordedExceptionRules = Constants.Activities.UseRecordExceptionRulesDefault;
 			var emitExceptionEscape = escapeParam != null || Constants.Activities.RecordExceptionEscapedDefault;
-			if (methodTarget.EventAttribute?.UseRecordExceptionRules?.IsSet == true) {
-				useRecordedExceptionRules = methodTarget.EventAttribute!.UseRecordExceptionRules!.Value!.Value;
+			if (methodTarget.EventAttribute?.UseRecordExceptionRules.IsSet == true) {
+				useRecordedExceptionRules = methodTarget.EventAttribute.UseRecordExceptionRules.Value!.Value;
 			}
 
-			if (methodTarget.EventAttribute?.RecordExceptionEscape?.IsSet == true) {
-				emitExceptionEscape = methodTarget.EventAttribute!.RecordExceptionEscape!.Value!.Value;
+			if (methodTarget.EventAttribute?.RecordExceptionEscape.IsSet == true) {
+				emitExceptionEscape = methodTarget.EventAttribute.RecordExceptionEscape!.Value!.Value;
 			}
 
 			var escapeValue = escapeParam?.ParameterName ?? "true";
@@ -114,8 +114,19 @@ partial class ActivitySourceTargetClassEmitter {
 
 				if (tagParam.IsException) {
 					if (methodTarget.ActivityOrEventName == Constants.Activities.Tag_ExceptionEventName) {
+						builder
+							.Append(indent, "if (", withNewLine: false)
+							.Append(tagParam.ParameterName)
+							.AppendLine(" != null)")
+							.Append(indent, '{')
+						;
+
 						// We want the details inside of the current event.
-						EmitExceptionParam(builder, indent, tagsListVariableName, escapeValue, tagParam.ParameterName);
+						EmitExceptionParam(builder, indent + 1, tagsListVariableName, escapeValue, tagParam.ParameterName);
+
+						builder
+							.Append(indent, '}')
+						;
 					}
 					else {
 						if (useRecordedExceptionRules) {

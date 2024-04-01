@@ -11,16 +11,14 @@
 
 #pragma warning disable 1591 // publicly visible type or member must be documented
 
-#if PURVIEW_TELEMETRY_ATTRIBUTES
-
 namespace Purview.Telemetry.Metrics;
 
 #if NETSTANDARD1_6_OR_GREATER
 
-[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
+[System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class MeterGenerationAttribute : Attribute {
+sealed class MeterGenerationAttribute : System.Attribute {
 	public MeterGenerationAttribute(string? instrumentPrefix = null, bool lowercaseInstrumentName = true, bool lowercaseTagKeys = true) {
 		InstrumentPrefix = instrumentPrefix;
 		LowercaseInstrumentName = lowercaseInstrumentName;
@@ -35,7 +33,5 @@ sealed class MeterGenerationAttribute : Attribute {
 
 	public bool LowercaseTagKeys { get; set; } = true;
 }
-
-#endif
 
 #endif

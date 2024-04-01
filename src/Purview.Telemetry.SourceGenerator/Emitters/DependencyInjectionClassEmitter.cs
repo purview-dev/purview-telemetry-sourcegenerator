@@ -36,11 +36,6 @@ static class DependencyInjectionClassEmitter {
 
 		StringBuilder builder = new();
 
-		builder
-			.AppendLine("#nullable enable")
-			.AppendLine()
-		;
-
 		var classNameToGenerate = attribute.DependencyInjectionClassName.Value;
 		if (string.IsNullOrWhiteSpace(classNameToGenerate)) {
 			classNameToGenerate = implementationClassName;

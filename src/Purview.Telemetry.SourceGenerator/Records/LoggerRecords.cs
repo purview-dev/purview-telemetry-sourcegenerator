@@ -1,11 +1,9 @@
 ﻿using System.Collections.Immutable;
-using Purview.Telemetry.Logging;
-using Purview.Telemetry.SourceGenerator.Templates;
 
 namespace Purview.Telemetry.SourceGenerator.Records;
 
 record LoggerTarget(
-	TelemetryGenerationAttributeRecord TelemetryGeneration,
+	TelemetryGenerationAttributeRecord  TelemetryGeneration,
 	GenerationType GenerationType,
 
 	string ClassNameToGenerate,
@@ -14,8 +12,8 @@ record LoggerTarget(
 
 	string InterfaceName, string FullyQualifiedInterfaceName,
 
-	LoggerAttributeRecord LoggerAttribute,
-	LogGeneratedLevel DefaultLevel,
+	LoggerAttributeRecord  LoggerAttribute,
+	int DefaultLevel,
 
 	ImmutableArray<LogTarget> LogMethods
 );
@@ -27,12 +25,10 @@ record LogTarget(
 
 	bool UnknownReturnType,
 
-	int? EventId,
-	LogGeneratedLevel Level,
-	string MessageTemplate,
 	string LogName,
-
-	TypeInfo MSLevel,
+	int? EventId,
+	string MessageTemplate,
+	string MSLevel,
 
 	ImmutableArray<LogParameterTarget> Parameters,
 	ImmutableArray<LogParameterTarget> ParametersSansException,

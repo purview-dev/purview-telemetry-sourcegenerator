@@ -16,14 +16,14 @@
 namespace Purview.Telemetry.Activities;
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed class EventAttribute : Attribute {
 
 	public EventAttribute() {
 	}
 
-	public EventAttribute(string name, bool useRecordExceptionRules = Constants.Activities.UseRecordExceptionRulesDefault, bool recordExceptionAsEscaped = Constants.Activities.RecordExceptionEscapedDefault) {
+	public EventAttribute(string name, bool useRecordExceptionRules = true, bool recordExceptionAsEscaped = true) {
 		Name = name;
 		UseRecordExceptionRules = useRecordExceptionRules;
 		RecordExceptionAsEscaped = recordExceptionAsEscaped;
@@ -37,7 +37,7 @@ sealed class EventAttribute : Attribute {
 	/// <summary>
 	/// Determines if the event should use OpenTelemetry exception recording rules.
 	/// </summary>
-	public bool UseRecordExceptionRules { get; set; } = Constants.Activities.UseRecordExceptionRulesDefault;
+	public bool UseRecordExceptionRules { get; set; } = true;
 
 	/// <summary>
 	/// Determines if a recorded exception (when <see cref="UseRecordExceptionRules"/> is true and an exception parameter exists)
@@ -45,7 +45,7 @@ sealed class EventAttribute : Attribute {
 	/// and did not affect the operation. Alternatively, use the <see cref="EscapeAttribute"/> to override this value by
 	/// providing a value dynamically.
 	/// </summary>
-	public bool RecordExceptionAsEscaped { get; set; } = Constants.Activities.RecordExceptionEscapedDefault;
+	public bool RecordExceptionAsEscaped { get; set; } = true;
 }
 
 #endif

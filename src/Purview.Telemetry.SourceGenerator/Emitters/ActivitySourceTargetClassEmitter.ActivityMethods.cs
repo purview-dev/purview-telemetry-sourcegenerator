@@ -55,7 +55,7 @@ partial class ActivitySourceTargetClassEmitter {
 			.Append('.')
 		;
 
-		var createOnly = methodTarget.ActivityAttribute?.CreateOnly?.Value == true;
+		var createOnly = methodTarget.ActivityAttribute?.CreateOnly.Value == true;
 		var createActivityMethod = createOnly
 			? "Create"
 			: "Start";
@@ -75,6 +75,9 @@ partial class ActivitySourceTargetClassEmitter {
 			return;
 		}
 
+		var kind = methodTarget.ActivityAttribute?.Kind.IsSet == true
+			? methodTarget.ActivityAttribute.Kind.Value!.Value
+			: Constants.Activities.DefaultActivityKind;
 		builder
 			.Append(createActivityMethod)
 			// name:
@@ -82,9 +85,7 @@ partial class ActivitySourceTargetClassEmitter {
 			.Append(methodTarget.ActivityOrEventName.Wrap())
 			// kind:
 			.Append(", kind: ")
-			.Append(Constants.Activities.SystemDiagnostics.ActivityKind.FullName)
-			.Append('.')
-			.Append(methodTarget.ActivityAttribute?.Kind?.Value ?? Activities.ActivityGeneratedKind.Internal)
+			.Append(Constants.Activities.ActivityTypeMap[kind])
 			// parentContext/ parentId:
 			.Append(", ")
 			.Append(parentContextParameterName)

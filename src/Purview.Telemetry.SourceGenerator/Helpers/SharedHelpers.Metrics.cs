@@ -1,5 +1,4 @@
 ﻿using Microsoft.CodeAnalysis;
-using Purview.Telemetry.Metrics;
 using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
@@ -28,19 +27,19 @@ partial class SharedHelpers {
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(MeterAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
+			if (name.Equals("Name", StringComparison.OrdinalIgnoreCase)) {
 				nameValue = new((string)value);
 			}
-			else if (name.Equals(nameof(MeterAttribute.InstrumentPrefix), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("InstrumentPrefix", StringComparison.OrdinalIgnoreCase)) {
 				instrumentPrefix = new((string)value);
 			}
-			else if (name.Equals(nameof(MeterAttribute.IncludeAssemblyInstrumentPrefix), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("IncludeAssemblyInstrumentPrefix", StringComparison.OrdinalIgnoreCase)) {
 				includeAssemblyInstrumentPrefix = new((bool)value);
 			}
-			else if (name.Equals(nameof(MeterAttribute.LowercaseInstrumentName), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("LowercaseInstrumentName", StringComparison.OrdinalIgnoreCase)) {
 				lowercaseInstrumentName = new((bool)value);
 			}
-			else if (name.Equals(nameof(MeterAttribute.LowercaseTagKeys), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("LowercaseTagKeys", StringComparison.OrdinalIgnoreCase)) {
 				lowercaseTagKeys = new((bool)value);
 			}
 		}, semanticModel, logger, token)) {
@@ -70,16 +69,16 @@ partial class SharedHelpers {
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(MeterGenerationAttribute.InstrumentPrefix), StringComparison.OrdinalIgnoreCase)) {
+			if (name.Equals("InstrumentPrefix", StringComparison.OrdinalIgnoreCase)) {
 				instrumentPrefix = new((string)value);
 			}
-			else if (name.Equals(nameof(MeterGenerationAttribute.InstrumentSeparator), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("InstrumentSeparator", StringComparison.OrdinalIgnoreCase)) {
 				instrumentSeparator = new((string)value);
 			}
-			else if (name.Equals(nameof(MeterGenerationAttribute.LowercaseInstrumentName), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("LowercaseInstrumentName", StringComparison.OrdinalIgnoreCase)) {
 				lowercaseInstrumentName = new((bool)value);
 			}
-			else if (name.Equals(nameof(MeterGenerationAttribute.LowercaseTagKeys), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("LowercaseTagKeys", StringComparison.OrdinalIgnoreCase)) {
 				lowercaseTagKeys = new((bool)value);
 			}
 		}, semanticModel, logger, token)) {
@@ -114,19 +113,19 @@ partial class SharedHelpers {
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(InstrumentAttributeBase.Name), StringComparison.OrdinalIgnoreCase)) {
+			if (name.Equals("Name", StringComparison.OrdinalIgnoreCase)) {
 				nameValue = new((string)value);
 			}
-			else if (name.Equals(nameof(InstrumentAttributeBase.Unit), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("Unit", StringComparison.OrdinalIgnoreCase)) {
 				unit = new((string)value);
 			}
-			else if (name.Equals(nameof(InstrumentAttributeBase.Description), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("Description", StringComparison.OrdinalIgnoreCase)) {
 				description = new((string)value);
 			}
-			else if (name.Equals(nameof(CounterAttribute.AutoIncrement), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("AutoIncrement", StringComparison.OrdinalIgnoreCase)) {
 				autoIncrement = new((bool)value);
 			}
-			else if (name.Equals(nameof(ObservableCounterAttribute.ThrowOnAlreadyInitialized), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("ThrowOnAlreadyInitialized", StringComparison.OrdinalIgnoreCase)) {
 				throwOnAlreadyInitialized = new((bool)value);
 			}
 		}, semanticModel, logger, token)) {

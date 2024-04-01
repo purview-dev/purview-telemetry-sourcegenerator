@@ -11,16 +11,12 @@
 
 #pragma warning disable 1591 // publicly visible type or member must be documented
 
-#if PURVIEW_TELEMETRY_ATTRIBUTES
-
 namespace Purview.Telemetry;
 
 /// <summary>
 /// Excludes the method from any activity, logging or metric generation.
 /// </summary>
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
-sealed class ExcludeAttribute : Attribute {
+[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+sealed class ExcludeAttribute : System.Attribute {
 }
-
-#endif

@@ -30,8 +30,8 @@ partial class ActivitySourceTargetClassEmitter {
 		}
 
 		var useRecordedExceptionRules = Constants.Activities.UseRecordExceptionRulesDefault;
-		if (method.EventAttribute?.UseRecordExceptionRules?.IsSet == true) {
-			useRecordedExceptionRules = method.EventAttribute!.UseRecordExceptionRules!.Value!.Value;
+		if (method.EventAttribute?.UseRecordExceptionRules.IsSet == true) {
+			useRecordedExceptionRules = method.EventAttribute.UseRecordExceptionRules.Value!.Value;
 		}
 
 		foreach (var param in parameters) {

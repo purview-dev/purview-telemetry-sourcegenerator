@@ -19,7 +19,7 @@ namespace Purview.Telemetry.Logging;
 /// Sets defaults for the generation of loggers and log entries.
 /// </summary>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed class LoggerGenerationAttribute : Attribute {
 	public LoggerGenerationAttribute() {

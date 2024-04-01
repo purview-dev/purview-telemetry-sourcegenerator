@@ -11,29 +11,27 @@
 
 #pragma warning disable 1591 // publicly visible type or member must be documented
 
-#if PURVIEW_TELEMETRY_ATTRIBUTES
+#nullable enable
 
 namespace Purview.Telemetry.Logging;
 
 /// <summary>
 /// Sets defaults for the generation of loggers and log entries.
 /// </summary>
-[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
+[System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class LoggerGenerationAttribute : Attribute {
+sealed class LoggerGenerationAttribute : System.Attribute {
 	public LoggerGenerationAttribute() {
 	}
 
-	public LoggerGenerationAttribute(LogGeneratedLevel defaultLevel) {
+	public LoggerGenerationAttribute(Microsoft.Extensions.Logging.LogLevel defaultLevel) {
 		DefaultLevel = defaultLevel;
 	}
 
 	/// <summary>
-	/// Gets/ sets the default <see cref="LogGeneratedLevel">level</see> of the
-	/// logger. Defaults to <see cref="LogGeneratedLevel.Information"/>.
+	/// Gets/ sets the default <see cref="Microsoft.Extensions.Logging.LogLevel">level</see> of the
+	/// logger. Defaults to <see cref="Microsoft.Extensions.Logging.LogLevel.Information"/>.
 	/// </summary>
-	public LogGeneratedLevel DefaultLevel { get; set; } = LogGeneratedLevel.Information;
+	public Microsoft.Extensions.Logging.LogLevel DefaultLevel { get; set; } = Microsoft.Extensions.Logging.LogLevel.Information;
 }
-
-#endif
