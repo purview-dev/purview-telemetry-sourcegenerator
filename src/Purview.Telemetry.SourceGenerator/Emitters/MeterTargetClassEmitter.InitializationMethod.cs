@@ -115,8 +115,37 @@ partial class MeterTargetClassEmitter {
 		}
 
 		if (!method.IsObservable) {
-			var unit = method.InstrumentAttribute!.Unit?.Value?.Wrap();
-			var description = method.InstrumentAttribute!.Description?.Value?.Wrap();
+			var unit = method.InstrumentAttribute?.Unit?.Value?.Wrap() ?? Constants.System.NullKeyword;
+			var description = method.InstrumentAttribute?.Description?.Value?.Wrap() ?? Constants.System.NullKeyword;
+			var tagVariableType = Constants.System.Dictionary
+					.MakeGeneric(Constants.System.StringKeyword, Constants.System.ObjectKeyword + "?");
+			var tagVariableName = Utilities.LowercaseFirstChar(method.MethodName) + "Tags";
+
+			builder
+				.AppendLine()
+				.AppendLine("#if !NET7_0")
+				.AppendLine()
+			;
+
+			builder
+				.Append(indent, tagVariableType, withNewLine: false)
+				.Append(' ')
+				.Append(tagVariableName)
+				.Append(" = new ")
+				.Append(tagVariableType)
+				.AppendLine("();")
+				.AppendLine()
+				.Append(indent, method.TagPopulateMethodName, withNewLine: false)
+				.Append('(')
+				.Append(tagVariableName)
+				.AppendLine(");")
+				.AppendLine()
+			;
+
+			builder
+				.AppendLine("#endif")
+				.AppendLine()
+			;
 
 			builder
 				.Append(indent, method.FieldName, withNewLine: false)
@@ -129,12 +158,13 @@ partial class MeterTargetClassEmitter {
 				.Append(">(name: ")
 				.Append(method.MetricName.Wrap())
 				.Append(", unit: ")
-				.Append(unit ?? Constants.System.NullKeyword)
+				.Append(unit)
 				.Append(", description: ")
-				.Append(description ?? Constants.System.NullKeyword)
+				.Append(description)
 				.AppendLine()
 				.AppendLine("#if !NET7_0")
-				.Append(indent + 1, ", tags: null")
+				.Append(indent + 1, ", tags: ", withNewLine: false)
+				.AppendLine(tagVariableName)
 				.AppendLine("#endif")
 				.Append(indent, ");")
 			;

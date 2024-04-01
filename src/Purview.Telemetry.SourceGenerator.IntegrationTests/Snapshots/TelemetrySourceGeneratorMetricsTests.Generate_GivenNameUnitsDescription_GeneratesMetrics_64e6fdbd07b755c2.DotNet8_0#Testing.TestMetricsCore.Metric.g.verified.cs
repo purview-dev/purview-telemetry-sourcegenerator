@@ -62,15 +62,32 @@ namespace Testing
 #else
 				new System.Diagnostics.Metrics.Meter(name: "testing-meter", version: null);
 #endif
+
+#if !NET7_0
+
+			System.Collections.Generic.Dictionary<string, object?> metricTags = new System.Collections.Generic.Dictionary<string, object?>();
+
+			PopulateMetricTags(metricTags);
+
+#endif
+
 			_metricInstrument = _meter.CreateUpDownCounter<System.Int32>(name: "an-updown-counter-name-param", unit: "sponges-param", description: "sponge sales per-capita-param."
 #if !NET7_0
-				, tags: null
+				, tags: metricTags
 #endif
 			);
 		}
 
 #if NET8_OR_GREATER
+
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
+
+#endif
+
+#if !NET7_0
+
+		partial void PopulateMetricTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+
 #endif
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]

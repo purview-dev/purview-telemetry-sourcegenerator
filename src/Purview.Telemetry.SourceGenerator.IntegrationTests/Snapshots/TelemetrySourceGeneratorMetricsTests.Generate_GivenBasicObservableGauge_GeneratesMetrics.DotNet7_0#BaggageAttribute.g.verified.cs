@@ -15,10 +15,10 @@
 
 namespace Purview.Telemetry.Activities;
 
-[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
+[System.AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class BaggageAttribute : Attribute {
+sealed class BaggageAttribute : System.Attribute {
 	public BaggageAttribute() {
 	}
 

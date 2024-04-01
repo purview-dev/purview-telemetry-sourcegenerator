@@ -65,7 +65,13 @@ namespace Testing
 		}
 
 #if NET8_OR_GREATER
+
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
+
+#endif
+
+#if !NET7_0
+
 #endif
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]

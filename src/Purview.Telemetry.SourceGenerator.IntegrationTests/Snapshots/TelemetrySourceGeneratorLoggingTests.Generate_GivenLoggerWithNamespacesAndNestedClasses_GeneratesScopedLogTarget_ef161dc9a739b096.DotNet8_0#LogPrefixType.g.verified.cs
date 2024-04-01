@@ -11,7 +11,7 @@
 
 #pragma warning disable 1591 // publicly visible type or member must be documented
 
-#if PURVIEW_TELEMETRY_ATTRIBUTES
+#nullable enable
 
 namespace Purview.Telemetry.Logging;
 
@@ -46,5 +46,3 @@ public enum LogPrefixType {
 	/// </summary>
 	NoSuffix
 }
-
-#endif

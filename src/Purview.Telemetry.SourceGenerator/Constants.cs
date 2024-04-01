@@ -5,6 +5,7 @@ namespace Purview.Telemetry;
 
 static partial class Constants {
 	public const string SystemDiagnosticsNamespace = "System.Diagnostics";
+	public const string EmbedAttributesHashDefineName = "PURVIEW_TELEMETRY_ATTRIBUTES";
 
 	static public TemplateInfo[] GetAllTemplates() {
 		return [
@@ -16,16 +17,14 @@ static partial class Constants {
 	}
 
 	static public partial class Shared {
-		readonly static public TemplateInfo TagAttribute = TemplateInfo.Create<TagAttribute>();
-		readonly static public TemplateInfo ExcludeAttribute = TemplateInfo.Create<ExcludeAttribute>();
-		readonly static public TemplateInfo TelemetryGenerationAttribute = TemplateInfo.Create<TelemetryGenerationAttribute>();
-		readonly static public TemplateInfo Constants = TemplateInfo.Create(typeof(Constants).FullName);
+		readonly static public TemplateInfo TagAttribute = TemplateInfo.Create("Purview.Telemetry.TagAttribute");
+		readonly static public TemplateInfo ExcludeAttribute = TemplateInfo.Create("Purview.Telemetry.ExcludeAttribute");
+		readonly static public TemplateInfo TelemetryGenerationAttribute = TemplateInfo.Create("Purview.Telemetry.TelemetryGenerationAttribute");
 
 		static public TemplateInfo[] GetTemplates() => [
 			TagAttribute,
 			ExcludeAttribute,
 			TelemetryGenerationAttribute,
-			Constants
 		];
 	}
 

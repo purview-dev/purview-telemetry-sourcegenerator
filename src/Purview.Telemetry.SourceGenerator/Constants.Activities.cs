@@ -1,10 +1,15 @@
-﻿using Purview.Telemetry.SourceGenerator.Templates;
+﻿using System.Collections.Immutable;
+using Purview.Telemetry.SourceGenerator.Templates;
 
 namespace Purview.Telemetry;
 
 partial class Constants {
 	static public partial class Activities {
-		static public string DefaultActivitySourceName { get; set; } = "purview";
+		public const bool UseRecordExceptionRulesDefault = true;
+		public const bool RecordExceptionEscapedDefault = true;
+
+		public const string DefaultActivitySourceName = "purview";
+		public const int DefaultActivityKind = 0;
 
 		public const string ActivitySourceFieldName = "_activitySource";
 		public const string ActivityVariableName = "activity";
@@ -23,14 +28,21 @@ partial class Constants {
 
 		public const string RecordExceptionMethodName = "RecordExceptionInternal";
 
-		readonly static public TemplateInfo ActivitySourceGenerationAttribute = TemplateInfo.Create<Telemetry.Activities.ActivitySourceGenerationAttribute>();
-		readonly static public TemplateInfo ActivitySourceAttribute = TemplateInfo.Create<Telemetry.Activities.ActivitySourceAttribute>();
-		readonly static public TemplateInfo ActivityAttribute = TemplateInfo.Create<Telemetry.Activities.ActivityAttribute>();
-		readonly static public TemplateInfo EventAttribute = TemplateInfo.Create<Telemetry.Activities.EventAttribute>();
-		readonly static public TemplateInfo ContextAttribute = TemplateInfo.Create<Telemetry.Activities.ContextAttribute>();
-		readonly static public TemplateInfo BaggageAttribute = TemplateInfo.Create<Telemetry.Activities.BaggageAttribute>();
-		readonly static public TemplateInfo EscapeAttribute = TemplateInfo.Create<Telemetry.Activities.EscapeAttribute>();
-		readonly static public TemplateInfo ActivityGeneratedKind = TemplateInfo.Create<Telemetry.Activities.ActivityGeneratedKind>();
+		readonly static public TemplateInfo ActivitySourceGenerationAttribute = TemplateInfo.Create("Purview.Telemetry.Activities.ActivitySourceGenerationAttribute");
+		readonly static public TemplateInfo ActivitySourceAttribute = TemplateInfo.Create("Purview.Telemetry.Activities.ActivitySourceAttribute");
+		readonly static public TemplateInfo ActivityAttribute = TemplateInfo.Create("Purview.Telemetry.Activities.ActivityAttribute");
+		readonly static public TemplateInfo EventAttribute = TemplateInfo.Create("Purview.Telemetry.Activities.EventAttribute");
+		readonly static public TemplateInfo ContextAttribute = TemplateInfo.Create("Purview.Telemetry.Activities.ContextAttribute");
+		readonly static public TemplateInfo BaggageAttribute = TemplateInfo.Create("Purview.Telemetry.Activities.BaggageAttribute");
+		readonly static public TemplateInfo EscapeAttribute = TemplateInfo.Create("Purview.Telemetry.Activities.EscapeAttribute");
+
+		readonly static public ImmutableDictionary<int, TypeInfo> ActivityTypeMap = new Dictionary<int, TypeInfo> {
+			{ 0, SystemDiagnostics.ActivityKind_Internal },
+			{ 1, SystemDiagnostics.ActivityKind_Server },
+			{ 2, SystemDiagnostics.ActivityKind_Client },
+			{ 3, SystemDiagnostics.ActivityKind_Producer },
+			{ 4, SystemDiagnostics.ActivityKind_Consumer }
+		}.ToImmutableDictionary();
 
 		static public TemplateInfo[] GetTemplates() => [
 				ActivitySourceGenerationAttribute,
@@ -39,8 +51,7 @@ partial class Constants {
 				EventAttribute,
 				ContextAttribute,
 				BaggageAttribute,
-				EscapeAttribute,
-				ActivityGeneratedKind
+				EscapeAttribute
 			];
 
 		static public class SystemDiagnostics {
@@ -55,6 +66,12 @@ partial class Constants {
 			readonly static public TypeInfo ActivityLink = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityLink");
 			readonly static public TypeInfo ActivityLinkIEnumerable = TypeInfo.Create("System.Collections.Generic.IEnumerable<System.Diagnostics.ActivityLink>");
 			readonly static public TypeInfo ActivityLinkArray = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityLink[]");
+
+			readonly static public TypeInfo ActivityKind_Internal = TypeInfo.Create(ActivityKind + ".Internal");
+			readonly static public TypeInfo ActivityKind_Server = TypeInfo.Create(ActivityKind + ".Server");
+			readonly static public TypeInfo ActivityKind_Client = TypeInfo.Create(ActivityKind + ".Client");
+			readonly static public TypeInfo ActivityKind_Producer = TypeInfo.Create(ActivityKind + ".Producer");
+			readonly static public TypeInfo ActivityKind_Consumer = TypeInfo.Create(ActivityKind + ".Consumer");
 		}
 	}
 }

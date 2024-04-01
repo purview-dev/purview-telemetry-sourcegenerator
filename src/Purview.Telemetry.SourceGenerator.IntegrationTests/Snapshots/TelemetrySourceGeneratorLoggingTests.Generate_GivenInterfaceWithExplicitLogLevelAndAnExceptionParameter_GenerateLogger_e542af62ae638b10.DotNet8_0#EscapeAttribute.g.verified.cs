@@ -16,7 +16,7 @@
 namespace Purview.Telemetry.Activities;
 
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 sealed class EscapeAttribute : Attribute {
 }
 

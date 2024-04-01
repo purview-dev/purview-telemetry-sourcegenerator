@@ -1,5 +1,4 @@
 ﻿using Microsoft.CodeAnalysis;
-using Purview.Telemetry.Activities;
 using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
@@ -27,19 +26,19 @@ partial class SharedHelpers {
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(ActivitySourceAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
+			if (name.Equals("Name", StringComparison.OrdinalIgnoreCase)) {
 				nameValue = new((string)value);
 			}
-			else if (name.Equals(nameof(ActivitySourceAttribute.DefaultToTags), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("DefaultToTags", StringComparison.OrdinalIgnoreCase)) {
 				defaultToTags = new((bool)value);
 			}
-			else if (name.Equals(nameof(ActivitySourceAttribute.BaggageAndTagPrefix), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("BaggageAndTagPrefix", StringComparison.OrdinalIgnoreCase)) {
 				baggageAndTagPrefix = new((string)value);
 			}
-			else if (name.Equals(nameof(ActivitySourceAttribute.IncludeActivitySourcePrefix), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("IncludeActivitySourcePrefix", StringComparison.OrdinalIgnoreCase)) {
 				includeActivitySourcePrefix = new((bool)value);
 			}
-			else if (name.Equals(nameof(ActivitySourceAttribute.LowercaseBaggageAndTagKeys), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("LowercaseBaggageAndTagKeys", StringComparison.OrdinalIgnoreCase)) {
 				lowercaseBaggageAndTagKeys = new((bool)value);
 			}
 		}, semanticModel, logger, token)) {
@@ -70,19 +69,19 @@ partial class SharedHelpers {
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(ActivitySourceGenerationAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
+			if (name.Equals("Name", StringComparison.OrdinalIgnoreCase)) {
 				nameValue = new((string)value);
 			}
-			else if (name.Equals(nameof(ActivitySourceGenerationAttribute.DefaultToTags), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("DefaultToTags", StringComparison.OrdinalIgnoreCase)) {
 				defaultToTags = new((bool)value);
 			}
-			else if (name.Equals(nameof(ActivitySourceGenerationAttribute.BaggageAndTagPrefix), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("BaggageAndTagPrefix", StringComparison.OrdinalIgnoreCase)) {
 				baggageAndTagPrefix = new((string)value);
 			}
-			else if (name.Equals(nameof(ActivitySourceGenerationAttribute.BaggageAndTagSeparator), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("BaggageAndTagSeparator", StringComparison.OrdinalIgnoreCase)) {
 				baggageAndTagSeparator = new((string)value);
 			}
-			else if (name.Equals(nameof(ActivitySourceGenerationAttribute.LowercaseBaggageAndTagKeys), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("LowercaseBaggageAndTagKeys", StringComparison.OrdinalIgnoreCase)) {
 				lowercaseBaggageAndTagKeys = new((bool)value);
 			}
 		}, semanticModel, logger, token)) {
@@ -106,18 +105,18 @@ partial class SharedHelpers {
 		CancellationToken token) {
 
 		AttributeStringValue? nameValue = null;
-		AttributeValue<ActivityGeneratedKind>? kind = null;
+		AttributeValue<int>? kind = null;
 		AttributeValue<bool>? createOnly = null;
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(ActivityAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
+			if (name.Equals("Name", StringComparison.OrdinalIgnoreCase)) {
 				nameValue = new((string)value);
 			}
-			else if (name.Equals(nameof(ActivityAttribute.Kind), StringComparison.OrdinalIgnoreCase)) {
-				kind = new((ActivityGeneratedKind)value);
+			else if (name.Equals("Kind", StringComparison.OrdinalIgnoreCase)) {
+				kind = new((int)value);
 			}
-			else if (name.Equals(nameof(ActivityAttribute.CreateOnly), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("CreateOnly", StringComparison.OrdinalIgnoreCase)) {
 				createOnly = new((bool)value);
 			}
 		}, semanticModel, logger, token)) {
@@ -127,7 +126,7 @@ partial class SharedHelpers {
 
 		return new(
 			Name: nameValue ?? new(),
-			Kind: kind ?? new(ActivityGeneratedKind.Internal),
+			Kind: kind ?? new(Constants.Activities.DefaultActivityKind),
 			CreateOnly: createOnly ?? new()
 		);
 	}
@@ -144,13 +143,13 @@ partial class SharedHelpers {
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(EventAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
+			if (name.Equals("Name", StringComparison.OrdinalIgnoreCase)) {
 				nameValue = new((string)value);
 			}
-			else if (name.Equals(nameof(EventAttribute.UseRecordExceptionRules), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("UseRecordExceptionRules", StringComparison.OrdinalIgnoreCase)) {
 				useRecordExceptionRules = new((bool)value);
 			}
-			else if (name.Equals(nameof(EventAttribute.RecordExceptionAsEscaped), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("RecordExceptionAsEscaped", StringComparison.OrdinalIgnoreCase)) {
 				recordExceptionEscape = new((bool)value);
 			}
 		}, semanticModel, logger, token)) {

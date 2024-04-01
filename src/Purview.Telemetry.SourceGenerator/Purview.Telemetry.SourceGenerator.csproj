@@ -24,43 +24,22 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Purview.Telemetry.Shared\Purview.Telemetry.Shared.csproj" PrivateAssets="All" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Include="purview-logo.png" Pack="true" PackagePath="" />
 		<EmbeddedResource Remove="bin\**" />
 		<None Remove="bin\**" />
+		<None Remove="*.cache" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Include="..\Purview.Telemetry.Shared\CoreConstants.cs" Link="CoreConstants.cs" />
-
 		<Compile Remove="Templates\Sources\**\*.cs" />
 		<EmbeddedResource Include="Templates\Sources\**\*.cs" />
-
-		<!--
-			I'd tried doing this at the project root, but it didn't work because it included all of the obj/**/*.cs files.
-			I could move things about in the source project, but I like it the way it is. It just means that if/ when we add
-			more files to the project in another folder, we need to remember to add them here too.
-		-->
-
-		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Activities\**\*.cs" LinkBase="Templates\Sources\Activities\" />
-		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Logging\**\*.cs" LinkBase="Templates\Sources\Logging\" />
-		<EmbeddedResource Include="..\Purview.Telemetry.Shared\Metrics\**\*.cs" LinkBase="Templates\Sources\Metrics\" />
-
-		<EmbeddedResource Include="..\Purview.Telemetry.Shared\TagAttribute.cs" Link="Templates\Sources\TagAttribute.cs" />
-		<EmbeddedResource Include="..\Purview.Telemetry.Shared\ExcludeAttribute.cs" Link="Templates\Sources\ExcludeAttribute.cs" />
-		<EmbeddedResource Include="..\Purview.Telemetry.Shared\TelemetryGenerationAttribute.cs" Link="Templates\Sources\TelemetryGenerationAttribute.cs" />
-		<EmbeddedResource Include="..\Purview.Telemetry.Shared\CoreConstants.cs" Link="Templates\Sources\Constants.cs" />
-
 	</ItemGroup>
 
 	<!-- Package the build output into the "analyzer" slot in the NuGet package -->
 	<ItemGroup>
 		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
 		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-		<None Include="$(OutputPath)\Purview.Telemetry.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<!--<None Include="$(OutputPath)\Purview.Telemetry.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />-->
 		<!--<None Include="$(OutputPath)\Purview.Telemetry.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />-->
 	</ItemGroup>
 

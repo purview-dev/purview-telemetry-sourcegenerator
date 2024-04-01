@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Purview.Telemetry.SourceGenerator.Records;
 
-sealed record TelemetryDiagnosticDescriptor(
+record TelemetryDiagnosticDescriptor(
 	string Id,
 	string Title,
 	string Description,

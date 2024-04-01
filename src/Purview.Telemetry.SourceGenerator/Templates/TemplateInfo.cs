@@ -1,13 +1,10 @@
-﻿using System.Diagnostics;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Purview.Telemetry.SourceGenerator.Templates;
 
-record TemplateInfo(string Name, string FullName, string Namespace, string? Source)
+record TemplateInfo(string Name, string FullName, string Namespace, string? Source, string TemplateData)
 	: IEquatable<NameSyntax>, IEquatable<AttributeSyntax>, IEquatable<ISymbol>, IEquatable<string>, IEquatable<AttributeData> {
-	public string TemplateData { get; private set; } = default!;
-
 	public string GetGeneratedFilename()
 		=> $"{Name}.g.cs";
 
@@ -43,26 +40,19 @@ record TemplateInfo(string Name, string FullName, string Namespace, string? Sour
 		=> Create(typeof(T).FullName, attachHeader);
 
 	static public TemplateInfo Create(string fullTypeName, bool attachHeader = true) {
-		try {
-			var parts = fullTypeName.Split('.');
+		var parts = fullTypeName.Split('.');
 
-			var typeName = RemoveGenericTypeInfo(parts.Last());
-			fullTypeName = RemoveGenericTypeInfo(fullTypeName);
-			var @namespace = fullTypeName.Substring(0, fullTypeName.Length - (typeName.Length + 1));
-			var source = @namespace.Split('.');
-			var isRootSources = source.Length == 2;
+		var typeName = RemoveGenericTypeInfo(parts.Last());
+		fullTypeName = RemoveGenericTypeInfo(fullTypeName);
+		var @namespace = fullTypeName.Substring(0, fullTypeName.Length - (typeName.Length + 1));
+		var source = @namespace.Split('.');
+		var isRootSources = source.Length == 2;
+		var sourceToUse = isRootSources ? null : source.Last();
 
-			TemplateInfo templateInfo = new(typeName, fullTypeName, @namespace, isRootSources ? null : source.Last());
-			templateInfo.TemplateData = EmbeddedResources.Instance.LoadTemplateForEmitting(templateInfo, attachHeader);
+		var template = EmbeddedResources.Instance.LoadTemplateForEmitting(sourceToUse, typeName, attachHeader);
+		TemplateInfo templateInfo = new(typeName, fullTypeName, @namespace, sourceToUse, template);
 
-			return templateInfo;
-		}
-		catch (Exception ex) {
-			Debug.WriteLine(ex);
-			Debugger.Break();
-
-			return new("", "", "", "");
-		}
+		return templateInfo;
 	}
 
 	static string RemoveGenericTypeInfo(string identifier) {

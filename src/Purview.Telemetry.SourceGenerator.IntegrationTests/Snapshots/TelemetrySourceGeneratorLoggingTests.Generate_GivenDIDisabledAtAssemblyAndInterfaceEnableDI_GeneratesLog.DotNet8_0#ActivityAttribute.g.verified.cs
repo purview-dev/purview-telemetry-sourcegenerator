@@ -11,14 +11,14 @@
 
 #pragma warning disable 1591 // publicly visible type or member must be documented
 
-#if PURVIEW_TELEMETRY_ATTRIBUTES
+#nullable enable
 
 namespace Purview.Telemetry.Activities;
 
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
+[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class ActivityAttribute : Attribute {
+sealed class ActivityAttribute : System.Attribute {
 
 	public ActivityAttribute() {
 	}
@@ -27,11 +27,11 @@ sealed class ActivityAttribute : Attribute {
 		Name = name;
 	}
 
-	public ActivityAttribute(ActivityGeneratedKind kind) {
+	public ActivityAttribute(System.Diagnostics.ActivityKind kind) {
 		Kind = kind;
 	}
 
-	public ActivityAttribute(string name, ActivityGeneratedKind kind, bool createOnly = false) {
+	public ActivityAttribute(string name, System.Diagnostics.ActivityKind kind, bool createOnly = false) {
 		Name = name;
 		Kind = kind;
 		CreateOnly = createOnly;
@@ -43,10 +43,10 @@ sealed class ActivityAttribute : Attribute {
 	public string? Name { get; set; }
 
 	/// <summary>
-	/// Optional. Gets the <see cref="ActivityGeneratedKind">kind</see> of the
-	/// activity. Defaults to <see cref="ActivityGeneratedKind.Internal"/>.
+	/// Optional. Gets the <see cref="System.Diagnostics.ActivityKind">kind</see> of the
+	/// activity. Defaults to <see cref="System.Diagnostics.ActivityKind.Internal"/>.
 	/// </summary>
-	public ActivityGeneratedKind Kind { get; set; } = ActivityGeneratedKind.Internal;
+	public System.Diagnostics.ActivityKind Kind { get; set; } = System.Diagnostics.ActivityKind.Internal;
 
 	/// <summary>
 	/// If true, the Activity is crated via ActivitySource.CreateActivity, meaning it is not started by default. Otherwise
@@ -54,5 +54,3 @@ sealed class ActivityAttribute : Attribute {
 	/// </summary>
 	public bool CreateOnly { get; set; }
 }
-
-#endif

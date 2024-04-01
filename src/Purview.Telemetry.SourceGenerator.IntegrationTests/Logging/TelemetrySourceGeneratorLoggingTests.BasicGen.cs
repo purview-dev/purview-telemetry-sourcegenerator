@@ -45,9 +45,9 @@ public interface ITestLogger {
 	}
 
 	[Theory]
-	[InlineData("Level = LogGeneratedLevel.Trace")]
-	[InlineData("level: LogGeneratedLevel.Trace")]
-	[InlineData("LogGeneratedLevel.Trace")]
+	[InlineData("Level = Microsoft.Extensions.Logging.LogLevel.Trace")]
+	[InlineData("level: Microsoft.Extensions.Logging.LogLevel.Trace")]
+	[InlineData("Microsoft.Extensions.Logging.LogLevel.Trace")]
 	async public Task Generate_GivenInterfaceWithExplicitLogLevelAndAnExceptionParameter_GenerateLogger(string level) {
 		// Arrange
 		string basicLogger = @$"
@@ -91,7 +91,7 @@ public interface ITestLogger {
 	}
 
 	[Fact]
-	async public Task Generate_GivenInterfaceMoreThanSixParameters_GenerateLogger() {
+	async public Task Generate_GivenInterfaceMoreThanSixParameters_RaisesDiagnostic() {
 		// Arrange
 		const string basicLogger = @"
 using Purview.Telemetry.Logging;
@@ -115,7 +115,7 @@ public interface ITestLogger {
 	}
 
 	[Fact]
-	async public Task Generate_GivenInterfaceMoreThanOneExceptionParameter_GenerateLogger() {
+	async public Task Generate_GivenInterfaceMoreThanOneExceptionParameter_RaisesDiagnostic() {
 		// Arrange
 		const string basicLogger = @"
 using Purview.Telemetry.Logging;

@@ -34,7 +34,7 @@ partial class PipelineHelpers {
 			: GenerateClassName(interfaceSymbol.Name);
 
 		var activitySourceGenerationAttribute = SharedHelpers.GetActivitySourceGenerationAttribute(semanticModel, logger, token);
-		var activitySourceName = activitySourceGenerationAttribute?.Name?.IsSet == true
+		var activitySourceName = activitySourceGenerationAttribute?.Name.IsSet == true
 			? activitySourceGenerationAttribute.Name.Value!
 			: activitySourceAttribute.Name.IsSet
 				? activitySourceAttribute.Name.Value!
@@ -87,7 +87,7 @@ partial class PipelineHelpers {
 		token.ThrowIfCancellationRequested();
 
 		var prefix = GeneratePrefix(activitySourceGenerationAttribute, activitySourceAttribute, token);
-		var defaultToTags = activitySourceGenerationAttribute?.DefaultToTags?.IsSet == true
+		var defaultToTags = activitySourceGenerationAttribute?.DefaultToTags.IsSet == true
 			? activitySourceGenerationAttribute.DefaultToTags.Value!.Value
 			: activitySourceAttribute.DefaultToTags.Value!.Value;
 		var lowercaseBaggageAndTagKeys = activitySourceAttribute.LowercaseBaggageAndTagKeys!.Value!.Value;
@@ -105,7 +105,10 @@ partial class PipelineHelpers {
 				out var activityAttribute,
 				out var eventAttribute
 			);
-			var activityOrEventName = activityAttribute?.Name?.Value ?? eventAttribute?.Name?.Value;
+			var activityOrEventName = activityAttribute?.Name.IsSet == true
+				? activityAttribute.Name.Value
+				: eventAttribute?.Name.Value;
+
 			if (string.IsNullOrWhiteSpace(activityOrEventName)) {
 				activityOrEventName = method.Name;
 			}
@@ -200,7 +203,7 @@ partial class PipelineHelpers {
 
 			var parameterName = parameter.Name;
 			var parameterType = parameter.Type.ToDisplayString().TrimEnd('?');
-			var generatedName = GenerateParameterName(tagOrBaggageAttribute?.Name?.Value ?? parameterName, prefix, lowercaseBaggageAndTagKeys);
+			var generatedName = GenerateParameterName(tagOrBaggageAttribute?.Name.Value ?? parameterName, prefix, lowercaseBaggageAndTagKeys);
 
 			parameterTargets.Add(new(
 				ParameterName: parameterName,
@@ -275,13 +278,13 @@ partial class PipelineHelpers {
 		token.ThrowIfCancellationRequested();
 
 		string? prefix = null;
-		var separator = activitySourceAttribute?.BaggageAndTagSeparator?.IsSet == true
+		var separator = activitySourceAttribute?.BaggageAndTagSeparator.IsSet == true
 			? activitySourceAttribute.BaggageAndTagSeparator.Value
 			: ".";
 
-		if (activitySourceAttribute?.BaggageAndTagPrefix?.IsSet == true) {
+		if (activitySourceAttribute?.BaggageAndTagPrefix.IsSet == true) {
 			prefix = activitySourceAttribute.BaggageAndTagPrefix.Value;
-			if (activitySourceAttribute.BaggageAndTagSeparator != null) {
+			if (activitySourceAttribute?.BaggageAndTagSeparator.IsSet == true) {
 				prefix += separator;
 			}
 		}

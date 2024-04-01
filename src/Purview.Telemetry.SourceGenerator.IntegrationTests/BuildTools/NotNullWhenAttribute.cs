@@ -2,8 +2,8 @@
 
 namespace System.Diagnostics.CodeAnalysis;
 
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property, Inherited = false)]
-sealed class NotNullWhenAttribute : Attribute {
+[System.AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property, Inherited = false)]
+sealed class NotNullWhenAttribute : System.Attribute {
 	public bool Value { get; }
 
 	public NotNullWhenAttribute(bool value) {

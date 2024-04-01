@@ -58,6 +58,5 @@ class Program {
 , tags: null
 #endif
 			);
-
 	}
 }

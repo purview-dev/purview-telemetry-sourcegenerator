@@ -15,10 +15,10 @@
 
 namespace Purview.Telemetry.Metrics;
 
-[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
+[System.AttributeUsage(AttributeTargets.Interface | AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class MeterAttribute : Attribute {
+sealed class MeterAttribute : System.Attribute {
 	public MeterAttribute() {
 	}
 

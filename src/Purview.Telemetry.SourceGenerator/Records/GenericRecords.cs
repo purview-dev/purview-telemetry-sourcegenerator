@@ -37,7 +37,7 @@ record AttributeValue<T>
 
 	public bool IsSet { get; }
 
-	static public implicit operator AttributeValue<T>(string? value)
+	static public implicit operator AttributeValue<T>(T? value)
 		=> new(value);
 
 	static public implicit operator T?(AttributeValue<T> value)

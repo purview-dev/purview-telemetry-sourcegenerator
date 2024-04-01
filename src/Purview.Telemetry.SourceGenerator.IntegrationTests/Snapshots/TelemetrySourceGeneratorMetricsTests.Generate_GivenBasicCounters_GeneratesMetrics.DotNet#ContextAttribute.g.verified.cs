@@ -15,9 +15,9 @@
 
 namespace Purview.Telemetry.Activities;
 
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
-sealed class ContextAttribute : Attribute {
+[System.AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+sealed class ContextAttribute : System.Attribute {
 }
 
 #endif

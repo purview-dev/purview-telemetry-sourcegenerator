@@ -68,45 +68,128 @@ namespace Testing
 #else
 				new System.Diagnostics.Metrics.Meter(name: "testing-meter", version: null);
 #endif
+
+#if !NET7_0
+
+			System.Collections.Generic.Dictionary<string, object?> counterTags = new System.Collections.Generic.Dictionary<string, object?>();
+
+			PopulateCounterTags(counterTags);
+
+#endif
+
 			_counterInstrument = _meter.CreateCounter<System.Int32>(name: "Counter", unit: null, description: null
 #if !NET7_0
-				, tags: null
+				, tags: counterTags
 #endif
 			);
+
+#if !NET7_0
+
+			System.Collections.Generic.Dictionary<string, object?> counter2Tags = new System.Collections.Generic.Dictionary<string, object?>();
+
+			PopulateCounter2Tags(counter2Tags);
+
+#endif
+
 			_counter2Instrument = _meter.CreateCounter<System.Byte>(name: "Counter2", unit: null, description: null
 #if !NET7_0
-				, tags: null
+				, tags: counter2Tags
 #endif
 			);
+
+#if !NET7_0
+
+			System.Collections.Generic.Dictionary<string, object?> counter3Tags = new System.Collections.Generic.Dictionary<string, object?>();
+
+			PopulateCounter3Tags(counter3Tags);
+
+#endif
+
 			_counter3Instrument = _meter.CreateCounter<System.Int64>(name: "Counter3", unit: null, description: null
 #if !NET7_0
-				, tags: null
+				, tags: counter3Tags
 #endif
 			);
+
+#if !NET7_0
+
+			System.Collections.Generic.Dictionary<string, object?> counter4Tags = new System.Collections.Generic.Dictionary<string, object?>();
+
+			PopulateCounter4Tags(counter4Tags);
+
+#endif
+
 			_counter4Instrument = _meter.CreateCounter<System.Int16>(name: "Counter4", unit: null, description: null
 #if !NET7_0
-				, tags: null
+				, tags: counter4Tags
 #endif
 			);
+
+#if !NET7_0
+
+			System.Collections.Generic.Dictionary<string, object?> counter5Tags = new System.Collections.Generic.Dictionary<string, object?>();
+
+			PopulateCounter5Tags(counter5Tags);
+
+#endif
+
 			_counter5Instrument = _meter.CreateCounter<System.Double>(name: "Counter5", unit: null, description: null
 #if !NET7_0
-				, tags: null
+				, tags: counter5Tags
 #endif
 			);
+
+#if !NET7_0
+
+			System.Collections.Generic.Dictionary<string, object?> counter6Tags = new System.Collections.Generic.Dictionary<string, object?>();
+
+			PopulateCounter6Tags(counter6Tags);
+
+#endif
+
 			_counter6Instrument = _meter.CreateCounter<System.Single>(name: "Counter6", unit: null, description: null
 #if !NET7_0
-				, tags: null
+				, tags: counter6Tags
 #endif
 			);
+
+#if !NET7_0
+
+			System.Collections.Generic.Dictionary<string, object?> counter7Tags = new System.Collections.Generic.Dictionary<string, object?>();
+
+			PopulateCounter7Tags(counter7Tags);
+
+#endif
+
 			_counter7Instrument = _meter.CreateCounter<System.Decimal>(name: "Counter7", unit: null, description: null
 #if !NET7_0
-				, tags: null
+				, tags: counter7Tags
 #endif
 			);
 		}
 
 #if NET8_OR_GREATER
+
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
+
+#endif
+
+#if !NET7_0
+
+		partial void PopulateCounterTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+
+		partial void PopulateCounter2Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+
+		partial void PopulateCounter3Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+
+		partial void PopulateCounter4Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+
+		partial void PopulateCounter5Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+
+		partial void PopulateCounter6Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+
+		partial void PopulateCounter7Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+
 #endif
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]

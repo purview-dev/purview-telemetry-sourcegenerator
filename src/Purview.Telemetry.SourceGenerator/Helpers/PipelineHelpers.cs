@@ -21,7 +21,7 @@ static partial class PipelineHelpers {
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0075:Simplify conditional expression", Justification = "Don't 'simplify' this as changing the default value of the skipOnNullOrEmpty parameter will change the behaviour")]
 	static bool GetSkipOnNullOrEmptyValue(TagOrBaggageAttributeRecord? tagOrBaggageAttribute)
-		=> tagOrBaggageAttribute?.SkipOnNullOrEmpty?.IsSet == true
-				? tagOrBaggageAttribute!.SkipOnNullOrEmpty!.Value!.Value
-				: Constants.Shared.SkipOnNullOrEmptyDefault;
+		=> tagOrBaggageAttribute?.SkipOnNullOrEmpty.IsSet == true
+				? tagOrBaggageAttribute.SkipOnNullOrEmpty.Value!.Value
+				: false;
 }

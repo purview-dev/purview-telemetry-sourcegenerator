@@ -11,13 +11,11 @@
 
 #pragma warning disable 1591 // publicly visible type or member must be documented
 
-#if PURVIEW_TELEMETRY_ATTRIBUTES
+#nullable enable
 
 namespace Purview.Telemetry.Activities;
 
-[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
-sealed class EscapeAttribute : Attribute {
+[System.AttributeUsage(System.AttributeTargets.Parameter, AllowMultiple = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+sealed class EscapeAttribute : System.Attribute {
 }
-
-#endif

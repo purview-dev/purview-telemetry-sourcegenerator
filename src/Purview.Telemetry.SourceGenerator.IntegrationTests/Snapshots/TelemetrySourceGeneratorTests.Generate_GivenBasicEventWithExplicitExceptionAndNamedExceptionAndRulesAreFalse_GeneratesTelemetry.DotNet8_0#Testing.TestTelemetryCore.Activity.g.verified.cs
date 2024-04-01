@@ -46,10 +46,13 @@ namespace Testing
 				System.Diagnostics.ActivityTagsCollection tagsCollectionEventMethod = new System.Diagnostics.ActivityTagsCollection();
 				tagsCollectionEventMethod.Add("intparam", intParam);
 				tagsCollectionEventMethod.Add("boolparam", boolParam);
-				tagsCollectionEventMethod.Add("exception.escaped", escape);
-				tagsCollectionEventMethod.Add("exception.message", anException.Message);
-				tagsCollectionEventMethod.Add("exception.type", anException.GetType().FullName);
-				tagsCollectionEventMethod.Add("exception.stacktrace", anException.StackTrace);
+				if (anException != null)
+				{
+					tagsCollectionEventMethod.Add("exception.escaped", escape);
+					tagsCollectionEventMethod.Add("exception.message", anException.Message);
+					tagsCollectionEventMethod.Add("exception.type", anException.GetType().FullName);
+					tagsCollectionEventMethod.Add("exception.stacktrace", anException.StackTrace);
+				}
 
 				System.Diagnostics.ActivityEvent activityEventEventMethod = new System.Diagnostics.ActivityEvent(name: "exception", timestamp: default, tags: tagsCollectionEventMethod);
 

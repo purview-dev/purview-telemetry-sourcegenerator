@@ -11,22 +11,22 @@
 
 #pragma warning disable 1591 // publicly visible type or member must be documented
 
-#if PURVIEW_TELEMETRY_ATTRIBUTES
+#nullable enable
 
 namespace Purview.Telemetry.Logging;
 
 /// <summary>
 /// Marker attribute required for Log generation.
 /// </summary>
-[AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
+[System.AttributeUsage(System.AttributeTargets.Interface, AllowMultiple = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class LoggerAttribute : Attribute {
+sealed class LoggerAttribute : System.Attribute {
 	public LoggerAttribute() {
 
 	}
 
-	public LoggerAttribute(LogGeneratedLevel defaultLevel, string? customPrefix = null) {
+	public LoggerAttribute(Microsoft.Extensions.Logging.LogLevel defaultLevel, string? customPrefix = null) {
 		DefaultLevel = defaultLevel;
 		CustomPrefix = customPrefix;
 
@@ -36,11 +36,11 @@ sealed class LoggerAttribute : Attribute {
 	}
 
 	/// <summary>
-	/// Optional. Gets the <see cref="LogGeneratedLevel">level</see> of the
-	/// log entry. Defaults to <see cref="LogGeneratedLevel.Information"/>, unless there is
+	/// Optional. Gets the <see cref="Microsoft.Extensions.Logging.LogLevel">level</see> of the
+	/// log entry. Defaults to <see cref="Microsoft.Extensions.Logging.LogLevel.Information"/>, unless there is
 	/// an <see cref="Exception"/> parameter and no-other override is defined.
 	/// </summary>
-	public LogGeneratedLevel DefaultLevel { get; set; } = LogGeneratedLevel.Information;
+	public Microsoft.Extensions.Logging.LogLevel DefaultLevel { get; set; } = Microsoft.Extensions.Logging.LogLevel.Information;
 
 	/// <summary>
 	/// Optional. The prefix used to generate the log entry.
@@ -52,5 +52,3 @@ sealed class LoggerAttribute : Attribute {
 	/// </summary>
 	public LogPrefixType PrefixType { get; set; } = LogPrefixType.Default;
 }
-
-#endif

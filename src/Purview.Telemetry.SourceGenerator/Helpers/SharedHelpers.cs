@@ -188,10 +188,10 @@ static partial class SharedHelpers {
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(TagAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
+			if (name.Equals("Name", StringComparison.OrdinalIgnoreCase)) {
 				nameValue = new((string)value);
 			}
-			else if (name.Equals(nameof(TagAttribute.SkipOnNullOrEmpty), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("SkipOnNullOrEmpty", StringComparison.OrdinalIgnoreCase)) {
 				skipOnNullOrEmpty = new((bool)value);
 			}
 		}, semanticModel, logger, token)) {
@@ -201,11 +201,11 @@ static partial class SharedHelpers {
 
 		return new(
 			Name: nameValue ?? new(),
-			SkipOnNullOrEmpty: skipOnNullOrEmpty ?? new(Constants.Shared.SkipOnNullOrEmptyDefault)
+			SkipOnNullOrEmpty: skipOnNullOrEmpty ?? new(false)
 		);
 	}
 
-	static public TelemetryGenerationAttributeRecord GetTelemetryGenerationAttribute(ISymbol type, SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token) {
+	static public TelemetryGenerationAttributeRecord  GetTelemetryGenerationAttribute(ISymbol type, SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token) {
 		token.ThrowIfCancellationRequested();
 
 		AttributeData? assemblyAttribute = null;
@@ -228,14 +228,14 @@ static partial class SharedHelpers {
 		}
 
 		return new(
-			GenerateDependencyExtension: typeGeneration?.GenerateDependencyExtension ?? assemblyTelemetryGeneration?.GenerateDependencyExtension ?? new(Constants.Shared.GenerateDependencyExtensionDefault),
+			GenerateDependencyExtension: typeGeneration?.GenerateDependencyExtension ?? assemblyTelemetryGeneration?.GenerateDependencyExtension ?? new(true),
 			ClassName: typeGeneration?.ClassName ?? assemblyTelemetryGeneration?.ClassName ?? new(),
 			DependencyInjectionClassName: typeGeneration?.DependencyInjectionClassName ?? assemblyTelemetryGeneration?.DependencyInjectionClassName ?? new()
 		);
 
-		static TelemetryGenerationAttributeRecord createDefault()
+		static TelemetryGenerationAttributeRecord  createDefault()
 			=> new(
-				GenerateDependencyExtension: new(Constants.Shared.GenerateDependencyExtensionDefault),
+				GenerateDependencyExtension: new(true),
 				ClassName: new(),
 				DependencyInjectionClassName: new()
 			);
@@ -253,13 +253,13 @@ static partial class SharedHelpers {
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(TelemetryGenerationAttribute.GenerateDependencyExtension), StringComparison.OrdinalIgnoreCase)) {
+			if (name.Equals("GenerateDependencyExtension", StringComparison.OrdinalIgnoreCase)) {
 				generateDependencyExtension = new((bool)value);
 			}
-			else if (name.Equals(nameof(TelemetryGenerationAttribute.ClassName), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("ClassName", StringComparison.OrdinalIgnoreCase)) {
 				className = new((string)value);
 			}
-			else if (name.Equals(nameof(TelemetryGenerationAttribute.DependencyInjectionClassName), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("DependencyInjectionClassName", StringComparison.OrdinalIgnoreCase)) {
 				dependencyInjectionClassName = new((string)value);
 			}
 		}, semanticModel, logger, token)) {
@@ -268,7 +268,7 @@ static partial class SharedHelpers {
 		}
 
 		return new(
-			GenerateDependencyExtension: generateDependencyExtension ?? new(Constants.Shared.GenerateDependencyExtensionDefault),
+			GenerateDependencyExtension: generateDependencyExtension ?? new(true),
 			ClassName: className ?? new(),
 			DependencyInjectionClassName: dependencyInjectionClassName ?? new()
 		);

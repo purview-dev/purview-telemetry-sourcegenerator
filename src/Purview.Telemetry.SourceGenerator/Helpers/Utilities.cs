@@ -345,17 +345,6 @@ static class Utilities {
 	static public string Flatten(this string value)
 		=> Regex.Replace(value, @"\s+", " ", RegexOptions.None, TimeSpan.FromMilliseconds(2000));
 
-	static public Templates.TypeInfo ConvertToMSLogLevel(Logging.LogGeneratedLevel? level)
-		=> level switch {
-			Logging.LogGeneratedLevel.Trace => Constants.Logging.MicrosoftExtensions.LogLevel_Trace,
-			Logging.LogGeneratedLevel.Debug => Constants.Logging.MicrosoftExtensions.LogLevel_Debug,
-			Logging.LogGeneratedLevel.Information => Constants.Logging.MicrosoftExtensions.LogLevel_Information,
-			Logging.LogGeneratedLevel.Warning => Constants.Logging.MicrosoftExtensions.LogLevel_Warning,
-			Logging.LogGeneratedLevel.Error => Constants.Logging.MicrosoftExtensions.LogLevel_Error,
-			Logging.LogGeneratedLevel.Critical => Constants.Logging.MicrosoftExtensions.LogLevel_Critical,
-			_ => Constants.Logging.MicrosoftExtensions.LogLevel_None,
-		};
-
 	static public bool ContainsAttribute(ISymbol symbol, Templates.TypeInfo typeInfo, CancellationToken token)
 		=> TryContainsAttribute(symbol, typeInfo, token, out _);
 

@@ -63,20 +63,48 @@ namespace Testing
 #else
 				new System.Diagnostics.Metrics.Meter(name: "testing-meter", version: null);
 #endif
+
+#if !NET7_0
+
+			System.Collections.Generic.Dictionary<string, object?> histogramTags = new System.Collections.Generic.Dictionary<string, object?>();
+
+			PopulateHistogramTags(histogramTags);
+
+#endif
+
 			_histogramInstrument = _meter.CreateHistogram<System.Int32>(name: "Histogram", unit: null, description: null
 #if !NET7_0
-				, tags: null
+				, tags: histogramTags
 #endif
 			);
+
+#if !NET7_0
+
+			System.Collections.Generic.Dictionary<string, object?> histogram1Tags = new System.Collections.Generic.Dictionary<string, object?>();
+
+			PopulateHistogram1Tags(histogram1Tags);
+
+#endif
+
 			_histogram1Instrument = _meter.CreateHistogram<System.Int32>(name: "Histogram1", unit: null, description: null
 #if !NET7_0
-				, tags: null
+				, tags: histogram1Tags
 #endif
 			);
 		}
 
 #if NET8_OR_GREATER
+
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
+
+#endif
+
+#if !NET7_0
+
+		partial void PopulateHistogramTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+
+		partial void PopulateHistogram1Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+
 #endif
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]

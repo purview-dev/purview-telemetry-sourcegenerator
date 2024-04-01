@@ -18,9 +18,9 @@ namespace Purview.Telemetry;
 /// <summary>
 /// Excludes the method from any activity, logging or metric generation.
 /// </summary>
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
-sealed class ExcludeAttribute : Attribute {
+[System.AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+sealed class ExcludeAttribute : System.Attribute {
 }
 
 #endif

@@ -46,7 +46,7 @@ partial class PipelineHelpers {
 			token
 		);
 
-		var meterName = meterAttribute.Name?.Value;
+		var meterName = meterAttribute?.Name.Value;
 		if (string.IsNullOrWhiteSpace(meterName)) {
 			meterName = interfaceSymbol.Name;
 			if (meterName[0] == 'I') {
@@ -116,7 +116,7 @@ partial class PipelineHelpers {
 				? Constants.System.VoidKeyword
 				: Utilities.GetFullyQualifiedName(method.ReturnType);
 			var fieldName = $"_{Utilities.LowercaseFirstChar(method.Name)}Instrument";
-			var metricName = instrumentAttribute?.Name?.Value;
+			var metricName = instrumentAttribute?.Name.Value;
 			if (string.IsNullOrWhiteSpace(metricName)) {
 				metricName = method.Name;
 			}
@@ -312,7 +312,7 @@ partial class PipelineHelpers {
 			}
 
 			var parameterName = parameter.Name;
-			var generatedName = GenerateParameterName(tagAttribute?.Name?.Value ?? parameterName, prefix, lowercaseTagKeys);
+			var generatedName = GenerateParameterName(tagAttribute?.Name.Value ?? parameterName, prefix, lowercaseTagKeys);
 
 			parameterTargets.Add(new(
 				ParameterName: parameterName,
@@ -345,13 +345,13 @@ partial class PipelineHelpers {
 		token.ThrowIfCancellationRequested();
 
 		string? prefix = null;
-		var separator = meterGenerationAttribute?.InstrumentSeparator?.IsSet == true
+		var separator = meterGenerationAttribute?.InstrumentSeparator.IsSet == true
 			? meterGenerationAttribute.InstrumentSeparator.Value
 			: ".";
 
-		if (meterGenerationAttribute?.InstrumentPrefix?.IsSet == true) {
+		if (meterGenerationAttribute?.InstrumentPrefix.IsSet == true) {
 			prefix = meterGenerationAttribute.InstrumentPrefix.Value;
-			if (meterGenerationAttribute.InstrumentSeparator != null) {
+			if (meterGenerationAttribute?.InstrumentSeparator.IsSet == true) {
 				prefix += separator;
 			}
 		}

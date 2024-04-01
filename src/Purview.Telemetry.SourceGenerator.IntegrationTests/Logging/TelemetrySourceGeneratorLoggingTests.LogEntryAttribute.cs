@@ -1,6 +1,4 @@
-﻿using Purview.Telemetry.Logging;
-
-namespace Purview.Telemetry.SourceGenerator.Logging;
+﻿namespace Purview.Telemetry.SourceGenerator.Logging;
 partial class TelemetrySourceGeneratorLoggingTests {
 	[Theory]
 	[MemberData(nameof(GetEntryNames))]
@@ -27,12 +25,11 @@ public interface ITestLogger {{
 
 	[Theory]
 	[MemberData(nameof(GetPrefixAndEntryNames))]
-	async public Task Generate_GivenLogTargetWithPrefixAndEntryName_GenerateLogger(LogPrefixType type, string LogTargetName) {
+	async public Task Generate_GivenLogTargetWithPrefixAndEntryName_GenerateLogger(string type, string logTargetName) {
 		// Arrange
 		string prefixType = type switch {
-			LogPrefixType.Default => "",
-			LogPrefixType.Custom => ", CustomPrefix = \"custom-prefix\"",
-			_ => ""
+			"Custom" => type + ", CustomPrefix = \"custom-prefix\"",
+			_ => type
 		};
 
 		string basicLogger = @$"
@@ -40,9 +37,9 @@ using Purview.Telemetry.Logging;
 
 namespace Testing;
 
-[Logger(PrefixType = LogPrefixType.{type}{prefixType})]
+[Logger(PrefixType = LogPrefixType.{prefixType})]
 public interface ITestLogger {{
-	[Log(Name = ""{LogTargetName}"")]
+	[Log(Name = ""{logTargetName}"")]
 	void Log(string stringParam, int intParam, bool boolParam);
 }}
 ";
@@ -51,13 +48,15 @@ public interface ITestLogger {{
 		GenerationResult generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
-		await TestHelpers.Verify(generationResult, c => c.UseHashedParameters(type, LogTargetName));
+		await TestHelpers.Verify(generationResult, c => c.UseHashedParameters(prefixType, logTargetName));
 	}
 
-	static public TheoryData<LogPrefixType, string> GetPrefixAndEntryNames() {
-		TheoryData<LogPrefixType, string> data = [];
+	static public TheoryData<string, string> GetPrefixAndEntryNames() {
+		TheoryData<string, string> data = [];
 
-		foreach (LogPrefixType type in Enum.GetValues(typeof(LogPrefixType))) {
+		string[] prefixes = ["Default", "Custom", "Interface", "Class", "NoSuffix"];
+
+		foreach (string type in prefixes) {
 			foreach (string entryName in _testEntryNames) {
 				data.Add(type, entryName);
 			}

@@ -1,5 +1,4 @@
 ﻿using Microsoft.CodeAnalysis;
-using Purview.Telemetry.Logging;
 using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
@@ -15,23 +14,23 @@ partial class SharedHelpers {
 			return null;
 		}
 
-		AttributeValue<LogGeneratedLevel>? level = null;
+		AttributeValue<int>? level = null;
 		AttributeStringValue? messageTemplate = null;
 		AttributeValue<int>? eventId = null;
 		AttributeStringValue? nameValue = null;
 
 		if (!AttributeParser(attributeData!,
 		(name, value) => {
-			if (name.Equals(nameof(LogAttribute.Level), StringComparison.OrdinalIgnoreCase)) {
-				level = new((LogGeneratedLevel)value);
+			if (name.Equals("Level", StringComparison.OrdinalIgnoreCase)) {
+				level = new((int)value);
 			}
-			else if (name.Equals(nameof(LogAttribute.MessageTemplate), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("MessageTemplate", StringComparison.OrdinalIgnoreCase)) {
 				messageTemplate = new((string)value);
 			}
-			else if (name.Equals(nameof(LogAttribute.EventId), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("EventId", StringComparison.OrdinalIgnoreCase)) {
 				eventId = new((int)value);
 			}
-			else if (name.Equals(nameof(LogAttribute.Name), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("Name", StringComparison.OrdinalIgnoreCase)) {
 				nameValue = new((string)value);
 			}
 		}, semanticModel, logger, token)) {
@@ -40,7 +39,7 @@ partial class SharedHelpers {
 		}
 
 		return new(
-			Level: level ?? new(),
+			Level: level ?? new(Constants.Logging.DefaultLevel),
 			MessageTemplate: messageTemplate ?? new(),
 			EventId: eventId ?? new(),
 			Name: nameValue ?? new()
@@ -53,20 +52,20 @@ partial class SharedHelpers {
 		IGenerationLogger? logger,
 		CancellationToken token) {
 
-		AttributeValue<LogGeneratedLevel>? defaultLevel = null;
+		AttributeValue<int>? defaultLevel = null;
 		AttributeStringValue? customPrefix = null;
-		AttributeValue<LogPrefixType>? prefixType = null;
+		AttributeValue<int>? prefixType = null;
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(LoggerAttribute.DefaultLevel), StringComparison.OrdinalIgnoreCase)) {
-				defaultLevel = new((LogGeneratedLevel)value);
+			if (name.Equals("DefaultLevel", StringComparison.OrdinalIgnoreCase)) {
+				defaultLevel = new((int)value);
 			}
-			else if (name.Equals(nameof(LoggerAttribute.CustomPrefix), StringComparison.OrdinalIgnoreCase)) {
+			else if (name.Equals("CustomPrefix", StringComparison.OrdinalIgnoreCase)) {
 				customPrefix = new((string)value);
 			}
-			else if (name.Equals(nameof(LoggerAttribute.PrefixType), StringComparison.OrdinalIgnoreCase)) {
-				prefixType = new((LogPrefixType)value);
+			else if (name.Equals("PrefixType", StringComparison.OrdinalIgnoreCase)) {
+				prefixType = new((int)value);
 			}
 		}, semanticModel, logger, token)) {
 			// Failed to parse correctly, so null it out.
@@ -86,12 +85,12 @@ partial class SharedHelpers {
 		IGenerationLogger? logger,
 		CancellationToken token) {
 
-		AttributeValue<LogGeneratedLevel>? defaultLevel = null;
+		AttributeValue<int>? defaultLevel = null;
 
 		if (!AttributeParser(attributeData,
 		(name, value) => {
-			if (name.Equals(nameof(LoggerGenerationAttribute.DefaultLevel), StringComparison.OrdinalIgnoreCase)) {
-				defaultLevel = new((LogGeneratedLevel)value);
+			if (name.Equals("DefaultLevel", StringComparison.OrdinalIgnoreCase)) {
+				defaultLevel = new((int)value);
 			}
 		}, semanticModel, logger, token)) {
 			// Failed to parse correctly, so null it out.

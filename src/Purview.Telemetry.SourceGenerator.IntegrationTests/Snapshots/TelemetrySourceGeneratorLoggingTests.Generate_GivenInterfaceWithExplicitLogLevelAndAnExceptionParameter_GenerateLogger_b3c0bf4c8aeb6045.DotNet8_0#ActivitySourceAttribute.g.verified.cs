@@ -19,7 +19,7 @@ namespace Purview.Telemetry.Activities;
 /// Marker attribute required for Activity generation.
 /// </summary>
 [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed class ActivitySourceAttribute : Attribute {
 	/// <summary>

@@ -11,17 +11,15 @@
 
 #pragma warning disable 1591 // publicly visible type or member must be documented
 
-#if PURVIEW_TELEMETRY_ATTRIBUTES
-
 namespace Purview.Telemetry.Logging;
 
 /// <summary>
 /// Marker attribute required for Log generation.
 /// </summary>
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-[System.Diagnostics.Conditional(Constants.EmbedAttributesHashDefineName)]
+[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
+[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class LogAttribute : Attribute {
+sealed class LogAttribute : System.Attribute {
 	public LogAttribute() {
 	}
 
@@ -33,13 +31,13 @@ sealed class LogAttribute : Attribute {
 		EventId = eventId;
 	}
 
-	public LogAttribute(LogGeneratedLevel level, string? messageTemplate = null, string? name = null) {
+	public LogAttribute(Microsoft.Extensions.Logging.LogLevel level, string? messageTemplate = null, string? name = null) {
 		Level = level;
 		MessageTemplate = messageTemplate;
 		Name = name;
 	}
 
-	public LogAttribute(int eventId, LogGeneratedLevel level, string? messageTemplate = null, string? name = null) {
+	public LogAttribute(int eventId, Microsoft.Extensions.Logging.LogLevel level, string? messageTemplate = null, string? name = null) {
 		Level = level;
 		MessageTemplate = messageTemplate;
 		EventId = eventId;
@@ -47,11 +45,11 @@ sealed class LogAttribute : Attribute {
 	}
 
 	/// <summary>
-	/// Optional. Gets/ sets the <see cref="LogGeneratedLevel">level</see> of the
-	/// log entry. Defaults to <see cref="LogGeneratedLevel.Information"/>, unless there is
+	/// Optional. Gets/ sets the <see cref="Microsoft.Extensions.Logging.LogLevel">level</see> of the
+	/// log entry. Defaults to <see cref="Microsoft.Extensions.Logging.LogLevel.Information"/>, unless there is
 	/// an <see cref="Exception"/> parameter and no-other override is defined.
 	/// </summary>
-	public LogGeneratedLevel Level { get; set; } = LogGeneratedLevel.Information;
+	public Microsoft.Extensions.Logging.LogLevel Level { get; set; } = Microsoft.Extensions.Logging.LogLevel.Information;
 
 	/// <summary>
 	/// Optional. The message template used for the log entry, otherwise one is
@@ -69,5 +67,3 @@ sealed class LogAttribute : Attribute {
 	/// </summary>
 	public string? Name { get; set; }
 }
-
-#endif

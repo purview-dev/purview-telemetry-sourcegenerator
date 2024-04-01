@@ -40,21 +40,18 @@ sealed class EmbeddedResources {
 		return result + "\n";
 	}
 
-	public string LoadTemplateForEmitting(TemplateInfo templateInfo, bool attachHeader = true) {
-		var source = templateInfo.Source == null
-			? null : templateInfo.Source + ".";
+	public string LoadTemplateForEmitting(string? source, string name, bool attachHeader = true) {
+		source = source == null
+			? null
+			: source + ".";
 
-		var resource = LoadEmbeddedResource($"{source}{templateInfo.Name}.cs")
+		var resource = LoadEmbeddedResource($"{source}{name}.cs")
 			.Replace("sealed public ", "sealed ");
 
 		if (!attachHeader) {
 			return resource;
 		}
 
-		return AddHeader("#if " + Constants.EmbedAttributesHashDefineName + @"
-
-" + resource + @"
-
-#endif");
+		return AddHeader(resource);
 	}
 }
