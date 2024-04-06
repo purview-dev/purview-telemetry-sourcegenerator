@@ -10,7 +10,7 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="$(MSCodeAnalysisCSharpVersion)" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="$(MSCodeAnalysisCSharpVersion)" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(MSCodeAnalysisCSharpVersion)" />
-	<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.0" />
   </ItemGroup>
@@ -26,6 +26,6 @@
     <PackageVersion Include="xunit.analyzers" Version="1.11.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.7" />
     <PackageVersion Include="Verify.SourceGenerators" Version="2.2.0" />
-    <PackageVersion Include="Verify.Xunit" Version="23.6.0" />
+    <PackageVersion Include="Verify.Xunit" Version="23.7.1" />
   </ItemGroup>
 </Project>

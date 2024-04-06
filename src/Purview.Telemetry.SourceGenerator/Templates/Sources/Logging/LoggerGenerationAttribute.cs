@@ -7,9 +7,17 @@
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed public class LoggerGenerationAttribute : System.Attribute {
+	/// <summary>
+	/// Creates a new instance of <see cref="LoggerGenerationAttribute"/>.
+	/// </summary>
 	public LoggerGenerationAttribute() {
 	}
 
+	/// <summary>
+	/// Creates a new instance of <see cref="LoggerGenerationAttribute"/> with the specified
+	/// <see cref="DefaultLevel"/>.
+	/// </summary>
+	/// <param name="defaultLevel"></param>
 	public LoggerGenerationAttribute(Microsoft.Extensions.Logging.LogLevel defaultLevel) {
 		DefaultLevel = defaultLevel;
 	}

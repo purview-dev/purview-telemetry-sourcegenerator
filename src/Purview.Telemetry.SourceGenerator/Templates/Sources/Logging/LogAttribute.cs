@@ -1,29 +1,56 @@
 ﻿namespace Purview.Telemetry.Logging;
 
 /// <summary>
-/// Marker attribute required for Log generation.
+/// Marker attribute required for log entry generation, based on
+/// high-performance <see cref="Microsoft.Extensions.Logging.LoggerMessage"/>.
 /// </summary>
 [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed public class LogAttribute : System.Attribute {
+	/// <summary>
+	/// Creates a new instance of the <see cref="LogAttribute"/> class.
+	/// </summary>
 	public LogAttribute() {
 	}
 
+	/// <summary>
+	/// Creates a new instance of the <see cref="LogAttribute"/>, specifying the <see cref="MessageTemplate"/>.
+	/// </summary>
+	/// <param name="messageTemplate">Specifies the <see cref="MessageTemplate"/>.</param>
 	public LogAttribute(string messageTemplate) {
 		MessageTemplate = messageTemplate;
 	}
 
+	/// <summary>
+	/// Creates a new instance of the <see cref="LogAttribute"/>, specifying the <see cref="EventId"/>.
+	/// </summary>
+	/// <param name="eventId">Specifies the <see cref="EventId"/>.</param>
 	public LogAttribute(int eventId) {
 		EventId = eventId;
 	}
 
+	/// <summary>
+	/// Creates a new instance of the <see cref="LogAttribute"/>, specifying the <see cref="Level"/>,
+	/// optionally the <see cref="MessageTemplate"/> and <see cref="Name"/>.
+	/// </summary>
+	/// <param name="level">Specifies the <see cref="Level"/>.</param>
+	/// <param name="messageTemplate">Optionally specifies the <see cref="MessageTemplate"/>.</param>
+	/// <param name="name">Optionally specifies the <see cref="Name"/>.</param>
 	public LogAttribute(Microsoft.Extensions.Logging.LogLevel level, string? messageTemplate = null, string? name = null) {
 		Level = level;
 		MessageTemplate = messageTemplate;
 		Name = name;
 	}
 
+	/// <summary>
+	/// Creates a new instance of the <see cref="LogAttribute"/>, specifying the <see cref="EventId"/>
+	/// and the <see cref="Level"/>, optionally the <see cref="MessageTemplate"/> and <see cref="Name"/>.
+	/// </summary>
+	/// <param name="eventId">Specifies the <see cref="EventId"/>.</param>
+	/// <param name="level">Specifies the <see cref="Level"/>.</param>
+	/// <param name="messageTemplate">Optionally specifies the <see cref="MessageTemplate"/>.</param>
+	/// <param name="name">Optionally specifies the <see cref="Name"/>.</param>
 	public LogAttribute(int eventId, Microsoft.Extensions.Logging.LogLevel level, string? messageTemplate = null, string? name = null) {
 		Level = level;
 		MessageTemplate = messageTemplate;

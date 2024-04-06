@@ -1,7 +1,8 @@
 ﻿namespace Purview.Telemetry.Activities;
 
 /// <summary>
-/// Determines the default Activity Source name for generated Activities.
+/// Determines the default <see cref="System.Diagnostics.ActivitySource.Name" /> for generated
+/// <see cref="System.Diagnostics.Activity">activities</see> and <see cref="System.Diagnostics.ActivityEvent">events</see>.
 /// </summary>
 [System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
@@ -23,15 +24,37 @@ sealed public class ActivitySourceGenerationAttribute : System.Attribute {
 	}
 
 	/// <summary>
-	/// The default Activity Source name to use.
+	/// Specifies the default <see cref="System.Diagnostics.ActivitySource.Name"/> to use.
 	/// </summary>
 	public string Name { get; }
 
+	/// <summary>
+	/// Specifies the default used when inferring between
+	/// <see cref="Purview.Telemetry.TagAttribute"/>
+	/// or <see cref="Purview.Telemetry.Activities.BaggageAttribute"/>, unless
+	/// explicitly marked. Overridden when specifying <see cref="ActivitySourceAttribute.DefaultToTags"/>.
+	/// </summary>
 	public bool DefaultToTags { get; set; } = true;
 
+	/// <summary>
+	/// Prefix used to when generating the tag or baggage name. Prepended
+	/// before the <see cref="Purview.Telemetry.TagAttribute.Name"/> or
+	/// <see cref="Purview.Telemetry.Activities.BaggageAttribute.Name"/>, unless
+	/// explicitly marked. Overridden when specifying <see cref="ActivitySourceAttribute.BaggageAndTagPrefix"/>.
+	/// </summary>
 	public string? BaggageAndTagPrefix { get; set; }
 
+	/// <summary>
+	/// Determines the separator used between the <see cref="System.Diagnostics.ActivitySource.Name"/> and
+	/// the various prefix options. The default is a period.
+	/// </summary>
 	public string BaggageAndTagSeparator { get; set; } = ".";
 
+	/// <summary>
+	/// Determines if the <see cref="Purview.Telemetry.TagAttribute.Name"/> or
+	/// <see cref="Purview.Telemetry.Activities.BaggageAttribute.Name"/> (including
+	/// any prefixes) are lowercased, unless
+	/// explicitly marked. Overridden when specifying <see cref="ActivitySourceAttribute.LowercaseBaggageAndTagKeys"/>.
+	/// </summary>
 	public bool LowercaseBaggageAndTagKeys { get; set; } = true;
 }

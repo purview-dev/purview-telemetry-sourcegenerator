@@ -15,14 +15,24 @@
 
 namespace Purview.Telemetry.Activities;
 
+/// <summary>
+/// Marker attribute used to control the generation
+/// of <see cref="System.Diagnostics.Activity"Evenmt>events</see>.
+/// </summary>
 [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed class EventAttribute : System.Attribute {
-
+	/// <summary>
+	/// Generates a new <see cref="EventAttribute"/>.
+	/// </summary>
 	public EventAttribute() {
 	}
 
+	/// <summary>
+	/// Generates a new <see cref="EventAttribute"/>, specifying the <see cref="Name"/> and optionally
+	/// the <see cref="UseRecordExceptionRules"/> property and/ or <see cref="RecordExceptionAsEscaped"/>.
+	/// </summary>
 	public EventAttribute(string name, bool useRecordExceptionRules = true, bool recordExceptionAsEscaped = true) {
 		Name = name;
 		UseRecordExceptionRules = useRecordExceptionRules;
@@ -30,7 +40,8 @@ sealed class EventAttribute : System.Attribute {
 	}
 
 	/// <summary>
-	/// Optional. Gets/ sets the name of the event.
+	/// Optional. Gets/ sets the name of the event. If null, empty or whitespace
+	/// then the name of the method is used.
 	/// </summary>
 	public string? Name { get; set; }
 
