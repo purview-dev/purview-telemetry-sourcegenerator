@@ -15,9 +15,9 @@ The following examples all contain explicit definitions, by that I mean that we 
 
 Each generation target ([activity](./docs/ACTIVITIES.md), [logging](./docs/LOGGING.md) and [metrics](./docs/METRICS.md)) documentation contains information on what can be inferred.
 
-> You can mix-and-match generation targets within a single interface but, however the inferring functionality is more limited. This is called [multi-targetting](./docs/MULTITARGETTING.md).
+> You can mix-and-match generation targets within a single interface, however the ability to infer is more limited. This is called [multi-targetting](./docs/MULTITARGETTING.md).
 
-> In .NET, Activities, Events and Metrics refer to additional properties captured at creation or recording time as **tags**. However, in Open Telemetry these are referred to as **attributes**. As this source generator makes extensive use of marker attributes to control source code generation we will use the term tags to mean this properties, and attributes as the .NET [Attribute](https://learn.microsoft.com/en-us/dotnet/api/system.attribute) type.
+> In .NET, Activities, Events and Metrics refer to additional properties captured at creation, recording or observing as **tags**. However, in Open Telemetry these are referred to as **attributes**. As this source generator makes extensive use of marker attributes to control source code generation we will use the term tags to mean these properties, and attributes as the .NET [Attribute](https://learn.microsoft.com/en-us/dotnet/api/system.attribute) type.
 
 ### Activities
 

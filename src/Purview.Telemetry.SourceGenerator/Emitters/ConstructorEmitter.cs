@@ -65,7 +65,7 @@ static class ConstructorEmitter {
 		if (generationType.HasFlag(GenerationType.Metrics)) {
 			builder
 				.AppendLine()
-				.AppendLine("#if NET8_OR_GREATER")
+				.AppendLine("#if NET8_0_OR_GREATER")
 			;
 
 			if (generationType.HasFlag(GenerationType.Logging)) {
@@ -104,7 +104,7 @@ static class ConstructorEmitter {
 			;
 
 			builder
-				.AppendLine("#if NET8_OR_GREATER")
+				.AppendLine("#if NET8_0_OR_GREATER")
 				.Append(indent + 2, Constants.Metrics.MeterFactoryParameterName)
 				.AppendLine("#endif")
 			;

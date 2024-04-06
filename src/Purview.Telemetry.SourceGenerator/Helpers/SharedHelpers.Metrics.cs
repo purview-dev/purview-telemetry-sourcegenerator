@@ -51,8 +51,8 @@ partial class SharedHelpers {
 			Name: nameValue ?? new(),
 			InstrumentPrefix: instrumentPrefix ?? new(),
 			IncludeAssemblyInstrumentPrefix: includeAssemblyInstrumentPrefix ?? new(true),
-			LowercaseInstrumentName: lowercaseInstrumentName ?? new(true),
-			LowercaseTagKeys: lowercaseTagKeys ?? new(true)
+			LowercaseInstrumentName: lowercaseInstrumentName ?? new(Constants.Metrics.LowercaseInstrumentNameDefault),
+			LowercaseTagKeys: lowercaseTagKeys ?? new(Constants.Metrics.LowercaseTagKeysDefault)
 		);
 	}
 
@@ -88,9 +88,9 @@ partial class SharedHelpers {
 
 		return new(
 			InstrumentPrefix: instrumentPrefix ?? new(),
-			InstrumentSeparator: instrumentSeparator ?? new(),
-			LowercaseInstrumentName: lowercaseInstrumentName ?? new(),
-			LowercaseTagKeys: lowercaseTagKeys ?? new()
+			InstrumentSeparator: instrumentSeparator ?? new(Constants.Metrics.InstrumentSeparatorDefault),
+			LowercaseInstrumentName: lowercaseInstrumentName ?? new(Constants.Metrics.LowercaseInstrumentNameDefault),
+			LowercaseTagKeys: lowercaseTagKeys ?? new(Constants.Metrics.LowercaseTagKeysDefault)
 		);
 	}
 

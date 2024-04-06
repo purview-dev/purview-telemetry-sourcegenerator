@@ -9,6 +9,10 @@ partial class Constants {
 		public const string MeterInitializationMethod = "InitializeMeters";
 		public const string MeterFactoryParameterName = "meterFactory";
 
+		public const string InstrumentSeparatorDefault = ".";
+		public const bool LowercaseInstrumentNameDefault = true;
+		public const bool LowercaseTagKeysDefault = true;
+
 		readonly static public TemplateInfo MeterGenerationAttribute = TemplateInfo.Create("Purview.Telemetry.Metrics.MeterGenerationAttribute");
 		readonly static public TemplateInfo MeterAttribute = TemplateInfo.Create("Purview.Telemetry.Metrics.MeterAttribute");
 

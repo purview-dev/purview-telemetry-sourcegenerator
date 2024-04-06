@@ -54,9 +54,9 @@ record AttributeStringValue {
 		IsSet = false;
 	}
 
-	public string? Or(string value) {
-		if (IsSet) {
-			return Value;
+	public string Or(string value) {
+		if (IsSet && !string.IsNullOrWhiteSpace(Value)) {
+			return Value!;
 		}
 
 		return value;

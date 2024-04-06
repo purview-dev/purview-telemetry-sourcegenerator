@@ -26,13 +26,13 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 	System.Diagnostics.Metrics.UpDownCounter<System.Decimal>? _upDownCounterMeterInstrument = null;
 
 	public MeterTelemetryCore(
-#if NET8_OR_GREATER
+#if NET8_0_OR_GREATER
 		System.Diagnostics.Metrics.IMeterFactory meterFactory
 #endif
 	)
 	{
 		InitializeMeters(
-#if NET8_OR_GREATER
+#if NET8_0_OR_GREATER
 			meterFactory
 #endif
 		);
@@ -124,7 +124,7 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 		);
 	}
 
-#if NET8_OR_GREATER
+#if NET8_0_OR_GREATER
 
 	partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
 

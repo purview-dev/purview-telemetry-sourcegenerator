@@ -32,7 +32,7 @@ partial class MeterTargetClassEmitter {
 
 		builder
 			.AppendLine()
-			.AppendLine("#if NET8_OR_GREATER")
+			.AppendLine("#if NET8_0_OR_GREATER")
 			.AppendLine()
 		;
 

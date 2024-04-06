@@ -23,13 +23,13 @@ namespace Testing
 		System.Diagnostics.Metrics.Histogram<System.Int32>? _histogram1Instrument = null;
 
 		public TestMetricsCore(
-#if NET8_OR_GREATER
+#if NET8_0_OR_GREATER
 			System.Diagnostics.Metrics.IMeterFactory meterFactory
 #endif
 		)
 		{
 			InitializeMeters(
-#if NET8_OR_GREATER
+#if NET8_0_OR_GREATER
 				meterFactory
 #endif
 			);
@@ -93,7 +93,7 @@ namespace Testing
 			);
 		}
 
-#if NET8_OR_GREATER
+#if NET8_0_OR_GREATER
 
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
 

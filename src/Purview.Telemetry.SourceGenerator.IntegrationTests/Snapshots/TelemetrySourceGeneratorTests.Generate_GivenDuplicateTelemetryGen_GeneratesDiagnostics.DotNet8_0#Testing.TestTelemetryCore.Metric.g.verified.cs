@@ -21,14 +21,14 @@ namespace Testing
 
 
 		public TestTelemetryCore(Microsoft.Extensions.Logging.ILogger<Testing.ITestTelemetry> logger
-#if NET8_OR_GREATER
+#if NET8_0_OR_GREATER
 , 			System.Diagnostics.Metrics.IMeterFactory meterFactory
 #endif
 		)
 		{
 			_logger = logger;
 			InitializeMeters(
-#if NET8_OR_GREATER
+#if NET8_0_OR_GREATER
 				meterFactory
 #endif
 			);
@@ -64,7 +64,7 @@ namespace Testing
 #endif
 		}
 
-#if NET8_OR_GREATER
+#if NET8_0_OR_GREATER
 
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
 

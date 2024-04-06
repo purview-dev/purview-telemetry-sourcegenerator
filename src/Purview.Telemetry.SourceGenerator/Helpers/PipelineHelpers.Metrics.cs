@@ -345,20 +345,18 @@ partial class PipelineHelpers {
 		token.ThrowIfCancellationRequested();
 
 		string? prefix = null;
-		var separator = meterGenerationAttribute?.InstrumentSeparator.IsSet == true
-			? meterGenerationAttribute.InstrumentSeparator.Value
-			: ".";
+		var separator = meterGenerationAttribute?
+			.InstrumentSeparator.Or(Constants.Metrics.InstrumentSeparatorDefault);
 
-		if (meterGenerationAttribute?.InstrumentPrefix.IsSet == true) {
-			prefix = meterGenerationAttribute.InstrumentPrefix.Value;
-			if (meterGenerationAttribute?.InstrumentSeparator.IsSet == true) {
-				prefix += separator;
-			}
+		if (meterGenerationAttribute?.InstrumentPrefix.IsSet == true
+			&& !string.IsNullOrWhiteSpace(meterGenerationAttribute?.InstrumentPrefix.Value)) {
+			prefix = meterGenerationAttribute!.InstrumentPrefix.Value! + separator;
 		}
 
-		if (meterAttribute.InstrumentPrefix.IsSet) {
-			if (meterAttribute.IncludeAssemblyInstrumentPrefix.Value == true) {
-				prefix += meterAttribute.InstrumentPrefix.Value + separator;
+		if (meterAttribute.InstrumentPrefix.IsSet && !string.IsNullOrWhiteSpace(meterAttribute.InstrumentPrefix.Value)) {
+			if (meterAttribute.IncludeAssemblyInstrumentPrefix.Value == true
+				&& !string.IsNullOrWhiteSpace(meterGenerationAttribute?.InstrumentPrefix.Value)) {
+				prefix += meterGenerationAttribute!.InstrumentPrefix.Value + separator;
 			}
 			else {
 				prefix = meterAttribute.InstrumentPrefix.Value + separator;

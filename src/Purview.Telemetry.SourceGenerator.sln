@@ -22,8 +22,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build-system", ".build-sys
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Purview.Telemetry.SourceGenerator.IntegrationTests", "Purview.Telemetry.SourceGenerator.IntegrationTests\Purview.Telemetry.SourceGenerator.IntegrationTests.csproj", "{3572DA61-9CAA-4936-917B-B032E0863AD0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelemetryRoslynTestHarness", "TelemetryRoslynTestHarness\TelemetryRoslynTestHarness.csproj", "{A8B4B72D-D23A-4A2C-B26C-477D62342737}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{6590A7CF-EA90-49DD-AA46-F46634ED2391}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{7DCDD99F-4EC4-4920-8A1E-7C32023E8C7B}"
@@ -45,10 +43,6 @@ Global
 		{3572DA61-9CAA-4936-917B-B032E0863AD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3572DA61-9CAA-4936-917B-B032E0863AD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3572DA61-9CAA-4936-917B-B032E0863AD0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A8B4B72D-D23A-4A2C-B26C-477D62342737}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A8B4B72D-D23A-4A2C-B26C-477D62342737}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A8B4B72D-D23A-4A2C-B26C-477D62342737}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A8B4B72D-D23A-4A2C-B26C-477D62342737}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
