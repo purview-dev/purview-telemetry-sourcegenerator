@@ -6,6 +6,15 @@ using Purview.Telemetry.Metrics;
 
 namespace SampleApp.Host.Interfaces.Services;
 
+/* 
+ * A multi-target interface that defines
+ * the telemetry methods for the WeatherService, including
+ * Activities, Events, Logs, and Metrics.
+ * 
+ * As it's multi-target, each target needs to be
+ * explicitly defined.
+*/
+
 [ActivitySource]
 [Logger]
 [Meter]

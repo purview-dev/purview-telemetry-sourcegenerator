@@ -41,7 +41,7 @@ public static class Extensions {
 					   .AddProcessInstrumentation()
 					   .AddRuntimeInstrumentation()
 					   .AddMeter([
-						   "WeatherServiceTelemetry"
+						   "WeatherServiceTelemetry" // This is the name of the meter
 						 ]);
 			})
 			.WithTracing(tracing => {
@@ -54,7 +54,7 @@ public static class Extensions {
 					   .AddGrpcClientInstrumentation()
 					   .AddHttpClientInstrumentation()
 					   .AddSource([
-							"sample-weather-app"
+							"sample-weather-app" // This is the name of the activity source
 						])
 				 ;
 			});

@@ -10,6 +10,10 @@ public class Program {
 		builder.Services.AddMetrics();
 
 		// Add services to the container.
+		
+		// This is a generated method that adds the
+		// IWeatherServiceTelemetry interface to the container
+		// as a singleton.
 		builder.Services.AddIWeatherServiceTelemetry();
 		builder.Services.AddTransient<IWeatherService, WeatherService>();
 
