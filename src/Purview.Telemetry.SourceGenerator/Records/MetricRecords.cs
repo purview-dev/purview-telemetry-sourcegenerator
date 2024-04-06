@@ -8,7 +8,7 @@ record MeterTarget(
 	GenerationType GenerationType,
 
 	string ClassNameToGenerate,
-	string ClassNamespace,
+	string? ClassNamespace,
 
 	string[] ParentClasses,
 	string? FullNamespace,

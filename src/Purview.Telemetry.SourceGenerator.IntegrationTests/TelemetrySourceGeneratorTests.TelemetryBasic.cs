@@ -2,6 +2,46 @@
 
 partial class TelemetrySourceGeneratorTests {
 	[Fact]
+	async public Task Generate_GivenNoNamespace_GeneratesTelemetry() {
+		// Arrange
+		const string basicTelemetry = @"
+using Purview.Telemetry.Activities;
+using Purview.Telemetry.Logging;
+using Purview.Telemetry.Metrics;
+
+[ActivitySource(""activity-source"")]
+[Logger]
+[Meter]
+public interface ITestTelemetry
+{
+	[Activity]
+	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+
+	[Event]
+	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+
+	[Context]
+	void Context([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+
+	[Log]
+	void Log([Tag]int intParam, bool boolParam);
+
+	[Log]
+	IDisposable? LogScope([Tag]int intParam, bool boolParam);
+
+	[Counter]
+	bool Counter(int counterValue, [Tag]int intParam, bool boolParam);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicTelemetry);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
 	async public Task Generate_GivenBasicTelemetryGen_GeneratesTelemetry() {
 		// Arrange
 		const string basicTelemetry = @"

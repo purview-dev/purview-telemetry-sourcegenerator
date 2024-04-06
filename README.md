@@ -61,7 +61,7 @@ Note the `ProcessingWorkItem` method returns an `IDisposable?`, this is a scoped
 All of the parameters are passed into the logger methods as properties.
 
 ```csharp
-[Logging]
+[Logger]
 interface ILoggingTelemetry
 {
     [Log(LogLevel.Information)]
@@ -82,7 +82,7 @@ More information can be found [here](./docs/LOGGING.md).
 
 ### Metrics
 
-This example shows each meter type currently supported. Note the `Counter` attribute is demoed twice. Once with `AutoCounter` set to true, this means the measurement value is automatically set to increment by 1 each time the method is called. The other the measurement value is specified as a parameter.
+This example shows each meter type currently supported. Note the `Counter` attribute is demoed twice. Once with `AutoIncrement` set to `true`, this means the measurement value is automatically set to increment by 1 each time the method is called. In the other (where `AutoIncrement` is `false`, it's default) the measurement value is specified explicitly as a parameter using the `InstrumentMeasurementAttribute`.
 
 Non-auto increment meters must specify a measurement with one of the valid types: `byte`, `short`, `int`, `long`, `float`, `double`, and `decimal`.
 
@@ -101,8 +101,8 @@ As with activities, you can add a `[Tag]` to the parameters and they'll be inclu
 [Meter]
 interface IMeterTelemetry
 {
-    [Counter(AutoCounter = true)]
-    void AutoCounterMeter([Tag]string someValue);
+    [Counter(AutoIncrement = true)]
+    void AutoIncrementMeter([Tag]string someValue);
 
     [Counter]
     void CounterMeter([InstrumentMeasurement]int measurement, [Tag]float someValue);
@@ -132,9 +132,9 @@ In this example, all method-based targets are explicitly set as inferring their 
 
 ```csharp
 [ActivitySource("multi-targetting")]
-[Logging]
-[Metrics]
-interface ITelemetry
+[Logger]
+[Meter]
+interface IServiceTelemetry
 {
     [Activity]
     Activity? StartAnActivity(string tagStringParam, [Baggage]int entityId);
@@ -148,8 +148,8 @@ interface ITelemetry
     [Log]
     void ProcessingEntity(int entityId, string property1);
 
-    [Counter(AutoCounter = true)]
-    void AnAutoCounter([Tag]int value);
+    [Counter(AutoIncrement = true)]
+    void AnAutoIncrement([Tag]int value);
 }
 ```
 

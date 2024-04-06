@@ -221,7 +221,7 @@ static class Utilities {
 		return string.Join(".", parentClasses);
 	}
 
-	static public string GetNamespace(TypeDeclarationSyntax typeSymbol) {
+	static public string? GetNamespace(TypeDeclarationSyntax typeSymbol) {
 		// Determine the namespace the type is declared in, if any
 		var potentialNamespaceParent = typeSymbol.Parent;
 		while (potentialNamespaceParent != null &&
@@ -244,7 +244,7 @@ static class Utilities {
 			return @namespace;
 		}
 
-		return string.Empty;
+		return null;
 	}
 
 	static public string GetFullyQualifiedName(ITypeSymbol namedType, bool trimNullableAnnotation = true) {

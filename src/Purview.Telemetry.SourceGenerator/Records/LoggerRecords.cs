@@ -7,10 +7,13 @@ record LoggerTarget(
 	GenerationType GenerationType,
 
 	string ClassNameToGenerate,
-	string? ClassNamespace, string[] ParentClasses,
-	string? FullNamespace, string FullyQualifiedName,
+	string? ClassNamespace,
+	string[] ParentClasses,
+	string? FullNamespace,
+	string FullyQualifiedName,
 
-	string InterfaceName, string FullyQualifiedInterfaceName,
+	string InterfaceName,
+	string FullyQualifiedInterfaceName,
 
 	LoggerAttributeRecord  LoggerAttribute,
 	int DefaultLevel,

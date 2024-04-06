@@ -35,7 +35,7 @@ static class EmitHelpers {
 		return indent++;
 	}
 
-	static public void EmitNamespaceEnd(string[] parentClasses, int indent, StringBuilder builder, CancellationToken token) {
+	static public void EmitNamespaceEnd(string? classNamespace, string[] parentClasses, int indent, StringBuilder builder, CancellationToken token) {
 		token.ThrowIfCancellationRequested();
 
 		if (parentClasses.Length > 0) {
@@ -46,9 +46,11 @@ static class EmitHelpers {
 			}
 		}
 
-		builder
-			.Append('}')
-		;
+		if (classNamespace != null) {
+			builder
+				.Append('}')
+			;
+		}
 	}
 
 	static public int EmitClassStart(string className, string fullyQualifiedInterface, StringBuilder builder, int indent, CancellationToken token) {

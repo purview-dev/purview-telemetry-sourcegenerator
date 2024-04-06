@@ -58,6 +58,21 @@ partial class ActivitySourceTargetClassEmitter {
 				.Append(param.GeneratedName.Wrap())
 				.Append(", ")
 				.Append(param.ParameterName)
+			;
+
+			if (!populateTags && !Utilities.IsString(param.ParameterType)) {
+				if (param.IsNullable) {
+					builder
+						.Append('?')
+					;
+				}
+
+				builder
+					.Append(".ToString()")
+				;
+			}
+
+			builder
 				.AppendLine(");")
 			;
 

@@ -31,7 +31,7 @@ static partial class LoggerTargetClassEmitter {
 		indent = EmitMethods(target, builder, indent, context, logger);
 
 		EmitHelpers.EmitClassEnd(builder, indent);
-		EmitHelpers.EmitNamespaceEnd(target.ParentClasses, indent, builder, context.CancellationToken);
+		EmitHelpers.EmitNamespaceEnd(target.ClassNamespace, target.ParentClasses, indent, builder, context.CancellationToken);
 
 		var sourceText = EmbeddedResources.Instance.AddHeader(builder.ToString());
 		var hintName = $"{target.FullyQualifiedName}.Logging.g.cs";
