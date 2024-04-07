@@ -11,7 +11,8 @@ partial class ActivitySourceTargetClassEmitter {
 		string activityVariableName,
 		bool populateTags,
 		ActivityBasedGenerationTarget method,
-		bool checkForNullableActivity) {
+		bool checkForNullableActivity,
+		SourceProductionContext context, IGenerationLogger? logger) {
 
 		var parameters = populateTags ? method.Tags : method.Baggage;
 		if (parameters.Length == 0) {
@@ -61,6 +62,10 @@ partial class ActivitySourceTargetClassEmitter {
 			;
 
 			if (!populateTags && !Utilities.IsString(param.ParameterType)) {
+				logger?.Diagnostic("Found a baggage parameter type that is not a string.");
+
+				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Activities.BaggageParameterShouldBeString, param.Location);
+
 				if (param.IsNullable) {
 					builder
 						.Append('?')
@@ -167,7 +172,7 @@ partial class ActivitySourceTargetClassEmitter {
 		}
 
 		if (linksParams.Length > 1) {
-			logger?.Diagnostic("More than one ActivityLink IEnumerable defined.");
+			logger?.Diagnostic("More than one ActivityLink/ IEnumerable of ActivityLink is defined.");
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.DuplicateParameterTypes,

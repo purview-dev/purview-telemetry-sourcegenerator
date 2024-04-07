@@ -135,7 +135,7 @@ using System.Diagnostics;
 interface IServiceTelemetry
 {
     [Activity]
-    Activity? StartAnActivity(string tagStringParam, [Baggage]int entityId);
+    Activity? StartAnActivity(int tagIntParam, [Baggage]string entityId);
 
     [Event]
     void AnInterestingEvent(Activity? activity, float aTagValue);

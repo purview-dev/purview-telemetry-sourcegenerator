@@ -1,6 +1,6 @@
 # Purview Telemetry Source Generator
 
-Generates [ActivitySource](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource), [High-performance logging](https://learn.microsoft.com/en-us/dotnet/core/extensions/high-performance-logging) and [Metrics](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics) based on methods on an interface.
+Generates [ActivitySource](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource), [High-performance logging](https://learn.microsoft.com/en-us/dotnet/core/extensions/high-performance-logging) and [Metrics](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics) based on methods on an interface, this enables fast iteration cycles and substitutes for testing.
 
 Use the latest version available on [NuGet](https://www.nuget.org/packages/Purview.Telemetry.SourceGenerator/), and supports the following frameworks:
 
@@ -9,11 +9,21 @@ Use the latest version available on [NuGet](https://www.nuget.org/packages/Purvi
 * .NET 7
 * .NET 8
 
+For more information see:
+
+* [Activities](./docs/ACTIVITIES.md) generation target
+* [Logging](./docs/LOGGING.md) generation target
+* [Metrics](./docs/METRICS.md) generation target
+* [Multi-Targeting](./docs/MULTITARGETING.md) information
+* [Generation](./docs/GENERATION.md) options
+
+All marker attributes are generated as conditional, meaning they will not be present in your build. However, you can define `PURVIEW_TELEMETRY_ATTRIBUTES` as a build constant to retain them. They are generated as internal to avoid exposing them outside of the assembly.
+
 ## Basic Examples
 
 The following examples all contain explicit definitions, by that I mean that we explicitly apply attributes. Inferring certain values/ actions is also supported and will be detailed in each sub-section.
 
-Each generation target ([activity](./docs/ACTIVITIES.md), [logging](./docs/LOGGING.md) and [metrics](./docs/METRICS.md)) documentation contains information on what can be inferred.
+The documentation for each generation target ([activity](./docs/ACTIVITIES.md), [logging](./docs/LOGGING.md) and [metrics](./docs/METRICS.md)) contains information on what can be inferred.
 
 > You can mix-and-match generation targets within a single interface, however the ability to infer is more limited. This is called [multi-targetting](./docs/MULTITARGETTING.md).
 
@@ -91,7 +101,6 @@ Non-auto increment meters must specify a measurement with one of the valid types
 > * Any one of the following supported measurement types: `byte`, `short`, `int`, `long`, `float`, `double`, or `decimal`
 > * `Measurement<T>` where `T` is one of valid measurement types above.
 > * `IEnumerable<Measurement<T>>` where `T` is one of valid measurement types above.
->
 
 As with activities, you can add a `[Tag]` to the parameters and they'll be included at recording time for the instrument.
 

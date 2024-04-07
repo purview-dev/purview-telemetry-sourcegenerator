@@ -44,7 +44,7 @@ sealed class TelemetryGenerationAttribute : System.Attribute {
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TelemetryGenerationAttribute"/> class, and
-	/// specifies the <see cref="ClassName"/> and optionally the <see cref="DependencyInjectionClassName"/> propertu.
+	/// specifies the <see cref="ClassName"/> and optionally the <see cref="DependencyInjectionClassName"/> property.
 	/// </summary>
 	/// <param name="className">Specifies the <see cref="ClassName"/>.</param>
 	/// <param name="dependencyInjectionClassName">Optionally specifies the <see cref="DependencyInjectionClassName"/>.</param>

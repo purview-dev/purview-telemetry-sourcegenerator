@@ -9,10 +9,10 @@ partial class TelemetryDiagnostics {
 
 		readonly static public TelemetryDiagnosticDescriptor BaggageParameterShouldBeString = new(
 			Id: "TSG3000",
-			Title: "Baggage parameter types can only be strings.",
-			Description: "A baggage parameter type must be of type string.",
+			Title: "Baggage parameter types only accept strings.",
+			Description: "A baggage parameter types only accept strings, your parameter will have ToString() called.",
 			Category: Constants.Diagnostics.Activity.Usage,
-			Severity: DiagnosticSeverity.Error
+			Severity: DiagnosticSeverity.Warning
 		);
 
 		readonly static public TelemetryDiagnosticDescriptor NoActivitySourceSpecified = new(
@@ -20,7 +20,7 @@ partial class TelemetryDiagnostics {
 			Title: "No activity source specified.",
 			Description: $"An activity source helps to identify your application and it's telemetry. Defaulting to '{Constants.Activities.DefaultActivitySourceName}'.",
 			Category: Constants.Diagnostics.Activity.Usage,
-			Severity: DiagnosticSeverity.Info
+			Severity: DiagnosticSeverity.Warning
 		);
 
 		readonly static public TelemetryDiagnosticDescriptor InvalidReturnType = new(
@@ -50,7 +50,7 @@ partial class TelemetryDiagnostics {
 		readonly static public TelemetryDiagnosticDescriptor TimestampParameterNotAllowed = new(
 			Id: "TSG3005",
 			Title: "Timestamp parameter is not valid.",
-			Description: "The {0} parameter is not allowed when defining an activity, only an event. You can specify this as a Tag or as Baggage to stop the inferrence.",
+			Description: "The {0} parameter is not allowed when defining an activity, only an event. You can specify this as a Tag or as Baggage to stop the inference.",
 			Category: Constants.Diagnostics.Activity.Usage,
 			Severity: DiagnosticSeverity.Error
 		);

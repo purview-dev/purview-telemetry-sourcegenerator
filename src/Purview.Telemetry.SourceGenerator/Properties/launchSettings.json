@@ -1,5 +1,7 @@
 ﻿{
   "profiles": {
+    // This only works with the Purview.Telemetry.SourceGenerator.Debug.sln
+    // as it requires the TelemetryRoslynTestHarness project to be present.
     "SG Debug": {
       "commandName": "DebugRoslynComponent",
       "targetProject": "../TelemetryRoslynTestHarness/TelemetryRoslynTestHarness.csproj"

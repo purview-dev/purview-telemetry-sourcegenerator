@@ -34,6 +34,7 @@ static partial class ActivitySourceTargetClassEmitter {
 			target.InterfaceName,
 			target.FullNamespace,
 			context,
-			logger);
+			logger
+		);
 	}
 }

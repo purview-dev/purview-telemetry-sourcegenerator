@@ -17,6 +17,8 @@ partial class Constants {
 		public const string ParentIdParameterName = "parentId";
 		public const string StartTimeParameterName = "startTime";
 
+		public const string TimeStampParameterName = "timestamp";
+
 		public const string StatusCode_Key = "otel.status_code";
 		public const string StatusDescription_Key = "otel.status_description";
 

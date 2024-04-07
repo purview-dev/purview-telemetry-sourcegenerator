@@ -3,7 +3,7 @@
 /// <summary>
 /// Marker attribute, used to indicating a meter, or group of instruments.
 /// </summary>
-[System.AttributeUsage(System.AttributeTargets.Interface | System.AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
+[System.AttributeUsage(System.AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed public class MeterAttribute : System.Attribute {

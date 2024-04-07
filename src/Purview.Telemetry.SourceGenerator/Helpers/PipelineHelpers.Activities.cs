@@ -153,12 +153,14 @@ partial class PipelineHelpers {
 		SemanticModel semanticModel,
 		IGenerationLogger? logger,
 		CancellationToken token) {
-		List<ActivityBasedParameterTarget> parameterTargets = [];
 
+		List<ActivityBasedParameterTarget> parameterTargets = [];
 		foreach (var parameter in method.Parameters) {
 			token.ThrowIfCancellationRequested();
 
-			var destination = defaultToTags ? ActivityParameterDestination.Tag : ActivityParameterDestination.Baggage;
+			var destination = defaultToTags
+				? ActivityParameterDestination.Tag
+				: ActivityParameterDestination.Baggage;
 			if (Utilities.TryContainsAttribute(parameter, Constants.Shared.TagAttribute, token, out var attribute)) {
 				logger?.Debug($"Found explicit tag: {parameter.Name}.");
 				destination = ActivityParameterDestination.Tag;
@@ -183,13 +185,15 @@ partial class PipelineHelpers {
 				|| (parameter.Name == Constants.Activities.ParentIdParameterName && Utilities.IsString(parameter.Type))) {
 				destination = ActivityParameterDestination.ParentContextOrId;
 			}
-			else if (Constants.Activities.SystemDiagnostics.ActivityLink.Equals(parameter.Type)
-				|| Constants.Activities.SystemDiagnostics.ActivityLinkArray.Equals(parameter.Type)
+			else if (Constants.Activities.SystemDiagnostics.ActivityLinkArray.Equals(parameter.Type)
 				|| Constants.Activities.SystemDiagnostics.ActivityLinkIEnumerable.Equals(parameter.Type)) {
 				destination = ActivityParameterDestination.LinksEnumerable;
 			}
 			else if (parameter.Name == Constants.Activities.StartTimeParameterName && Constants.System.DateTimeOffset.Equals(parameter.Type)) {
 				destination = ActivityParameterDestination.StartTime;
+			}
+			else if (parameter.Name == Constants.Activities.TimeStampParameterName && Constants.System.DateTimeOffset.Equals(parameter.Type)) {
+				destination = ActivityParameterDestination.Timestamp;
 			}
 			else {
 				logger?.Debug($"Inferring {(defaultToTags ? "tag" : "baggage")}: {parameter.Name}.");
@@ -274,27 +278,32 @@ partial class PipelineHelpers {
 		return (ActivityMethodType.Activity, true);
 	}
 
-	static string? GeneratePrefix(ActivitySourceGenerationAttributeRecord? activitySourceAttribute, ActivitySourceAttributeRecord activityTarget, CancellationToken token) {
+	static string? GeneratePrefix(
+		ActivitySourceGenerationAttributeRecord? activitySourceGenerationRecord,
+		ActivitySourceAttributeRecord activitySourceRecord,
+		CancellationToken token) {
+
 		token.ThrowIfCancellationRequested();
 
 		string? prefix = null;
-		var separator = activitySourceAttribute?.BaggageAndTagSeparator.IsSet == true
-			? activitySourceAttribute.BaggageAndTagSeparator.Value
+		var separator = activitySourceGenerationRecord?.BaggageAndTagSeparator.IsSet == true
+			? activitySourceGenerationRecord.BaggageAndTagSeparator.Or(".")
 			: ".";
 
-		if (activitySourceAttribute?.BaggageAndTagPrefix.IsSet == true) {
-			prefix = activitySourceAttribute.BaggageAndTagPrefix.Value;
-			if (activitySourceAttribute?.BaggageAndTagSeparator.IsSet == true) {
-				prefix += separator;
-			}
+		var activitySourceGenPrefix = activitySourceGenerationRecord?.BaggageAndTagPrefix.Value;
+		var activitySourcePrefix = activitySourceRecord.BaggageAndTagPrefix.Value;
+		var includeActivitySource = activitySourceRecord.IncludeActivitySourcePrefix.Value ?? true;
+		
+		if (!string.IsNullOrWhiteSpace(activitySourceGenPrefix)) {
+			prefix = activitySourceGenPrefix + separator;
 		}
 
-		if (activityTarget.BaggageAndTagPrefix.IsSet) {
-			if (activityTarget.IncludeActivitySourcePrefix.Value == true) {
-				prefix += activityTarget.BaggageAndTagPrefix.Value + separator;
+		if (!string.IsNullOrWhiteSpace(activitySourcePrefix)) {
+			if (includeActivitySource) {
+				prefix = prefix + activitySourcePrefix + separator;
 			}
 			else {
-				prefix = activityTarget.BaggageAndTagPrefix.Value + separator;
+				prefix = activitySourcePrefix + separator;
 			}
 		}
 

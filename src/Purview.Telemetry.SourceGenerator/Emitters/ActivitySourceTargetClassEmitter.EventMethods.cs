@@ -181,35 +181,35 @@ partial class ActivitySourceTargetClassEmitter {
 
 		builder
 			.AppendLine()
-					.Append(indent, Constants.Activities.SystemDiagnostics.ActivityEvent, withNewLine: false)
-					.Append(' ')
-					.Append(eventVariableName)
-					.Append(" = new ")
-					.Append(Constants.Activities.SystemDiagnostics.ActivityEvent)
-					// name:
-					.Append("(name: ")
-					.Append(methodTarget.ActivityOrEventName.Wrap())
-					// timestamp:
-					.Append(", timestamp: ")
-					.Append(timestampParam?.ParameterName ?? "default")
-					// tags:
-					.Append(", tags: ")
-					.Append(tagsParameterName)
-					.AppendLine(");")
-				;
+			.Append(indent, Constants.Activities.SystemDiagnostics.ActivityEvent, withNewLine: false)
+			.Append(' ')
+			.Append(eventVariableName)
+			.Append(" = new ")
+			.Append(Constants.Activities.SystemDiagnostics.ActivityEvent)
+			// name:
+			.Append("(name: ")
+			.Append(methodTarget.ActivityOrEventName.Wrap())
+			// timestamp:
+			.Append(", timestamp: ")
+			.Append(timestampParam?.ParameterName ?? "default")
+			// tags:
+			.Append(", tags: ")
+			.Append(tagsParameterName)
+			.AppendLine(");")
+		;
 
 		builder
 			.AppendLine()
-					.Append(indent, activityVariableName, withNewLine: false)
-					.Append(".AddEvent(")
-					.Append(eventVariableName)
-					.AppendLine(");")
-				;
+			.Append(indent, activityVariableName, withNewLine: false)
+			.Append(".AddEvent(")
+			.Append(eventVariableName)
+			.AppendLine(");")
+		;
 
 		if (methodTarget.Baggage.Length > 0) {
 			builder.AppendLine();
 
-			EmitTagsOrBaggageParameters(builder, indent, activityVariableName, false, methodTarget, false);
+			EmitTagsOrBaggageParameters(builder, indent, activityVariableName, false, methodTarget, false, context, logger);
 		}
 
 		builder

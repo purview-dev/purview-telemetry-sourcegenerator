@@ -37,18 +37,18 @@ sealed partial class ServiceTelemetryCore : IServiceTelemetry
 	}
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-	public System.Diagnostics.Activity? StartAnActivity(string tagStringParam, int entityId)
+	public System.Diagnostics.Activity? StartAnActivity(int tagIntParam, string entityId)
 	{
 		System.Diagnostics.Activity? activityStartAnActivity = _activitySource.StartActivity(name: "StartAnActivity", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
 
 		if (activityStartAnActivity != null)
 		{
-			activityStartAnActivity.SetTag("tagstringparam", tagStringParam);
+			activityStartAnActivity.SetTag("tagintparam", tagIntParam);
 		}
 
 		if (activityStartAnActivity != null)
 		{
-			activityStartAnActivity.SetBaggage("entityid", entityId.ToString());
+			activityStartAnActivity.SetBaggage("entityid", entityId);
 		}
 
 		return activityStartAnActivity;

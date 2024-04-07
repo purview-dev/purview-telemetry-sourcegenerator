@@ -55,8 +55,8 @@ partial class ActivitySourceTargetClassEmitter {
 
 		indent++;
 
-		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, true, methodTarget, false);
-		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, false, methodTarget, false);
+		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, true, methodTarget, false, context, logger);
+		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, false, methodTarget, false, context, logger);
 
 		builder
 			.Append(--indent, '}')

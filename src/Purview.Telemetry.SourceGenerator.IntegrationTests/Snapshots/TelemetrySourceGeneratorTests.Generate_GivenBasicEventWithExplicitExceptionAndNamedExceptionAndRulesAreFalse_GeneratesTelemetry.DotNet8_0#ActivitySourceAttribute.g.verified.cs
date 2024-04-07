@@ -59,7 +59,7 @@ sealed class ActivitySourceAttribute : System.Attribute {
 	public string? BaggageAndTagPrefix { get; set; }
 
 	/// <summary>
-	/// Determines if the <see cref="Name"/> (or <see cref="ActivitySourceGenerationAttribute.Name"/>)
+	/// Determines if the <see cref="Name"/> (or <see cref="ActivitySourceGenerationAttribute.BaggageAndTagPrefix"/>)
 	/// is used as a prefix, before the <see cref="BaggageAndTagPrefix"/>.
 	/// </summary>
 	public bool IncludeActivitySourcePrefix { get; set; } = true;

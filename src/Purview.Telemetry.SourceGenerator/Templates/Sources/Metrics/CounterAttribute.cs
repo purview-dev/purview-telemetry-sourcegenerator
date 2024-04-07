@@ -1,7 +1,7 @@
 ﻿namespace Purview.Telemetry.Metrics;
 
 /// <summary>
-/// Specifies the meter type generated corresponds to a <see cref="System.Diagnostics.Metrics.Counter"/>.
+/// Specifies the meter type generated corresponds to a <see cref="System.Diagnostics.Metrics.Counter{T}"/>.
 /// </summary>
 [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
@@ -39,6 +39,13 @@ sealed public class CounterAttribute : System.Attribute {
 	}
 
 	/// <summary>
+	/// If true, when the method is called the counter is automatically incremented (+1).
+	/// Otherwise a parameter value must be specified (either inferred or via using
+	/// the <see cref="InstrumentMeasurementAttribute" />).
+	/// </summary>
+	public bool AutoIncrement { get; set; }
+
+	/// <summary>
 	/// Optionally specifies the name of the meter. If one is not specified, the name
 	/// of the method is used.
 	/// </summary>
@@ -54,11 +61,4 @@ sealed public class CounterAttribute : System.Attribute {
 	/// Optionally specifies the description of the meter.
 	/// </summary>
 	public string? Description { get; set; }
-
-	/// <summary>
-	/// If true, when the method is called the counter is automatically incremented (+1).
-	/// Otherwise a parameter value must be specified (either inferred or via using
-	/// the <see cref="InstrumentMeasurementAttribute" />).
-	/// </summary>
-	public bool AutoIncrement { get; set; }
 }

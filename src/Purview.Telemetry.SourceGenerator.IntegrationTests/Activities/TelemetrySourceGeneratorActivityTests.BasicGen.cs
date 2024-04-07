@@ -27,7 +27,7 @@ public interface ITestActivities {
 	}
 
 	[Fact]
-	async public Task Generate_GivenWithNonStringBaggage_GeneratesActivity() {
+	async public Task Generate_GivenWithNonStringBaggage_RaisesDiagnosticAndGenerates() {
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
@@ -51,7 +51,7 @@ public interface ITestActivities {
 		GenerationResult generationResult = await GenerateAsync(basicActivity);
 
 		// Assert
-		await TestHelpers.Verify(generationResult);
+		await TestHelpers.Verify(generationResult, s => s.ScrubInlineGuids(), validateNonEmptyDiagnostics: true);
 	}
 
 	[Fact]

@@ -3,7 +3,7 @@
     {
       Id: TSG3001,
       Title: No activity source specified.,
-      Severity: Info,
+      Severity: Warning,
       WarningLevel: 1,
       Location: : (0,0)-(0,0),
       MessageFormat: An activity source helps to identify your application and it's telemetry. Defaulting to 'purview'.,
