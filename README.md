@@ -21,13 +21,14 @@ All marker attributes are generated as conditional, meaning they will not be pre
 
 ## Basic Examples
 
-The following examples all contain explicit definitions, by that I mean that we explicitly apply attributes. Inferring certain values/ actions is also supported and will be detailed in each sub-section.
+The following examples all contain explicit definitions, meaning each example explicitly applies the appropriate attributes. Inferring certain actions or values is also supported and will be detailed in each sub-section.
 
 The documentation for each generation target ([activity](./docs/ACTIVITIES.md), [logging](./docs/LOGGING.md) and [metrics](./docs/METRICS.md)) contains information on what can be inferred.
 
-> You can mix-and-match generation targets within a single interface, however the ability to infer is more limited. This is called [multi-targetting](./docs/MULTITARGETTING.md).
+By default each interface used as a source for generation includes an extension method for registering it with an `IServiceCollection`. More details can be found in [Generation](./docs/GENERATION.md).
 
-> In .NET, Activities, Events and Metrics refer to additional properties captured at creation, recording or observing as **tags**. However, in Open Telemetry these are referred to as **attributes**. As this source generator makes extensive use of marker attributes to control source code generation we will use the term tags to mean these properties, and attributes as the .NET [Attribute](https://learn.microsoft.com/en-us/dotnet/api/system.attribute) type.
+> You can mix-and-match generation targets within a single interface, however the ability to infer is more limited. This is called [multi-targetting](./docs/MULTITARGETTING.md).
+> In .NET, Activities, Events and Metrics refer to additional properties captured at creation, recording or observation time as **tags**. However, in Open Telemetry these are referred to as **attributes**. As this source generator makes extensive use of marker attributes to control source code generation we will use the term tags to mean these properties, and attributes as the .NET [Attribute](https://learn.microsoft.com/en-us/dotnet/api/system.attribute) type not as the Open Telemetry definition.
 
 ### Activities
 
