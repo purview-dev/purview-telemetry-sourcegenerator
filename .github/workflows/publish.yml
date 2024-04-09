@@ -18,7 +18,7 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
   DOTNET_NOLOGO: true
 
-  SolutionPath: src/Purview.Telemetry.SourceGenerator.sln
+  SolutionPath: ./Purview.Telemetry.SourceGenerator.sln
   BuildConfigutation: Release
   NuGetDirectory: ${{ github.workspace }}/nuget
 
