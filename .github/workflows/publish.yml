@@ -37,15 +37,22 @@ jobs:
         fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
 
     - uses: paulhatch/semantic-version@v5.4.0
-      name: version
+      name: Generate version number
       id: version
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
-    # Install the .NET SDK indicated in the global.json file
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+    - uses: mathieudutour/github-tag-action@v6.2
+      name: Create tag
+      id: tag_version
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        custom_tag: ${{ steps.version.outputs.version }}
 
+    # Install the .NET SDK indicated in the global.json file
+    - uses: actions/setup-dotnet@v4
+      name: Setup .NET
+      
     # Create the NuGet package in the folder from the environment variable NuGetDirectory
     - run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }} --property:Version=${{ steps.version.outputs.version }} --include-symbols
 
