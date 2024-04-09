@@ -22,6 +22,7 @@ env:
   SolutionPath: ./Purview.Telemetry.SourceGenerator.sln
   BuildConfigutation: Release
   NuGetDirectory: ${{ github.workspace }}/nuget
+  NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
 
 defaults:
   run:
@@ -93,5 +94,5 @@ jobs:
         with:
           source-url: https://api.nuget.org/v3/index.json
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          NUGET_API_KEY: ${{ env.NUGET_API_KEY }}
           run: dotnet nuget push ${{ env.NuGetDirectory }}/*.nupkg
