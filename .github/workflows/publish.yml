@@ -28,9 +28,13 @@ defaults:
     working-directory: src
 
 jobs:
-  create_version:
+  create_nuget:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
+
     - uses: paulhatch/semantic-version@v5.4.0
       name: version
       id: version
@@ -38,15 +42,7 @@ jobs:
         debug: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  create_nuget:
-    runs-on: ubuntu-latest
-    needs: [ create_version ]
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
-
+  
     # Install the .NET SDK indicated in the global.json file
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
