@@ -28,8 +28,18 @@ defaults:
     working-directory: src
 
 jobs:
+  create_version:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: grumpy-programmer/conventional-commits-semver-release@v1
+      name: semver
+      id: semver
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   create_nuget:
     runs-on: ubuntu-latest
+    needs: [ create_version ]
     steps:
     - uses: actions/checkout@v4
       with:
@@ -40,7 +50,7 @@ jobs:
       uses: actions/setup-dotnet@v4
 
     # Create the NuGet package in the folder from the environment variable NuGetDirectory
-    - run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }}
+    - run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }} --property:Version=${{ steps.semver.output.version }} --include-symbols
 
     # Publish the NuGet package as an artifact, so they can be used in the following jobs
     - uses: actions/upload-artifact@v4
