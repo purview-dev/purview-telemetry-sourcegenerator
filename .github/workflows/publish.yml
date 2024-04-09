@@ -48,7 +48,6 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         custom_tag: ${{ steps.version.outputs.version }}
-        tag_prefix: ""
 
     - uses: actions/setup-dotnet@v4
       name: Setup .NET
