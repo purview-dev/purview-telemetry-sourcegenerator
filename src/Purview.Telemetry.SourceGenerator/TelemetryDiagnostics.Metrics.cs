@@ -3,10 +3,12 @@ using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator;
 
-partial class TelemetryDiagnostics {
+partial class TelemetryDiagnostics
+{
 	// Starts at 4000
-	static public class Metrics {
-		readonly static public TelemetryDiagnosticDescriptor NoInstrumentDefined = new(
+	public static class Metrics
+	{
+		public static readonly TelemetryDiagnosticDescriptor NoInstrumentDefined = new(
 			Id: "TSG4000",
 			Title: "No instrument defined.",
 			Description: "Either exclude this method, or define an instrument.",
@@ -14,7 +16,7 @@ partial class TelemetryDiagnostics {
 			Severity: DiagnosticSeverity.Error
 		);
 
-		readonly static public TelemetryDiagnosticDescriptor DoesNotReturnVoid = new(
+		public static readonly TelemetryDiagnosticDescriptor DoesNotReturnVoid = new(
 			Id: "TSG4001",
 			Title: "Must return void or bool.",
 			Description: "Instrument methods can only return void or bool.",
@@ -22,7 +24,7 @@ partial class TelemetryDiagnostics {
 			Severity: DiagnosticSeverity.Error
 		);
 
-		readonly static public TelemetryDiagnosticDescriptor AutoIncrementCountAndMeasurementParam = new(
+		public static readonly TelemetryDiagnosticDescriptor AutoIncrementCountAndMeasurementParam = new(
 			Id: "TSG4002",
 			Title: "Auto increment counter and measurement defined.",
 			Description: "Auto increment counter and a measurement parameter are defined, either remove the parameter or disable auto increment.",
@@ -30,7 +32,7 @@ partial class TelemetryDiagnostics {
 			Severity: DiagnosticSeverity.Error
 		);
 
-		readonly static public TelemetryDiagnosticDescriptor MoreThanOneMeasurementValueDefined = new(
+		public static readonly TelemetryDiagnosticDescriptor MoreThanOneMeasurementValueDefined = new(
 			Id: "TSG4003",
 			Title: "Multiple measurement values defined.",
 			Description: "More than one measurement parameters are defined.",
@@ -38,7 +40,7 @@ partial class TelemetryDiagnostics {
 			Severity: DiagnosticSeverity.Error
 		);
 
-		readonly static public TelemetryDiagnosticDescriptor NoMeasurementValueDefined = new(
+		public static readonly TelemetryDiagnosticDescriptor NoMeasurementValueDefined = new(
 			Id: "TSG4004",
 			Title: "No measurement value defined.",
 			Description: "Either define a measurement parameter, or provide a supported type parameter that is not a tag to enable inferring.",
@@ -46,7 +48,7 @@ partial class TelemetryDiagnostics {
 			Severity: DiagnosticSeverity.Error
 		);
 
-		readonly static public TelemetryDiagnosticDescriptor ObservableRequiredFunc = new(
+		public static readonly TelemetryDiagnosticDescriptor ObservableRequiredFunc = new(
 			Id: "TSG4005",
 			Title: "Observable instrument requires func.",
 			Description: "Observable instruments require a Func<T> where T is a supported instrument result type.",
@@ -54,7 +56,7 @@ partial class TelemetryDiagnostics {
 			Severity: DiagnosticSeverity.Error
 		);
 
-		readonly static public TelemetryDiagnosticDescriptor InvalidMeasurementType = new(
+		public static readonly TelemetryDiagnosticDescriptor InvalidMeasurementType = new(
 			Id: "TSG4006",
 			Title: "Invalid measurement type.",
 			Description: $"Invalid measurement type used, valid types are {string.Join(", ", Constants.Metrics.ValidMeasurementKeywordTypes)}, Measurement<T> or IEnumerable<MeasurementT>>.",

@@ -6,16 +6,18 @@ using Purview.Telemetry.SourceGenerator.Templates;
 
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
-static partial class MeterTargetClassEmitter {
-	readonly static string _dictionaryStringObject = Constants.System.Dictionary.MakeGeneric(
+static partial class MeterTargetClassEmitter
+{
+	static readonly string DictionaryStringObject = Constants.System.Dictionary.MakeGeneric(
 		Constants.System.StringKeyword,
 		Constants.System.ObjectKeyword.WithNull()
 	);
 
-	const string _meterFieldName = "_meter";
-	const string _partialMeterTagsMethod = "PopulateMeterTags";
+	const string MeterFieldName = "_meter";
+	const string PartialMeterTagsMethod = "PopulateMeterTags";
 
-	static public void GenerateImplementation(MeterTarget target, SourceProductionContext context, IGenerationLogger? logger) {
+	public static void GenerateImplementation(MeterTarget target, SourceProductionContext context, IGenerationLogger? logger)
+	{
 		StringBuilder builder = new();
 
 		logger?.Debug($"Generating metric class for: {target.FullyQualifiedName}");
@@ -35,7 +37,7 @@ static partial class MeterTargetClassEmitter {
 			logger
 		);
 
-		indent = EmitInitializationMethod(target, builder, indent, context, logger);
+		indent = EmitInitializationMethod(target, builder, indent, context);
 		indent = EmitMethods(target, builder, indent, context, logger);
 
 		EmitHelpers.EmitClassEnd(builder, indent);

@@ -1,9 +1,11 @@
 ﻿namespace Purview.Telemetry.SourceGenerator.Metrics;
 
-partial class TelemetrySourceGeneratorMetricsTests {
+partial class TelemetrySourceGeneratorMetricsTests
+{
 	[Theory]
 	[MemberData(nameof(NameUnitsDescriptorData))]
-	async public Task Generate_GivenNameUnitsDescription_GeneratesMetrics(string attribute, string measurementParameter) {
+	public async Task Generate_GivenNameUnitsDescription_GeneratesMetrics(string attribute, string measurementParameter)
+	{
 		// Arrange
 		string basicMetric = @$"
 using Purview.Telemetry.Metrics;
@@ -26,8 +28,10 @@ public interface ITestMetrics {{
 		await TestHelpers.Verify(generationResult, s => s.UseHashedParameters(attribute, measurementParameter));
 	}
 
-	static public TheoryData<string, string> NameUnitsDescriptorData {
-		get {
+	public static TheoryData<string, string> NameUnitsDescriptorData
+	{
+		get
+		{
 			TheoryData<string, string> data = [];
 
 			data.Add("Counter(name: \"a-counter-name-param\", unit: \"cakes-param\", description: \"cake sales per-capita-param.\")", "int counterValue");

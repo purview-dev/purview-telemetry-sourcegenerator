@@ -7,25 +7,28 @@ using Purview.Telemetry.SourceGenerator.Templates;
 
 namespace Purview.Telemetry.SourceGenerator;
 
-static partial class TestHelpers {
-	readonly static Assembly _ownerAssembly = typeof(TestHelpers).Assembly;
-	readonly static string _namespaceRoot = typeof(TestHelpers).Namespace!;
+static partial class TestHelpers
+{
+	static readonly Assembly OwnerAssembly = typeof(TestHelpers).Assembly;
+	static readonly string NamespaceRoot = typeof(TestHelpers).Namespace!;
 
-	readonly static public string DefaultUsingSet = @$"
+	public const string DefaultUsingSet = @"
 using System;
 using Purview.Telemetry;
 
 ";
 
-	static public string Wrap(this string value, char c = '"')
+	public static string Wrap(this string value, char c = '"')
 		=> c + value + c;
 
-	static public string LoadEmbeddedResource(string folder, string resourceName) {
-		resourceName = $"{_namespaceRoot}.Resources.{folder}.{resourceName}";
+	public static string LoadEmbeddedResource(string folder, string resourceName)
+	{
+		resourceName = $"{NamespaceRoot}.Resources.{folder}.{resourceName}";
 
-		var resourceStream = _ownerAssembly.GetManifestResourceStream(resourceName);
-		if (resourceStream is null) {
-			var existingResources = _ownerAssembly.GetManifestResourceNames();
+		var resourceStream = OwnerAssembly.GetManifestResourceStream(resourceName);
+		if (resourceStream is null)
+		{
+			var existingResources = OwnerAssembly.GetManifestResourceNames();
 			throw new ArgumentException($"Could not find embedded resource {resourceName}. Available resource names: {string.Join(", ", existingResources)}");
 		}
 
@@ -34,13 +37,15 @@ using Purview.Telemetry;
 		return reader.ReadToEnd();
 	}
 
-	static public bool IsModifierPresent(MemberDeclarationSyntax member, SyntaxKind modifier)
+	public static bool IsModifierPresent(MemberDeclarationSyntax member, SyntaxKind modifier)
 		=> member.Modifiers.Any(m => m.IsKind(modifier));
 
-	static public List<string> GetCasePermutations(string input) {
+	public static List<string> GetCasePermutations(string input)
+	{
 		List<string> result = [];
 
-		if (string.IsNullOrWhiteSpace(input)) {
+		if (string.IsNullOrWhiteSpace(input))
+		{
 			result.Add(input);
 			return result;
 		}
@@ -49,27 +54,30 @@ using Purview.Telemetry;
 		string remainder = input.Substring(1);
 		List<string> remainderPermutations = GetCasePermutations(remainder);
 
-		if (char.IsLetter(currentChar)) {
-			foreach (string s in remainderPermutations) {
+		if (char.IsLetter(currentChar))
+		{
+			foreach (string s in remainderPermutations)
+			{
 				result.Add(char.ToLower(currentChar, System.Globalization.CultureInfo.InvariantCulture) + s);
 				result.Add(char.ToUpper(currentChar, System.Globalization.CultureInfo.InvariantCulture) + s);
 			}
 		}
-		else {
-			foreach (string s in remainderPermutations) {
+		else
+		{
+			foreach (string s in remainderPermutations)
 				result.Add(currentChar + s);
-			}
 		}
 
 		return result;
 	}
 
-	async static public Task Verify(GenerationResult generationResult,
+	public static async Task Verify(GenerationResult generationResult,
 		Action<SettingsTask>? config = null,
 		bool validateNonEmptyDiagnostics = false,
 		bool whenValidatingDiagnosticsIgnoreNonErrors = false,
 		bool validationCompilation = true,
-		bool autoVerifyTemplates = true) {
+		bool autoVerifyTemplates = true)
+	{
 
 		var verifierTask = Verifier
 			.Verify(generationResult.Result)
@@ -78,14 +86,15 @@ using Purview.Telemetry;
 			.DisableDateCounting()
 			.UniqueForTargetFrameworkAndVersion(typeof(TestHelpers).Assembly)
 			.ScrubInlineDateTimeOffsets("yyyy-MM-dd HH:mm:ss zzzz") // 2024-22-02 14:43:22 +00:00
-			.AutoVerify(file => {
-				if (autoVerifyTemplates) {
-					foreach (TemplateInfo template in Constants.GetAllTemplates()) {
+			.AutoVerify(file =>
+			{
+				if (autoVerifyTemplates)
+				{
+					foreach (TemplateInfo template in Constants.GetAllTemplates())
+					{
 						string potentialName = $"#{template.Name}.g.";
-
-						if (file.IndexOf(potentialName, StringComparison.Ordinal) > -1) {
+						if (file.IndexOf(potentialName, StringComparison.Ordinal) > -1)
 							return true;
-						}
 					}
 				}
 
@@ -100,20 +109,16 @@ using Purview.Telemetry;
 		await verifierTask;
 
 		var diag = generationResult.Diagnostics.AsEnumerable();
-		if (whenValidatingDiagnosticsIgnoreNonErrors) {
+		if (whenValidatingDiagnosticsIgnoreNonErrors)
 			diag = diag.Where(m => m.Severity == DiagnosticSeverity.Error);
-		}
 
-		if (validateNonEmptyDiagnostics) {
+		if (validateNonEmptyDiagnostics)
 			diag.Should().NotBeEmpty();
-		}
-		else {
+		else
 			diag.Should().BeEmpty();
-		}
 
-		if (!validationCompilation) {
+		if (!validationCompilation)
 			return;
-		}
 
 #if NET7_0_OR_GREATER
 		await
@@ -122,7 +127,8 @@ using Purview.Telemetry;
 
 		EmitResult result = generationResult.Compilation.Emit(ms);
 
-		if (!result.Success) {
+		if (!result.Success)
+		{
 			result
 				.Diagnostics
 				.Where(m => !m.Id.StartsWith("TSG", StringComparison.Ordinal))

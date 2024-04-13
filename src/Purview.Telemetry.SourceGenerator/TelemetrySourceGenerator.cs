@@ -4,15 +4,19 @@ using Purview.Telemetry.SourceGenerator.Helpers;
 namespace Purview.Telemetry.SourceGenerator;
 
 [Generator]
-sealed public partial class TelemetrySourceGenerator : IIncrementalGenerator, ILogSupport {
+public sealed partial class TelemetrySourceGenerator : IIncrementalGenerator, ILogSupport
+{
 	IGenerationLogger? _logger;
 
-	public void Initialize(IncrementalGeneratorInitializationContext context) {
+	public void Initialize(IncrementalGeneratorInitializationContext context)
+	{
 		// Register all of the shared attributes we need.
-		context.RegisterPostInitializationOutput(ctx => {
+		context.RegisterPostInitializationOutput(ctx =>
+		{
 			_logger?.Debug("--- Adding templates.");
 
-			foreach (var template in Constants.GetAllTemplates()) {
+			foreach (var template in Constants.GetAllTemplates())
+			{
 				_logger?.Debug($"Adding {template.Name} as {template.GetGeneratedFilename()}.");
 
 				ctx.AddSource(template.GetGeneratedFilename(), template.TemplateData);
@@ -26,12 +30,11 @@ sealed public partial class TelemetrySourceGenerator : IIncrementalGenerator, IL
 		RegisterMetricsGeneration(context, _logger);
 	}
 
-	void ILogSupport.SetLogOutput(Action<string, OutputType> action) {
-		if (action == null) {
+	void ILogSupport.SetLogOutput(Action<string, OutputType> action)
+	{
+		if (action == null)
 			_logger = null;
-		}
-		else {
+		else
 			_logger = new Logger(action);
-		}
 	}
 }

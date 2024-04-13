@@ -1,8 +1,11 @@
 ﻿namespace Purview.Telemetry.SourceGenerator.Logging;
-partial class TelemetrySourceGeneratorLoggingTests {
+
+partial class TelemetrySourceGeneratorLoggingTests
+{
 	[Theory]
 	[MemberData(nameof(GetEntryNames))]
-	async public Task Generate_GivenLogTargetWithEntryName_GenerateLogger(string LogTargetName) {
+	public async Task Generate_GivenLogTargetWithEntryName_GenerateLogger(string logTargetName)
+	{
 		// Arrange
 		string basicLogger = @$"
 using Purview.Telemetry.Logging;
@@ -11,7 +14,7 @@ namespace Testing;
 
 [Logger]
 public interface ITestLogger {{
-	[Log(Name = ""{LogTargetName}"")]
+	[Log(Name = ""{logTargetName}"")]
 	void Log(string stringParam, int intParam, bool boolParam);
 }}
 ";
@@ -20,14 +23,16 @@ public interface ITestLogger {{
 		GenerationResult generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
-		await TestHelpers.Verify(generationResult, c => c.UseHashedParameters(LogTargetName));
+		await TestHelpers.Verify(generationResult, c => c.UseHashedParameters(logTargetName));
 	}
 
 	[Theory]
 	[MemberData(nameof(GetPrefixAndEntryNames))]
-	async public Task Generate_GivenLogTargetWithPrefixAndEntryName_GenerateLogger(string type, string logTargetName) {
+	public async Task Generate_GivenLogTargetWithPrefixAndEntryName_GenerateLogger(string type, string logTargetName)
+	{
 		// Arrange
-		string prefixType = type switch {
+		string prefixType = type switch
+		{
 			"Custom" => type + ", CustomPrefix = \"custom-prefix\"",
 			_ => type
 		};
@@ -51,13 +56,16 @@ public interface ITestLogger {{
 		await TestHelpers.Verify(generationResult, c => c.UseHashedParameters(prefixType, logTargetName));
 	}
 
-	static public TheoryData<string, string> GetPrefixAndEntryNames() {
+	public static TheoryData<string, string> GetPrefixAndEntryNames()
+	{
 		TheoryData<string, string> data = [];
 
 		string[] prefixes = ["Default", "Custom", "Interface", "Class", "NoSuffix"];
 
-		foreach (string type in prefixes) {
-			foreach (string entryName in _testEntryNames) {
+		foreach (string type in prefixes)
+		{
+			foreach (string entryName in TestEntryNames)
+			{
 				data.Add(type, entryName);
 			}
 		}
@@ -65,21 +73,22 @@ public interface ITestLogger {{
 		return data;
 	}
 
-	static public TheoryData<string> GetEntryNames() {
+	public static TheoryData<string> GetEntryNames()
+	{
 		TheoryData<string> data = [];
 
-		foreach (string entryName in _testEntryNames) {
+		foreach (string entryName in TestEntryNames)
+		{
 			data.Add(entryName);
 		}
 
 		return data;
 	}
 
-	readonly static string[] _testEntryNames = [
+	static readonly string[] TestEntryNames = [
 		"LogNameSetViaLogTargetAttribute",
 		"CustomLogNameSetViaLogTargetAttribute",
 		"123",
 		"custom-log-entry-name"
 	];
 }
-

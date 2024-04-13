@@ -6,8 +6,10 @@ using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator;
 
-partial class TelemetrySourceGenerator {
-	static void RegisterMetricsGeneration(IncrementalGeneratorInitializationContext context, IGenerationLogger? logger) {
+partial class TelemetrySourceGenerator
+{
+	static void RegisterMetricsGeneration(IncrementalGeneratorInitializationContext context, IGenerationLogger? logger)
+	{
 		// Transform
 		Func<GeneratorAttributeSyntaxContext, CancellationToken, MeterTarget?> meterTargetTransform =
 			logger == null
@@ -40,19 +42,22 @@ partial class TelemetrySourceGenerator {
 		);
 	}
 
-	static void GenerateMeterTargets(ImmutableArray<MeterTarget?> targets, SourceProductionContext spc, IGenerationLogger? logger) {
-		if (targets.Length == 0) {
+	static void GenerateMeterTargets(ImmutableArray<MeterTarget?> targets, SourceProductionContext spc, IGenerationLogger? logger)
+	{
+		if (targets.Length == 0)
 			return;
-		}
 
-		try {
-			foreach (var target in targets) {
+		try
+		{
+			foreach (var target in targets)
+			{
 				logger?.Debug($"Meter generation target: {target!.FullyQualifiedName}");
 
 				MeterTargetClassEmitter.GenerateImplementation(target!, spc, logger);
 			}
 		}
-		catch (Exception ex) {
+		catch (Exception ex)
+		{
 			logger?.Error($"A fatal error occurred while executing the source generation stage: {ex}");
 
 			TelemetryDiagnostics.Report(spc.ReportDiagnostic, TelemetryDiagnostics.General.FatalExecutionDuringExecution, null, ex);

@@ -25,7 +25,7 @@ env:
 
 defaults:
   run:
-    shell: pwsh
+    shell: pwsh -nop
     working-directory: src
 
 jobs:
@@ -36,24 +36,38 @@ jobs:
       with:
         fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
 
-    - uses: paulhatch/semantic-version@v5.4.0
-      name: Generate version number
-      id: version
+    # - uses: paulhatch/semantic-version@v5.4.0
+    #   name: Generate version number
+    #   id: version
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+    # - uses: mathieudutour/github-tag-action@v6.2
+    #   name: Create tag
+    #   id: tag_version
+    #   with:
+    #     github_token: ${{ secrets.GITHUB_TOKEN }}
+    #     custom_tag: ${{ steps.semver.outputs.version }}
+
+    - name: semver
+      id: semver
+      uses: grumpy-programmer/conventional-commits-semver-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
     - uses: mathieudutour/github-tag-action@v6.2
       name: Create tag
-      id: tag_version
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        custom_tag: ${{ steps.version.outputs.version }}
+        custom_tag: ${{ steps.semver.outputs.version }}
 
     - uses: actions/setup-dotnet@v4
       name: Setup .NET
+      with:
+        global-json-file: ./src/global.json
       
     - name: Pack NuGet packages
-      run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }} --property:Version=${{ steps.version.outputs.version }} --include-symbols
+      run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }} --property:Version=${{ steps.semver.outputs.version }} --include-symbols
 
     # Publish the NuGet package as an artifact, so they can be used in the following jobs
     - uses: actions/upload-artifact@v4
@@ -69,6 +83,8 @@ jobs:
     - uses: actions/checkout@v4
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
+      with:
+        global-json-file: ./src/global.json
     - name: Run tests
       run: dotnet test ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }}
 
@@ -86,6 +102,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
+          global-json-file: ./src/global.json
           source-url: https://api.nuget.org/v3/index.json
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}

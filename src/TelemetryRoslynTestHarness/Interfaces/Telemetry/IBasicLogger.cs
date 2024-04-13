@@ -3,6 +3,7 @@
 namespace TelemetryRoslynTestHarness.Interfaces.Telemetry;
 
 [Logger]
-public interface IBasicLogger {
+public interface IBasicLogger
+{
 	void BasicNoAttributeOrParams();
 }

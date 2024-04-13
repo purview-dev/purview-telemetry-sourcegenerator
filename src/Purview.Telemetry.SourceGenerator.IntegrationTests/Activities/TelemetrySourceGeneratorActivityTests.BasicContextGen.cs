@@ -1,8 +1,10 @@
 ﻿namespace Purview.Telemetry.SourceGenerator.Activities;
 
-partial class TelemetrySourceGeneratorActivityTests {
+partial class TelemetrySourceGeneratorActivityTests
+{
 	[Fact]
-	async public Task Generate_GivenBasicContextGen_GeneratesActivity() {
+	public async Task Generate_GivenBasicContextGen_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
@@ -24,7 +26,8 @@ public interface ITestActivities {
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicContextGenWithReturningActivity_GeneratesActivity() {
+	public async Task Generate_GivenBasicContextGenWithReturningActivity_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
@@ -47,7 +50,8 @@ public interface ITestActivities {
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicContextGenWithReturningNullableActivity_GeneratesActivity() {
+	public async Task Generate_GivenBasicContextGenWithReturningNullableActivity_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
@@ -73,7 +77,8 @@ public interface ITestActivities {
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicContextGenWithNullableParams_GeneratesActivity() {
+	public async Task Generate_GivenBasicContextGenWithNullableParams_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
@@ -99,7 +104,8 @@ public interface ITestActivities {
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicContextGenWithActivity_GeneratesActivity() {
+	public async Task Generate_GivenBasicContextGenWithActivity_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
@@ -125,7 +131,8 @@ public interface ITestActivities {
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicContextGenWithActivityAndNoReturn_GeneratesActivity() {
+	public async Task Generate_GivenBasicContextGenWithActivityAndNoReturn_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;

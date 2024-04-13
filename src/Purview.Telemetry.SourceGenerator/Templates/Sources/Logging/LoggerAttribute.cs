@@ -6,11 +6,13 @@
 [System.AttributeUsage(System.AttributeTargets.Interface, AllowMultiple = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed public class LoggerAttribute : System.Attribute {
+sealed class LoggerAttribute : System.Attribute
+{
 	/// <summary>
 	/// Creates a new instance of the <see cref="LoggerAttribute"/> class.
 	/// </summary>
-	public LoggerAttribute() {
+	public LoggerAttribute()
+	{
 
 	}
 
@@ -21,11 +23,13 @@ sealed public class LoggerAttribute : System.Attribute {
 	/// <param name="defaultLevel">The default <see cref="Microsoft.Extension.Logging.LogLevel"/> to use
 	/// when one is not specified.</param>
 	/// <param name="customPrefix">If specified, also sets the <see cref="PrefixType"/> to <see cref="LogPrefix.Custom"/>.</param>
-	public LoggerAttribute(Microsoft.Extensions.Logging.LogLevel defaultLevel, string? customPrefix = null) {
+	public LoggerAttribute(Microsoft.Extensions.Logging.LogLevel defaultLevel, string? customPrefix = null)
+	{
 		DefaultLevel = defaultLevel;
 		CustomPrefix = customPrefix;
 
-		if (CustomPrefix != null) {
+		if (CustomPrefix != null)
+		{
 			PrefixType = LogPrefixType.Custom;
 		}
 	}

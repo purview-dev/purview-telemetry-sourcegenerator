@@ -5,8 +5,10 @@ using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
-partial class ActivitySourceTargetClassEmitter {
-	static void EmitEventMethodBody(StringBuilder builder, int indent, ActivityBasedGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
+partial class ActivitySourceTargetClassEmitter
+{
+	static void EmitEventMethodBody(StringBuilder builder, int indent, ActivityBasedGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger)
+	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		if (!GuardParameters(methodTarget, context, logger,
@@ -16,13 +18,15 @@ partial class ActivitySourceTargetClassEmitter {
 			out var linksParam,
 			out var startTimeParam,
 			out var timestampParam,
-			out var escapeParam)) {
+			out var escapeParam))
+		{
 			return;
 		}
 
 		var activityVariableName = activityParam?.ParameterName ?? (Constants.Activities.SystemDiagnostics.Activity + ".Current");
 
-		if (parentContextOrId != null) {
+		if (parentContextOrId != null)
+		{
 			logger?.Diagnostic("Parent context/ Id not allowed on event method, only activities.");
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
@@ -34,7 +38,8 @@ partial class ActivitySourceTargetClassEmitter {
 			return;
 		}
 
-		if (linksParam != null) {
+		if (linksParam != null)
+		{
 			logger?.Diagnostic("Links parameter not allowed on event method, only activities.");
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
@@ -46,7 +51,8 @@ partial class ActivitySourceTargetClassEmitter {
 			return;
 		}
 
-		if (startTimeParam != null) {
+		if (startTimeParam != null)
+		{
 			logger?.Diagnostic("Start time parameter not allowed on event method, only activities.");
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
@@ -68,7 +74,8 @@ partial class ActivitySourceTargetClassEmitter {
 		indent++;
 
 		var tagsParameterName = tagsParam?.ParameterName ?? "default";
-		if (methodTarget.Tags.Length > 0) {
+		if (methodTarget.Tags.Length > 0)
+		{
 			var tagsListVariableName = "tagsCollection" + methodTarget.MethodName;
 			builder
 				.Append(indent, Constants.Activities.SystemDiagnostics.ActivityTagsCollection, withNewLine: false)
@@ -79,29 +86,24 @@ partial class ActivitySourceTargetClassEmitter {
 				.Append('(')
 			;
 
-			if (tagsParam != null) {
-				builder
-					.Append(tagsParam.ParameterName)
-				;
-			}
+			if (tagsParam != null)
+				builder.Append(tagsParam.ParameterName);
 
-			builder
-				.AppendLine(");")
-			;
+			builder.AppendLine(");");
 
 			var useRecordedExceptionRules = Constants.Activities.UseRecordExceptionRulesDefault;
 			var emitExceptionEscape = escapeParam != null || Constants.Activities.RecordExceptionEscapedDefault;
-			if (methodTarget.EventAttribute?.UseRecordExceptionRules.IsSet == true) {
+			if (methodTarget.EventAttribute?.UseRecordExceptionRules.IsSet == true)
 				useRecordedExceptionRules = methodTarget.EventAttribute.UseRecordExceptionRules.Value!.Value;
-			}
 
-			if (methodTarget.EventAttribute?.RecordExceptionEscape.IsSet == true) {
+			if (methodTarget.EventAttribute?.RecordExceptionEscape.IsSet == true)
 				emitExceptionEscape = methodTarget.EventAttribute.RecordExceptionEscape!.Value!.Value;
-			}
 
 			var escapeValue = escapeParam?.ParameterName ?? "true";
-			foreach (var tagParam in methodTarget.Tags) {
-				if (tagParam.SkipOnNullOrEmpty) {
+			foreach (var tagParam in methodTarget.Tags)
+			{
+				if (tagParam.SkipOnNullOrEmpty)
+				{
 					builder
 						.Append(indent, "if (", withNewLine: false)
 						.Append(tagParam.ParameterName)
@@ -112,8 +114,10 @@ partial class ActivitySourceTargetClassEmitter {
 					indent++;
 				}
 
-				if (tagParam.IsException) {
-					if (methodTarget.ActivityOrEventName == Constants.Activities.Tag_ExceptionEventName) {
+				if (tagParam.IsException)
+				{
+					if (methodTarget.ActivityOrEventName == Constants.Activities.Tag_ExceptionEventName)
+					{
 						builder
 							.Append(indent, "if (", withNewLine: false)
 							.Append(tagParam.ParameterName)
@@ -124,12 +128,12 @@ partial class ActivitySourceTargetClassEmitter {
 						// We want the details inside of the current event.
 						EmitExceptionParam(builder, indent + 1, tagsListVariableName, escapeValue, tagParam.ParameterName);
 
-						builder
-							.Append(indent, '}')
-						;
+						builder.Append(indent, '}');
 					}
-					else {
-						if (useRecordedExceptionRules) {
+					else
+					{
+						if (useRecordedExceptionRules)
+						{
 							builder
 								.AppendLine()
 								.Append(indent, Constants.Activities.RecordExceptionMethodName, withNewLine: false)
@@ -142,7 +146,8 @@ partial class ActivitySourceTargetClassEmitter {
 								.AppendLine(");")
 							;
 						}
-						else {
+						else
+						{
 							builder
 								.Append(indent, tagsListVariableName, withNewLine: false)
 								.Append(".Add(")
@@ -154,7 +159,8 @@ partial class ActivitySourceTargetClassEmitter {
 						}
 					}
 				}
-				else {
+				else
+				{
 					builder
 						.Append(indent, tagsListVariableName, withNewLine: false)
 						.Append(".Add(")
@@ -165,13 +171,8 @@ partial class ActivitySourceTargetClassEmitter {
 					;
 				}
 
-				if (tagParam.SkipOnNullOrEmpty) {
-					indent--;
-
-					builder
-						.Append(indent, "}")
-					;
-				}
+				if (tagParam.SkipOnNullOrEmpty)
+					builder.Append(--indent, "}");
 			}
 
 			tagsParameterName = tagsListVariableName;
@@ -206,19 +207,19 @@ partial class ActivitySourceTargetClassEmitter {
 			.AppendLine(");")
 		;
 
-		if (methodTarget.Baggage.Length > 0) {
+		if (methodTarget.Baggage.Length > 0)
+		{
 			builder.AppendLine();
 
 			EmitTagsOrBaggageParameters(builder, indent, activityVariableName, false, methodTarget, false, context, logger);
 		}
 
-		builder
-			.Append(--indent, '}')
-						;
+		builder.Append(--indent, '}');
 
 		context.CancellationToken.ThrowIfCancellationRequested();
 
-		if (Constants.Activities.SystemDiagnostics.Activity.Equals(methodTarget.ReturnType)) {
+		if (Constants.Activities.SystemDiagnostics.Activity.Equals(methodTarget.ReturnType))
+		{
 			builder
 				.AppendLine()
 				.Append(indent, "return ", withNewLine: false)

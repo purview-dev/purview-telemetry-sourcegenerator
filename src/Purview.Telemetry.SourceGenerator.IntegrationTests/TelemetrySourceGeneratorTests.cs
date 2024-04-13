@@ -1,9 +1,11 @@
 ﻿using Xunit.Abstractions;
 
 namespace Purview.Telemetry.SourceGenerator;
-public partial class TelemetrySourceGeneratorTests(ITestOutputHelper testOutputHelper) : IncrementalSourceGeneratorTestBase<TelemetrySourceGenerator>(testOutputHelper) {
+public partial class TelemetrySourceGeneratorTests(ITestOutputHelper testOutputHelper) : IncrementalSourceGeneratorTestBase<TelemetrySourceGenerator>(testOutputHelper)
+{
 	[Fact]
-	async public Task Generate_GivenGeneratedAttributes_GeneratesAsExpected() {
+	public async Task Generate_GivenGeneratedAttributes_GeneratesAsExpected()
+	{
 		// Arrange
 		const string empty = @"
 using Purview.Telemetry.Logging;

@@ -1,7 +1,8 @@
 ﻿namespace Purview.Telemetry.SourceGenerator.Records;
 
 [Flags]
-enum GenerationType {
+enum GenerationType
+{
 	None,
 	Activities = 1,
 	Logging = 2,
@@ -15,18 +16,23 @@ record TargetGeneration(
 );
 
 record AttributeValue<T>
-	where T : struct {
-	public AttributeValue(T? value) {
+	where T : struct
+{
+	public AttributeValue(T? value)
+	{
 		Value = value;
 		IsSet = true;
 	}
 
-	public AttributeValue() {
+	public AttributeValue()
+	{
 		IsSet = false;
 	}
 
-	public T? Or(T value) {
-		if (IsSet) {
+	public T? Or(T value)
+	{
+		if (IsSet)
+		{
 			return Value;
 		}
 
@@ -37,25 +43,30 @@ record AttributeValue<T>
 
 	public bool IsSet { get; }
 
-	static public implicit operator AttributeValue<T>(T? value)
+	public static implicit operator AttributeValue<T>(T? value)
 		=> new(value);
 
-	static public implicit operator T?(AttributeValue<T> value)
+	public static implicit operator T?(AttributeValue<T> value)
 		=> value.Value;
 }
 
-record AttributeStringValue {
-	public AttributeStringValue(string? value) {
+record AttributeStringValue
+{
+	public AttributeStringValue(string? value)
+	{
 		Value = value;
 		IsSet = true;
 	}
 
-	public AttributeStringValue() {
+	public AttributeStringValue()
+	{
 		IsSet = false;
 	}
 
-	public string Or(string value) {
-		if (IsSet && !string.IsNullOrWhiteSpace(Value)) {
+	public string Or(string value)
+	{
+		if (IsSet && !string.IsNullOrWhiteSpace(Value))
+		{
 			return Value!;
 		}
 
@@ -66,9 +77,9 @@ record AttributeStringValue {
 
 	public bool IsSet { get; }
 
-	static public implicit operator AttributeStringValue(string? value)
+	public static implicit operator AttributeStringValue(string? value)
 		=> new(value);
 
-	static public implicit operator string?(AttributeStringValue value)
+	public static implicit operator string?(AttributeStringValue value)
 		=> value.Value;
 }

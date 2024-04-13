@@ -21,11 +21,13 @@ namespace Purview.Telemetry.Logging;
 [System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class LoggerGenerationAttribute : System.Attribute {
+sealed class LoggerGenerationAttribute : System.Attribute
+{
 	/// <summary>
 	/// Creates a new instance of <see cref="LoggerGenerationAttribute"/>.
 	/// </summary>
-	public LoggerGenerationAttribute() {
+	public LoggerGenerationAttribute()
+	{
 	}
 
 	/// <summary>
@@ -33,7 +35,8 @@ sealed class LoggerGenerationAttribute : System.Attribute {
 	/// <see cref="DefaultLevel"/>.
 	/// </summary>
 	/// <param name="defaultLevel"></param>
-	public LoggerGenerationAttribute(Microsoft.Extensions.Logging.LogLevel defaultLevel) {
+	public LoggerGenerationAttribute(Microsoft.Extensions.Logging.LogLevel defaultLevel)
+	{
 		DefaultLevel = defaultLevel;
 	}
 

@@ -1,8 +1,10 @@
 ﻿namespace Purview.Telemetry.SourceGenerator.Activities;
 
-partial class TelemetrySourceGeneratorActivityTests {
+partial class TelemetrySourceGeneratorActivityTests
+{
 	[Fact]
-	async public Task Generate_GivenAssemblyEnableDI_GeneratesActivity() {
+	public async Task Generate_GivenAssemblyEnableDI_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
@@ -29,7 +31,8 @@ public interface ITestActivities {
 	}
 
 	[Fact]
-	async public Task Generate_GivenInterfaceEnableDI_GeneratesActivity() {
+	public async Task Generate_GivenInterfaceEnableDI_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
@@ -55,7 +58,8 @@ public interface ITestActivities {
 	}
 
 	[Fact]
-	async public Task Generate_GivenDIDisabledAtAssemblyAndInterfaceEnableDI_GeneratesActivity() {
+	public async Task Generate_GivenDIDisabledAtAssemblyAndInterfaceEnableDI_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
@@ -83,7 +87,8 @@ public interface ITestActivities {
 	}
 
 	[Fact]
-	async public Task Generate_GivenDIEnabledAtAssemblyAndInterfaceDisableDI_GeneratesActivity() {
+	public async Task Generate_GivenDIEnabledAtAssemblyAndInterfaceDisableDI_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;

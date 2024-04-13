@@ -6,11 +6,13 @@
 [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed public class ObservableCounterAttribute : System.Attribute {
+sealed class ObservableCounterAttribute : System.Attribute
+{
 	/// <summary>
 	/// Creates a new instance of the <see cref="ObservableCounterAttribute"/> class.
 	/// </summary>
-	public ObservableCounterAttribute() {
+	public ObservableCounterAttribute()
+	{
 	}
 
 	/// <summary>
@@ -22,7 +24,8 @@ sealed public class ObservableCounterAttribute : System.Attribute {
 	/// <param name="unit">Optionally specifies the <see cref="Unit"/>.</param>
 	/// <param name="description">Optionally specifies the <see cref="Description"/>.</param>
 	/// <param name="throwOnAlreadyInitialized">Optionally specifies if the observable counter throws an exception if it is already initialised. <see cref="ThrowOnAlreadyInitialized" />.</param>
-	public ObservableCounterAttribute(string name, string? unit = null, string? description = null, bool throwOnAlreadyInitialized = false) {
+	public ObservableCounterAttribute(string name, string? unit = null, string? description = null, bool throwOnAlreadyInitialized = false)
+	{
 		Name = name;
 		Unit = unit;
 		Description = description;

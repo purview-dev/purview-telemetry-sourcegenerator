@@ -2,20 +2,21 @@
 
 namespace Purview.Telemetry.SourceGenerator.Templates;
 
-record TypeInfo(string Name, string FullName, string Namespace) : IEquatable<string> {
-	public bool Equals(string? other) {
-		if (other == null) {
+record TypeInfo(string Name, string FullName, string Namespace) : IEquatable<string>
+{
+	public bool Equals(string? other)
+	{
+		if (other == null)
 			return false;
-		}
 
-		if (other.Length > 0 && other[other.Length - 1] == '?') {
+		if (other.Length > 0 && other[other.Length - 1] == '?')
 			other = other.Substring(0, other.Length - 1);
-		}
 
 		return other == Name || other == FullName;
 	}
 
-	public bool Equals(ITypeSymbol other) {
+	public bool Equals(ITypeSymbol other)
+	{
 		if (other == null)
 			return false;
 
@@ -33,13 +34,14 @@ record TypeInfo(string Name, string FullName, string Namespace) : IEquatable<str
 	public string MakeGeneric(params string[] types)
 		=> FullName + "<" + string.Join(", ", types) + ">";
 
-	override public string ToString()
+	public override string ToString()
 		=> FullName;
 
-	static public implicit operator string(TypeInfo typeInfo)
+	public static implicit operator string(TypeInfo typeInfo)
 		=> typeInfo.FullName;
 
-	static public TypeInfo Create(string fullName) {
+	public static TypeInfo Create(string fullName)
+	{
 		if (string.IsNullOrWhiteSpace(fullName))
 			throw new ArgumentNullException(nameof(fullName));
 
@@ -47,6 +49,6 @@ record TypeInfo(string Name, string FullName, string Namespace) : IEquatable<str
 
 		return new(parts.LastOrDefault() ?? fullName, fullName, string.Join(".", parts.Take(parts.Length - 2)));
 	}
-	static public TypeInfo Create<T>()
+	public static TypeInfo Create<T>()
 		=> Create(typeof(T).FullName);
 }

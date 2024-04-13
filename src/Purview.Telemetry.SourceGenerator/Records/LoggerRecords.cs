@@ -3,7 +3,7 @@
 namespace Purview.Telemetry.SourceGenerator.Records;
 
 record LoggerTarget(
-	TelemetryGenerationAttributeRecord  TelemetryGeneration,
+	TelemetryGenerationAttributeRecord TelemetryGeneration,
 	GenerationType GenerationType,
 
 	string ClassNameToGenerate,
@@ -15,7 +15,7 @@ record LoggerTarget(
 	string InterfaceName,
 	string FullyQualifiedInterfaceName,
 
-	LoggerAttributeRecord  LoggerAttribute,
+	LoggerAttributeRecord LoggerAttribute,
 	int DefaultLevel,
 
 	ImmutableArray<LogTarget> LogMethods
@@ -44,7 +44,8 @@ record LogTarget(
 	bool InferredErrorLevel,
 
 	TargetGeneration TargetGenerationState
-) {
+)
+{
 	public int TotalParameterCount => Parameters.Length;
 
 	public int ParameterCount => ParametersSansException.Length;

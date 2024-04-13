@@ -1,11 +1,13 @@
 ﻿namespace Purview.Telemetry.SourceGenerator.Logging;
 
-partial class TelemetrySourceGeneratorLoggingTests {
+partial class TelemetrySourceGeneratorLoggingTests
+{
 	[Theory]
 	[InlineData("Testing.Test1")]
 	[InlineData("Testing.Test1.Test2")]
 	[InlineData("Testing.Test1.Test2.Test3")]
-	async public Task Generate_GivenLoggerWithNamespaces_GeneratesScopedLogTarget(string @namespace) {
+	public async Task Generate_GivenLoggerWithNamespaces_GeneratesScopedLogTarget(string @namespace)
+	{
 		// Arrange
 		string basicLogger = @$"
 using Purview.Telemetry.Logging;
@@ -29,7 +31,8 @@ public interface ITestLogger {{
 	[InlineData("Testing.Test1")]
 	[InlineData("Testing.Test1.Test2")]
 	[InlineData("Testing.Test1.Test2.Test3")]
-	async public Task Generate_GivenLoggerWithNamespacesAndNestedClass_GeneratesScopedLogTarget(string @namespace) {
+	public async Task Generate_GivenLoggerWithNamespacesAndNestedClass_GeneratesScopedLogTarget(string @namespace)
+	{
 		// Arrange
 		string basicLogger = @$"
 using Purview.Telemetry.Logging;
@@ -55,7 +58,8 @@ public partial class TestClass1 {{
 	[InlineData("Testing.Test1")]
 	[InlineData("Testing.Test1.Test2")]
 	[InlineData("Testing.Test1.Test2.Test3")]
-	async public Task Generate_GivenLoggerWithNamespacesAndNestedClasses_GeneratesScopedLogTarget(string @namespace) {
+	public async Task Generate_GivenLoggerWithNamespacesAndNestedClasses_GeneratesScopedLogTarget(string @namespace)
+	{
 		// Arrange
 		string basicLogger = @$"
 using Purview.Telemetry.Logging;
@@ -81,4 +85,3 @@ public partial class TestClass1 {{
 		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids().UseHashedParameters(@namespace));
 	}
 }
-

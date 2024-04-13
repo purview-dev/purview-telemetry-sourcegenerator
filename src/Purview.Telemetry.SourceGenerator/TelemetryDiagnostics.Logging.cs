@@ -3,11 +3,12 @@ using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator;
 
-partial class TelemetryDiagnostics {
+partial class TelemetryDiagnostics
+{
 	// Start at 2000
-	static public class Logging {
-
-		readonly static public TelemetryDiagnosticDescriptor MultipleExceptionsDefined = new(
+	public static class Logging
+	{
+		public static readonly TelemetryDiagnosticDescriptor MultipleExceptionsDefined = new(
 			Id: "TSG2000",
 			Title: "Too many exception parameters",
 			Description: "Only a single exceptions parameter is permitted.",
@@ -15,7 +16,7 @@ partial class TelemetryDiagnostics {
 			Severity: DiagnosticSeverity.Error
 		);
 
-		readonly static public TelemetryDiagnosticDescriptor MaximumLogEntryParametersExceeded = new(
+		public static readonly TelemetryDiagnosticDescriptor MaximumLogEntryParametersExceeded = new(
 			Id: "TSG2001",
 			Title: "More than 6 parameters",
 			Description: $"The maximum number of parameters (excluding optional Exception) is {Constants.Logging.MaxNonExceptionParameters}",
@@ -23,7 +24,7 @@ partial class TelemetryDiagnostics {
 			Severity: DiagnosticSeverity.Error
 		);
 
-		readonly static public TelemetryDiagnosticDescriptor InferringErrorLogLevel = new(
+		public static readonly TelemetryDiagnosticDescriptor InferringErrorLogLevel = new(
 			Id: "TSG2002",
 			Title: "Inferring error log level",
 			Description: "Because an exception parameter was defined and no log level was defined the level was inferred to be Error. Consider explicitly defining the required level.",

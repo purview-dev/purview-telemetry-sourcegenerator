@@ -5,8 +5,10 @@ using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
-partial class ActivitySourceTargetClassEmitter {
-	static void EmitActivityMethodBody(StringBuilder builder, int indent, ActivityBasedGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
+partial class ActivitySourceTargetClassEmitter
+{
+	static void EmitActivityMethodBody(StringBuilder builder, int indent, ActivityBasedGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger)
+	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		if (!GuardParameters(methodTarget, context, logger,
@@ -16,11 +18,13 @@ partial class ActivitySourceTargetClassEmitter {
 			out var linksParam,
 			out var startTimeParam,
 			out var timestampParam,
-			out var _)) {
+			out var _))
+		{
 			return;
 		}
 
-		if (activityParam != null) {
+		if (activityParam != null)
+		{
 			logger?.Diagnostic("Activity parameter not allowed on Activity start/ create method, only event.");
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
@@ -32,7 +36,8 @@ partial class ActivitySourceTargetClassEmitter {
 			return;
 		}
 
-		if (timestampParam != null) {
+		if (timestampParam != null)
+		{
 			logger?.Diagnostic("Timestamp parameter not allowed on Activity start/ create method, only events.");
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
@@ -63,7 +68,8 @@ partial class ActivitySourceTargetClassEmitter {
 			? "parentContext"
 			: "parentId";
 
-		if (createOnly && startTimeParam != null) {
+		if (createOnly && startTimeParam != null)
+		{
 			logger?.Diagnostic("StartTime parameter not allowed on Activity create method.");
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
@@ -99,7 +105,8 @@ partial class ActivitySourceTargetClassEmitter {
 			.Append(linksParam?.ParameterName ?? "default")
 		;
 
-		if (!createOnly) {
+		if (!createOnly)
+		{
 			builder
 				// startTime:
 				.Append(", startTime: ")
@@ -107,9 +114,7 @@ partial class ActivitySourceTargetClassEmitter {
 			;
 		}
 
-		builder
-			.AppendLine(");")
-		;
+		builder.AppendLine(");");
 
 		context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -118,7 +123,8 @@ partial class ActivitySourceTargetClassEmitter {
 
 		context.CancellationToken.ThrowIfCancellationRequested();
 
-		if (Constants.Activities.SystemDiagnostics.Activity.Equals(methodTarget.ReturnType)) {
+		if (Constants.Activities.SystemDiagnostics.Activity.Equals(methodTarget.ReturnType))
+		{
 			builder
 				.AppendLine()
 				.Append(indent, "return ", withNewLine: false)

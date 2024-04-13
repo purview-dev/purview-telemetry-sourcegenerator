@@ -6,8 +6,9 @@ using Purview.Telemetry.SourceGenerator.Templates;
 
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
-static class DependencyInjectionClassEmitter {
-	static public void GenerateImplementation(
+static class DependencyInjectionClassEmitter
+{
+	public static void GenerateImplementation(
 		GenerationType requestingType,
 		TelemetryGenerationAttributeRecord attribute,
 		GenerationType generationType,
@@ -18,28 +19,27 @@ static class DependencyInjectionClassEmitter {
 		string? fullyQualifiedNamespace,
 
 		SourceProductionContext context,
-		IGenerationLogger? logger) {
-
+		IGenerationLogger? logger)
+	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
-		if (attribute.GenerateDependencyExtension.Value == false) {
+		if (attribute.GenerateDependencyExtension.Value == false)
+		{
 			logger?.Debug("Skipping dependency injection emit.");
-
 			return;
 		}
 
-		if (!SharedHelpers.ShouldEmit(requestingType, generationType)) {
+		if (!SharedHelpers.ShouldEmit(requestingType, generationType))
+		{
 			logger?.Debug($"Skipping dependency injection emit for {requestingType} ({generationType}).");
-
 			return;
 		}
 
 		StringBuilder builder = new();
 
 		var classNameToGenerate = attribute.DependencyInjectionClassName.Value;
-		if (string.IsNullOrWhiteSpace(classNameToGenerate)) {
+		if (string.IsNullOrWhiteSpace(classNameToGenerate))
 			classNameToGenerate = implementationClassName;
-		}
 
 		logger?.Debug($"Generating service dependency class {classNameToGenerate} for: {fullyQualifiedNamespace}{sourceInterfaceName}");
 
@@ -73,9 +73,7 @@ static class DependencyInjectionClassEmitter {
 
 		EmitHelpers.EmitClassEnd(builder, 1);
 
-		builder
-			.AppendLine('}')
-		;
+		builder.AppendLine('}');
 
 		var sourceText = EmbeddedResources.Instance.AddHeader(builder.ToString());
 		var hintName = $"{fullyQualifiedNamespace}{classNameToGenerate}.DependencyInjection.g.cs";
@@ -83,7 +81,8 @@ static class DependencyInjectionClassEmitter {
 		context.AddSource(hintName, Microsoft.CodeAnalysis.Text.SourceText.From(sourceText, Encoding.UTF8));
 	}
 
-	static void EmitMethod(StringBuilder builder, int indent, string className, string interfaceName, string? fullyQualifiedNamespace, IGenerationLogger? logger, CancellationToken token) {
+	static void EmitMethod(StringBuilder builder, int indent, string className, string interfaceName, string? fullyQualifiedNamespace, IGenerationLogger? logger, CancellationToken token)
+	{
 		token.ThrowIfCancellationRequested();
 
 		logger?.Debug($"Emitting DI method for {interfaceName}.");

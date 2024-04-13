@@ -4,22 +4,23 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace Purview.Telemetry.SourceGenerator.Templates;
 
 record TemplateInfo(string Name, string FullName, string Namespace, string? Source, string TemplateData)
-	: IEquatable<NameSyntax>, IEquatable<AttributeSyntax>, IEquatable<ISymbol>, IEquatable<string>, IEquatable<AttributeData> {
+	: IEquatable<NameSyntax>, IEquatable<AttributeSyntax>, IEquatable<ISymbol>, IEquatable<string>, IEquatable<AttributeData>
+{
 	public string GetGeneratedFilename()
 		=> $"{Name}.g.cs";
 
 	public bool Equals(string other)
 		=> other == Name || other == FullName;
 
-	public bool Equals(NameSyntax other) {
+	public bool Equals(NameSyntax other)
+	{
 		var isAttribute = Name.EndsWith("Attribute", StringComparison.Ordinal);
 
 		var name = other.ToString();
 
 		var result = Equals(name);
-		if (!result && isAttribute) {
+		if (!result && isAttribute)
 			result = Equals(name + "Attribute");
-		}
 
 		return result;
 	}
@@ -36,14 +37,16 @@ record TemplateInfo(string Name, string FullName, string Namespace, string? Sour
 	public string MakeGeneric(params string[] types)
 		=> FullName + "<" + string.Join(", ", types) + ">";
 
-	static public TemplateInfo Create<T>(bool attachHeader = true)
+	public static TemplateInfo Create<T>(bool attachHeader = true)
 		=> Create(typeof(T).FullName, attachHeader);
 
-	static public TemplateInfo Create(string fullTypeName, bool attachHeader = true) {
+	public static TemplateInfo Create(string fullTypeName, bool attachHeader = true)
+	{
 		var parts = fullTypeName.Split('.');
 
 		var typeName = RemoveGenericTypeInfo(parts.Last());
 		fullTypeName = RemoveGenericTypeInfo(fullTypeName);
+
 		var @namespace = fullTypeName.Substring(0, fullTypeName.Length - (typeName.Length + 1));
 		var source = @namespace.Split('.');
 		var isRootSources = source.Length == 2;
@@ -55,15 +58,15 @@ record TemplateInfo(string Name, string FullName, string Namespace, string? Sour
 		return templateInfo;
 	}
 
-	static string RemoveGenericTypeInfo(string identifier) {
+	static string RemoveGenericTypeInfo(string identifier)
+	{
 		var idx = identifier.IndexOf('`');
-		if (idx > -1) {
+		if (idx > -1)
 			identifier = identifier.Substring(0, idx);
-		}
 
 		return identifier;
 	}
 
-	static public implicit operator string(TemplateInfo templateInfo)
+	public static implicit operator string(TemplateInfo templateInfo)
 		=> templateInfo.FullName;
 }

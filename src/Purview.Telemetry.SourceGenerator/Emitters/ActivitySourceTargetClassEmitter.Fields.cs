@@ -5,14 +5,17 @@ using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
-partial class ActivitySourceTargetClassEmitter {
-	static int EmitFields(ActivitySourceTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
+partial class ActivitySourceTargetClassEmitter
+{
+	static int EmitFields(ActivitySourceTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger)
+	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		indent++;
 
 		var activitySourceName = target.ActivitySourceName;
-		if (string.IsNullOrWhiteSpace(activitySourceName)) {
+		if (string.IsNullOrWhiteSpace(activitySourceName))
+		{
 			logger?.Diagnostic($"No activity source specified.");
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Activities.NoActivitySourceSpecified, location: null);

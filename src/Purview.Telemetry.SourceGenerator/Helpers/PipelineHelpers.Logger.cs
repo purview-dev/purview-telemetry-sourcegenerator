@@ -6,30 +6,35 @@ using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 
-partial class PipelineHelpers {
-	readonly static string[] _suffixesToRemove = [
+partial class PipelineHelpers
+{
+	static readonly string[] SuffixesToRemove = [
 		"Logs",
 		"Logger"
 	];
 
-	static public bool HasLoggerTargetAttribute(SyntaxNode _, CancellationToken __) => true;
+	public static bool HasLoggerTargetAttribute(SyntaxNode _, CancellationToken __) => true;
 
-	static public LoggerTarget? BuildLoggerTransform(GeneratorAttributeSyntaxContext context, IGenerationLogger? logger, CancellationToken token) {
+	public static LoggerTarget? BuildLoggerTransform(GeneratorAttributeSyntaxContext context, IGenerationLogger? logger, CancellationToken token)
+	{
 		token.ThrowIfCancellationRequested();
 
-		if (context.TargetNode is not InterfaceDeclarationSyntax interfaceDeclaration) {
+		if (context.TargetNode is not InterfaceDeclarationSyntax interfaceDeclaration)
+		{
 			logger?.Error($"Could not find interface syntax from the target node '{context.TargetNode.Flatten()}'.");
 			return null;
 		}
 
-		if (context.TargetSymbol is not INamedTypeSymbol interfaceSymbol) {
+		if (context.TargetSymbol is not INamedTypeSymbol interfaceSymbol)
+		{
 			logger?.Error($"Could not find interface symbol '{interfaceDeclaration.Flatten()}'.");
 			return null;
 		}
 
 		var semanticModel = context.SemanticModel;
 		var loggerAttribute = SharedHelpers.GetLoggerAttribute(context.Attributes[0], semanticModel, logger, token);
-		if (loggerAttribute == null) {
+		if (loggerAttribute == null)
+		{
 			logger?.Error($"Could not find {Constants.Logging.LoggerAttribute} when one was expected '{interfaceDeclaration.Flatten()}'.");
 
 			return null;
@@ -88,13 +93,16 @@ partial class PipelineHelpers {
 		SemanticModel semanticModel,
 		INamedTypeSymbol interfaceSymbol,
 		IGenerationLogger? logger,
-		CancellationToken token) {
+		CancellationToken token)
+	{
 
 		token.ThrowIfCancellationRequested();
 
 		List<LogTarget> methodTargets = [];
-		foreach (var method in interfaceSymbol.GetMembers().OfType<IMethodSymbol>()) {
-			if (Utilities.ContainsAttribute(method, Constants.Shared.ExcludeAttribute, token)) {
+		foreach (var method in interfaceSymbol.GetMembers().OfType<IMethodSymbol>())
+		{
+			if (Utilities.ContainsAttribute(method, Constants.Shared.ExcludeAttribute, token))
+			{
 				logger?.Debug($"Skipping {interfaceSymbol.Name}.{method.Name}, explicitly excluded.");
 				continue;
 			}
@@ -117,7 +125,8 @@ partial class PipelineHelpers {
 					: methodParameters.FirstOrDefault(m => m.IsException);
 
 			var inferredErrorLevel = exceptionParam != null;
-			if ((logAttribute?.Level.IsSet ?? false) == true) {
+			if ((logAttribute?.Level.IsSet ?? false) == true)
+			{
 				inferredErrorLevel = false;
 			}
 
@@ -158,8 +167,10 @@ partial class PipelineHelpers {
 		return [.. methodTargets];
 	}
 
-	static string GetLogName(string interfaceName, string className, LoggerAttributeRecord loggerAttribute, LogAttributeRecord? logAttribute, string methodName) {
-		if (logAttribute?.Name.IsSet == true) {
+	static string GetLogName(string interfaceName, string className, LoggerAttributeRecord loggerAttribute, LogAttributeRecord? logAttribute, string methodName)
+	{
+		if (logAttribute?.Name.IsSet == true)
+		{
 			methodName = logAttribute!.Name.Value!;
 		};
 
@@ -167,14 +178,18 @@ partial class PipelineHelpers {
 			? loggerAttribute.PrefixType.Value
 			: 0; // Default
 
-		if (prefixType == 0) {
+		if (prefixType == 0)
+		{
 			// Default
-			if (interfaceName[0] == 'I') {
+			if (interfaceName[0] == 'I')
+			{
 				interfaceName = interfaceName.Substring(1);
 			}
 
-			foreach (var suffix in _suffixesToRemove) {
-				if (interfaceName.EndsWith(suffix, StringComparison.Ordinal) && interfaceName.Length > suffix.Length) {
+			foreach (var suffix in SuffixesToRemove)
+			{
+				if (interfaceName.EndsWith(suffix, StringComparison.Ordinal) && interfaceName.Length > suffix.Length)
+				{
 					interfaceName = interfaceName.Substring(0, interfaceName.Length - suffix.Length);
 					break;
 				}
@@ -182,17 +197,21 @@ partial class PipelineHelpers {
 
 			return $"{interfaceName}.{methodName}";
 		}
-		else if (prefixType == 1) {
+		else if (prefixType == 1)
+		{
 			// Interface
 			return $"{interfaceName}.{methodName}";
 		}
-		else if (prefixType == 2) {
+		else if (prefixType == 2)
+		{
 			// Class
 			return $"{className}.{methodName}";
 		}
-		else if (prefixType == 3) {
+		else if (prefixType == 3)
+		{
 			// Custom
-			if (!string.IsNullOrWhiteSpace(loggerAttribute.CustomPrefix.Value)) {
+			if (!string.IsNullOrWhiteSpace(loggerAttribute.CustomPrefix.Value))
+			{
 				return $"{loggerAttribute.CustomPrefix.Value}.{methodName}";
 			}
 		}
@@ -201,19 +220,23 @@ partial class PipelineHelpers {
 		return methodName;
 	}
 
-	static string GenerateTemplateMessage(string logEntryName, bool isScoped, ImmutableArray<LogParameterTarget> methodParameters) {
+	static string GenerateTemplateMessage(string logEntryName, bool isScoped, ImmutableArray<LogParameterTarget> methodParameters)
+	{
 		StringBuilder builder = new();
 
 		builder.Append(logEntryName);
 
 		var count = methodParameters.Count(m => !m.IsException);
-		if (count > 0) {
+		if (count > 0)
+		{
 			builder.Append(": ");
 		}
 
 		var index = 0;
-		foreach (var parameter in methodParameters) {
-			if (!isScoped && parameter.IsException) {
+		foreach (var parameter in methodParameters)
+		{
+			if (!isScoped && parameter.IsException)
+			{
 				continue;
 			}
 
@@ -228,7 +251,8 @@ partial class PipelineHelpers {
 			index++;
 		}
 
-		if (index > 0) {
+		if (index > 0)
+		{
 			// Trim the last ", "
 			builder.Remove(builder.Length - 2, 2);
 		}
@@ -236,9 +260,11 @@ partial class PipelineHelpers {
 		return builder.ToString();
 	}
 
-	static ImmutableArray<LogParameterTarget> GetLogMethodParameters(IMethodSymbol method, IGenerationLogger? logger, CancellationToken token) {
+	static ImmutableArray<LogParameterTarget> GetLogMethodParameters(IMethodSymbol method, IGenerationLogger? logger, CancellationToken token)
+	{
 		List<LogParameterTarget> parameters = [];
-		foreach (var parameter in method.Parameters) {
+		foreach (var parameter in method.Parameters)
+		{
 			token.ThrowIfCancellationRequested();
 
 			parameters.Add(new(

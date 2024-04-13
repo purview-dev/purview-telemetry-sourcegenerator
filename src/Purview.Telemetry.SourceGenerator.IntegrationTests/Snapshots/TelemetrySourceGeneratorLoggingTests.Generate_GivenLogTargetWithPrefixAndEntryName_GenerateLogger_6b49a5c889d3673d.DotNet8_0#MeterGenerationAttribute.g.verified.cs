@@ -21,7 +21,8 @@ namespace Purview.Telemetry.Metrics;
 [System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class MeterGenerationAttribute : System.Attribute {
+sealed class MeterGenerationAttribute : System.Attribute
+{
 	/// <summary>
 	/// Creates a new <see cref="MeterGenerationAttribute" /> with optional
 	/// <paramref name="instrumentPrefix"/>, <paramref name="lowercaseInstrumentName"/>
@@ -30,7 +31,8 @@ sealed class MeterGenerationAttribute : System.Attribute {
 	/// <param name="instrumentPrefix">Optionally specifies the <see cref="InstrumentPrefix" />.</param>
 	/// <param name="lowercaseInstrumentName">Optionally specifies the <see cref="LowercaseInstrumentName" />.</param>
 	/// <param name="lowercaseTagKeys">Optionally specifies the <see cref="LowercaseTagKeys" />.</param>
-	public MeterGenerationAttribute(string? instrumentPrefix = null, bool lowercaseInstrumentName = true, bool lowercaseTagKeys = true) {
+	public MeterGenerationAttribute(string? instrumentPrefix = null, bool lowercaseInstrumentName = true, bool lowercaseTagKeys = true)
+	{
 		InstrumentPrefix = instrumentPrefix;
 		LowercaseInstrumentName = lowercaseInstrumentName;
 		LowercaseTagKeys = lowercaseTagKeys;

@@ -3,9 +3,11 @@ using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator;
 
-partial class TelemetryDiagnostics {
-	static public class General {
-		readonly static public TelemetryDiagnosticDescriptor FatalExecutionDuringExecution = new(
+partial class TelemetryDiagnostics
+{
+	public static class General
+	{
+		public static readonly TelemetryDiagnosticDescriptor FatalExecutionDuringExecution = new(
 			Id: "TSG1000",
 			Title: "Fatal execution error occurred",
 			Description: "Failed to execute the generation stage: {0}",
@@ -13,7 +15,7 @@ partial class TelemetryDiagnostics {
 			Severity: DiagnosticSeverity.Error
 		);
 
-		readonly static public TelemetryDiagnosticDescriptor InferenceNotSupportedWithMultiTargeting = new(
+		public static readonly TelemetryDiagnosticDescriptor InferenceNotSupportedWithMultiTargeting = new(
 			Id: "TSG1001",
 			Title: "Inferring generation targets is not supported when using multi-target generation.",
 			Description: $"When using multiple generation targets - Activities, Logs or Metrics, each method must be either excluded or have an explicit generation target: " +
@@ -24,7 +26,7 @@ partial class TelemetryDiagnostics {
 			Severity: DiagnosticSeverity.Error
 		);
 
-		readonly static public TelemetryDiagnosticDescriptor MultiGenerationTargetsNotSupported = new(
+		public static readonly TelemetryDiagnosticDescriptor MultiGenerationTargetsNotSupported = new(
 			Id: "TSG1002",
 			Title: "Only single generation types are supported.",
 			Description: $"Only a single generation target types (Activities, Logs or Metrics) is supported on methods. Use one of the following: " +

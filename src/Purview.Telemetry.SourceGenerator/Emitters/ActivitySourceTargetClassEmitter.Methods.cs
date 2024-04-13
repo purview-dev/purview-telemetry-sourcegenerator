@@ -5,13 +5,16 @@ using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
-partial class ActivitySourceTargetClassEmitter {
-	static int EmitMethods(ActivitySourceTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
+partial class ActivitySourceTargetClassEmitter
+{
+	static int EmitMethods(ActivitySourceTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger)
+	{
 		indent++;
 
-		EmitRecordExceptionEvent(builder, indent, target, context, logger);
+		EmitRecordExceptionEvent(builder, indent, context, logger);
 
-		foreach (var methodTarget in target.ActivityMethods) {
+		foreach (var methodTarget in target.ActivityMethods)
+		{
 			context.CancellationToken.ThrowIfCancellationRequested();
 
 			EmitMethod(builder, indent, methodTarget, target, context, logger);
@@ -20,8 +23,11 @@ partial class ActivitySourceTargetClassEmitter {
 		return --indent;
 	}
 
-	static void EmitRecordExceptionEvent(StringBuilder builder, int indent, ActivitySourceTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
+	static void EmitRecordExceptionEvent(StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger)
+	{
 		context.CancellationToken.ThrowIfCancellationRequested();
+
+		logger?.Debug($"Generating {Constants.Activities.RecordExceptionMethodName}.");
 
 		builder
 			.AggressiveInlining(indent)
@@ -95,7 +101,8 @@ partial class ActivitySourceTargetClassEmitter {
 	static void EmitExceptionParam(StringBuilder builder, int indent,
 		string tagsListVariableName,
 		string escapeParam,
-		string exceptionParam) {
+		string exceptionParam)
+	{
 		builder
 
 			.Append(indent, tagsListVariableName, withNewLine: false)
@@ -134,16 +141,20 @@ partial class ActivitySourceTargetClassEmitter {
 		;
 	}
 
-	static void EmitMethod(StringBuilder builder, int indent, ActivityBasedGenerationTarget methodTarget, ActivitySourceTarget target, SourceProductionContext context, IGenerationLogger? logger) {
+	static void EmitMethod(StringBuilder builder, int indent, ActivityBasedGenerationTarget methodTarget, ActivitySourceTarget target, SourceProductionContext context, IGenerationLogger? logger)
+	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
-		if (!methodTarget.TargetGenerationState.IsValid) {
-			if (methodTarget.TargetGenerationState.RaiseMultiGenerationTargetsNotSupported) {
+		if (!methodTarget.TargetGenerationState.IsValid)
+		{
+			if (methodTarget.TargetGenerationState.RaiseMultiGenerationTargetsNotSupported)
+			{
 				logger?.Debug($"Identified {target.InterfaceName}.{methodTarget.MethodName} as problematic as it has another target types.");
 
 				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.General.MultiGenerationTargetsNotSupported, methodTarget.MethodLocation);
 			}
-			else if (methodTarget.TargetGenerationState.RaiseInferenceNotSupportedWithMultiTargeting) {
+			else if (methodTarget.TargetGenerationState.RaiseInferenceNotSupportedWithMultiTargeting)
+			{
 				logger?.Debug($"Identified {target.InterfaceName}.{methodTarget.MethodName} as problematic as it is inferred.");
 
 				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.General.InferenceNotSupportedWithMultiTargeting, methodTarget.MethodLocation);
@@ -153,7 +164,8 @@ partial class ActivitySourceTargetClassEmitter {
 		}
 
 		if (methodTarget.ReturnType != Constants.System.VoidKeyword
-			&& !Constants.Activities.SystemDiagnostics.Activity.Equals(methodTarget.ReturnType)) {
+			&& !Constants.Activities.SystemDiagnostics.Activity.Equals(methodTarget.ReturnType))
+		{
 			logger?.Diagnostic($"The return type {methodTarget.ReturnType} isn't valid for an activity or event.");
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Activities.InvalidReturnType, methodTarget.MethodLocation);
@@ -167,9 +179,8 @@ partial class ActivitySourceTargetClassEmitter {
 			.Append(methodTarget.ReturnType)
 		;
 
-		if (methodTarget.IsNullableReturn) {
+		if (methodTarget.IsNullableReturn)
 			builder.Append('?');
-		}
 
 		builder
 			.Append(' ')
@@ -178,27 +189,22 @@ partial class ActivitySourceTargetClassEmitter {
 		;
 
 		var index = 0;
-		foreach (var parameter in methodTarget.Parameters) {
+		foreach (var parameter in methodTarget.Parameters)
+		{
 			context.CancellationToken.ThrowIfCancellationRequested();
 
-			builder
-				.Append(parameter.ParameterType)
-			;
+			builder.Append(parameter.ParameterType);
 
-			if (parameter.IsNullable) {
+			if (parameter.IsNullable)
 				builder.Append('?');
-			}
 
 			builder
 				.Append(' ')
 				.Append(parameter.ParameterName)
 			;
 
-			if (index < methodTarget.Parameters.Length - 1) {
-				builder
-					.Append(", ")
-				;
-			}
+			if (index < methodTarget.Parameters.Length - 1)
+				builder.Append(", ");
 
 			index++;
 		}
@@ -210,15 +216,12 @@ partial class ActivitySourceTargetClassEmitter {
 
 		indent++;
 
-		if (methodTarget.MethodType == ActivityMethodType.Activity) {
+		if (methodTarget.MethodType == ActivityMethodType.Activity)
 			EmitActivityMethodBody(builder, indent, methodTarget, context, logger);
-		}
-		else if (methodTarget.MethodType == ActivityMethodType.Event) {
+		else if (methodTarget.MethodType == ActivityMethodType.Event)
 			EmitEventMethodBody(builder, indent, methodTarget, context, logger);
-		}
-		else if (methodTarget.MethodType == ActivityMethodType.Context) {
+		else if (methodTarget.MethodType == ActivityMethodType.Context)
 			EmitContextMethodBody(builder, indent, methodTarget, context, logger);
-		}
 
 		builder
 			.Append(--indent, '}')

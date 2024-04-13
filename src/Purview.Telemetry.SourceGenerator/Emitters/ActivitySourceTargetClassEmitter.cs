@@ -6,8 +6,10 @@ using Purview.Telemetry.SourceGenerator.Templates;
 
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
-static partial class ActivitySourceTargetClassEmitter {
-	static public void GenerateImplementation(ActivitySourceTarget target, SourceProductionContext context, IGenerationLogger? logger) {
+static partial class ActivitySourceTargetClassEmitter
+{
+	public static void GenerateImplementation(ActivitySourceTarget target, SourceProductionContext context, IGenerationLogger? logger)
+	{
 		StringBuilder builder = new();
 
 		logger?.Debug($"Generating activity class for: {target.FullyQualifiedName}");
