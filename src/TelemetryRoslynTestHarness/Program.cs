@@ -1,18 +1,55 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.Metrics;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 using TelemetryRoslynTestHarness.Interfaces.Telemetry;
 
 namespace TelemetryRoslynTestHarness;
-
+/* Unmerged change from project 'TelemetryRoslynTestHarness(net8.0)'
+Before:
 class Program {
 
 	readonly static System.Func<Microsoft.Extensions.Logging.ILogger, System.String, System.Int32, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.String, System.Int32>("Test.Log: stringParam: {StringParam}, intParam: {IntParam}");
 
 	static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.Int32, System.Boolean, System.IDisposable?> _logScopeAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.Int32, System.Boolean>("TestTelemetry.LogScope: intParam: {IntParam}, boolParam: {BoolParam}");
+After:
+class Program {
+    static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.Int32, System.Boolean, System.IDisposable?> _logScopeAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.Int32, System.Boolean>("TestTelemetry.LogScope: intParam: {IntParam}, boolParam: {BoolParam}");
+*/
 
-	static void Main(string[] args) {
+/* Unmerged change from project 'TelemetryRoslynTestHarness(net472)'
+Before:
+class Program {
+
+	readonly static System.Func<Microsoft.Extensions.Logging.ILogger, System.String, System.Int32, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.String, System.Int32>("Test.Log: stringParam: {StringParam}, intParam: {IntParam}");
+
+	static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.Int32, System.Boolean, System.IDisposable?> _logScopeAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.Int32, System.Boolean>("TestTelemetry.LogScope: intParam: {IntParam}, boolParam: {BoolParam}");
+After:
+class Program {
+    static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.Int32, System.Boolean, System.IDisposable?> _logScopeAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.Int32, System.Boolean>("TestTelemetry.LogScope: intParam: {IntParam}, boolParam: {BoolParam}");
+*/
+
+/* Unmerged change from project 'TelemetryRoslynTestHarness(net48)'
+Before:
+class Program {
+
+	readonly static System.Func<Microsoft.Extensions.Logging.ILogger, System.String, System.Int32, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.String, System.Int32>("Test.Log: stringParam: {StringParam}, intParam: {IntParam}");
+
+	static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.Int32, System.Boolean, System.IDisposable?> _logScopeAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.Int32, System.Boolean>("TestTelemetry.LogScope: intParam: {IntParam}, boolParam: {BoolParam}");
+After:
+class Program {
+    static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.Int32, System.Boolean, System.IDisposable?> _logScopeAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.Int32, System.Boolean>("TestTelemetry.LogScope: intParam: {IntParam}, boolParam: {BoolParam}");
+*/
+
+
+class Program
+{
+	static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.Int32, System.Boolean, System.IDisposable?> _logScopeAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.Int32, System.Boolean>("TestTelemetry.LogScope: intParam: {IntParam}, boolParam: {BoolParam}");
+
+	static void Main(string[] args)
+	{
 		Console.WriteLine("Hello, World!");
 
 		IDisposable? log = _logScopeAction((ILogger)default!, 1, true);

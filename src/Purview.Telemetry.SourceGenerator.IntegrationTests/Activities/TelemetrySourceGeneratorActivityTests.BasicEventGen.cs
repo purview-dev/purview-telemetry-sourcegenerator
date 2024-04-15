@@ -1,8 +1,10 @@
 ﻿namespace Purview.Telemetry.SourceGenerator.Activities;
 
-partial class TelemetrySourceGeneratorActivityTests {
+partial class TelemetrySourceGeneratorActivityTests
+{
 	[Fact]
-	async public Task Generate_GivenBasicEventWithActivityParameter_GeneratesActivity() {
+	public async Task Generate_GivenBasicEventWithActivityParameter_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
@@ -25,7 +27,8 @@ public interface ITestActivities {
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicEventWithNullableActivityParameter_GeneratesActivity() {
+	public async Task Generate_GivenBasicEventWithNullableActivityParameter_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;

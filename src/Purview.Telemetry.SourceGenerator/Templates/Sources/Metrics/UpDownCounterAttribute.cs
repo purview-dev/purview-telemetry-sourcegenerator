@@ -5,11 +5,13 @@
 /// </summary>
 [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-sealed public class UpDownCounterAttribute : System.Attribute {
+sealed class UpDownCounterAttribute : System.Attribute
+{
 	/// <summary>
 	/// Creates a new instance of the <see cref="UpDownCounterAttribute"/> class.
 	/// </summary>
-	public UpDownCounterAttribute() {
+	public UpDownCounterAttribute()
+	{
 	}
 
 	/// <summary>
@@ -19,7 +21,8 @@ sealed public class UpDownCounterAttribute : System.Attribute {
 	/// <param name="name">Specifies the <see cref="Name"/>.</param>
 	/// <param name="unit">Optionally specifies the <see cref="Unit"/>.</param>
 	/// <param name="description">Optionally specifies the <see cref="Description"/>.</param>
-	public UpDownCounterAttribute(string name, string? unit = null, string? description = null) {
+	public UpDownCounterAttribute(string name, string? unit = null, string? description = null)
+	{
 		Name = name;
 		Unit = unit;
 		Description = description;

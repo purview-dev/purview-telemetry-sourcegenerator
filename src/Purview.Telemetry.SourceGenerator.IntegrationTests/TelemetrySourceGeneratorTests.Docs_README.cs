@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Purview.Telemetry.SourceGenerator;
 
-namespace Purview.Telemetry.SourceGenerator;
-
-partial class TelemetrySourceGeneratorTests {
+partial class TelemetrySourceGeneratorTests
+{
 	[Fact]
-	async public Task Generate_FromREADMEActivitiesSection_GeneratesTelemetry() {
+	public async Task Generate_FromREADMEActivitiesSection_GeneratesTelemetry()
+	{
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
@@ -41,7 +37,8 @@ interface IActivityTelemetry
 	}
 
 	[Fact]
-	async public Task Generate_FromREADMELoggingSection_GeneratesTelemetry() {
+	public async Task Generate_FromREADMELoggingSection_GeneratesTelemetry()
+	{
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Logging;
@@ -80,7 +77,8 @@ enum ItemTypes
 	}
 
 	[Fact]
-	async public Task Generate_FromREADMEMetricsSection_GeneratesTelemetry() {
+	public async Task Generate_FromREADMEMetricsSection_GeneratesTelemetry()
+	{
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Metrics;
@@ -121,7 +119,8 @@ interface IMeterTelemetry
 	}
 
 	[Fact]
-	async public Task Generate_FromREADMEMultiTargetingSection_GeneratesTelemetry() {
+	public async Task Generate_FromREADMEMultiTargetingSection_GeneratesTelemetry()
+	{
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;

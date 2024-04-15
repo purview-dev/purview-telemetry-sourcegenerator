@@ -18,7 +18,8 @@ namespace Purview.Telemetry.Logging;
 /// <summary>
 /// The types of prefixes that can be used for the log entry name generation.
 /// </summary>
-public enum LogPrefixType {
+enum LogPrefixType
+{
 	/// <summary>
 	/// The name of the interface without the "I" prefix or "Log", "Logger" or "Telemetry" suffixes.
 	/// </summary>

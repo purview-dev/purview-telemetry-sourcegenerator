@@ -5,24 +5,24 @@ using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
-partial class LoggerTargetClassEmitter {
-	static int EmitMethods(LoggerTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
+partial class LoggerTargetClassEmitter
+{
+	static int EmitMethods(LoggerTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger)
+	{
 		indent++;
 
-		foreach (var methodTarget in target.LogMethods) {
+		foreach (var methodTarget in target.LogMethods)
+		{
 			context.CancellationToken.ThrowIfCancellationRequested();
 
-			if (!methodTarget.TargetGenerationState.IsValid) {
+			if (!methodTarget.TargetGenerationState.IsValid)
 				continue;
-			}
 
-			if (methodTarget.HasMultipleExceptions) {
+			if (methodTarget.HasMultipleExceptions)
 				continue;
-			}
 
-			if (methodTarget.ParameterCount > Constants.Logging.MaxNonExceptionParameters) {
+			if (methodTarget.ParameterCount > Constants.Logging.MaxNonExceptionParameters)
 				continue;
-			}
 
 			EmitLogActionMethod(builder, indent, methodTarget, context, logger);
 		}
@@ -30,7 +30,8 @@ partial class LoggerTargetClassEmitter {
 		return --indent;
 	}
 
-	static void EmitLogActionMethod(StringBuilder builder, int indent, LogTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
+	static void EmitLogActionMethod(StringBuilder builder, int indent, LogTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger)
+	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		logger?.Debug($"Building logging method: {methodTarget.MethodName}");
@@ -41,15 +42,15 @@ partial class LoggerTargetClassEmitter {
 			.Append(indent, "public ", withNewLine: false)
 		;
 
-		if (methodTarget.IsScoped) {
+		if (methodTarget.IsScoped)
+		{
 			builder
 				.Append(Constants.System.IDisposable)
 				.Append('?')
 			;
 		}
-		else {
+		else
 			builder.Append(Constants.System.VoidKeyword);
-		}
 
 		builder
 			.Append(' ')
@@ -65,7 +66,8 @@ partial class LoggerTargetClassEmitter {
 			.Append(indent, '{')
 		;
 
-		if (methodTarget.IsScoped) {
+		if (methodTarget.IsScoped)
+		{
 			builder
 				.Append(indent + 1, "return ", withNewLine: false)
 				.Append(methodTarget.LoggerActionFieldName)
@@ -73,7 +75,8 @@ partial class LoggerTargetClassEmitter {
 				.Append(Constants.Logging.LoggerFieldName)
 			;
 		}
-		else {
+		else
+		{
 			builder
 				.Append(indent + 1, "if (!", withNewLine: false)
 				.Append(Constants.Logging.LoggerFieldName)
@@ -91,28 +94,29 @@ partial class LoggerTargetClassEmitter {
 			;
 		}
 
-		foreach (var parameter in methodTarget.ParametersSansException) {
+		foreach (var parameter in methodTarget.ParametersSansException)
+		{
 			builder
 				.Append(", ")
 				.Append(parameter.Name)
 			;
 		}
 
-		if (methodTarget.ExceptionParameter != null) {
+		if (methodTarget.ExceptionParameter != null)
+		{
 			builder
 				.Append(", ")
 				.Append(methodTarget.ExceptionParameter.Name);
 		}
-		else if (!methodTarget.IsScoped) {
+		else if (!methodTarget.IsScoped)
+		{
 			builder
 				.Append(", ")
 				.Append("null")
 			;
 		}
 
-		builder
-			.AppendLine(");")
-		;
+		builder.AppendLine(");");
 
 		builder
 			.Append(indent, '}')
@@ -120,27 +124,23 @@ partial class LoggerTargetClassEmitter {
 		;
 	}
 
-	static void EmitParametersAsMethodArgumentList(LogTarget methodTarget, StringBuilder builder, SourceProductionContext context) {
-		for (var i = 0; i < methodTarget.TotalParameterCount; i++) {
+	static void EmitParametersAsMethodArgumentList(LogTarget methodTarget, StringBuilder builder, SourceProductionContext context)
+	{
+		for (var i = 0; i < methodTarget.TotalParameterCount; i++)
+		{
 			context.CancellationToken.ThrowIfCancellationRequested();
 
-			builder
-				.Append(methodTarget.Parameters[i].FullyQualifiedType)
-			;
+			builder.Append(methodTarget.Parameters[i].FullyQualifiedType);
 
-			if (methodTarget.Parameters[i].IsNullable) {
-				builder
-					.Append('?')
-				;
-			}
+			if (methodTarget.Parameters[i].IsNullable)
+				builder.Append('?');
 
 			builder
 				.Append(' ')
 				.Append(methodTarget.Parameters[i].Name);
 
-			if (i < methodTarget.TotalParameterCount - 1) {
+			if (i < methodTarget.TotalParameterCount - 1)
 				builder.Append(", ");
-			}
 		}
 	}
 }

@@ -1,8 +1,10 @@
 ﻿using Purview.Telemetry.SourceGenerator.Templates;
 
 namespace Purview.Telemetry;
-partial class Constants {
-	static public class System {
+partial class Constants
+{
+	public static class System
+	{
 		public const string VoidKeyword = "void";
 		public const string ObjectKeyword = "object";
 
@@ -19,29 +21,29 @@ partial class Constants {
 		public const string NullKeyword = "null";
 		public const string DefaultKeyword = "default";
 
-		readonly static public TypeInfo Func = TypeInfo.Create("System.Func"); // <T>
-		readonly static public TypeInfo Action = TypeInfo.Create("System.Action"); // <T>
+		public static readonly TypeInfo Func = TypeInfo.Create("System.Func"); // <T>
+		public static readonly TypeInfo Action = TypeInfo.Create("System.Action"); // <T>
 
-		readonly static public TypeInfo String = TypeInfo.Create("System.String");
-		readonly static public TypeInfo Boolean = TypeInfo.Create("System.Boolean");
-		readonly static public TypeInfo Byte = TypeInfo.Create("System.Byte");
-		readonly static public TypeInfo Int16 = TypeInfo.Create("System.Int16");
-		readonly static public TypeInfo Int32 = TypeInfo.Create("System.Int32");
-		readonly static public TypeInfo Int64 = TypeInfo.Create("System.Int64");
-		readonly static public TypeInfo Single = TypeInfo.Create("System.Single");
-		readonly static public TypeInfo Double = TypeInfo.Create("System.Double");
-		readonly static public TypeInfo Decimal = TypeInfo.Create("System.Decimal");
-		readonly static public TypeInfo DateTimeOffset = TypeInfo.Create("System.DateTimeOffset");
+		public static readonly TypeInfo String = TypeInfo.Create("System.String");
+		public static readonly TypeInfo Boolean = TypeInfo.Create("System.Boolean");
+		public static readonly TypeInfo Byte = TypeInfo.Create("System.Byte");
+		public static readonly TypeInfo Int16 = TypeInfo.Create("System.Int16");
+		public static readonly TypeInfo Int32 = TypeInfo.Create("System.Int32");
+		public static readonly TypeInfo Int64 = TypeInfo.Create("System.Int64");
+		public static readonly TypeInfo Single = TypeInfo.Create("System.Single");
+		public static readonly TypeInfo Double = TypeInfo.Create("System.Double");
+		public static readonly TypeInfo Decimal = TypeInfo.Create("System.Decimal");
+		public static readonly TypeInfo DateTimeOffset = TypeInfo.Create("System.DateTimeOffset");
 
-		readonly static public TypeInfo IEnumerable = TypeInfo.Create("System.Collections.Generic.IEnumerable"); // <>
-		readonly static public TypeInfo List = TypeInfo.Create("System.Collections.Generic.List"); // <>
-		readonly static public TypeInfo Dictionary = TypeInfo.Create("System.Collections.Generic.Dictionary"); // <>
-		readonly static public TypeInfo ConcurrentDictionary = TypeInfo.Create("System.Collections.Concurrent.ConcurrentDictionary"); // <>
+		public static readonly TypeInfo IEnumerable = TypeInfo.Create("System.Collections.Generic.IEnumerable"); // <>
+		public static readonly TypeInfo List = TypeInfo.Create("System.Collections.Generic.List"); // <>
+		public static readonly TypeInfo Dictionary = TypeInfo.Create("System.Collections.Generic.Dictionary"); // <>
+		public static readonly TypeInfo ConcurrentDictionary = TypeInfo.Create("System.Collections.Concurrent.ConcurrentDictionary"); // <>
 
-		readonly static public TypeInfo IDisposable = TypeInfo.Create("System.IDisposable");
-		readonly static public TypeInfo Exception = TypeInfo.Create("System.Exception");
+		public static readonly TypeInfo IDisposable = TypeInfo.Create("System.IDisposable");
+		public static readonly TypeInfo Exception = TypeInfo.Create("System.Exception");
 
-		readonly static public TypeInfo TagList = TypeInfo.Create(SystemDiagnosticsNamespace + ".TagList");
+		public static readonly TypeInfo TagList = TypeInfo.Create(SystemDiagnosticsNamespace + ".TagList");
 
 		public const string AggressiveInlining = "[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]";
 	}

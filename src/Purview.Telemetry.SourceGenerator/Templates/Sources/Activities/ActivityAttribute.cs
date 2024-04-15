@@ -7,18 +7,21 @@
 [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed public class ActivityAttribute : System.Attribute {
+sealed class ActivityAttribute : System.Attribute
+{
 	/// <summary>
 	/// Constructs a new <see cref="ActivityAttribute"/>.
 	/// </summary>
-	public ActivityAttribute() {
+	public ActivityAttribute()
+	{
 	}
 
 	/// <summary>
 	/// Constructs a new <see cref="ActivityAttribute"/> and specifies the <see cref="Name"/>.
 	/// </summary>
 	/// <param name="name">Specifies the <see cref="Name"/>.</param>
-	public ActivityAttribute(string name) {
+	public ActivityAttribute(string name)
+	{
 		Name = name;
 	}
 
@@ -26,7 +29,8 @@ sealed public class ActivityAttribute : System.Attribute {
 	/// Constructs a new <see cref="ActivityAttribute"/> and specifies the <see cref="Kind"/>.
 	/// </summary>
 	/// <param name="kind">Specifies the <see cref="Kind"/>.</param>
-	public ActivityAttribute(System.Diagnostics.ActivityKind kind) {
+	public ActivityAttribute(System.Diagnostics.ActivityKind kind)
+	{
 		Kind = kind;
 	}
 
@@ -37,7 +41,8 @@ sealed public class ActivityAttribute : System.Attribute {
 	/// <param name="name">Specifies the <see cref="Name"/>.</param>
 	/// <param name="kind">Optionally specifies the <see cref="Kind"/>.</param>
 	/// <param name="createOnly">Optionally specifies <see cref="CreateOnly"/>.</param>
-	public ActivityAttribute(string name, System.Diagnostics.ActivityKind kind, bool createOnly = false) {
+	public ActivityAttribute(string name, System.Diagnostics.ActivityKind kind, bool createOnly = false)
+	{
 		Name = name;
 		Kind = kind;
 		CreateOnly = createOnly;

@@ -3,11 +3,13 @@
 // This as the non-SourceGenerator namespace...
 namespace Purview.Telemetry;
 
-static partial class Constants {
+static partial class Constants
+{
 	public const string SystemDiagnosticsNamespace = "System.Diagnostics";
 	public const string EmbedAttributesHashDefineName = "PURVIEW_TELEMETRY_ATTRIBUTES";
 
-	static public TemplateInfo[] GetAllTemplates() {
+	public static TemplateInfo[] GetAllTemplates()
+	{
 		return [
 			.. Activities.GetTemplates(),
 			.. Logging.GetTemplates(),
@@ -16,40 +18,46 @@ static partial class Constants {
 		];
 	}
 
-	static public partial class Shared {
-		readonly static public TemplateInfo TagAttribute = TemplateInfo.Create("Purview.Telemetry.TagAttribute");
-		readonly static public TemplateInfo ExcludeAttribute = TemplateInfo.Create("Purview.Telemetry.ExcludeAttribute");
-		readonly static public TemplateInfo TelemetryGenerationAttribute = TemplateInfo.Create("Purview.Telemetry.TelemetryGenerationAttribute");
+	public static partial class Shared
+	{
+		public static readonly TemplateInfo TagAttribute = TemplateInfo.Create("Purview.Telemetry.TagAttribute");
+		public static readonly TemplateInfo ExcludeAttribute = TemplateInfo.Create("Purview.Telemetry.ExcludeAttribute");
+		public static readonly TemplateInfo TelemetryGenerationAttribute = TemplateInfo.Create("Purview.Telemetry.TelemetryGenerationAttribute");
 
-		static public TemplateInfo[] GetTemplates() => [
+		public static TemplateInfo[] GetTemplates() => [
 			TagAttribute,
 			ExcludeAttribute,
 			TelemetryGenerationAttribute,
 		];
 	}
 
-	static public partial class DependencyInjection {
+	public static partial class DependencyInjection
+	{
 		public const string DependencyInjectionNamespace = "Microsoft.Extensions.DependencyInjection";
 
-		readonly static public TypeInfo IServiceCollection = TypeInfo.Create(DependencyInjectionNamespace + ".IServiceCollection");
-		readonly static public TypeInfo ServiceDescriptor = TypeInfo.Create(DependencyInjectionNamespace + ".ServiceDescriptor");
-		readonly static public TypeInfo ServiceLifetime = TypeInfo.Create(DependencyInjectionNamespace + ".ServiceLifetime");
+		public static readonly TypeInfo IServiceCollection = TypeInfo.Create(DependencyInjectionNamespace + ".IServiceCollection");
+		public static readonly TypeInfo ServiceDescriptor = TypeInfo.Create(DependencyInjectionNamespace + ".ServiceDescriptor");
+		public static readonly TypeInfo ServiceLifetime = TypeInfo.Create(DependencyInjectionNamespace + ".ServiceLifetime");
 
-		readonly static public string Singleton = ServiceLifetime + "." + nameof(Singleton);
+		public static readonly string Singleton = ServiceLifetime + "." + nameof(Singleton);
 	}
 
-	static public class Diagnostics {
+	public static class Diagnostics
+	{
 		public const string Usage = nameof(Usage);
 
-		static public class Activity {
+		public static class Activity
+		{
 			public const string Usage = nameof(Activity) + "." + nameof(Usage);
 		}
 
-		static public class Logging {
+		public static class Logging
+		{
 			public const string Usage = nameof(Logging) + "." + nameof(Usage);
 		}
 
-		static public class Metrics {
+		public static class Metrics
+		{
 			public const string Usage = nameof(Metrics) + "." + nameof(Usage);
 		}
 	}

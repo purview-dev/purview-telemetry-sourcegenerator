@@ -21,11 +21,13 @@ namespace Purview.Telemetry.Metrics;
 [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class ObservableGaugeAttribute : System.Attribute {
+sealed class ObservableGaugeAttribute : System.Attribute
+{
 	/// <summary>
 	/// Creates a new instance of the <see cref="ObservableGaugeAttribute"/> class.
 	/// </summary>
-	public ObservableGaugeAttribute() {
+	public ObservableGaugeAttribute()
+	{
 	}
 
 	/// <summary>
@@ -37,7 +39,8 @@ sealed class ObservableGaugeAttribute : System.Attribute {
 	/// <param name="unit">Optionally specifies the <see cref="Unit"/>.</param>
 	/// <param name="description">Optionally specifies the <see cref="Description"/>.</param>
 	/// <param name="throwOnAlreadyInitialized">Optionally specifies if the observable counter throws an exception if it is already initialised. <see cref="ThrowOnAlreadyInitialized" />.</param>
-	public ObservableGaugeAttribute(string name, string? unit = null, string? description = null, bool throwOnAlreadyInitialized = false) {
+	public ObservableGaugeAttribute(string name, string? unit = null, string? description = null, bool throwOnAlreadyInitialized = false)
+	{
 		Name = name;
 		Unit = unit;
 		Description = description;

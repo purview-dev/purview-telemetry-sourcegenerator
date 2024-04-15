@@ -5,5 +5,6 @@
 /// </summary>
 [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-sealed public class ExcludeAttribute : System.Attribute {
+sealed class ExcludeAttribute : System.Attribute
+{
 }

@@ -22,18 +22,21 @@ namespace Purview.Telemetry.Activities;
 [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class EventAttribute : System.Attribute {
+sealed class EventAttribute : System.Attribute
+{
 	/// <summary>
 	/// Generates a new <see cref="EventAttribute"/>.
 	/// </summary>
-	public EventAttribute() {
+	public EventAttribute()
+	{
 	}
 
 	/// <summary>
 	/// Generates a new <see cref="EventAttribute"/>, specifying the <see cref="Name"/> and optionally
 	/// the <see cref="UseRecordExceptionRules"/> property and/ or <see cref="RecordExceptionAsEscaped"/>.
 	/// </summary>
-	public EventAttribute(string name, bool useRecordExceptionRules = true, bool recordExceptionAsEscaped = true) {
+	public EventAttribute(string name, bool useRecordExceptionRules = true, bool recordExceptionAsEscaped = true)
+	{
 		Name = name;
 		UseRecordExceptionRules = useRecordExceptionRules;
 		RecordExceptionAsEscaped = recordExceptionAsEscaped;

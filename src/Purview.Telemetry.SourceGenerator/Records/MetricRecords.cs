@@ -1,10 +1,11 @@
 ﻿using System.Collections.Immutable;
+
 using Microsoft.CodeAnalysis;
 
 namespace Purview.Telemetry.SourceGenerator.Records;
 
 record MeterTarget(
-	TelemetryGenerationAttributeRecord  TelemetryGeneration,
+	TelemetryGenerationAttributeRecord TelemetryGeneration,
 	GenerationType GenerationType,
 
 	string ClassNameToGenerate,
@@ -47,7 +48,8 @@ record InstrumentTarget(
 	ImmutableArray<TelemetryDiagnosticDescriptor> ErrorDiagnostics,
 
 	TargetGeneration TargetGenerationState
-) {
+)
+{
 	public string TagPopulateMethodName => $"Populate{MethodName}Tags";
 }
 
@@ -69,7 +71,8 @@ record InstrumentParameterTarget(
 	Location? Location
 );
 
-enum InstrumentTypes {
+enum InstrumentTypes
+{
 	Counter,
 	UpDownCounter,
 	Histogram,
@@ -79,7 +82,8 @@ enum InstrumentTypes {
 	ObservableUpDownCounter
 }
 
-enum InstrumentParameterDestination {
+enum InstrumentParameterDestination
+{
 	Tag,
 	Measurement,
 	Unknown

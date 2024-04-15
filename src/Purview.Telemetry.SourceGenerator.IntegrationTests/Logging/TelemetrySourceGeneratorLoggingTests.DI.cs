@@ -1,8 +1,10 @@
 ﻿namespace Purview.Telemetry.SourceGenerator.Logging;
 
-partial class TelemetrySourceGeneratorLoggingTests {
+partial class TelemetrySourceGeneratorLoggingTests
+{
 	[Fact]
-	async public Task Generate_GivenAssemblyEnableDI_GeneratesLog() {
+	public async Task Generate_GivenAssemblyEnableDI_GeneratesLog()
+	{
 		// Arrange
 		const string basicLog = @"
 using Purview.Telemetry;
@@ -27,7 +29,8 @@ public interface ITestLogger {
 	}
 
 	[Fact]
-	async public Task Generate_GivenInterfaceEnableDI_GeneratesLog() {
+	public async Task Generate_GivenInterfaceEnableDI_GeneratesLog()
+	{
 		// Arrange
 		const string basicLog = @"
 using Purview.Telemetry;
@@ -51,7 +54,8 @@ public interface ITestLogger {
 	}
 
 	[Fact]
-	async public Task Generate_GivenDIDisabledAtAssemblyAndInterfaceEnableDI_GeneratesLog() {
+	public async Task Generate_GivenDIDisabledAtAssemblyAndInterfaceEnableDI_GeneratesLog()
+	{
 		// Arrange
 		const string basicLog = @"
 using Purview.Telemetry;
@@ -77,7 +81,8 @@ public interface ITestLogger {
 	}
 
 	[Fact]
-	async public Task Generate_GivenDIEnabledAtAssemblyAndInterfaceDisabledDI_GeneratesLog() {
+	public async Task Generate_GivenDIEnabledAtAssemblyAndInterfaceDisabledDI_GeneratesLog()
+	{
 		// Arrange
 		const string basicLog = @"
 using Purview.Telemetry;

@@ -1,8 +1,10 @@
 ﻿namespace Purview.Telemetry.SourceGenerator.Metrics;
 
-partial class TelemetrySourceGeneratorMetricsTests {
+partial class TelemetrySourceGeneratorMetricsTests
+{
 	[Fact]
-	async public Task Generate_GivenAssemblyEnableDI_GeneratesMetrics() {
+	public async Task Generate_GivenAssemblyEnableDI_GeneratesMetrics()
+	{
 		// Arrange
 		const string basicMetric = @"
 using Purview.Telemetry;
@@ -27,7 +29,8 @@ public interface ITestMetrics {
 	}
 
 	[Fact]
-	async public Task Generate_GivenInterfaceEnableDI_GeneratesMetrics() {
+	public async Task Generate_GivenInterfaceEnableDI_GeneratesMetrics()
+	{
 		// Arrange
 		const string basicMetric = @"
 using Purview.Telemetry;
@@ -51,7 +54,8 @@ public interface ITestMetrics {
 	}
 
 	[Fact]
-	async public Task Generate_GivenDIDisabledAtAssemblyAndInterfaceEnableDI_GeneratesMetrics() {
+	public async Task Generate_GivenDIDisabledAtAssemblyAndInterfaceEnableDI_GeneratesMetrics()
+	{
 		// Arrange
 		const string basicMetric = @"
 using Purview.Telemetry;
@@ -77,7 +81,8 @@ public interface ITestMetrics {
 	}
 
 	[Fact]
-	async public Task Generate_GivenDIEnabledAtAssemblyAndInterfaceDisabledDI_GeneratesMetrics() {
+	public async Task Generate_GivenDIEnabledAtAssemblyAndInterfaceDisabledDI_GeneratesMetrics()
+	{
 		// Arrange
 		const string basicMetric = @"
 using Purview.Telemetry;

@@ -21,11 +21,13 @@ namespace Purview.Telemetry;
 [System.AttributeUsage(System.AttributeTargets.Parameter, AllowMultiple = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class TagAttribute : System.Attribute {
+sealed class TagAttribute : System.Attribute
+{
 	/// <summary>
 	/// Creates a new instance of a <see cref="TagAttribute"/>.
 	/// </summary>
-	public TagAttribute() {
+	public TagAttribute()
+	{
 	}
 
 	/// <summary>
@@ -33,7 +35,8 @@ sealed class TagAttribute : System.Attribute {
 	/// <see cref="SkipOnNullOrEmpty"/> property.
 	/// </summary>
 	/// <param name="skipOnNullOrEmpty">Specifies the <see cref="SkipOnNullOrEmpty" />.</param>
-	public TagAttribute(bool skipOnNullOrEmpty) {
+	public TagAttribute(bool skipOnNullOrEmpty)
+	{
 		SkipOnNullOrEmpty = skipOnNullOrEmpty;
 	}
 
@@ -44,7 +47,8 @@ sealed class TagAttribute : System.Attribute {
 	/// </summary>
 	/// <param name="name">Specifies the key/ name of the tag.</param>
 	/// <param name="skipOnNullOrEmpty">Optionally specifies the <see cref="SkipOnNullOrEmpty" />.</param>
-	public TagAttribute(string? name, bool skipOnNullOrEmpty = false) {
+	public TagAttribute(string? name, bool skipOnNullOrEmpty = false)
+	{
 		Name = name;
 		SkipOnNullOrEmpty = skipOnNullOrEmpty;
 	}

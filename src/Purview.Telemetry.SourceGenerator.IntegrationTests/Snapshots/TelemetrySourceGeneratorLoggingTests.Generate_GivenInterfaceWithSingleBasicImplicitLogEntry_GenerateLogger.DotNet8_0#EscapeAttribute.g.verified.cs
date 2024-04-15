@@ -23,5 +23,6 @@ namespace Purview.Telemetry.Activities;
 /// </summary>
 [System.AttributeUsage(System.AttributeTargets.Parameter, AllowMultiple = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-sealed class EscapeAttribute : System.Attribute {
+sealed class EscapeAttribute : System.Attribute
+{
 }

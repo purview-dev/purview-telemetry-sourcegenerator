@@ -1,8 +1,10 @@
 ﻿namespace Purview.Telemetry.SourceGenerator.Metrics;
 
-partial class TelemetrySourceGeneratorMetricsTests {
+partial class TelemetrySourceGeneratorMetricsTests
+{
 	[Fact]
-	async public Task Generate_GivenBasicObservableGauge_GeneratesMetrics() {
+	public async Task Generate_GivenBasicObservableGauge_GeneratesMetrics()
+	{
 		// Arrange
 		const string basicMetric = @"
 using Purview.Telemetry.Metrics;

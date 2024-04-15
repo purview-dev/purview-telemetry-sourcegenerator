@@ -1,8 +1,10 @@
 ﻿namespace Purview.Telemetry.SourceGenerator.Logging;
 
-partial class TelemetrySourceGeneratorLoggingTests {
+partial class TelemetrySourceGeneratorLoggingTests
+{
 	[Fact]
-	async public Task Generate_GivenInterfaceWithSingleBasicExplicitLogEntry_GenerateLogger() {
+	public async Task Generate_GivenInterfaceWithSingleBasicExplicitLogEntry_GenerateLogger()
+	{
 		// Arrange
 		const string basicLogger = @"
 using Purview.Telemetry.Logging;
@@ -24,7 +26,8 @@ public interface ITestLogger {
 	}
 
 	[Fact]
-	async public Task Generate_GivenInterfaceWithSingleBasicImplicitLogEntry_GenerateLogger() {
+	public async Task Generate_GivenInterfaceWithSingleBasicImplicitLogEntry_GenerateLogger()
+	{
 		// Arrange
 		const string basicLogger = @"
 using Purview.Telemetry.Logging;
@@ -48,7 +51,8 @@ public interface ITestLogger {
 	[InlineData("Level = Microsoft.Extensions.Logging.LogLevel.Trace")]
 	[InlineData("level: Microsoft.Extensions.Logging.LogLevel.Trace")]
 	[InlineData("Microsoft.Extensions.Logging.LogLevel.Trace")]
-	async public Task Generate_GivenInterfaceWithExplicitLogLevelAndAnExceptionParameter_GenerateLogger(string level) {
+	public async Task Generate_GivenInterfaceWithExplicitLogLevelAndAnExceptionParameter_GenerateLogger(string level)
+	{
 		// Arrange
 		string basicLogger = @$"
 using Purview.Telemetry.Logging;
@@ -70,7 +74,8 @@ public interface ITestLogger {{
 	}
 
 	[Fact]
-	async public Task Generate_GivenInterfaceWithoutExplicitLogLevelAndAnExceptionParameter_GenerateLogger() {
+	public async Task Generate_GivenInterfaceWithoutExplicitLogLevelAndAnExceptionParameter_GenerateLogger()
+	{
 		// Arrange
 		const string basicLogger = @"
 using Purview.Telemetry.Logging;
@@ -91,7 +96,8 @@ public interface ITestLogger {
 	}
 
 	[Fact]
-	async public Task Generate_GivenInterfaceMoreThanSixParameters_RaisesDiagnostic() {
+	public async Task Generate_GivenInterfaceMoreThanSixParameters_RaisesDiagnostic()
+	{
 		// Arrange
 		const string basicLogger = @"
 using Purview.Telemetry.Logging;
@@ -115,7 +121,8 @@ public interface ITestLogger {
 	}
 
 	[Fact]
-	async public Task Generate_GivenInterfaceMoreThanOneExceptionParameter_RaisesDiagnostic() {
+	public async Task Generate_GivenInterfaceMoreThanOneExceptionParameter_RaisesDiagnostic()
+	{
 		// Arrange
 		const string basicLogger = @"
 using Purview.Telemetry.Logging;
@@ -139,7 +146,8 @@ public interface ITestLogger {
 	}
 
 	[Fact]
-	async public Task Generate_GivenMethodReturnsIDisposable_GeneratesScopedLogEntry() {
+	public async Task Generate_GivenMethodReturnsIDisposable_GeneratesScopedLogEntry()
+	{
 		// Arrange
 		const string basicLogger = @"
 using Purview.Telemetry.Logging;
@@ -160,7 +168,8 @@ public interface ITestLogger {
 	}
 
 	[Fact]
-	async public Task Generate_GivenMethodWithParamsAndExceptionReturnsIDisposable_GeneratesScopedLogEntry() {
+	public async Task Generate_GivenMethodWithParamsAndExceptionReturnsIDisposable_GeneratesScopedLogEntry()
+	{
 		// Arrange
 		const string basicLogger = @"
 using Purview.Telemetry.Logging;
@@ -181,7 +190,8 @@ public interface ITestLogger {
 	}
 
 	[Fact]
-	async public Task Generate_GivenMethodWithParamsReturnsIDisposable_GeneratesScopedLogEntry() {
+	public async Task Generate_GivenMethodWithParamsReturnsIDisposable_GeneratesScopedLogEntry()
+	{
 		// Arrange
 		const string basicLogger = @"
 using Purview.Telemetry.Logging;

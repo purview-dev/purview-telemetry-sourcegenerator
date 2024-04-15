@@ -1,8 +1,10 @@
 ﻿namespace Purview.Telemetry.SourceGenerator;
 
-partial class TelemetrySourceGeneratorTests {
+partial class TelemetrySourceGeneratorTests
+{
 	[Fact]
-	async public Task Generate_GivenNoNamespace_GeneratesTelemetry() {
+	public async Task Generate_GivenNoNamespace_GeneratesTelemetry()
+	{
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
@@ -42,7 +44,8 @@ public interface ITestTelemetry
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicTelemetryGen_GeneratesTelemetry() {
+	public async Task Generate_GivenBasicTelemetryGen_GeneratesTelemetry()
+	{
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
@@ -84,7 +87,8 @@ public interface ITestTelemetry
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicEventWithException_GeneratesTelemetry() {
+	public async Task Generate_GivenBasicEventWithException_GeneratesTelemetry()
+	{
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
@@ -107,7 +111,8 @@ public interface ITestTelemetry
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicEventWithExceptionAndEscape_GeneratesTelemetry() {
+	public async Task Generate_GivenBasicEventWithExceptionAndEscape_GeneratesTelemetry()
+	{
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
@@ -130,7 +135,8 @@ public interface ITestTelemetry
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicEventWithExceptionAndDisabledOTelExceptionRulesAndEscape_GeneratesTelemetry() {
+	public async Task Generate_GivenBasicEventWithExceptionAndDisabledOTelExceptionRulesAndEscape_GeneratesTelemetry()
+	{
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
@@ -153,7 +159,8 @@ public interface ITestTelemetry
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicEventWithExplicitExceptionAndNamedExceptionAndRulesAreFalse_GeneratesTelemetry() {
+	public async Task Generate_GivenBasicEventWithExplicitExceptionAndNamedExceptionAndRulesAreFalse_GeneratesTelemetry()
+	{
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
@@ -176,7 +183,8 @@ public interface ITestTelemetry
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicEventWithExplicitExceptionAndEventIsNamedExceptionAndRulesAreTrue_GeneratesTelemetry() {
+	public async Task Generate_GivenBasicEventWithExplicitExceptionAndEventIsNamedExceptionAndRulesAreTrue_GeneratesTelemetry()
+	{
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
@@ -199,7 +207,8 @@ public interface ITestTelemetry
 	}
 
 	[Fact]
-	async public Task Generate_GivenDuplicateTelemetryGen_GeneratesDiagnostics() {
+	public async Task Generate_GivenDuplicateTelemetryGen_GeneratesDiagnostics()
+	{
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;

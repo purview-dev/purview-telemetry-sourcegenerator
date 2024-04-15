@@ -2,12 +2,15 @@
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 
-static class EmitHelpers {
-	static public int EmitNamespaceStart(string? classNamespace, string[] parentClasses, StringBuilder builder, CancellationToken token) {
+static class EmitHelpers
+{
+	public static int EmitNamespaceStart(string? classNamespace, string[] parentClasses, StringBuilder builder, CancellationToken token)
+	{
 		token.ThrowIfCancellationRequested();
 
 		var indent = 0;
-		if (classNamespace != null) {
+		if (classNamespace != null)
+		{
 			builder
 				.Append("namespace ")
 				.AppendLine(classNamespace)
@@ -20,8 +23,10 @@ static class EmitHelpers {
 			indent++;
 		}
 
-		if (parentClasses.Length > 0) {
-			foreach (var parentClass in parentClasses.Reverse()) {
+		if (parentClasses.Length > 0)
+		{
+			foreach (var parentClass in parentClasses.Reverse())
+			{
 				builder
 					.Append(indent, "partial class ", withNewLine: false)
 					.Append(parentClass)
@@ -35,25 +40,22 @@ static class EmitHelpers {
 		return indent++;
 	}
 
-	static public void EmitNamespaceEnd(string? classNamespace, string[] parentClasses, int indent, StringBuilder builder, CancellationToken token) {
+	public static void EmitNamespaceEnd(string? classNamespace, string[] parentClasses, int indent, StringBuilder builder, CancellationToken token)
+	{
 		token.ThrowIfCancellationRequested();
 
-		if (parentClasses.Length > 0) {
-			foreach (var parentClass in parentClasses) {
-				builder
-					.Append(--indent, '}')
-				;
-			}
+		if (parentClasses.Length > 0)
+		{
+			foreach (var parentClass in parentClasses)
+				builder.Append(--indent, '}');
 		}
 
-		if (classNamespace != null) {
-			builder
-				.Append('}')
-			;
-		}
+		if (classNamespace != null)
+			builder.Append('}');
 	}
 
-	static public int EmitClassStart(string className, string fullyQualifiedInterface, StringBuilder builder, int indent, CancellationToken token) {
+	public static int EmitClassStart(string className, string fullyQualifiedInterface, StringBuilder builder, int indent, CancellationToken token)
+	{
 		token.ThrowIfCancellationRequested();
 
 		builder
@@ -68,9 +70,6 @@ static class EmitHelpers {
 		return indent;
 	}
 
-	static public void EmitClassEnd(StringBuilder builder, int indent) {
-		builder
-			.Append(indent, '}')
-		;
-	}
+	public static void EmitClassEnd(StringBuilder builder, int indent)
+		=> builder.Append(indent, '}');
 }

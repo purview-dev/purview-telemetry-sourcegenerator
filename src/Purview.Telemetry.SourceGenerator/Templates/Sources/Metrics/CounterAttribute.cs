@@ -6,11 +6,13 @@
 [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed public class CounterAttribute : System.Attribute {
+sealed class CounterAttribute : System.Attribute
+{
 	/// <summary>
 	/// Creates a new instance of the <see cref="CounterAttribute"/> class.
 	/// </summary>
-	public CounterAttribute() {
+	public CounterAttribute()
+	{
 	}
 
 	/// <summary>
@@ -18,7 +20,8 @@ sealed public class CounterAttribute : System.Attribute {
 	/// <see cref="AutoIncrement"/>.
 	/// </summary>
 	/// <param name="autoIncrement">Specifies the <see cref="AutoIncrement"/>.</param>
-	public CounterAttribute(bool autoIncrement) {
+	public CounterAttribute(bool autoIncrement)
+	{
 		AutoIncrement = autoIncrement;
 	}
 
@@ -31,7 +34,8 @@ sealed public class CounterAttribute : System.Attribute {
 	/// <param name="unit">Optionally specifies the <see cref="Unit"/>.</param>
 	/// <param name="description">Optionally specifies the <see cref="Description"/>.</param>
 	/// <param name="autoIncrement">Optionally specifies if the counter is <see cref="AutoIncrement">auto incremented</see>.</param>
-	public CounterAttribute(string name, string? unit = null, string? description = null, bool autoIncrement = false) {
+	public CounterAttribute(string name, string? unit = null, string? description = null, bool autoIncrement = false)
+	{
 		Name = name;
 		Unit = unit;
 		Description = description;

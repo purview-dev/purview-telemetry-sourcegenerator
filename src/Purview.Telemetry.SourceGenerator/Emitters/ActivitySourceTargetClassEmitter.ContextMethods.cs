@@ -5,8 +5,10 @@ using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
-partial class ActivitySourceTargetClassEmitter {
-	static void EmitContextMethodBody(StringBuilder builder, int indent, ActivityBasedGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger) {
+partial class ActivitySourceTargetClassEmitter
+{
+	static void EmitContextMethodBody(StringBuilder builder, int indent, ActivityBasedGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger)
+	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		if (!GuardParameters(methodTarget, context, logger,
@@ -16,13 +18,15 @@ partial class ActivitySourceTargetClassEmitter {
 			out var linksParam,
 			out var _,
 			out var _,
-			out var _)) {
+			out var _))
+		{
 			return;
 		}
 
 		var activityVariableName = activityParam?.ParameterName ?? (Constants.Activities.SystemDiagnostics.Activity + ".Current");
 
-		if (tagsParam != null) {
+		if (tagsParam != null)
+		{
 			logger?.Diagnostic("Tags parameter not allowed on context method, only activities or events.");
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
@@ -34,7 +38,8 @@ partial class ActivitySourceTargetClassEmitter {
 			return;
 		}
 
-		if (linksParam != null) {
+		if (linksParam != null)
+		{
 			logger?.Diagnostic("Links parameter not allowed on context method, only activities.");
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
@@ -58,13 +63,12 @@ partial class ActivitySourceTargetClassEmitter {
 		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, true, methodTarget, false, context, logger);
 		EmitTagsOrBaggageParameters(builder, indent, activityVariableName, false, methodTarget, false, context, logger);
 
-		builder
-			.Append(--indent, '}')
-		;
+		builder.Append(--indent, '}');
 
 		context.CancellationToken.ThrowIfCancellationRequested();
 
-		if (Constants.Activities.SystemDiagnostics.Activity.Equals(methodTarget.ReturnType)) {
+		if (Constants.Activities.SystemDiagnostics.Activity.Equals(methodTarget.ReturnType))
+		{
 			builder
 				.AppendLine()
 				.Append(indent, "return ", withNewLine: false)

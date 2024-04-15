@@ -1,8 +1,10 @@
 ﻿namespace Purview.Telemetry.SourceGenerator.Activities;
 
-partial class TelemetrySourceGeneratorActivityTests {
+partial class TelemetrySourceGeneratorActivityTests
+{
 	[Fact]
-	async public Task Generate_GivenBasicGen_GeneratesActivity() {
+	public async Task Generate_GivenBasicGen_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
@@ -27,7 +29,8 @@ public interface ITestActivities {
 	}
 
 	[Fact]
-	async public Task Generate_GivenWithNonStringBaggage_RaisesDiagnosticAndGenerates() {
+	public async Task Generate_GivenWithNonStringBaggage_RaisesDiagnosticAndGenerates()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
@@ -55,7 +58,8 @@ public interface ITestActivities {
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicGenWithReturningActivity_GeneratesActivity() {
+	public async Task Generate_GivenBasicGenWithReturningActivity_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
@@ -81,7 +85,8 @@ public interface ITestActivities {
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicGenWithReturningNullableActivity_GeneratesActivity() {
+	public async Task Generate_GivenBasicGenWithReturningNullableActivity_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
@@ -107,7 +112,8 @@ public interface ITestActivities {
 	}
 
 	[Fact]
-	async public Task Generate_GivenBasicGenWithNullableParams_GeneratesActivity() {
+	public async Task Generate_GivenBasicGenWithNullableParams_GeneratesActivity()
+	{
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;

@@ -1,8 +1,10 @@
 ﻿namespace Purview.Telemetry.SourceGenerator;
 
-partial class TelemetrySourceGeneratorTests {
+partial class TelemetrySourceGeneratorTests
+{
 	[Fact]
-	async public Task Generate_GivenICacheServiceProviderTelemetry_GeneratesTelemetry() {
+	public async Task Generate_GivenICacheServiceProviderTelemetry_GeneratesTelemetry()
+	{
 		// Arrange
 		const string basicTelemetry = @"
 using System.Diagnostics;

@@ -5,8 +5,10 @@ using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Emitters;
 
-partial class MeterTargetClassEmitter {
-	static int EmitInitializationMethod(MeterTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
+partial class MeterTargetClassEmitter
+{
+	static int EmitInitializationMethod(MeterTarget target, StringBuilder builder, int indent, SourceProductionContext context)
+	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
 		indent++;
@@ -28,7 +30,7 @@ partial class MeterTargetClassEmitter {
 
 		builder
 			.Append(indent, "if (", withNewLine: false)
-			.Append(_meterFieldName)
+			.Append(MeterFieldName)
 			.AppendLine(" != null)")
 			.Append(indent, '{')
 			.Append(indent + 1, "throw new ", withNewLine: false)
@@ -40,17 +42,17 @@ partial class MeterTargetClassEmitter {
 
 		builder
 			.AppendLine("#if NET8_0_OR_GREATER")
-			.Append(indent, _dictionaryStringObject, withNewLine: false)
+			.Append(indent, DictionaryStringObject, withNewLine: false)
 			.Append(' ')
 			.Append(meterTagsVariableName)
 			.Append(" = new ")
-			.Append(_dictionaryStringObject)
+			.Append(DictionaryStringObject)
 			.AppendLine("();")
 			.AppendLine()
 		;
 
 		builder
-			.Append(indent, _partialMeterTagsMethod, withNewLine: false)
+			.Append(indent, PartialMeterTagsMethod, withNewLine: false)
 			.Append('(')
 			.Append(meterTagsVariableName)
 			.AppendLine(");")
@@ -59,7 +61,7 @@ partial class MeterTargetClassEmitter {
 		;
 
 		builder
-			.Append(indent, _meterFieldName, withNewLine: false)
+			.Append(indent, MeterFieldName, withNewLine: false)
 			.AppendLine(" = ")
 		;
 
@@ -91,30 +93,27 @@ partial class MeterTargetClassEmitter {
 			.AppendLine("#endif")
 		;
 
-		foreach (var method in target.InstrumentationMethods) {
-			EmitInitialiseInstrumentVariable(method, builder, indent, context, logger);
-		}
+		foreach (var method in target.InstrumentationMethods)
+			EmitInitialiseInstrumentVariable(method, builder, indent);
 
 		indent--;
 
-		builder
-			.Append(indent, '}')
-		;
+		builder.Append(indent, '}');
 
 		return --indent;
 	}
 
-	static void EmitInitialiseInstrumentVariable(InstrumentTarget method, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger) {
-		if (method.ErrorDiagnostics.Length > 0) {
+	static void EmitInitialiseInstrumentVariable(InstrumentTarget method, StringBuilder builder, int indent)
+	{
+		if (method.ErrorDiagnostics.Length > 0)
 			// Already raised diagnostic.
 			return;
-		}
 
-		if (!method.TargetGenerationState.IsValid) {
+		if (!method.TargetGenerationState.IsValid)
 			return;
-		}
 
-		if (!method.IsObservable) {
+		if (!method.IsObservable)
+		{
 			var unit = method.InstrumentAttribute?.Unit?.Value?.Wrap() ?? Constants.System.NullKeyword;
 			var description = method.InstrumentAttribute?.Description?.Value?.Wrap() ?? Constants.System.NullKeyword;
 			var tagVariableType = Constants.System.Dictionary
@@ -150,7 +149,7 @@ partial class MeterTargetClassEmitter {
 			builder
 				.Append(indent, method.FieldName, withNewLine: false)
 				.Append(" = ")
-				.Append(_meterFieldName)
+				.Append(MeterFieldName)
 				.Append(".Create")
 				.Append(method.InstrumentAttribute!.InstrumentType)
 				.Append('<')

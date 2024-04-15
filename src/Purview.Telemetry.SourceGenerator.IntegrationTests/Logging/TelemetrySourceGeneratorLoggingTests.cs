@@ -2,5 +2,6 @@
 
 namespace Purview.Telemetry.SourceGenerator.Logging;
 
-public partial class TelemetrySourceGeneratorLoggingTests(ITestOutputHelper testOutputHelper) : IncrementalSourceGeneratorTestBase<TelemetrySourceGenerator>(testOutputHelper) {
+public partial class TelemetrySourceGeneratorLoggingTests(ITestOutputHelper testOutputHelper) : IncrementalSourceGeneratorTestBase<TelemetrySourceGenerator>(testOutputHelper)
+{
 }

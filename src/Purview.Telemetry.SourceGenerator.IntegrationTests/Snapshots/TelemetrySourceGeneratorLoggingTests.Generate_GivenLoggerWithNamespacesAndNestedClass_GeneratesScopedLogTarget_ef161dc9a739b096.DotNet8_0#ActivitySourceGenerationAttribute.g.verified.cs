@@ -22,15 +22,18 @@ namespace Purview.Telemetry.Activities;
 [System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class ActivitySourceGenerationAttribute : System.Attribute {
+sealed class ActivitySourceGenerationAttribute : System.Attribute
+{
 	/// <summary>
 	/// Constructs a new <see cref="ActivitySourceGenerationAttribute"/>.
 	/// </summary>
 	/// <param name="name">The name of the activity source.</param>
 	/// <param name="defaultToTags">Determines if the default for method parameters are Tags (default) or Baggage.</param>
 	/// <exception cref="ArgumentNullException">If the <paramref name="name"/> is null, empty or whitespace.</exception>
-	public ActivitySourceGenerationAttribute(string name, bool defaultToTags = true) {
-		if (string.IsNullOrWhiteSpace(name)) {
+	public ActivitySourceGenerationAttribute(string name, bool defaultToTags = true)
+	{
+		if (string.IsNullOrWhiteSpace(name))
+		{
 			throw new System.ArgumentNullException(nameof(name));
 		}
 
