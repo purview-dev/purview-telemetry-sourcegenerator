@@ -25,7 +25,7 @@ env:
 
 defaults:
   run:
-    shell: pwsh -nop -noni
+    shell: pwsh
     working-directory: src
 
 jobs:
