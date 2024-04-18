@@ -99,8 +99,7 @@ using Purview.Telemetry;
 				}
 
 				return false;
-			})
-		;
+			});
 
 		config?.Invoke(verifierTask);
 
