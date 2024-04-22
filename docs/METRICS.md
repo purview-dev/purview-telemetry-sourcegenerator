@@ -8,9 +8,9 @@ The types are hosted within the `Purview.Telemetry.Metrics` namespace, with the 
 
 To signal an interface for meter target generation, decorate the interface with the `MeterAttribute`. If the `MeterAttribute.Name` is not specified, the name of the interface, without the first 'I', will be used. For example `ICacheServiceTelemetry` would become `CacheServiceTelemetry`.
 
-When creating the meter types, the [IMeterFactory](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.imeterfactory).
+When creating the meter types, the [IMeterFactory](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.imeterfactory) is used by default, unless using .NET 7.
 
-> **Note**: In the case of .NET 7, the meters are created using the [Meter](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.meter) instead due to lack of support for the `IMeterFactory`.
+> **Note**: In the case of .NET 7, the meters are created using the [Meter](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.meter) class instead due to lack of support for the `IMeterFactory`.
 > Also note that any tags passed to any meter via the parameters on a method will be be ignored in .NET 7.
 
 ### Initialisation

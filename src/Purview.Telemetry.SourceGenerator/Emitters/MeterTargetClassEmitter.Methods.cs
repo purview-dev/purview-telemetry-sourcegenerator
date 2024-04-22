@@ -152,9 +152,9 @@ partial class MeterTargetClassEmitter
 		var tagVariableName = EmitTags(builder, indent, methodTarget, context);
 
 		if (methodTarget.IsObservable)
-			EmitObservableInstrumentBody(builder, indent, methodTarget, tagVariableName, logger);
+			EmitObservableInstrumentBody(builder, indent, methodTarget, tagVariableName);
 		else
-			EmitInstrumentBody(builder, indent, methodTarget, tagVariableName, logger);
+			EmitInstrumentBody(builder, indent, methodTarget, tagVariableName);
 
 		builder.Append(indent, '}');
 	}
@@ -220,7 +220,7 @@ partial class MeterTargetClassEmitter
 		;
 	}
 
-	static void EmitObservableInstrumentBody(StringBuilder builder, int indent, InstrumentTarget method, string? tagVariableName, IGenerationLogger? logger)
+	static void EmitObservableInstrumentBody(StringBuilder builder, int indent, InstrumentTarget method, string? tagVariableName)
 	{
 		indent++;
 
@@ -268,7 +268,7 @@ partial class MeterTargetClassEmitter
 		}
 	}
 
-	static void EmitInstrumentBody(StringBuilder builder, int indent, InstrumentTarget methodTarget, string? tagVariableName, IGenerationLogger? logger)
+	static void EmitInstrumentBody(StringBuilder builder, int indent, InstrumentTarget methodTarget, string? tagVariableName)
 	{
 		indent++;
 
