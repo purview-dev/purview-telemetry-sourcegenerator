@@ -24,24 +24,24 @@ partial class Constants
 		public static readonly TypeInfo Func = TypeInfo.Create("System.Func"); // <T>
 		public static readonly TypeInfo Action = TypeInfo.Create("System.Action"); // <T>
 
-		public static readonly TypeInfo String = TypeInfo.Create("System.String");
-		public static readonly TypeInfo Boolean = TypeInfo.Create("System.Boolean");
-		public static readonly TypeInfo Byte = TypeInfo.Create("System.Byte");
-		public static readonly TypeInfo Int16 = TypeInfo.Create("System.Int16");
-		public static readonly TypeInfo Int32 = TypeInfo.Create("System.Int32");
-		public static readonly TypeInfo Int64 = TypeInfo.Create("System.Int64");
-		public static readonly TypeInfo Single = TypeInfo.Create("System.Single");
-		public static readonly TypeInfo Double = TypeInfo.Create("System.Double");
-		public static readonly TypeInfo Decimal = TypeInfo.Create("System.Decimal");
-		public static readonly TypeInfo DateTimeOffset = TypeInfo.Create("System.DateTimeOffset");
+		public static readonly TypeInfo String = TypeInfo.Create<string>();
+		public static readonly TypeInfo Boolean = TypeInfo.Create<bool>();
+		public static readonly TypeInfo Byte = TypeInfo.Create<byte>();
+		public static readonly TypeInfo Int16 = TypeInfo.Create<short>(); // int16
+		public static readonly TypeInfo Int32 = TypeInfo.Create<int>(); // int32
+		public static readonly TypeInfo Int64 = TypeInfo.Create<long>(); // int64
+		public static readonly TypeInfo Single = TypeInfo.Create<float>(); // single
+		public static readonly TypeInfo Double = TypeInfo.Create<double>();
+		public static readonly TypeInfo Decimal = TypeInfo.Create<decimal>();
+		public static readonly TypeInfo DateTimeOffset = TypeInfo.Create<DateTimeOffset>();
 
 		public static readonly TypeInfo IEnumerable = TypeInfo.Create("System.Collections.Generic.IEnumerable"); // <>
 		public static readonly TypeInfo List = TypeInfo.Create("System.Collections.Generic.List"); // <>
 		public static readonly TypeInfo Dictionary = TypeInfo.Create("System.Collections.Generic.Dictionary"); // <>
 		public static readonly TypeInfo ConcurrentDictionary = TypeInfo.Create("System.Collections.Concurrent.ConcurrentDictionary"); // <>
 
-		public static readonly TypeInfo IDisposable = TypeInfo.Create("System.IDisposable");
-		public static readonly TypeInfo Exception = TypeInfo.Create("System.Exception");
+		public static readonly TypeInfo IDisposable = TypeInfo.Create<IDisposable>();
+		public static readonly TypeInfo Exception = TypeInfo.Create<Exception>();
 
 		public static readonly TypeInfo TagList = TypeInfo.Create(SystemDiagnosticsNamespace + ".TagList");
 

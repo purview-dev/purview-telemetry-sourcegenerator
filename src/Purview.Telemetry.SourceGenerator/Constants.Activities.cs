@@ -50,14 +50,14 @@ partial class Constants
 		}.ToImmutableDictionary();
 
 		public static TemplateInfo[] GetTemplates() => [
-				ActivitySourceGenerationAttribute,
+			ActivitySourceGenerationAttribute,
 			ActivitySourceAttribute,
 			ActivityAttribute,
 			EventAttribute,
 			ContextAttribute,
 			BaggageAttribute,
 			EscapeAttribute
-			];
+		];
 
 		public static class SystemDiagnostics
 		{
