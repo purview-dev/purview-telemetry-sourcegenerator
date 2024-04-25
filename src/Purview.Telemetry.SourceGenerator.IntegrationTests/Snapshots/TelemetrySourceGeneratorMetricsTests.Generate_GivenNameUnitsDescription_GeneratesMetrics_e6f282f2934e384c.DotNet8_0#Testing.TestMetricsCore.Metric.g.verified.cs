@@ -19,7 +19,7 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.Counter<System.Byte>? _metricInstrument = null;
+		System.Diagnostics.Metrics.Counter<byte>? _metricInstrument = null;
 
 		public TestMetricsCore(
 #if NET8_0_OR_GREATER
@@ -71,7 +71,7 @@ namespace Testing
 
 #endif
 
-			_metricInstrument = _meter.CreateCounter<System.Byte>(name: "a-counter-name-property", unit: "cakes-property", description: "cake sales per-capita-property."
+			_metricInstrument = _meter.CreateCounter<byte>(name: "a-counter-name-property", unit: "cakes-property", description: "cake sales per-capita-property."
 #if !NET7_0
 				, tags: metricTags
 #endif

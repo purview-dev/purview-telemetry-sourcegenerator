@@ -20,7 +20,7 @@ sealed partial class LoggingTelemetryCore : ILoggingTelemetry
 	static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.Guid, System.IDisposable?> _processingWorkItemAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.Guid>("LoggingTelemetry.ProcessingWorkItem: id: {Id}");
 	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, ItemTypes, System.Exception?> _processingItemTypeAction = Microsoft.Extensions.Logging.LoggerMessage.Define<ItemTypes>(Microsoft.Extensions.Logging.LogLevel.Trace, default, "LoggingTelemetry.ProcessingItemType: itemType: {ItemType}");
 	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.Exception?> _failedToProcessWorkItemAction = Microsoft.Extensions.Logging.LoggerMessage.Define(Microsoft.Extensions.Logging.LogLevel.Error, default, "LoggingTelemetry.FailedToProcessWorkItem");
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.Boolean, System.TimeSpan, System.Exception?> _processingCompleteAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.Boolean, System.TimeSpan>(Microsoft.Extensions.Logging.LogLevel.Information, default, "LoggingTelemetry.ProcessingComplete: success: {Success}, duration: {Duration}");
+	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, bool, System.TimeSpan, System.Exception?> _processingCompleteAction = Microsoft.Extensions.Logging.LoggerMessage.Define<bool, System.TimeSpan>(Microsoft.Extensions.Logging.LogLevel.Information, default, "LoggingTelemetry.ProcessingComplete: success: {Success}, duration: {Duration}");
 
 	public LoggingTelemetryCore(Microsoft.Extensions.Logging.ILogger<ILoggingTelemetry> logger)
 	{
@@ -59,7 +59,7 @@ sealed partial class LoggingTelemetryCore : ILoggingTelemetry
 
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-	public void ProcessingComplete(System.Boolean success, System.TimeSpan duration)
+	public void ProcessingComplete(bool success, System.TimeSpan duration)
 	{
 		if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
 		{

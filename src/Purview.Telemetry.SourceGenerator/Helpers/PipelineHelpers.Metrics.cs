@@ -58,9 +58,7 @@ partial class PipelineHelpers
 		{
 			meterName = interfaceSymbol.Name;
 			if (meterName[0] == 'I')
-			{
 				meterName = meterName.Substring(1);
-			}
 		}
 
 		return new(
@@ -127,13 +125,11 @@ partial class PipelineHelpers
 
 			var returnType = method.ReturnsVoid
 				? Constants.System.VoidKeyword
-				: Utilities.GetFullyQualifiedName(method.ReturnType);
+				: Utilities.GetFullyQualifiedOrSystemName(method.ReturnType);
 			var fieldName = $"_{Utilities.LowercaseFirstChar(method.Name)}Instrument";
 			var metricName = instrumentAttribute?.Name.Value;
 			if (string.IsNullOrWhiteSpace(metricName))
-			{
 				metricName = method.Name;
-			}
 
 			var validAutoCounter = instrumentAttribute?.InstrumentType is InstrumentTypes.Counter && instrumentAttribute.IsAutoIncrement;
 
@@ -172,9 +168,7 @@ partial class PipelineHelpers
 					if (validAutoCounter)
 					{
 						if (measurementParameters.Length > 0)
-						{
 							errorDiagnostics.Add(TelemetryDiagnostics.Metrics.AutoIncrementCountAndMeasurementParam);
-						}
 					}
 					else
 					{
@@ -182,16 +176,12 @@ partial class PipelineHelpers
 						if (instrumentAttribute.IsObservable)
 						{
 							if (!measurementParameter!.IsFunc)
-							{
 								errorDiagnostics.Add(TelemetryDiagnostics.Metrics.ObservableRequiredFunc);
-							}
 						}
 						else
 						{
 							if (measurementParameters.Length != 1)
-							{
 								errorDiagnostics.Add(TelemetryDiagnostics.Metrics.MoreThanOneMeasurementValueDefined);
-							}
 						}
 					}
 				}
@@ -199,18 +189,14 @@ partial class PipelineHelpers
 				if (instrumentAttribute != null)
 				{
 					if (!method.ReturnsVoid && !returnsBool)
-					{
 						errorDiagnostics.Add(TelemetryDiagnostics.Metrics.DoesNotReturnVoid);
-					}
 				}
 			}
 
 			var instrumentMeasurementType = measurementParameter?.InstrumentType ?? Constants.System.Int32;
 
 			if (measurementParameter != null && !measurementParameter.IsValidInstrumentType)
-			{
 				errorDiagnostics.Add(TelemetryDiagnostics.Metrics.InvalidMeasurementType);
-			}
 
 			methodTargets.Add(new(
 				MethodName: method.Name,
@@ -299,7 +285,7 @@ partial class PipelineHelpers
 											isValidInstrumentType = SharedHelpers.IsValidMeasurementValueType(measurementType.TypeArguments[0]);
 											if (isValidInstrumentType)
 											{
-												instrumentType = Utilities.GetFullyQualifiedName(measurementType.TypeArguments[0]);
+												instrumentType = Utilities.GetFullyQualifiedOrSystemName(measurementType.TypeArguments[0]);
 												destination = InstrumentParameterDestination.Measurement;
 
 												logger?.Debug($"Found valid instrument type: Func -> IEnumerable -> Measurement -> {instrumentType}");
@@ -314,7 +300,7 @@ partial class PipelineHelpers
 								isValidInstrumentType = SharedHelpers.IsValidMeasurementValueType(typeArg.TypeArguments[0]);
 								if (isValidInstrumentType)
 								{
-									instrumentType = Utilities.GetFullyQualifiedName(typeArg.TypeArguments[0]);
+									instrumentType = Utilities.GetFullyQualifiedOrSystemName(typeArg.TypeArguments[0]);
 									destination = InstrumentParameterDestination.Measurement;
 
 									logger?.Debug($"Found valid instrument type: Func -> Measurement -> {instrumentType}");
@@ -324,7 +310,7 @@ partial class PipelineHelpers
 							{
 								isValidInstrumentType = true;
 
-								instrumentType = Utilities.GetFullyQualifiedName(typeArg);
+								instrumentType = Utilities.GetFullyQualifiedOrSystemName(typeArg);
 								destination = InstrumentParameterDestination.Measurement;
 
 								logger?.Debug($"Found valid instrument type: Func -> {instrumentType}");
@@ -335,7 +321,7 @@ partial class PipelineHelpers
 							isValidInstrumentType = SharedHelpers.IsValidMeasurementValueType(parameterType.TypeArguments[0]);
 							if (isValidInstrumentType)
 							{
-								instrumentType = Utilities.GetFullyQualifiedName(parameterType.TypeArguments[0]);
+								instrumentType = Utilities.GetFullyQualifiedOrSystemName(parameterType.TypeArguments[0]);
 								destination = InstrumentParameterDestination.Measurement;
 
 								logger?.Debug($"Found valid instrument type: Func -> {instrumentType}");
@@ -348,7 +334,7 @@ partial class PipelineHelpers
 						isValidInstrumentType = SharedHelpers.IsValidMeasurementValueType(parameterType);
 						if (isValidInstrumentType)
 						{
-							instrumentType = Utilities.GetFullyQualifiedName(parameterType);
+							instrumentType = Utilities.GetFullyQualifiedOrSystemName(parameterType);
 							destination = InstrumentParameterDestination.Measurement;
 
 							logger?.Debug($"Found valid instrument type: {instrumentType}");

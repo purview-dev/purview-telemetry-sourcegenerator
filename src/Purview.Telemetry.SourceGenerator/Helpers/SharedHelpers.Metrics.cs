@@ -1,5 +1,4 @@
 ﻿using Microsoft.CodeAnalysis;
-
 using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
@@ -10,10 +9,9 @@ partial class SharedHelpers
 	{
 		token.ThrowIfCancellationRequested();
 
-		if (!Utilities.TryContainsAttribute(semanticModel.Compilation.Assembly, Constants.Metrics.MeterGenerationAttribute, token, out var attributeData))
-			return null;
-
-		return GetMeterGenerationAttribute(attributeData!, semanticModel, logger, token);
+		return Utilities.TryContainsAttribute(semanticModel.Compilation.Assembly, Constants.Metrics.MeterGenerationAttribute, token, out var attributeData)
+			? GetMeterGenerationAttribute(attributeData!, semanticModel, logger, token)
+			: null;
 	}
 
 	public static MeterAttributeRecord? GetMeterAttribute(
@@ -22,7 +20,6 @@ partial class SharedHelpers
 		IGenerationLogger? logger,
 		CancellationToken token)
 	{
-
 		AttributeStringValue? nameValue = null;
 		AttributeStringValue? instrumentPrefix = null;
 		AttributeValue<bool>? includeAssemblyInstrumentPrefix = null;
@@ -33,25 +30,15 @@ partial class SharedHelpers
 		(name, value) =>
 		{
 			if (name.Equals("Name", StringComparison.OrdinalIgnoreCase))
-			{
 				nameValue = new((string)value);
-			}
 			else if (name.Equals("InstrumentPrefix", StringComparison.OrdinalIgnoreCase))
-			{
 				instrumentPrefix = new((string)value);
-			}
 			else if (name.Equals("IncludeAssemblyInstrumentPrefix", StringComparison.OrdinalIgnoreCase))
-			{
 				includeAssemblyInstrumentPrefix = new((bool)value);
-			}
 			else if (name.Equals("LowercaseInstrumentName", StringComparison.OrdinalIgnoreCase))
-			{
 				lowercaseInstrumentName = new((bool)value);
-			}
 			else if (name.Equals("LowercaseTagKeys", StringComparison.OrdinalIgnoreCase))
-			{
 				lowercaseTagKeys = new((bool)value);
-			}
 		}, semanticModel, logger, token))
 		{
 			// Failed to parse correctly, so null it out.
@@ -73,7 +60,6 @@ partial class SharedHelpers
 		IGenerationLogger? logger,
 		CancellationToken token)
 	{
-
 		AttributeStringValue? instrumentPrefix = null;
 		AttributeStringValue? instrumentSeparator = null;
 		AttributeValue<bool>? lowercaseInstrumentName = null;
@@ -83,21 +69,13 @@ partial class SharedHelpers
 		(name, value) =>
 		{
 			if (name.Equals("InstrumentPrefix", StringComparison.OrdinalIgnoreCase))
-			{
 				instrumentPrefix = new((string)value);
-			}
 			else if (name.Equals("InstrumentSeparator", StringComparison.OrdinalIgnoreCase))
-			{
 				instrumentSeparator = new((string)value);
-			}
 			else if (name.Equals("LowercaseInstrumentName", StringComparison.OrdinalIgnoreCase))
-			{
 				lowercaseInstrumentName = new((bool)value);
-			}
 			else if (name.Equals("LowercaseTagKeys", StringComparison.OrdinalIgnoreCase))
-			{
 				lowercaseTagKeys = new((bool)value);
-			}
 		}, semanticModel, logger, token))
 		{
 			// Failed to parse correctly, so null it out.
@@ -150,29 +128,17 @@ partial class SharedHelpers
 
 		InstrumentTypes instrumentType;
 		if (Constants.Metrics.CounterAttribute.Equals(attributeData.AttributeClass))
-		{
 			instrumentType = InstrumentTypes.Counter;
-		}
 		else if (Constants.Metrics.HistogramAttribute.Equals(attributeData.AttributeClass))
-		{
 			instrumentType = InstrumentTypes.Histogram;
-		}
 		else if (Constants.Metrics.UpDownCounterAttribute.Equals(attributeData.AttributeClass))
-		{
 			instrumentType = InstrumentTypes.UpDownCounter;
-		}
 		else if (Constants.Metrics.ObservableCounterAttribute.Equals(attributeData.AttributeClass))
-		{
 			instrumentType = InstrumentTypes.ObservableCounter;
-		}
 		else if (Constants.Metrics.ObservableUpDownCounterAttribute.Equals(attributeData.AttributeClass))
-		{
 			instrumentType = InstrumentTypes.ObservableUpDownCounter;
-		}
 		else if (Constants.Metrics.ObservableGaugeAttribute.Equals(attributeData.AttributeClass))
-		{
 			instrumentType = InstrumentTypes.ObservableGauge;
-		}
 		else
 		{
 			logger?.Error($"Unknown instrument type {attributeData.AttributeClass}.");
@@ -192,7 +158,7 @@ partial class SharedHelpers
 
 	public static bool IsValidMeasurementValueType(ITypeSymbol type) =>
 		Array.FindIndex(Constants.Metrics.ValidMeasurementKeywordTypes, m => m == type.ToDisplayString()) > -1
-			|| Array.FindIndex(Constants.Metrics.ValidMeasurementTypes, m => m.Equals(type)) > -1;
+		|| Array.FindIndex(Constants.Metrics.ValidMeasurementTypes, m => m.Equals(type)) > -1;
 
 	public static bool TryGetInstrumentAttribute(IMethodSymbol method, CancellationToken token, out AttributeData? attributeData)
 	{
@@ -200,9 +166,7 @@ partial class SharedHelpers
 		foreach (var instrumentAttribute in Constants.Metrics.ValidInstrumentAttributes)
 		{
 			if (Utilities.TryContainsAttribute(method, instrumentAttribute, token, out attributeData))
-			{
 				return true;
-			}
 		}
 
 		return false;
@@ -213,9 +177,7 @@ partial class SharedHelpers
 		foreach (var instrumentAttribute in Constants.Metrics.ValidInstrumentAttributes)
 		{
 			if (Utilities.TryContainsAttribute(method, instrumentAttribute, token, out _))
-			{
 				return true;
-			}
 		}
 
 		return false;

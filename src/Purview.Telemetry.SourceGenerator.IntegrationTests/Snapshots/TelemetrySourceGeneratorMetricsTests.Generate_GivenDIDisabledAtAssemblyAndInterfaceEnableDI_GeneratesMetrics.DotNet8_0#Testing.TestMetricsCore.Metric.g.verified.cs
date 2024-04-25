@@ -19,7 +19,7 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.Counter<System.Int32>? _counterInstrument = null;
+		System.Diagnostics.Metrics.Counter<int>? _counterInstrument = null;
 
 		public TestMetricsCore(
 #if NET8_0_OR_GREATER
@@ -71,7 +71,7 @@ namespace Testing
 
 #endif
 
-			_counterInstrument = _meter.CreateCounter<System.Int32>(name: "Counter", unit: null, description: null
+			_counterInstrument = _meter.CreateCounter<int>(name: "Counter", unit: null, description: null
 #if !NET7_0
 				, tags: counterTags
 #endif

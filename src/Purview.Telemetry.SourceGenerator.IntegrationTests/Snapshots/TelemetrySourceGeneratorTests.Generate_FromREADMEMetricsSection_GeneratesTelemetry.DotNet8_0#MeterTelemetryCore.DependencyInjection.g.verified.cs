@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
 	static class MeterTelemetryCore
 	{
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		static public Microsoft.Extensions.DependencyInjection.IServiceCollection AddIMeterTelemetry(this Microsoft.Extensions.DependencyInjection.IServiceCollection services)
+		static public Microsoft.Extensions.DependencyInjection.IServiceCollection AddMeterTelemetry(this Microsoft.Extensions.DependencyInjection.IServiceCollection services)
 		{
 			services.Add(new Microsoft.Extensions.DependencyInjection.ServiceDescriptor(typeof(IMeterTelemetry), typeof(MeterTelemetryCore), Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton));
 

@@ -17,7 +17,7 @@ sealed partial class TestTelemetryCore : ITestTelemetry
 {
 	System.Diagnostics.Metrics.Meter _meter = default!;
 
-	System.Diagnostics.Metrics.Counter<System.Int32>? _counterInstrument = null;
+	System.Diagnostics.Metrics.Counter<int>? _counterInstrument = null;
 
 	public TestTelemetryCore(Microsoft.Extensions.Logging.ILogger<ITestTelemetry> logger
 #if NET8_0_OR_GREATER
@@ -70,7 +70,7 @@ sealed partial class TestTelemetryCore : ITestTelemetry
 
 #endif
 
-		_counterInstrument = _meter.CreateCounter<System.Int32>(name: "Counter", unit: null, description: null
+		_counterInstrument = _meter.CreateCounter<int>(name: "Counter", unit: null, description: null
 #if !NET7_0
 			, tags: counterTags
 #endif
@@ -100,7 +100,7 @@ sealed partial class TestTelemetryCore : ITestTelemetry
 #endif
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-	public System.Boolean Counter(int counterValue, int intParam, bool boolParam)
+	public bool Counter(int counterValue, int intParam, bool boolParam)
 	{
 		if (_counterInstrument == null)
 		{

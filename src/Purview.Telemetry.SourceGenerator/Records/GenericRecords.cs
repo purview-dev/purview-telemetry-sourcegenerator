@@ -29,15 +29,10 @@ record AttributeValue<T>
 		IsSet = false;
 	}
 
-	public T? Or(T value)
-	{
-		if (IsSet)
-		{
-			return Value;
-		}
-
-		return value;
-	}
+	public T? Or(T value) =>
+		IsSet
+			? Value
+			: value;
 
 	public T? Value { get; }
 
@@ -64,14 +59,9 @@ record AttributeStringValue
 	}
 
 	public string Or(string value)
-	{
-		if (IsSet && !string.IsNullOrWhiteSpace(Value))
-		{
-			return Value!;
-		}
-
-		return value;
-	}
+		=> IsSet && !string.IsNullOrWhiteSpace(Value)
+			? Value!
+			: value;
 
 	public string? Value { get; }
 

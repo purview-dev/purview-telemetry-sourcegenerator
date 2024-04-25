@@ -149,7 +149,7 @@ partial class MeterTargetClassEmitter
 		else
 			EmitInstrumentBodyTest(builder, indent, methodTarget);
 
-		var tagVariableName = EmitTags(builder, indent, methodTarget, context);
+		var tagVariableName = EmitTags(builder, indent, methodTarget);
 
 		if (methodTarget.IsObservable)
 			EmitObservableInstrumentBody(builder, indent, methodTarget, tagVariableName);
@@ -301,7 +301,7 @@ partial class MeterTargetClassEmitter
 		}
 	}
 
-	static string? EmitTags(StringBuilder builder, int indent, InstrumentTarget methodTarget, SourceProductionContext context)
+	static string? EmitTags(StringBuilder builder, int indent, InstrumentTarget methodTarget)
 	{
 		if (methodTarget.Tags.Length == 0)
 			return null;

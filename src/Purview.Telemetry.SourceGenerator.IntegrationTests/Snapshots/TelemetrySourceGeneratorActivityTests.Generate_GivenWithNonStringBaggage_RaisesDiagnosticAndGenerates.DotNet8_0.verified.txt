@@ -6,8 +6,8 @@
       Severity: Warning,
       WarningLevel: 1,
       Location: Guid_1: (12,64)-(12,72),
-      MessageFormat: A baggage parameter types only accept strings, your parameter will have ToString() called.,
-      Message: A baggage parameter types only accept strings, your parameter will have ToString() called.,
+      MessageFormat: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
+      Message: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Category: Activity.Usage
     },
     {
@@ -16,8 +16,8 @@
       Severity: Warning,
       WarningLevel: 1,
       Location: Guid_1: (12,88)-(12,97),
-      MessageFormat: A baggage parameter types only accept strings, your parameter will have ToString() called.,
-      Message: A baggage parameter types only accept strings, your parameter will have ToString() called.,
+      MessageFormat: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
+      Message: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Category: Activity.Usage
     },
     {
@@ -26,8 +26,8 @@
       Severity: Warning,
       WarningLevel: 1,
       Location: Guid_1: (15,64)-(15,72),
-      MessageFormat: A baggage parameter types only accept strings, your parameter will have ToString() called.,
-      Message: A baggage parameter types only accept strings, your parameter will have ToString() called.,
+      MessageFormat: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
+      Message: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Category: Activity.Usage
     },
     {
@@ -36,8 +36,8 @@
       Severity: Warning,
       WarningLevel: 1,
       Location: Guid_1: (15,89)-(15,98),
-      MessageFormat: A baggage parameter types only accept strings, your parameter will have ToString() called.,
-      Message: A baggage parameter types only accept strings, your parameter will have ToString() called.,
+      MessageFormat: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
+      Message: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Category: Activity.Usage
     },
     {
@@ -46,8 +46,8 @@
       Severity: Warning,
       WarningLevel: 1,
       Location: Guid_1: (18,31)-(18,42),
-      MessageFormat: A baggage parameter types only accept strings, your parameter will have ToString() called.,
-      Message: A baggage parameter types only accept strings, your parameter will have ToString() called.,
+      MessageFormat: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
+      Message: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Category: Activity.Usage
     },
     {
@@ -56,8 +56,8 @@
       Severity: Warning,
       WarningLevel: 1,
       Location: Guid_1: (18,96)-(18,106),
-      MessageFormat: A baggage parameter types only accept strings, your parameter will have ToString() called.,
-      Message: A baggage parameter types only accept strings, your parameter will have ToString() called.,
+      MessageFormat: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
+      Message: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Category: Activity.Usage
     }
   ]

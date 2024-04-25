@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
 	static class ActivityTelemetryCore
 	{
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		static public Microsoft.Extensions.DependencyInjection.IServiceCollection AddIActivityTelemetry(this Microsoft.Extensions.DependencyInjection.IServiceCollection services)
+		static public Microsoft.Extensions.DependencyInjection.IServiceCollection AddActivityTelemetry(this Microsoft.Extensions.DependencyInjection.IServiceCollection services)
 		{
 			services.Add(new Microsoft.Extensions.DependencyInjection.ServiceDescriptor(typeof(IActivityTelemetry), typeof(ActivityTelemetryCore), Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton));
 

@@ -29,7 +29,7 @@ When not using multi-targeting you can avoid adding the `LogAttribute` explicitl
 
 You can set the default log level using either the `LoggerAttribute.DefaultLevel` on the interface, or the `LoggerGenerationAttribute.DefaultLevel` on the assembly.
 
-If no level is specified on the method, and an `Exception` is defined the level is changed to an `Error` automatically. This also raises a diagnostic, that can safely be ignored or disabled.
+If no level is specified on the method, and an `Exception` is defined the level is changed to an `Error` automatically. This also raises the `TSG2002` diagnostic, that can safely be ignored if you are comfortable with this inferred behaviour.
 
 ## Types
 
@@ -39,10 +39,10 @@ Used to define the log entry details on a method.
 
 | Name | Type | Description |
 | -- | -- | -- |
-| Level | [Microsoft.Extensions.Logging.LogLevel](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loglevel) | Determines the level used when defining the log entry. Also available on construction. Defaults to Information. |
-| MessageTemplate | string? | Defines the template used to populate the log entry method. If one is not specified, it will automatically be generated based on the prefixes and the available parameters. Also available on construction. Defaults to null. |
-| EventId | int? | Used when generating the [EventId](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.eventid). Also available on construction. Defaults to null. One will be generated if one is not supplied. |
-| Name | string? | The name of the log entry, if one is not defined then the name of the method is used. Also available on construction. Defaults to null. |
+| Level | [Microsoft.Extensions.Logging.LogLevel](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loglevel) | Determines the level used when defining the log entry. Also available on construction. Defaults to `Information`. |
+| MessageTemplate | `string?` | Defines the template used to populate the log entry method. If one is not specified, it will automatically be generated based on the prefixes and the available parameters. Also available on construction. Defaults to `null`. |
+| EventId | `int?` | Used when generating the [EventId](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.eventid). Also available on construction. Defaults to `null`. One will be generated if one is not supplied. |
+| Name | `string?` | The name of the log entry, if one is not defined then the name of the method is used. Also available on construction. Defaults to `null`. |
 
 ### LoggerAttribute
 
@@ -50,8 +50,8 @@ Used to enrol an interface in the source generation process.
 
 | Name | Type | Description |
 | -- | -- | -- |
-| DefaultLevel | [Microsoft.Extensions.Logging.LogLevel](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loglevel) | Determines the default level to use when one is not provided. Also available on construction. Defaults to Information. |
-| CustomPrefix | string? | Used when generating the log entry name's prefix. If this is set, the `PrefixType` is automatically set to `Custom`. Also available on construction. Defaults to null. |
+| DefaultLevel | [Microsoft.Extensions.Logging.LogLevel](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loglevel) | Determines the default level to use when one is not provided. Also available on construction. Defaults to `Information`. |
+| CustomPrefix | `string?` | Used when generating the log entry name's prefix. If this is set, the `PrefixType` is automatically set to `Custom`. Also available on construction. Defaults to `null`. |
 | PrefixType | `Purview.Telemetry.Logging.LogPrefixType` | Determines the type of prefix to use when generating the log entry name. Defaults to `Default`. |
 
 ### LoggerGenerationAttribute
@@ -60,7 +60,7 @@ Used to control defaults at the assembly level.
 
 | Name | Type | Description |
 | -- | -- | -- |
-| DefaultLevel | [Microsoft.Extensions.Logging.LogLevel](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loglevel) | Determines the default level to use when one is not provided. Also available on construction. Defaults to Information. |
+| DefaultLevel | [Microsoft.Extensions.Logging.LogLevel](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loglevel) | Determines the default level to use when one is not provided. Also available on construction. Defaults to `Information`. |
 
 ### LogPrefixType
 
@@ -68,8 +68,8 @@ When generating a log entry name, provides options to customise the prefix.
 
 | Value | Description |
 | -- | -- |
-| Default | The name of the interface without the "I" prefix or "Log", "Logger" or "Telemetry" suffixes. |
-| Interface | Uses the name of the interface. |
-| Class | The name of the class used for generation. This can be specified using the `TelemetryGenerationAttribute.ClassName` property, or through auto generation. |
-| Custom | Used when the `LoggerAttribute.CustomPrefix` is set. |
-| NoSuffix | Does not generate any suffix. |
+| `Default` | The name of the interface without the "I" prefix or "Log", "Logger" or "Telemetry" suffixes. |
+| `Interface` | Uses the name of the interface. |
+| `Class` | The name of the class used for generation. This can be specified using the `TelemetryGenerationAttribute.ClassName` property, or through auto generation. |
+| `Custom` | Used when the `LoggerAttribute.CustomPrefix` is set. |
+| `NoSuffix` | Does not generate any suffix. |

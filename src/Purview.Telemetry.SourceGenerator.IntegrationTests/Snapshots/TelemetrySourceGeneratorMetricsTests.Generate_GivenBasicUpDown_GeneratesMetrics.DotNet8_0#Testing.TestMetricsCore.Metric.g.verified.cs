@@ -19,8 +19,8 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.UpDownCounter<System.Int32>? _upDownInstrument = null;
-		System.Diagnostics.Metrics.UpDownCounter<System.Int32>? _upDown2Instrument = null;
+		System.Diagnostics.Metrics.UpDownCounter<int>? _upDownInstrument = null;
+		System.Diagnostics.Metrics.UpDownCounter<int>? _upDown2Instrument = null;
 
 		public TestMetricsCore(
 #if NET8_0_OR_GREATER
@@ -72,7 +72,7 @@ namespace Testing
 
 #endif
 
-			_upDownInstrument = _meter.CreateUpDownCounter<System.Int32>(name: "UpDown", unit: null, description: null
+			_upDownInstrument = _meter.CreateUpDownCounter<int>(name: "UpDown", unit: null, description: null
 #if !NET7_0
 				, tags: upDownTags
 #endif
@@ -86,7 +86,7 @@ namespace Testing
 
 #endif
 
-			_upDown2Instrument = _meter.CreateUpDownCounter<System.Int32>(name: "UpDown2", unit: null, description: null
+			_upDown2Instrument = _meter.CreateUpDownCounter<int>(name: "UpDown2", unit: null, description: null
 #if !NET7_0
 				, tags: upDown2Tags
 #endif

@@ -93,11 +93,11 @@ More information can be found [here](./docs/LOGGING.md).
 
 ### Metrics
 
-This example shows each meter type currently supported. Note the `Counter` attribute is demoed twice. Once with `AutoIncrement` set to `true`, this means the measurement value is automatically set to increment by 1 each time the method is called. In the other (where `AutoIncrement` is `false`, it's default) the measurement value is specified explicitly as a parameter using the `InstrumentMeasurementAttribute`.
+This example shows each meter type currently supported. Note the `Counter` attribute is demoed twice. Once with `AutoIncrement` set to `true`, this means the measurement value is automatically set to increment by 1 each time the method is called. In the other example (where `AutoIncrement` is `false`, which is the default default) the measurement value is specified explicitly as a parameter using the `InstrumentMeasurementAttribute`.
 
 Non-auto increment meters must specify a measurement with one of the valid types: `byte`, `short`, `int`, `long`, `float`, `double`, and `decimal`.
 
-> Observable types must always have a `Func<>` with one of the following supported types:
+> Observable types must always have a `System.Func<>` with one of the following supported types:
 >
 > * Any one of the following supported measurement types: `byte`, `short`, `int`, `long`, `float`, `double`, or `decimal`
 > * `Measurement<T>` where `T` is one of valid measurement types above.

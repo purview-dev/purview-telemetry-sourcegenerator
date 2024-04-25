@@ -19,7 +19,7 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.ObservableCounter<System.Byte>? _metricInstrument = null;
+		System.Diagnostics.Metrics.ObservableCounter<byte>? _metricInstrument = null;
 
 		public TestMetricsCore(
 #if NET8_0_OR_GREATER
@@ -87,7 +87,7 @@ namespace Testing
 			metricTagList.Add("intparam", intParam);
 			metricTagList.Add("boolparam", boolParam);
 
-			_metricInstrument = _meter.CreateObservableCounter<System.Byte>("an-observablecounter-name-property", f, unit: "pie-property", description: "pie sales per-capita-property."
+			_metricInstrument = _meter.CreateObservableCounter<byte>("an-observablecounter-name-property", f, unit: "pie-property", description: "pie sales per-capita-property."
 #if !NET7_0
 				, tags: metricTagList
 #endif

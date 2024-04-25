@@ -17,11 +17,11 @@ sealed partial class TestTelemetryCore : ITestTelemetry
 {
 	readonly Microsoft.Extensions.Logging.ILogger<ITestTelemetry> _logger = default!;
 
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.Int32, System.Boolean, System.Exception?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.Int32, System.Boolean>(Microsoft.Extensions.Logging.LogLevel.Information, default, "TestTelemetry.Log: intParam: {IntParam}, boolParam: {BoolParam}");
-	static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.Int32, System.Boolean, System.IDisposable?> _logScopeAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.Int32, System.Boolean>("TestTelemetry.LogScope: intParam: {IntParam}, boolParam: {BoolParam}");
+	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, bool, System.Exception?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int, bool>(Microsoft.Extensions.Logging.LogLevel.Information, default, "TestTelemetry.Log: intParam: {IntParam}, boolParam: {BoolParam}");
+	static readonly System.Func<Microsoft.Extensions.Logging.ILogger, int, bool, System.IDisposable?> _logScopeAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<int, bool>("TestTelemetry.LogScope: intParam: {IntParam}, boolParam: {BoolParam}");
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-	public void Log(System.Int32 intParam, System.Boolean boolParam)
+	public void Log(int intParam, bool boolParam)
 	{
 		if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
 		{
@@ -33,7 +33,7 @@ sealed partial class TestTelemetryCore : ITestTelemetry
 
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-	public System.IDisposable? LogScope(System.Int32 intParam, System.Boolean boolParam)
+	public System.IDisposable? LogScope(int intParam, bool boolParam)
 	{
 		return _logScopeAction(_logger, intParam, boolParam);
 	}

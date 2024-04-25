@@ -17,10 +17,10 @@ sealed partial class ServiceTelemetryCore : IServiceTelemetry
 {
 	readonly Microsoft.Extensions.Logging.ILogger<IServiceTelemetry> _logger = default!;
 
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.Int32, System.String, System.Exception?> _processingEntityAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.Int32, System.String>(Microsoft.Extensions.Logging.LogLevel.Information, default, "ServiceTelemetry.ProcessingEntity: entityId: {EntityId}, property1: {Property1}");
+	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, string, System.Exception?> _processingEntityAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int, string>(Microsoft.Extensions.Logging.LogLevel.Information, default, "ServiceTelemetry.ProcessingEntity: entityId: {EntityId}, property1: {Property1}");
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-	public void ProcessingEntity(System.Int32 entityId, System.String property1)
+	public void ProcessingEntity(int entityId, string property1)
 	{
 		if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
 		{

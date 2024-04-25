@@ -19,9 +19,9 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.ObservableCounter<System.Int32>? _counterInstrument = null;
-		System.Diagnostics.Metrics.ObservableGauge<System.Int32>? _gaugeInstrument = null;
-		System.Diagnostics.Metrics.ObservableUpDownCounter<System.Int32>? _upDownInstrument = null;
+		System.Diagnostics.Metrics.ObservableCounter<int>? _counterInstrument = null;
+		System.Diagnostics.Metrics.ObservableGauge<int>? _gaugeInstrument = null;
+		System.Diagnostics.Metrics.ObservableUpDownCounter<int>? _upDownInstrument = null;
 
 		public TestMetricsCore(
 #if NET8_0_OR_GREATER
@@ -77,7 +77,7 @@ namespace Testing
 #endif
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public System.Boolean Counter(System.Func<int> counterValue, int intParam, bool boolParam)
+		public bool Counter(System.Func<int> counterValue, int intParam, bool boolParam)
 		{
 			if (_counterInstrument != null)
 			{
@@ -89,7 +89,7 @@ namespace Testing
 			counterTagList.Add("intparam", intParam);
 			counterTagList.Add("boolparam", boolParam);
 
-			_counterInstrument = _meter.CreateObservableCounter<System.Int32>("Counter", counterValue, unit: null, description: null
+			_counterInstrument = _meter.CreateObservableCounter<int>("Counter", counterValue, unit: null, description: null
 #if !NET7_0
 				, tags: counterTagList
 #endif
@@ -99,7 +99,7 @@ namespace Testing
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public System.Boolean Gauge(System.Func<int> counterValue, int intParam, bool boolParam)
+		public bool Gauge(System.Func<int> counterValue, int intParam, bool boolParam)
 		{
 			if (_gaugeInstrument != null)
 			{
@@ -111,7 +111,7 @@ namespace Testing
 			gaugeTagList.Add("intparam", intParam);
 			gaugeTagList.Add("boolparam", boolParam);
 
-			_gaugeInstrument = _meter.CreateObservableGauge<System.Int32>("Gauge", counterValue, unit: null, description: null
+			_gaugeInstrument = _meter.CreateObservableGauge<int>("Gauge", counterValue, unit: null, description: null
 #if !NET7_0
 				, tags: gaugeTagList
 #endif
@@ -121,7 +121,7 @@ namespace Testing
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public System.Boolean UpDown(System.Func<int> counterValue, int intParam, bool boolParam)
+		public bool UpDown(System.Func<int> counterValue, int intParam, bool boolParam)
 		{
 			if (_upDownInstrument != null)
 			{
@@ -133,7 +133,7 @@ namespace Testing
 			upDownTagList.Add("intparam", intParam);
 			upDownTagList.Add("boolparam", boolParam);
 
-			_upDownInstrument = _meter.CreateObservableUpDownCounter<System.Int32>("UpDown", counterValue, unit: null, description: null
+			_upDownInstrument = _meter.CreateObservableUpDownCounter<int>("UpDown", counterValue, unit: null, description: null
 #if !NET7_0
 				, tags: upDownTagList
 #endif

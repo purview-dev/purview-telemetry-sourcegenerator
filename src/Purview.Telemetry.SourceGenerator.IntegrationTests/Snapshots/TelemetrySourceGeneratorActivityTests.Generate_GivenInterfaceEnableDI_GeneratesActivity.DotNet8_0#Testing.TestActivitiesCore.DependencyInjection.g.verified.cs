@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
 	static class TestActivitiesCore
 	{
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		static public Microsoft.Extensions.DependencyInjection.IServiceCollection AddITestActivities(this Microsoft.Extensions.DependencyInjection.IServiceCollection services)
+		static public Microsoft.Extensions.DependencyInjection.IServiceCollection AddTestActivities(this Microsoft.Extensions.DependencyInjection.IServiceCollection services)
 		{
 			services.Add(new Microsoft.Extensions.DependencyInjection.ServiceDescriptor(typeof(Testing.ITestActivities), typeof(Testing.TestActivitiesCore), Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton));
 

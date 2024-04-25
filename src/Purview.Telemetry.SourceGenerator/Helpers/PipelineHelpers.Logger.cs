@@ -170,9 +170,7 @@ partial class PipelineHelpers
 	static string GetLogName(string interfaceName, string className, LoggerAttributeRecord loggerAttribute, LogAttributeRecord? logAttribute, string methodName)
 	{
 		if (logAttribute?.Name.IsSet == true)
-		{
 			methodName = logAttribute!.Name.Value!;
-		};
 
 		var prefixType = loggerAttribute.PrefixType.IsSet
 			? loggerAttribute.PrefixType.Value
@@ -182,9 +180,7 @@ partial class PipelineHelpers
 		{
 			// Default
 			if (interfaceName[0] == 'I')
-			{
 				interfaceName = interfaceName.Substring(1);
-			}
 
 			foreach (var suffix in SuffixesToRemove)
 			{
@@ -198,22 +194,16 @@ partial class PipelineHelpers
 			return $"{interfaceName}.{methodName}";
 		}
 		else if (prefixType == 1)
-		{
 			// Interface
 			return $"{interfaceName}.{methodName}";
-		}
 		else if (prefixType == 2)
-		{
 			// Class
 			return $"{className}.{methodName}";
-		}
 		else if (prefixType == 3)
 		{
 			// Custom
 			if (!string.IsNullOrWhiteSpace(loggerAttribute.CustomPrefix.Value))
-			{
 				return $"{loggerAttribute.CustomPrefix.Value}.{methodName}";
-			}
 		}
 
 		// This is the NoSuffix case or if it's Custom and the CustomPrefix is null, empty or whitespace.
@@ -228,17 +218,13 @@ partial class PipelineHelpers
 
 		var count = methodParameters.Count(m => !m.IsException);
 		if (count > 0)
-		{
 			builder.Append(": ");
-		}
 
 		var index = 0;
 		foreach (var parameter in methodParameters)
 		{
 			if (!isScoped && parameter.IsException)
-			{
 				continue;
-			}
 
 			builder
 				.Append(parameter.Name)
@@ -252,10 +238,8 @@ partial class PipelineHelpers
 		}
 
 		if (index > 0)
-		{
 			// Trim the last ", "
 			builder.Remove(builder.Length - 2, 2);
-		}
 
 		return builder.ToString();
 	}
@@ -270,7 +254,7 @@ partial class PipelineHelpers
 			parameters.Add(new(
 				Name: parameter.Name,
 				UpperCasedName: Utilities.UppercaseFirstChar(parameter.Name),
-				FullyQualifiedType: Utilities.GetFullyQualifiedName(parameter.Type),
+				FullyQualifiedType: Utilities.GetFullyQualifiedOrSystemName(parameter.Type),
 				IsNullable: parameter.NullableAnnotation == NullableAnnotation.Annotated,
 				IsException: Utilities.IsExceptionType(parameter.Type)
 			));

@@ -19,7 +19,7 @@ namespace Testing
 	{
 		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger = default!;
 
-		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.String, System.Int32, System.Boolean, System.Exception?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.String, System.Int32, System.Boolean>(Microsoft.Extensions.Logging.LogLevel.Information, default, "Test.CustomLogNameSetViaLogTargetAttribute: stringParam: {StringParam}, intParam: {IntParam}, boolParam: {BoolParam}");
+		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, string, int, bool, System.Exception?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.Define<string, int, bool>(Microsoft.Extensions.Logging.LogLevel.Information, default, "Test.CustomLogNameSetViaLogTargetAttribute: stringParam: {StringParam}, intParam: {IntParam}, boolParam: {BoolParam}");
 
 		public TestLoggerCore(Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
 		{
@@ -27,7 +27,7 @@ namespace Testing
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void Log(System.String stringParam, System.Int32 intParam, System.Boolean boolParam)
+		public void Log(string stringParam, int intParam, bool boolParam)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
 			{

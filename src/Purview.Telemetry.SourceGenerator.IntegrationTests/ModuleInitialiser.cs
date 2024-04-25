@@ -9,6 +9,7 @@ public static class ModuleInitialiser
 	[ModuleInitializer]
 	public static void Init()
 	{
+		DiffEngine.DiffRunner.MaxInstancesToLaunch(20);
 		VerifySourceGenerators.Initialize();
 	}
 }
