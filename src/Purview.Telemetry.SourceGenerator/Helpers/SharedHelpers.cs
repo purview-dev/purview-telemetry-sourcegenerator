@@ -213,14 +213,13 @@ static partial class SharedHelpers
 			? null
 			: GetTelemetryGenerationAttribute(typeAttribute, semanticModel, logger, token);
 
-		if (assemblyAttribute == null && typeGeneration == null)
-			return CreateDefault();
-
-		return new(
-			GenerateDependencyExtension: typeGeneration?.GenerateDependencyExtension ?? assemblyTelemetryGeneration?.GenerateDependencyExtension ?? new(true),
-			ClassName: typeGeneration?.ClassName ?? assemblyTelemetryGeneration?.ClassName ?? new(),
-			DependencyInjectionClassName: typeGeneration?.DependencyInjectionClassName ?? assemblyTelemetryGeneration?.DependencyInjectionClassName ?? new()
-		);
+		return assemblyAttribute == null && typeGeneration == null
+			? CreateDefault()
+			: new(
+				GenerateDependencyExtension: typeGeneration?.GenerateDependencyExtension ?? assemblyTelemetryGeneration?.GenerateDependencyExtension ?? new(true),
+				ClassName: typeGeneration?.ClassName ?? assemblyTelemetryGeneration?.ClassName ?? new(),
+				DependencyInjectionClassName: typeGeneration?.DependencyInjectionClassName ?? assemblyTelemetryGeneration?.DependencyInjectionClassName ?? new()
+			);
 
 		static TelemetryGenerationAttributeRecord CreateDefault()
 			=> new(
@@ -240,24 +239,21 @@ static partial class SharedHelpers
 		AttributeStringValue? className = null;
 		AttributeStringValue? dependencyInjectionClassName = null;
 
-		if (!AttributeParser(attributeData,
-			(name, value) =>
-			{
-				if (name.Equals("GenerateDependencyExtension", StringComparison.OrdinalIgnoreCase))
-					generateDependencyExtension = new((bool)value);
-				else if (name.Equals("ClassName", StringComparison.OrdinalIgnoreCase))
-					className = new((string)value);
-				else if (name.Equals("DependencyInjectionClassName", StringComparison.OrdinalIgnoreCase))
-					dependencyInjectionClassName = new((string)value);
-			}, semanticModel, logger, token))
-		{
-			return null;
-		}
-
-		return new(
-			GenerateDependencyExtension: generateDependencyExtension ?? new(true),
-			ClassName: className ?? new(),
-			DependencyInjectionClassName: dependencyInjectionClassName ?? new()
-		);
+		return AttributeParser(attributeData,
+				(name, value) =>
+				{
+					if (name.Equals("GenerateDependencyExtension", StringComparison.OrdinalIgnoreCase))
+						generateDependencyExtension = new((bool)value);
+					else if (name.Equals("ClassName", StringComparison.OrdinalIgnoreCase))
+						className = new((string)value);
+					else if (name.Equals("DependencyInjectionClassName", StringComparison.OrdinalIgnoreCase))
+						dependencyInjectionClassName = new((string)value);
+				}, semanticModel, logger, token)
+			? new(
+				GenerateDependencyExtension: generateDependencyExtension ?? new(true),
+				ClassName: className ?? new(),
+				DependencyInjectionClassName: dependencyInjectionClassName ?? new()
+			)
+			: null;
 	}
 }

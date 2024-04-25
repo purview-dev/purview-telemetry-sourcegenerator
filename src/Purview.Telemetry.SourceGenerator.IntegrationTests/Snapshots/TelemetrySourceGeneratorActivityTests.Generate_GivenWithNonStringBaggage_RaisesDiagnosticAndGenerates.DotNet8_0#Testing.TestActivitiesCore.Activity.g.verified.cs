@@ -68,7 +68,7 @@ namespace Testing
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void Context(object? objectParam, string stringNonNullParam, float? floatParam)
+		public void Context(System.Object? objectParam, string stringNonNullParam, float? floatParam)
 		{
 			if (System.Diagnostics.Activity.Current != null)
 			{

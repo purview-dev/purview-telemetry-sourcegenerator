@@ -16,19 +16,19 @@ This attribute is permitted on both the assembly and interface. Although take ca
 
 | Name | Type | Description |
 | -- | -- | -- |
-| GenerateDependencyExtension | bool | Controls if the dependency injection class and extension method is generated. This defaults to true. |
-| ClassName | string? | Explicitly set the name of the class to be generated, rather than using the interface name. This defaults to null, meaning the interface name is used. |
-| DependencyInjectionClassName | string? | Similar to `ClassName`, but explicitly sets the name of the DI class name. |
+| GenerateDependencyExtension | `bool` | Controls if the dependency injection class and extension method is generated. This defaults to `true`. |
+| ClassName | `string?` | Explicitly set the name of the class to be generated, rather than using the interface name. This defaults to `null`, meaning the interface name is used. |
+| DependencyInjectionClassName | `string?` | Similar to `ClassName`, but explicitly sets the name of the DI class name. |
 
 ### Dependency Injection
 
 By default each interface source will have a generated dependency injection extension method, extending the [IServiceCollection](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection).
 
-The format takes on the `Add{InterfaceName}` format. For example, given the `ICacheServiceTelemetry` example, this would generate an extension method called `AddICacheServiceTelemetry` and generated within the `Microsoft.Extensions.DependencyInjection` namespace.
+The generated method takes on the `Add{InterfaceName}` format, note that the interface name has any starting `I` removed. For example, given the `ICacheServiceTelemetry` interface, this would generate an extension method called `AddCacheServiceTelemetry`  within the `Microsoft.Extensions.DependencyInjection` namespace.
 
 When called, the source interface is added to the services collection as a singleton.
 
-This can be disabled by setting `TelemetryGenerationAttribute.GenerateDependencyExtension` to false at the assembly or on a per-interface basis.
+The generation can be disabled by setting `TelemetryGenerationAttribute.GenerateDependencyExtension` to `false` at the assembly level or on a per-interface basis.
 
 > **Note**: this requires adding the NuGet package [Microsoft.Extensions.DependencyInjection](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection).
 
@@ -36,4 +36,4 @@ This can be disabled by setting `TelemetryGenerationAttribute.GenerateDependency
 
 You can exclude any method on an interface by applying the `ExcludeAttribute`, in the `Purview.Telemetry` namespace.
 
-As the generated class is partial, you can implement any methods you required in isolation.
+As the generated telemetry class is partial, you can implement any excluded methods you require in isolation.

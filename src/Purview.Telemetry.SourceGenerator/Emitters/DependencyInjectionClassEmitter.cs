@@ -87,12 +87,17 @@ static class DependencyInjectionClassEmitter
 
 		logger?.Debug($"Emitting DI method for {interfaceName}.");
 
+		var methodName = interfaceName;
+		if (methodName[0] == 'I')
+			methodName = methodName.Substring(1);
+
+		methodName = $" Add{methodName}";
+
 		builder
 			.AggressiveInlining(indent)
 			.Append(indent, "static public ", withNewLine: false)
 			.Append(Constants.DependencyInjection.IServiceCollection)
-			.Append(" Add")
-			.Append(interfaceName)
+			.Append(methodName)
 			.Append("(this ")
 			.Append(Constants.DependencyInjection.IServiceCollection)
 			.AppendLine(" services)")

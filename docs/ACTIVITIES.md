@@ -102,10 +102,10 @@ Any that does not meet match those patterns will default to creating an activity
 
 If you decorate you parameter with either `TagAttribute` or `BaggageAttribute`, this will stop any inference.
 
-However, any non-decorated parameter can be treated as either a tag or baggage based on setting:
+However, any non-decorated parameter can be treated as either a tag or baggage based on default settings:
 
-* `ActivitySourceAttribute.DefaultToTags` on the interface to default to using tags (true) or baggage (false). The default is true.
-* `ActivitySourceGenerationAttribute.DefaultToTags` on the assembly to default to using tags (true) or baggage (false). The default is true.
+* `ActivitySourceAttribute.DefaultToTags` on the interface to default to using tags (`true`) or baggage (`false`). The default is `true`.
+* `ActivitySourceGenerationAttribute.DefaultToTags` on the assembly to default to using tags (`true`) or baggage (`false`). The default is `true`.
 
 See also the [TagAttribute](./TAGATTRIBUTE.md) and `BaggageAttribute` further down.
 
@@ -117,9 +117,9 @@ Used to define the Activity creation on a method.
 
 | Name | Type | Description |
 | -- | -- | -- |
-| Name | string | Determines the name of the activity. If this is not provided, the name of the method is used. Also available on construction. |
+| Name | `string` | Determines the name of the activity. If this is not provided, the name of the method is used. Also available on construction. |
 | Kind | [ActivityKind](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitykind) | Determines the kind used to create the activity. The default is `Internal`. This is also available on construction. |
-| CreateOnly | bool | Determines if the created activity is started or not. The default is false. If CreateOnly is specified as true, you must return the `Activity`/ `Activity?` from the method. |
+| CreateOnly | `bool` | Determines if the created activity is started or not. The default is `false`. If CreateOnly is specified as true, you must return the `Activity`/ `Activity?` from the method. |
 
 ### ActivitySourceAttribute
 
@@ -127,11 +127,11 @@ Used to define the creation of the [ActivitySource](https://learn.microsoft.com/
 
 | Name | Type | Description |
 | -- | -- | -- |
-| Name | string | Determines the name of the activity source. If this is not provided, either `ActivitySourceGenerationAttribute.Name` is used, or  `purview` is used. A warning is generated is a custom name is not defined anywhere. Also available on construction. |
-| DefaultToTags | bool | Determines if tags (true) are used, or baggage (false) when no `TagAttribute` or `BaggageAttribute` is defined on any parameters. Special-case parameters are matched first. |
-| BaggageAndTagPrefix | string | Determines the prefix to use for the tag or baggage name. The default is null. Useful for grouping. |
-| IncludeActivitySourcePrefix | bool | Determines if the `ActivitySourceGenerationAttribute.BaggageAndTagSeparator`, if set, is used to generate a prefix. The default is true. |
-| LowercaseBaggageAndTagKeys | bool | Determines if the name of the tag or baggage is lower-cased. The default is true. |
+| Name | `string` | Determines the name of the activity source. If this is not provided, either `ActivitySourceGenerationAttribute.Name` is used, or  `purview` is used. A warning is generated is a custom name is not defined anywhere. Also available on construction. |
+| DefaultToTags | `bool` | Determines if tags (`true`) are used, or baggage (`false`) when no `TagAttribute` or `BaggageAttribute` is defined on any parameters. Special-case parameters are matched first. |
+| BaggageAndTagPrefix | `string` | Determines the prefix to use for the tag or baggage name. The default is `null`. Useful for grouping. |
+| IncludeActivitySourcePrefix | `bool` | Determines if the `ActivitySourceGenerationAttribute.BaggageAndTagSeparator`, if set, is used to generate a prefix. The default is `true`. |
+| LowercaseBaggageAndTagKeys | `bool` | Determines if the name of the tag or baggage is lower-cased. The default is `true`. |
 
 ### ActivitySourceGenerationAttribute
 
@@ -139,11 +139,11 @@ Used to define the creation of the [ActivitySource](https://learn.microsoft.com/
 
 | Name | Type | Description |
 | -- | -- | -- |
-| Name | string | Determines the name of the activity source when one is not defined on an interface. Defaults to `purview`. |
-| DefaultToTags | bool | Determines if tags (true) are used, or baggage (false) when no `TagAttribute` or `BaggageAttribute` is defined on any parameters. Special-case parameters are matched first. |
-| BaggageAndTagPrefix | string | Determines the prefix to use for the tag or baggage name. The default is null. Useful for grouping. |
-| BaggageAndTagSeparator | string | Determines the separator use when generating prefixes. The default is `.`. |
-| LowercaseBaggageAndTagKeys | bool | Determines if the name of the tag or baggage is lower-cased. The default is true. |
+| Name | `string` | Determines the name of the activity source when one is not defined on an interface. Defaults to `purview`. |
+| DefaultToTags | `bool` | Determines if tags (`true`) are used, or baggage (`false`) when no `TagAttribute` or `BaggageAttribute` is defined on any parameters. Special-case parameters are matched first. |
+| BaggageAndTagPrefix | `string` | Determines the prefix to use for the tag or baggage name. The default is `null`. Useful for grouping. |
+| BaggageAndTagSeparator | `string` | Determines the separator use when generating prefixes. The default is `.`. |
+| LowercaseBaggageAndTagKeys | `bool` | Determines if the name of the tag or baggage is lower-cased. The default is `true`. |
 
 ### BaggageAttribute
 
@@ -151,8 +151,8 @@ Used to determine when a parameter is used to set baggage on either an Activity 
 
 | Name | Type | Description |
 | -- | -- | -- |
-| Name | string | Determines the name of the baggage. Defaults to null, meaning the name of the parameter is used. |
-| SkipOnNullOrEmpty | bool | Determines if the parameter is skipped (not added) when it's null or default. The default value is false. |
+| Name | `string` | Determines the name of the baggage. Defaults to `null`, meaning the name of the parameter is used. |
+| SkipOnNullOrEmpty | `bool` | Determines if the parameter is skipped (not added) when it's `null` or default. The default value is `false`. |
 
 ### ContextAttribute
 
@@ -174,6 +174,6 @@ Used to determine when a method creates an `ActivityEvent`.
 
 | Name | Type | Description |
 | -- | -- | -- |
-| Name | string | Determines the name of the event. If this is not provided, the name of the method is used. Also available on construction. |
-| UseRecordExceptionRules | bool | Determines if the Open Telemetry [exception](https://opentelemetry.io/docs/specs/otel/trace/exceptions/) rules should be followed when one of the parameters is an `Exception`. The default is true. |
-| RecordExceptionAsEscaped | bool | Determines what value is used for the `exception.escaped` value when `UseRecordExceptionRules` is true, and an exception is present. This can also be overridden using the `EscapeAttribute` The default is true. |
+| Name | `string` | Determines the name of the event. If this is not provided, the name of the method is used. Also available on construction. |
+| UseRecordExceptionRules | `bool` | Determines if the Open Telemetry [exception](https://opentelemetry.io/docs/specs/otel/trace/exceptions/) rules should be followed when one of the parameters is an `Exception`. The default is `true`. |
+| RecordExceptionAsEscaped | `bool` | Determines what value is used for the `exception.escaped` value when `UseRecordExceptionRules` is true, and an exception is present. This can also be overridden using the `EscapeAttribute` The default is `true`. |

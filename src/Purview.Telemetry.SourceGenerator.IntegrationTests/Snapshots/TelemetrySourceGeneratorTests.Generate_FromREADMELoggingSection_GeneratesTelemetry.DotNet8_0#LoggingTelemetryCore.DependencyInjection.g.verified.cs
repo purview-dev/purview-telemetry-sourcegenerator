@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
 	static class LoggingTelemetryCore
 	{
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		static public Microsoft.Extensions.DependencyInjection.IServiceCollection AddILoggingTelemetry(this Microsoft.Extensions.DependencyInjection.IServiceCollection services)
+		static public Microsoft.Extensions.DependencyInjection.IServiceCollection AddLoggingTelemetry(this Microsoft.Extensions.DependencyInjection.IServiceCollection services)
 		{
 			services.Add(new Microsoft.Extensions.DependencyInjection.ServiceDescriptor(typeof(ILoggingTelemetry), typeof(LoggingTelemetryCore), Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton));
 

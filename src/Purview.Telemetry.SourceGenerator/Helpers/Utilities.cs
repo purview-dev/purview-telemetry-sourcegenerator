@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Immutable;
+using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,6 +12,31 @@ static class Utilities
 	static readonly SymbolDisplayFormat SymbolDisplayFormat = new(
 		typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces
 	);
+
+	static readonly Lazy<ImmutableDictionary<Templates.TypeInfo, string>> _typeInfoToSystemTypeMapper = new(GenerateSystemTypeMap);
+	static readonly Lazy<ImmutableDictionary<string, string>> _fullTypeNameToSystemTypeMapper = new(() => _typeInfoToSystemTypeMapper.Value.ToImmutableDictionary(x => x.Key.FullName, x => x.Value));
+
+	static ImmutableDictionary<Templates.TypeInfo, string> GenerateSystemTypeMap()
+		// Putting this here ensures it's not accessed
+		// before the static fields have been initialised.
+		=> new Dictionary<Templates.TypeInfo, string>
+		{
+			{ Constants.System.String, Constants.System.StringKeyword },
+			{ Constants.System.Boolean, Constants.System.BoolKeyword },
+			{ Constants.System.Byte, Constants.System.ByteKeyword },
+			{ Constants.System.Int16, Constants.System.ShortKeyword },
+			{ Constants.System.Int32, Constants.System.IntKeyword },
+			{ Constants.System.Int64, Constants.System.LongKeyword },
+			{ Constants.System.Single, Constants.System.FloatKeyword },
+			{ Constants.System.Double, Constants.System.DoubleKeyword },
+			{ Constants.System.Decimal, Constants.System.DecimalKeyword }
+		}.ToImmutableDictionary();
+
+	static public string Convert(this Templates.TypeInfo type)
+		=> _typeInfoToSystemTypeMapper.Value.GetValueOrDefault(type, type.FullName);
+
+	static public string Convert(this string type)
+		=> _fullTypeNameToSystemTypeMapper.Value.GetValueOrDefault(type, type);
 
 	public static TargetGeneration IsValidGenerationTarget(IMethodSymbol method, GenerationType generationType, GenerationType requestedType)
 	{
@@ -120,6 +146,26 @@ static class Utilities
 		return builder;
 	}
 
+	public static StringBuilder Append(this StringBuilder builder, int tabs, Templates.TypeInfo typeInfo, bool withNewLine = true)
+	{
+		builder
+			.AppendTabs(tabs)
+			.Append(typeInfo.Convert());
+
+		if (withNewLine)
+			builder.AppendLine();
+
+		return builder;
+	}
+
+
+	public static StringBuilder Append(this StringBuilder builder, Templates.TypeInfo typeInfo)
+	{
+		builder.Append(typeInfo.Convert());
+
+		return builder;
+	}
+
 	//static public StringBuilder AppendLines(this StringBuilder builder, int lineCount = 2) {
 	//	for (var i = 0; i < lineCount; i++) {
 	//		builder.AppendLine();
@@ -215,10 +261,9 @@ static class Utilities
 			parentClass = parentClass.Parent as ClassDeclarationSyntax;
 		}
 
-		if (parentClasses.Count == 0)
-			return null;
-
-		return string.Join(".", parentClasses);
+		return parentClasses.Count == 0
+			? null
+			: string.Join(".", parentClasses);
 	}
 
 	public static string? GetNamespace(TypeDeclarationSyntax typeSymbol)
@@ -250,13 +295,13 @@ static class Utilities
 		return null;
 	}
 
-	public static string GetFullyQualifiedName(ITypeSymbol namedType, bool trimNullableAnnotation = true)
+	public static string GetFullyQualifiedOrSystemName(ITypeSymbol namedType, bool trimNullableAnnotation = true)
 	{
 		var result = namedType.ToDisplayString(SymbolDisplayFormat) ?? namedType.ToString();
 		if (trimNullableAnnotation && namedType.NullableAnnotation == NullableAnnotation.Annotated)
 			result = result.TrimEnd('?');
 
-		return result;
+		return result.Convert();
 	}
 
 	//static public string GetFullyQualifiedName(TypeDeclarationSyntax type)

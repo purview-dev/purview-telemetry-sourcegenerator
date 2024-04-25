@@ -128,7 +128,7 @@ partial class PipelineHelpers
 
 			var returnType = method.ReturnsVoid
 				? Constants.System.VoidKeyword
-				: Utilities.GetFullyQualifiedName(method.ReturnType);
+				: Utilities.GetFullyQualifiedOrSystemName(method.ReturnType);
 
 			methodTargets.Add(new(
 				MethodName: method.Name,
@@ -161,7 +161,6 @@ partial class PipelineHelpers
 		IGenerationLogger? logger,
 		CancellationToken token)
 	{
-
 		List<ActivityBasedParameterTarget> parameterTargets = [];
 		foreach (var parameter in method.Parameters)
 		{
@@ -210,7 +209,7 @@ partial class PipelineHelpers
 				tagOrBaggageAttribute = SharedHelpers.GetTagOrBaggageAttribute(attribute, semanticModel, logger, token);
 
 			var parameterName = parameter.Name;
-			var parameterType = parameter.Type.ToDisplayString().TrimEnd('?');
+			var parameterType = Utilities.GetFullyQualifiedOrSystemName(parameter.Type);
 			var generatedName = GenerateParameterName(tagOrBaggageAttribute?.Name.Value ?? parameterName, prefix, lowercaseBaggageAndTagKeys);
 
 			parameterTargets.Add(new(
@@ -228,7 +227,11 @@ partial class PipelineHelpers
 		return [.. parameterTargets];
 	}
 
-	static (ActivityMethodType, bool) GetMethodType(IMethodSymbol method, SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token,
+	static (ActivityMethodType, bool) GetMethodType(
+		IMethodSymbol method,
+		SemanticModel semanticModel,
+		IGenerationLogger? logger,
+		CancellationToken token,
 		out ActivityAttributeRecord? activityAttribute,
 		out EventAttributeRecord? eventAttribute)
 	{

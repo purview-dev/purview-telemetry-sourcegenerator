@@ -19,7 +19,7 @@ namespace Testing
 	{
 		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger = default!;
 
-		static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.String, System.Int32, System.Exception, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.String, System.Int32, System.Exception>("Test.Log: stringParam: {StringParam}, intParam: {IntParam}, exception: {Exception}");
+		static readonly System.Func<Microsoft.Extensions.Logging.ILogger, string, int, System.Exception, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<string, int, System.Exception>("Test.Log: stringParam: {StringParam}, intParam: {IntParam}, exception: {Exception}");
 
 		public TestLoggerCore(Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
 		{
@@ -27,7 +27,7 @@ namespace Testing
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public System.IDisposable? Log(System.String stringParam, System.Int32 intParam, System.Exception exception)
+		public System.IDisposable? Log(string stringParam, int intParam, System.Exception exception)
 		{
 			return _logAction(_logger, stringParam, intParam, exception);
 		}

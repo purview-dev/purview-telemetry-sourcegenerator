@@ -11,7 +11,7 @@ partial class TelemetryDiagnostics
 		public static readonly TelemetryDiagnosticDescriptor BaggageParameterShouldBeString = new(
 			Id: "TSG3000",
 			Title: "Baggage parameter types only accept strings.",
-			Description: "A baggage parameter types only accept strings, your parameter will have ToString() called.",
+			Description: "Baggage parameter types only accept strings, be aware this parameter will have ToString() called.",
 			Category: Constants.Diagnostics.Activity.Usage,
 			Severity: DiagnosticSeverity.Warning
 		);

@@ -19,8 +19,8 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.Histogram<System.Int32>? _histogramInstrument = null;
-		System.Diagnostics.Metrics.Histogram<System.Int32>? _histogram1Instrument = null;
+		System.Diagnostics.Metrics.Histogram<int>? _histogramInstrument = null;
+		System.Diagnostics.Metrics.Histogram<int>? _histogram1Instrument = null;
 
 		public TestMetricsCore(
 #if NET8_0_OR_GREATER
@@ -72,7 +72,7 @@ namespace Testing
 
 #endif
 
-			_histogramInstrument = _meter.CreateHistogram<System.Int32>(name: "Histogram", unit: null, description: null
+			_histogramInstrument = _meter.CreateHistogram<int>(name: "Histogram", unit: null, description: null
 #if !NET7_0
 				, tags: histogramTags
 #endif
@@ -86,7 +86,7 @@ namespace Testing
 
 #endif
 
-			_histogram1Instrument = _meter.CreateHistogram<System.Int32>(name: "Histogram1", unit: null, description: null
+			_histogram1Instrument = _meter.CreateHistogram<int>(name: "Histogram1", unit: null, description: null
 #if !NET7_0
 				, tags: histogram1Tags
 #endif

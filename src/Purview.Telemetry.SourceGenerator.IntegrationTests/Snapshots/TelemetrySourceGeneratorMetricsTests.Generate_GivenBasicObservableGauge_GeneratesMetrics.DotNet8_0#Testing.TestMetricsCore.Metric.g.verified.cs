@@ -19,9 +19,9 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.ObservableGauge<System.Int32>? _observableGaugeInstrument = null;
-		System.Diagnostics.Metrics.ObservableGauge<System.Int32>? _observableGauge2Instrument = null;
-		System.Diagnostics.Metrics.ObservableGauge<System.Int32>? _observableGauge3Instrument = null;
+		System.Diagnostics.Metrics.ObservableGauge<int>? _observableGaugeInstrument = null;
+		System.Diagnostics.Metrics.ObservableGauge<int>? _observableGauge2Instrument = null;
+		System.Diagnostics.Metrics.ObservableGauge<int>? _observableGauge3Instrument = null;
 
 		public TestMetricsCore(
 #if NET8_0_OR_GREATER
@@ -89,7 +89,7 @@ namespace Testing
 			observableGaugeTagList.Add("intparam", intParam);
 			observableGaugeTagList.Add("boolparam", boolParam);
 
-			_observableGaugeInstrument = _meter.CreateObservableGauge<System.Int32>("ObservableGauge", f, unit: null, description: null
+			_observableGaugeInstrument = _meter.CreateObservableGauge<int>("ObservableGauge", f, unit: null, description: null
 #if !NET7_0
 				, tags: observableGaugeTagList
 #endif
@@ -97,7 +97,7 @@ namespace Testing
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void ObservableGauge2(System.Func<System.Diagnostics.Metrics.Measurement<System.Int32>> f, int intParam, bool boolParam)
+		public void ObservableGauge2(System.Func<System.Diagnostics.Metrics.Measurement<int>> f, int intParam, bool boolParam)
 		{
 			if (_observableGauge2Instrument != null)
 			{
@@ -109,7 +109,7 @@ namespace Testing
 			observableGauge2TagList.Add("intparam", intParam);
 			observableGauge2TagList.Add("boolparam", boolParam);
 
-			_observableGauge2Instrument = _meter.CreateObservableGauge<System.Int32>("ObservableGauge2", f, unit: null, description: null
+			_observableGauge2Instrument = _meter.CreateObservableGauge<int>("ObservableGauge2", f, unit: null, description: null
 #if !NET7_0
 				, tags: observableGauge2TagList
 #endif
@@ -117,7 +117,7 @@ namespace Testing
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void ObservableGauge3(System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<System.Int32>>> f, int intParam, bool boolParam)
+		public void ObservableGauge3(System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<int>>> f, int intParam, bool boolParam)
 		{
 			if (_observableGauge3Instrument != null)
 			{
@@ -129,7 +129,7 @@ namespace Testing
 			observableGauge3TagList.Add("intparam", intParam);
 			observableGauge3TagList.Add("boolparam", boolParam);
 
-			_observableGauge3Instrument = _meter.CreateObservableGauge<System.Int32>("ObservableGauge3", f, unit: null, description: null
+			_observableGauge3Instrument = _meter.CreateObservableGauge<int>("ObservableGauge3", f, unit: null, description: null
 #if !NET7_0
 				, tags: observableGauge3TagList
 #endif

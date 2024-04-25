@@ -19,13 +19,13 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.Counter<System.Int32>? _counterInstrument = null;
-		System.Diagnostics.Metrics.Counter<System.Byte>? _counter2Instrument = null;
-		System.Diagnostics.Metrics.Counter<System.Int64>? _counter3Instrument = null;
-		System.Diagnostics.Metrics.Counter<System.Int16>? _counter4Instrument = null;
-		System.Diagnostics.Metrics.Counter<System.Double>? _counter5Instrument = null;
-		System.Diagnostics.Metrics.Counter<System.Single>? _counter6Instrument = null;
-		System.Diagnostics.Metrics.Counter<System.Decimal>? _counter7Instrument = null;
+		System.Diagnostics.Metrics.Counter<int>? _counterInstrument = null;
+		System.Diagnostics.Metrics.Counter<byte>? _counter2Instrument = null;
+		System.Diagnostics.Metrics.Counter<long>? _counter3Instrument = null;
+		System.Diagnostics.Metrics.Counter<short>? _counter4Instrument = null;
+		System.Diagnostics.Metrics.Counter<double>? _counter5Instrument = null;
+		System.Diagnostics.Metrics.Counter<float>? _counter6Instrument = null;
+		System.Diagnostics.Metrics.Counter<decimal>? _counter7Instrument = null;
 
 		public TestMetricsCore(
 #if NET8_0_OR_GREATER
@@ -77,7 +77,7 @@ namespace Testing
 
 #endif
 
-			_counterInstrument = _meter.CreateCounter<System.Int32>(name: "Counter", unit: null, description: null
+			_counterInstrument = _meter.CreateCounter<int>(name: "Counter", unit: null, description: null
 #if !NET7_0
 				, tags: counterTags
 #endif
@@ -91,7 +91,7 @@ namespace Testing
 
 #endif
 
-			_counter2Instrument = _meter.CreateCounter<System.Byte>(name: "Counter2", unit: null, description: null
+			_counter2Instrument = _meter.CreateCounter<byte>(name: "Counter2", unit: null, description: null
 #if !NET7_0
 				, tags: counter2Tags
 #endif
@@ -105,7 +105,7 @@ namespace Testing
 
 #endif
 
-			_counter3Instrument = _meter.CreateCounter<System.Int64>(name: "Counter3", unit: null, description: null
+			_counter3Instrument = _meter.CreateCounter<long>(name: "Counter3", unit: null, description: null
 #if !NET7_0
 				, tags: counter3Tags
 #endif
@@ -119,7 +119,7 @@ namespace Testing
 
 #endif
 
-			_counter4Instrument = _meter.CreateCounter<System.Int16>(name: "Counter4", unit: null, description: null
+			_counter4Instrument = _meter.CreateCounter<short>(name: "Counter4", unit: null, description: null
 #if !NET7_0
 				, tags: counter4Tags
 #endif
@@ -133,7 +133,7 @@ namespace Testing
 
 #endif
 
-			_counter5Instrument = _meter.CreateCounter<System.Double>(name: "Counter5", unit: null, description: null
+			_counter5Instrument = _meter.CreateCounter<double>(name: "Counter5", unit: null, description: null
 #if !NET7_0
 				, tags: counter5Tags
 #endif
@@ -147,7 +147,7 @@ namespace Testing
 
 #endif
 
-			_counter6Instrument = _meter.CreateCounter<System.Single>(name: "Counter6", unit: null, description: null
+			_counter6Instrument = _meter.CreateCounter<float>(name: "Counter6", unit: null, description: null
 #if !NET7_0
 				, tags: counter6Tags
 #endif
@@ -161,7 +161,7 @@ namespace Testing
 
 #endif
 
-			_counter7Instrument = _meter.CreateCounter<System.Decimal>(name: "Counter7", unit: null, description: null
+			_counter7Instrument = _meter.CreateCounter<decimal>(name: "Counter7", unit: null, description: null
 #if !NET7_0
 				, tags: counter7Tags
 #endif

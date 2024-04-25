@@ -19,9 +19,9 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.ObservableUpDownCounter<System.Int32>? _observableUpDownInstrument = null;
-		System.Diagnostics.Metrics.ObservableUpDownCounter<System.Int32>? _observableUpDown2Instrument = null;
-		System.Diagnostics.Metrics.ObservableUpDownCounter<System.Int32>? _observableUpDown3Instrument = null;
+		System.Diagnostics.Metrics.ObservableUpDownCounter<int>? _observableUpDownInstrument = null;
+		System.Diagnostics.Metrics.ObservableUpDownCounter<int>? _observableUpDown2Instrument = null;
+		System.Diagnostics.Metrics.ObservableUpDownCounter<int>? _observableUpDown3Instrument = null;
 
 		public TestMetricsCore(
 #if NET8_0_OR_GREATER
@@ -89,7 +89,7 @@ namespace Testing
 			observableUpDownTagList.Add("intparam", intParam);
 			observableUpDownTagList.Add("boolparam", boolParam);
 
-			_observableUpDownInstrument = _meter.CreateObservableUpDownCounter<System.Int32>("ObservableUpDown", f, unit: null, description: null
+			_observableUpDownInstrument = _meter.CreateObservableUpDownCounter<int>("ObservableUpDown", f, unit: null, description: null
 #if !NET7_0
 				, tags: observableUpDownTagList
 #endif
@@ -97,7 +97,7 @@ namespace Testing
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void ObservableUpDown2(System.Func<System.Diagnostics.Metrics.Measurement<System.Int32>> f, int intParam, bool boolParam)
+		public void ObservableUpDown2(System.Func<System.Diagnostics.Metrics.Measurement<int>> f, int intParam, bool boolParam)
 		{
 			if (_observableUpDown2Instrument != null)
 			{
@@ -109,7 +109,7 @@ namespace Testing
 			observableUpDown2TagList.Add("intparam", intParam);
 			observableUpDown2TagList.Add("boolparam", boolParam);
 
-			_observableUpDown2Instrument = _meter.CreateObservableUpDownCounter<System.Int32>("ObservableUpDown2", f, unit: null, description: null
+			_observableUpDown2Instrument = _meter.CreateObservableUpDownCounter<int>("ObservableUpDown2", f, unit: null, description: null
 #if !NET7_0
 				, tags: observableUpDown2TagList
 #endif
@@ -117,7 +117,7 @@ namespace Testing
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void ObservableUpDown3(System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<System.Int32>>> f, int intParam, bool boolParam)
+		public void ObservableUpDown3(System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<int>>> f, int intParam, bool boolParam)
 		{
 			if (_observableUpDown3Instrument != null)
 			{
@@ -129,7 +129,7 @@ namespace Testing
 			observableUpDown3TagList.Add("intparam", intParam);
 			observableUpDown3TagList.Add("boolparam", boolParam);
 
-			_observableUpDown3Instrument = _meter.CreateObservableUpDownCounter<System.Int32>("ObservableUpDown3", f, unit: null, description: null
+			_observableUpDown3Instrument = _meter.CreateObservableUpDownCounter<int>("ObservableUpDown3", f, unit: null, description: null
 #if !NET7_0
 				, tags: observableUpDown3TagList
 #endif

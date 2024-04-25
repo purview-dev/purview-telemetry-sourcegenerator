@@ -8,7 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Purview.Telemetry.SourceGenerator" Version="0.0.13-prerelease" />
+		<PackageReference Include="Purview.Telemetry.SourceGenerator" Version="1.0.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 	</ItemGroup>
 

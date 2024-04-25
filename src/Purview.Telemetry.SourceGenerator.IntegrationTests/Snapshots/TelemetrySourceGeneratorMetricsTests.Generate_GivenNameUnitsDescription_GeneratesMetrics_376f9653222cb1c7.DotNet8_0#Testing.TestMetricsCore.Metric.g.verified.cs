@@ -19,7 +19,7 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.UpDownCounter<System.Byte>? _metricInstrument = null;
+		System.Diagnostics.Metrics.UpDownCounter<byte>? _metricInstrument = null;
 
 		public TestMetricsCore(
 #if NET8_0_OR_GREATER
@@ -71,7 +71,7 @@ namespace Testing
 
 #endif
 
-			_metricInstrument = _meter.CreateUpDownCounter<System.Byte>(name: "an-updown-counter-name-property", unit: "sponges-property", description: "sponge sales per-capita-property."
+			_metricInstrument = _meter.CreateUpDownCounter<byte>(name: "an-updown-counter-name-property", unit: "sponges-property", description: "sponge sales per-capita-property."
 #if !NET7_0
 				, tags: metricTags
 #endif

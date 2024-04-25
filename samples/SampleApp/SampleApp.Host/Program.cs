@@ -3,18 +3,21 @@ using SampleApp.Host.Services;
 
 namespace SampleApp.Host;
 
-public class Program {
-	public static void Main(string[] args) {
+public class Program
+{
+	public static void Main(string[] args)
+	{
 		var builder = WebApplication.CreateBuilder(args);
 		builder.AddServiceDefaults();
 		builder.Services.AddMetrics();
 
 		// Add services to the container.
-		
+
 		// This is a generated method that adds the
 		// IWeatherServiceTelemetry interface to the container
 		// as a singleton.
-		builder.Services.AddIWeatherServiceTelemetry();
+		builder.Services.AddWeatherServiceTelemetry();
+
 		builder.Services.AddTransient<IWeatherService, WeatherService>();
 
 		builder.Services.AddControllers();
@@ -27,7 +30,8 @@ public class Program {
 		app.MapDefaultEndpoints();
 
 		// Configure the HTTP request pipeline.
-		if (app.Environment.IsDevelopment()) {
+		if (app.Environment.IsDevelopment())
+		{
 			app.UseSwagger();
 			app.UseSwaggerUI();
 		}

@@ -19,7 +19,7 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.ObservableGauge<System.Int32>? _metricInstrument = null;
+		System.Diagnostics.Metrics.ObservableGauge<int>? _metricInstrument = null;
 
 		public TestMetricsCore(
 #if NET8_0_OR_GREATER
@@ -75,7 +75,7 @@ namespace Testing
 #endif
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void Metric(System.Func<System.Diagnostics.Metrics.Measurement<System.Int32>> f, int intParam, bool boolParam)
+		public void Metric(System.Func<System.Diagnostics.Metrics.Measurement<int>> f, int intParam, bool boolParam)
 		{
 			if (_metricInstrument != null)
 			{
@@ -87,7 +87,7 @@ namespace Testing
 			metricTagList.Add("intparam", intParam);
 			metricTagList.Add("boolparam", boolParam);
 
-			_metricInstrument = _meter.CreateObservableGauge<System.Int32>("an-observablegauge-name-param", f, unit: "biscuits-param", description: "biscuit ake sales per-capita-param."
+			_metricInstrument = _meter.CreateObservableGauge<int>("an-observablegauge-name-param", f, unit: "biscuits-param", description: "biscuit ake sales per-capita-param."
 #if !NET7_0
 				, tags: metricTagList
 #endif

@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
 	static class TestLoggerCore
 	{
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		static public Microsoft.Extensions.DependencyInjection.IServiceCollection AddITestLogger(this Microsoft.Extensions.DependencyInjection.IServiceCollection services)
+		static public Microsoft.Extensions.DependencyInjection.IServiceCollection AddTestLogger(this Microsoft.Extensions.DependencyInjection.IServiceCollection services)
 		{
 			services.Add(new Microsoft.Extensions.DependencyInjection.ServiceDescriptor(typeof(Testing.ITestLogger), typeof(Testing.TestLoggerCore), Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton));
 

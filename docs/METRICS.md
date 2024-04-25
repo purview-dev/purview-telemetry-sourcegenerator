@@ -46,11 +46,11 @@ When using `CounterAttribute.AutoIncrement`, the meter increments by one each ti
 
 #### ObservableCounter, ObservableGauge and ObservableUpDownCounter
 
-Observable meter types must always have a `Func&lt;T&gt;` with one of the supported instrument types.
+Observable meter types must always have a `System.Func<T>` with one of the supported instrument types.
 
-However, you may also use [Measurement&lt;T&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.measurement-1) where `T` is one of the support instrument types.
+However, you may also use [Measurement<&lt;T&gt;>](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.measurement-1) where `T` is one of the support instrument types.
 
-You can provide multiple values at once using `IEnumerable&lt;Measurement&lt;T&gt;&gt;`, again `T` must be one of valid measurement types.
+You can provide multiple values at once using `IEnumerable<Measurement<T>>`, again `T` must be one of valid measurement types.
 
 Examples:
 
@@ -67,7 +67,7 @@ void UpDownCounter(Func<IEnumerable<Measurement<int>>> func);
 
 #### Tags
 
-Other parameters on the method can be used as tags. This is implicit for non-measurement values, but can also be explicitly set to control generation through the use of the `TagAttribute`.
+Other parameters on the method can be used as tags. This is implicit for non-measurement values, but can also be explicitly set to control generation through the use of the [TagAttribute](./TAGATTRIBUTE.md).
 
 ## Types
 
@@ -77,10 +77,10 @@ Used to create a `Counter<T>` meter.
 
 | Name | Type | Description |
 | -- | -- | -- |
-| AutoIncrement | bool | Determines if the meter should generate an auto-incrementing counter, rather than accepting a measurement value from one of the parameters Also available on construction. Defaults to false. |
-| Name | string? | Determines the name of the meter. If this is not provided, the name of the method is used. Also available on construction. Defaults to null. |
-| Unit | string? | Specifies the Unit used during meter generation. Also available on construction. Defaults to null. |
-| Description | string? | Specifies the Description used during meter generation. Also available on construction. Defaults to null. |
+| AutoIncrement | `bool` | Determines if the meter should generate an auto-incrementing counter, rather than accepting a measurement value from one of the parameters Also available on construction. Defaults to `false`. |
+| Name | `string?` | Determines the name of the meter. If this is not provided, the name of the method is used. Also available on construction. Defaults to `null`. |
+| Unit | `string?` | Specifies the Unit used during meter generation. Also available on construction. Defaults to `null`. |
+| Description | `string?` | Specifies the Description used during meter generation. Also available on construction. Defaults to `null`. |
 
 ### HistogramAttribute
 
@@ -88,9 +88,9 @@ Used to create a `Histogram<T>` meter.
 
 | Name | Type | Description |
 | -- | -- | -- |
-| Name | string? | Determines the name of the meter. If this is not provided, the name of the method is used. Also available on construction. Defaults to null. |
-| Unit | string? | Specifies the Unit used during meter generation. Also available on construction. Defaults to null. |
-| Description | string? | Specifies the Description used during meter generation. Also available on construction. Defaults to null. |
+| Name | `string?` | Determines the name of the meter. If this is not provided, the name of the method is used. Also available on construction. Defaults to `null`. |
+| Unit | `string?` | Specifies the Unit used during meter generation. Also available on construction. Defaults to `null`. |
+| Description | `string?` | Specifies the Description used during meter generation. Also available on construction. Defaults to `null`. |
 
 ### UpDownAttribute
 
@@ -98,9 +98,9 @@ Used to create a `UpDownCounter<T>` meter.
 
 | Name | Type | Description |
 | -- | -- | -- |
-| Name | string? | Determines the name of the meter. If this is not provided, the name of the method is used. Also available on construction. Defaults to null. |
-| Unit | string? | Specifies the Unit used during meter generation. Also available on construction. Defaults to null. |
-| Description | string? | Specifies the Description used during meter generation. Also available on construction. Defaults to null. |
+| Name | `string?` | Determines the name of the meter. If this is not provided, the name of the method is used. Also available on construction. Defaults to `null`. |
+| Unit | `string?` | Specifies the Unit used during meter generation. Also available on construction. Defaults to `null`. |
+| Description | `string?` | Specifies the Description used during meter generation. Also available on construction. Defaults to `null`. |
 
 ### ObservableCounterAttribute
 
@@ -108,10 +108,10 @@ Used to create a `ObservableUpDownCounter<T>` meter.
 
 | Name | Type | Description |
 | -- | -- | -- |
-| Name | string? | Determines the name of the meter. If this is not provided, the name of the method is used. Also available on construction. Defaults to null. |
-| Unit | string? | Specifies the Unit used during meter generation. Also available on construction. Defaults to null. |
-| Description | string? | Specifies the Description used during meter generation. Also available on construction. Defaults to null. |
-| ThrowOnAlreadyInitialized | bool | Determines if the method throws an exception or not if it is called more than once. Also available on construction. Defaults to false. |
+| Name | `string?` | Determines the name of the meter. If this is not provided, the name of the method is used. Also available on construction. Defaults to `null`. |
+| Unit | `string?` | Specifies the Unit used during meter generation. Also available on construction. Defaults to `null`. |
+| Description | `string?` | Specifies the Description used during meter generation. Also available on construction. Defaults to `null`. |
+| ThrowOnAlreadyInitialized | `bool` | Determines if the method throws an exception or not if it is called more than once. Also available on construction. Defaults to `false`. |
 
 ### ObservableGaugeAttribute
 
@@ -119,10 +119,10 @@ Used to create a `ObservableGauge<T>` meter.
 
 | Name | Type | Description |
 | -- | -- | -- |
-| Name | string? | Determines the name of the meter. If this is not provided, the name of the method is used. Also available on construction. Defaults to null. |
-| Unit | string? | Specifies the Unit used during meter generation. Also available on construction. Defaults to null. |
-| Description | string? | Specifies the Description used during meter generation. Also available on construction. Defaults to null. |
-| ThrowOnAlreadyInitialized | bool | Determines if the method throws an exception or not if it is called more than once. Also available on construction. Defaults to false. |
+| Name | `string?` | Determines the name of the meter. If this is not provided, the name of the method is used. Also available on construction. Defaults to `null`. |
+| Unit | `string?` | Specifies the Unit used during meter generation. Also available on construction. Defaults to `null`. |
+| Description | `string?` | Specifies the Description used during meter generation. Also available on construction. Defaults to `null`. |
+| ThrowOnAlreadyInitialized | `bool` | Determines if the method throws an exception or not if it is called more than once. Also available on construction. Defaults to `false`. |
 
 ### ObservableUpDownCounterAttribute
 
@@ -130,7 +130,7 @@ Used to create a `ObservableUpDownCounter<T>` meter.
 
 | Name | Type | Description |
 | -- | -- | -- |
-| Name | string? | Determines the name of the meter. If this is not provided, the name of the method is used. Also available on construction. Defaults to null. |
-| Unit | string? | Specifies the Unit used during meter generation. Also available on construction. Defaults to null. |
-| Description | string? | Specifies the Description used during meter generation. Also available on construction. Defaults to null. |
-| ThrowOnAlreadyInitialized | bool | Determines if the method throws an exception or not if it is called more than once. Also available on construction. Defaults to false. |
+| Name | `string?` | Determines the name of the meter. If this is not provided, the name of the method is used. Also available on construction. Defaults to `null`. |
+| Unit | `string?` | Specifies the Unit used during meter generation. Also available on construction. Defaults to `null`. |
+| Description | `string?` | Specifies the Description used during meter generation. Also available on construction. Defaults to `null`   . |
+| ThrowOnAlreadyInitialized | `bool` | Determines if the method throws an exception or not if it is called more than once. Also available on construction. Defaults to `false`. |

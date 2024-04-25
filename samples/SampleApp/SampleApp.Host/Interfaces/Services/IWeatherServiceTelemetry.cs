@@ -18,22 +18,26 @@ namespace SampleApp.Host.Interfaces.Services;
 [ActivitySource]
 [Logger]
 [Meter]
-public interface IWeatherServiceTelemetry {
+public interface IWeatherServiceTelemetry
+{
 	[Activity(ActivityKind.Client)]
-	Activity? GettingWeatherForecastFromUpstreamService(string someRandomInfo, int requestedCount, [Baggage]int validatedRequestedCount);
+	Activity? GettingWeatherForecastFromUpstreamService([Baggage] string someRandomBaggageInfo, int requestedCount, int validatedRequestedCount);
 
 	[Event]
 	void MinAndMaxReceived(Activity? activity, int minTempInC, int maxTempInC);
 
 	[Log(LogLevel.Warning)]
-	void ThatsTooCold(int minTempInC);
+	void TemperatureOutOfRange(int minTempInC);
 
-	[Log]
+	[Log(LogLevel.Warning)]
 	void RequestedCountIsTooSmall(int requestCount, int validatedRequestedCount);
 
 	[Counter(AutoIncrement = true)]
 	void WeatherForecastRequested();
 
 	[Counter(AutoIncrement = true)]
-	void ItsTooCold([Tag]int tooColdCount);
+	void ItsTooCold([Tag] int tooColdCount);
+
+	[Log]
+	void TemperatureWithinRange();
 }

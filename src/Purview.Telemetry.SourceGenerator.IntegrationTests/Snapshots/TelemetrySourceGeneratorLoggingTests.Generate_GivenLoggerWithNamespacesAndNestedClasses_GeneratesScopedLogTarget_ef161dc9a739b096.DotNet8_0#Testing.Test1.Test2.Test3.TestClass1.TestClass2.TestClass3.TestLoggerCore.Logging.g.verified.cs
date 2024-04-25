@@ -25,7 +25,7 @@ namespace Testing.Test1.Test2.Test3
 				{
 					readonly Microsoft.Extensions.Logging.ILogger<Testing.Test1.Test2.Test3.TestClass1.TestClass2.TestClass3.ITestLogger> _logger = default!;
 
-					static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.String, System.Int32, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.String, System.Int32>("Test.Log: stringParam: {StringParam}, intParam: {IntParam}");
+					static readonly System.Func<Microsoft.Extensions.Logging.ILogger, string, int, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<string, int>("Test.Log: stringParam: {StringParam}, intParam: {IntParam}");
 
 					public TestLoggerCore(Microsoft.Extensions.Logging.ILogger<Testing.Test1.Test2.Test3.TestClass1.TestClass2.TestClass3.ITestLogger> logger)
 					{
@@ -33,7 +33,7 @@ namespace Testing.Test1.Test2.Test3
 					}
 
 					[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-					public System.IDisposable? Log(System.String stringParam, System.Int32 intParam)
+					public System.IDisposable? Log(string stringParam, int intParam)
 					{
 						return _logAction(_logger, stringParam, intParam);
 					}

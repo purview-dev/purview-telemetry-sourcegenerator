@@ -19,13 +19,13 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 	{
 		readonly Microsoft.Extensions.Logging.ILogger<Purview.Interfaces.ApplicationServices.Caching.ICacheServiceProviderTelemetry> _logger = default!;
 
-		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.Int32, System.Exception?> _failedToDeserializePayloadAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.Int32>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.FailedToDeserializePayload: dataLength: {DataLength}");
-		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.String, System.Exception?> _failedToGetFromCacheAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.String>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.FailedToGetFromCache: key: {Key}");
-		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.String, System.Exception?> _failedToRefreshAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.String>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.FailedToRefresh: cacheKey: {CacheKey}");
-		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.String, System.Exception?> _failedToRemoveAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.String>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.FailedToRemove: key: {Key}");
-		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.String?, System.Exception?> _failedToSerializePayloadAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.String?>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.FailedToSerializePayload: fullName: {FullName}");
-		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.String, System.Exception?> _failedToSetValueInCacheAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.String>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.FailedToSetValueInCache: key: {Key}");
-		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.String?, System.Boolean, System.Exception?> _usingDistributedCacheAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.String?, System.Boolean>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.UsingDistributedCache: fullName: {FullName}, isNullCache: {IsNullCache}");
+		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, System.Exception?> _failedToDeserializePayloadAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.FailedToDeserializePayload: dataLength: {DataLength}");
+		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, string, System.Exception?> _failedToGetFromCacheAction = Microsoft.Extensions.Logging.LoggerMessage.Define<string>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.FailedToGetFromCache: key: {Key}");
+		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, string, System.Exception?> _failedToRefreshAction = Microsoft.Extensions.Logging.LoggerMessage.Define<string>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.FailedToRefresh: cacheKey: {CacheKey}");
+		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, string, System.Exception?> _failedToRemoveAction = Microsoft.Extensions.Logging.LoggerMessage.Define<string>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.FailedToRemove: key: {Key}");
+		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, string?, System.Exception?> _failedToSerializePayloadAction = Microsoft.Extensions.Logging.LoggerMessage.Define<string?>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.FailedToSerializePayload: fullName: {FullName}");
+		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, string, System.Exception?> _failedToSetValueInCacheAction = Microsoft.Extensions.Logging.LoggerMessage.Define<string>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.FailedToSetValueInCache: key: {Key}");
+		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, string?, bool, System.Exception?> _usingDistributedCacheAction = Microsoft.Extensions.Logging.LoggerMessage.Define<string?, bool>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.UsingDistributedCache: fullName: {FullName}, isNullCache: {IsNullCache}");
 
 		public CacheServiceProviderTelemetryCore(Microsoft.Extensions.Logging.ILogger<Purview.Interfaces.ApplicationServices.Caching.ICacheServiceProviderTelemetry> logger)
 		{
@@ -33,7 +33,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void FailedToDeserializePayload(System.Int32 dataLength, System.Exception ex)
+		public void FailedToDeserializePayload(int dataLength, System.Exception ex)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
 			{
@@ -45,7 +45,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void FailedToGetFromCache(System.String key, System.Exception ex)
+		public void FailedToGetFromCache(string key, System.Exception ex)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
 			{
@@ -57,7 +57,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void FailedToRefresh(System.String cacheKey, System.Exception ex)
+		public void FailedToRefresh(string cacheKey, System.Exception ex)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
 			{
@@ -69,7 +69,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void FailedToRemove(System.String key, System.Exception ex)
+		public void FailedToRemove(string key, System.Exception ex)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
 			{
@@ -81,7 +81,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void FailedToSerializePayload(System.String? fullName, System.Exception ex)
+		public void FailedToSerializePayload(string? fullName, System.Exception ex)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
 			{
@@ -93,7 +93,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void FailedToSetValueInCache(System.String key, System.Exception ex)
+		public void FailedToSetValueInCache(string key, System.Exception ex)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
 			{
@@ -105,7 +105,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void UsingDistributedCache(System.String? fullName, System.Boolean isNullCache)
+		public void UsingDistributedCache(string? fullName, bool isNullCache)
 		{
 			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
 			{

@@ -32,9 +32,8 @@ public sealed partial class TelemetrySourceGenerator : IIncrementalGenerator, IL
 
 	void ILogSupport.SetLogOutput(Action<string, OutputType> action)
 	{
-		if (action == null)
-			_logger = null;
-		else
-			_logger = new Logger(action);
+		_logger = action == null
+			? null
+			: new Logger(action);
 	}
 }
