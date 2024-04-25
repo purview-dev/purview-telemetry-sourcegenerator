@@ -29,6 +29,33 @@ public interface ITestActivities {
 	}
 
 	[Fact]
+	public async Task Generate_GivenBasicGenAndNoActivityName_GeneratesActivity()
+	{
+		// Arrange
+		const string basicActivity = @"
+using Purview.Telemetry.Activities;
+
+namespace Testing;
+
+[ActivitySource]
+public interface ITestActivities 
+{
+	[Activity]
+	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+
+	[Event]
+	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+}
+";
+
+		// Act
+		GenerationResult generationResult = await GenerateAsync(basicActivity);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
 	public async Task Generate_GivenWithNonStringBaggage_RaisesDiagnosticAndGenerates()
 	{
 		// Arrange

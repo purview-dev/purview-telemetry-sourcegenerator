@@ -45,6 +45,15 @@ partial class PipelineHelpers
 				? activitySourceAttribute.Name.Value!
 				: null;
 
+		if (activitySourceName == null)
+		{
+#pragma warning disable CA1308 // Normalize strings to uppercase
+			var assemblyName = context.SemanticModel.Compilation.AssemblyName?.ToLowerInvariant();
+#pragma warning restore CA1308 // Normalize strings to uppercase
+			if (!string.IsNullOrWhiteSpace(assemblyName))
+				activitySourceName = assemblyName;
+		}
+
 		var fullNamespace = Utilities.GetFullNamespace(interfaceDeclaration, true);
 		var generationType = SharedHelpers.GetGenerationTypes(interfaceSymbol, token);
 		var activityMethods = BuildActivityMethods(
@@ -89,7 +98,6 @@ partial class PipelineHelpers
 		IGenerationLogger? logger,
 		CancellationToken token)
 	{
-
 		token.ThrowIfCancellationRequested();
 
 		var prefix = GeneratePrefix(activitySourceGenerationAttribute, activitySourceAttribute, token);
@@ -201,8 +209,8 @@ partial class PipelineHelpers
 			else if (parameter.Name == Constants.Activities.TimeStampParameterName && Constants.System.DateTimeOffset.Equals(parameter.Type))
 				destination = ActivityParameterDestination.Timestamp;
 			else
+				// destination is already set to default.
 				logger?.Debug($"Inferring {(defaultToTags ? "tag" : "baggage")}: {parameter.Name}.");
-			// destination is already set to default.
 
 			TagOrBaggageAttributeRecord? tagOrBaggageAttribute = null;
 			if (attribute != null)
@@ -297,7 +305,6 @@ partial class PipelineHelpers
 		ActivitySourceAttributeRecord activitySourceRecord,
 		CancellationToken token)
 	{
-
 		token.ThrowIfCancellationRequested();
 
 		string? prefix = null;

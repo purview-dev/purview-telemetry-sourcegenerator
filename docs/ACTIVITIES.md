@@ -6,12 +6,12 @@ Back to [README.md](../README.md).
 
 The types are hosted within the `Purview.Telemetry.Activities` namespace, with the exception of the `TagAttribute` which is defined within `Purview.Telemetry`.
 
-To signal an interface for activity target generation, decorate the interface with the `ActivitySourceAttribute`. By default the activity source name is set to `purview`, however you can override this on the interface or assembly level:
+To signal an interface for activity target generation, decorate the interface with the `ActivitySourceAttribute`. By default the activity source name is set to name of the assembly (lowercased), however you can override this on the interface or assembly level:
 
 * Interface: `ActivitySourceAttribute.Name`
 * Assembly: `ActivitySourceGenerationAttribute.Name`
 
-> Warning `TSG3001` is generated if this value has not been overridden.
+> If no activity source name is found, it defaults to `purview` and the `TSG3001` diagnostic is generated.
 
 ### Activity, Event or Context
 

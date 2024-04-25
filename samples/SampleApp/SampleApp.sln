@@ -1,11 +1,10 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34707.107
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApp.Host", "SampleApp.Host\SampleApp.Host.csproj", "{E3B94B39-B8DB-430C-9D66-D9331764056E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp.AppHost", "SampleApp.AppHost\SampleApp.AppHost.csproj", "{E4F0CA18-A3E6-4471-BB68-C1DC4FE71AE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApp.AppHost", "SampleApp.AppHost\SampleApp.AppHost.csproj", "{E4F0CA18-A3E6-4471-BB68-C1DC4FE71AE9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApp.ServiceDefaults", "SampleApp.ServiceDefaults\SampleApp.ServiceDefaults.csproj", "{2B32200F-74F9-4C86-9BAC-9BE12A7752D5}"
 EndProject
