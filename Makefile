@@ -18,7 +18,7 @@ pack:
 	dotnet pack -c $(CONFIGURATION) -o $(ARTIFACT_FOLDER) $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator/Purview.Telemetry.SourceGenerator.csproj --property:Version=$(PACK_VERSION) --include-symbols
 
 format:
-	dotnet format $(ROOT_FOLDER)
+	dotnet format $(SOLUTION_FILE)
 
 act:
 	act -P ubuntu-latest=-self-hosted

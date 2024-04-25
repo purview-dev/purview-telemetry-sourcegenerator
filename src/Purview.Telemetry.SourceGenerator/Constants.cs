@@ -11,10 +11,10 @@ static partial class Constants
 	public static TemplateInfo[] GetAllTemplates()
 	{
 		return [
-			.. Activities.GetTemplates(),
-			.. Logging.GetTemplates(),
-			.. Metrics.GetTemplates(),
-			.. Shared.GetTemplates()
+			..Activities.GetTemplates(),
+			..Logging.GetTemplates(),
+			..Metrics.GetTemplates(),
+			..Shared.GetTemplates()
 		];
 	}
 
