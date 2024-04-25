@@ -2,6 +2,7 @@
 using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
+
 partial class SharedHelpers
 {
 	public static ActivitySourceGenerationAttributeRecord? GetActivitySourceGenerationAttribute(SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token)
@@ -19,7 +20,6 @@ partial class SharedHelpers
 		IGenerationLogger? logger,
 		CancellationToken token)
 	{
-
 		AttributeStringValue? nameValue = null;
 		AttributeValue<bool>? defaultToTags = null;
 		AttributeStringValue? baggageAndTagPrefix = null;
