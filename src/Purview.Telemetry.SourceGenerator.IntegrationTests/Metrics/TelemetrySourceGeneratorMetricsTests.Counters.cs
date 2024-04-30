@@ -3,6 +3,54 @@
 partial class TelemetrySourceGeneratorMetricsTests
 {
 	[Fact]
+	public async Task Generate_GivenBasicAutoCounter_GeneratesMetrics()
+	{
+		// Arrange
+		const string basicMetric = @"
+using Purview.Telemetry.Metrics;
+
+namespace Testing;
+
+[Meter(""testing-meter"")]
+public interface ITestMetrics 
+{
+	[AutoCounter]
+	void AutoCounter([Tag]int intParam, [Tag]bool boolParam);
+}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicMetric);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
+	public async Task Generate_GivenAutoCounterWithInstrumentationValue_GeneratesDiagnostic()
+	{
+		// Arrange
+		const string basicMetric = @"
+using Purview.Telemetry.Metrics;
+
+namespace Testing;
+
+[Meter(""testing-meter"")]
+public interface ITestMetrics 
+{
+	[AutoCounter]
+	void AutoCounter([InstrumentMeasurement]int value, [Tag]int intParam, [Tag]bool boolParam);
+}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicMetric);
+
+		// Assert
+		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(), validateNonEmptyDiagnostics: true, validationCompilation: false);
+	}
+
+	[Fact]
 	public async Task Generate_GivenBasicCounters_GeneratesMetrics()
 	{
 		// Arrange
@@ -37,7 +85,7 @@ public interface ITestMetrics {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicMetric);
+		var generationResult = await GenerateAsync(basicMetric);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -66,7 +114,7 @@ public interface ITestMetrics {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicMetric);
+		var generationResult = await GenerateAsync(basicMetric);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -97,7 +145,7 @@ public interface ITestMetrics {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicMetric);
+		var generationResult = await GenerateAsync(basicMetric);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);

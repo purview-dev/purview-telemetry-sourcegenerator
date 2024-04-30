@@ -9,7 +9,7 @@ partial class TelemetrySourceGeneratorLoggingTests
 	public async Task Generate_GivenLoggerWithNamespaces_GeneratesScopedLogTarget(string @namespace)
 	{
 		// Arrange
-		string basicLogger = @$"
+		var basicLogger = @$"
 using Purview.Telemetry.Logging;
 
 namespace {@namespace};
@@ -21,7 +21,7 @@ public interface ITestLogger {{
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids().UseHashedParameters(@namespace));
@@ -34,7 +34,7 @@ public interface ITestLogger {{
 	public async Task Generate_GivenLoggerWithNamespacesAndNestedClass_GeneratesScopedLogTarget(string @namespace)
 	{
 		// Arrange
-		string basicLogger = @$"
+		var basicLogger = @$"
 using Purview.Telemetry.Logging;
 
 namespace {@namespace};
@@ -48,7 +48,7 @@ public partial class TestClass1 {{
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids().UseHashedParameters(@namespace));
@@ -61,7 +61,7 @@ public partial class TestClass1 {{
 	public async Task Generate_GivenLoggerWithNamespacesAndNestedClasses_GeneratesScopedLogTarget(string @namespace)
 	{
 		// Arrange
-		string basicLogger = @$"
+		var basicLogger = @$"
 using Purview.Telemetry.Logging;
 
 namespace {@namespace};
@@ -79,7 +79,7 @@ public partial class TestClass1 {{
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids().UseHashedParameters(@namespace));

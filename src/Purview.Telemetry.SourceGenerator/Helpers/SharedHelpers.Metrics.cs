@@ -127,8 +127,15 @@ partial class SharedHelpers
 		}
 
 		InstrumentTypes instrumentType;
-		if (Constants.Metrics.CounterAttribute.Equals(attributeData.AttributeClass))
+		var isAutoCounter = Constants.Metrics.AutoCounterAttribute.Equals(attributeData.AttributeClass);
+		if (isAutoCounter ||
+			Constants.Metrics.CounterAttribute.Equals(attributeData.AttributeClass))
+		{
 			instrumentType = InstrumentTypes.Counter;
+
+			if (isAutoCounter)
+				autoIncrement = new(true);
+		}
 		else if (Constants.Metrics.HistogramAttribute.Equals(attributeData.AttributeClass))
 			instrumentType = InstrumentTypes.Histogram;
 		else if (Constants.Metrics.UpDownCounterAttribute.Equals(attributeData.AttributeClass))

@@ -12,7 +12,8 @@ using Purview.Telemetry.Metrics;
 namespace Testing;
 
 [Meter(""testing-meter"")]
-public interface ITestMetrics {
+public interface ITestMetrics 
+{
 	[ObservableCounter]
 	bool Counter(Func<int> counterValue, [Tag]int intParam, [Tag]bool boolParam);
 
@@ -25,7 +26,7 @@ public interface ITestMetrics {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicMetric);
+		var generationResult = await GenerateAsync(basicMetric);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -54,7 +55,7 @@ public interface ITestMetrics {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicMetric);
+		var generationResult = await GenerateAsync(basicMetric);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);

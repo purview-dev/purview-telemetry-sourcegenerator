@@ -298,6 +298,15 @@ static class Utilities
 	public static string GetFullyQualifiedOrSystemName(ITypeSymbol namedType, bool trimNullableAnnotation = true)
 	{
 		var result = namedType.ToDisplayString(SymbolDisplayFormat) ?? namedType.ToString();
+		if (namedType as INamedTypeSymbol is { IsGenericType: true, IsValueType: false } genericType)
+		{
+			List<string> typeArguments = [];
+			foreach (var typeArgument in genericType.TypeArguments)
+				typeArguments.Add(GetFullyQualifiedOrSystemName(typeArgument));
+
+			result += $"<{string.Join(", ", typeArguments)}>";
+		}
+
 		if (trimNullableAnnotation && namedType.NullableAnnotation == NullableAnnotation.Annotated)
 			result = result.TrimEnd('?');
 

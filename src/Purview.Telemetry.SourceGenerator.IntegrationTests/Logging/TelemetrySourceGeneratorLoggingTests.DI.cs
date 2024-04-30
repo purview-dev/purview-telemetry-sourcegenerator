@@ -22,7 +22,7 @@ public interface ITestLogger {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLog, disableDependencyInjection: false);
+		var generationResult = await GenerateAsync(basicLog, disableDependencyInjection: false);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -47,7 +47,7 @@ public interface ITestLogger {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLog, disableDependencyInjection: false);
+		var generationResult = await GenerateAsync(basicLog, disableDependencyInjection: false);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -74,7 +74,7 @@ public interface ITestLogger {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLog, disableDependencyInjection: false);
+		var generationResult = await GenerateAsync(basicLog, disableDependencyInjection: false);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -101,7 +101,7 @@ public interface ITestLogger {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLog, disableDependencyInjection: false);
+		var generationResult = await GenerateAsync(basicLog, disableDependencyInjection: false);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);

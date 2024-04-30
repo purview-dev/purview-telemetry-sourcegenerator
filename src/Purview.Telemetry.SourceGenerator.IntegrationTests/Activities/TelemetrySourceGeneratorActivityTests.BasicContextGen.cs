@@ -19,7 +19,7 @@ public interface ITestActivities {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicActivity);
+		var generationResult = await GenerateAsync(basicActivity);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -43,7 +43,7 @@ public interface ITestActivities {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicActivity);
+		var generationResult = await GenerateAsync(basicActivity);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -70,7 +70,7 @@ public interface ITestActivities {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicActivity);
+		var generationResult = await GenerateAsync(basicActivity);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -97,7 +97,7 @@ public interface ITestActivities {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicActivity);
+		var generationResult = await GenerateAsync(basicActivity);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -124,7 +124,7 @@ public interface ITestActivities {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicActivity);
+		var generationResult = await GenerateAsync(basicActivity);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -151,7 +151,7 @@ public interface ITestActivities {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicActivity);
+		var generationResult = await GenerateAsync(basicActivity);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);

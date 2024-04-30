@@ -1,6 +1,7 @@
 ﻿using Xunit.Abstractions;
 
 namespace Purview.Telemetry.SourceGenerator;
+
 public partial class TelemetrySourceGeneratorTests(ITestOutputHelper testOutputHelper) : IncrementalSourceGeneratorTestBase<TelemetrySourceGenerator>(testOutputHelper)
 {
 	[Fact]
@@ -15,9 +16,24 @@ namespace Testing;
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(empty);
+		var generationResult = await GenerateAsync(empty);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, autoVerifyTemplates: false);
+	}
+
+	static public TheoryData<string> BasicGenericParameters
+	{
+		get
+		{
+			TheoryData<string> parameter = [];
+
+			parameter.Add(TestHelpers.GetFriendlyTypeName(typeof(List<>).MakeGenericType(typeof(string))));
+			parameter.Add(TestHelpers.GetFriendlyTypeName(typeof(IEnumerable<>).MakeGenericType(typeof(System.String)), useSystemType: false));
+			parameter.Add(TestHelpers.GetFriendlyTypeName(typeof(Dictionary<,>).MakeGenericType(typeof(string), typeof(int))));
+			parameter.Add(TestHelpers.GetFriendlyTypeName(typeof(IDictionary<,>).MakeGenericType(typeof(System.String), typeof(System.Int32)), useSystemType: false));
+
+			return parameter;
+		}
 	}
 }

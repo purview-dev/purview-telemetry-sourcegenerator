@@ -24,7 +24,7 @@ public interface ITestActivities {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicActivity, disableDependencyInjection: false);
+		var generationResult = await GenerateAsync(basicActivity, disableDependencyInjection: false);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -51,7 +51,7 @@ public interface ITestActivities {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicActivity, disableDependencyInjection: false);
+		var generationResult = await GenerateAsync(basicActivity, disableDependencyInjection: false);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -80,7 +80,7 @@ public interface ITestActivities {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicActivity, disableDependencyInjection: false);
+		var generationResult = await GenerateAsync(basicActivity, disableDependencyInjection: false);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -109,7 +109,7 @@ public interface ITestActivities {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicActivity, disableDependencyInjection: false);
+		var generationResult = await GenerateAsync(basicActivity, disableDependencyInjection: false);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);

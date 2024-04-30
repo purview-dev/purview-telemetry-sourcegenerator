@@ -117,6 +117,9 @@ interface IMeterTelemetry
     [Counter]
     void CounterMeter([InstrumentMeasurement]int measurement, [Tag]float someValue);
 
+    [AutoCounter]
+    void AutoCounterMeter([Tag]float someValue);
+
     [Histogram]
     void HistogramMeter([InstrumentMeasurement]int measurement, [Tag]int someValue, [Tag]bool anotherValue);
 

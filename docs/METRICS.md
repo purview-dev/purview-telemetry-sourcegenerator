@@ -25,7 +25,7 @@ The signature is: `partial void PopulateMeterTags(System.Collections.Generic.Dic
 
 There are several supported meter types: counter, histogram, up-down counter, observable counter, observable gauge and observable up-down counter. Each are determined by the corresponding attribute:
 
-* `CounterAttribute` generates the [Counter&lt;T&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.counter-1) instrument.
+* `AutoCounterAttribute` and `CounterAttribute` generates the [Counter&lt;T&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.counter-1) instrument.
 * `HistogramAttribute` generates the [Histogram&lt;T&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.histogram-1) instrument.
 * `UpDownCounterAttribute` generates the [UpDownCounter&lt;T&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.updowncounter-1) instrument.
 * `ObservableCounterAttribute` generates the [ObservableCounter&lt;T&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.observablecounter-1) instrument.
@@ -36,13 +36,13 @@ The measurement type used by the meter must be one of the following: `byte`, `sh
 
 This is determined by decorating the desired parameter with the `InstrumentMeasurementAttribute`.
 
-#### Counter, Histogram and Up/Down Counter
+#### AutoCount, Counter, Histogram and Up/Down Counter
 
-All of these counters types require a measurement parameter, with the exception of the counter when `CounterAttribute.AutoIncrement` is set to true.
+All of these counters types require a measurement parameter, with the exception of the counter when `AutoCounterAttribute` is present, or `CounterAttribute.AutoIncrement` is set to true.
 
 If a measurement parameter is not defined, the first parameter with a matching type is used.
 
-When using `CounterAttribute.AutoIncrement`, the meter increments by one each time the method is called.
+When using `AutoCounterAttribute` or `CounterAttribute.AutoIncrement`, the meter increments by one each time the method is called.
 
 #### ObservableCounter, ObservableGauge and ObservableUpDownCounter
 
@@ -71,6 +71,20 @@ Other parameters on the method can be used as tags. This is implicit for non-mea
 
 ## Types
 
+### AutoCounterAttribute
+
+Used to create a `Counter<T>` meter, where `T` is an `int`.
+
+| Name | Type | Description |
+| -- | -- | -- |
+| Name | `string?` | Determines the name of the meter. If this is not provided, the name of the method is used. Also available on construction. Defaults to `null`. |
+| Unit | `string?` | Specifies the Unit used during meter generation. Also available on construction. Defaults to `null`. |
+| Description | `string?` | Specifies the Description used during meter generation. Also available on construction. Defaults to `null`. |
+
+This is the equivalent of using the `CounterAttribute` and setting `AutoIncrement` to `true`.
+
+When specifying an `[InstrumentMeasurementAttribute]` on a parameter, the `TSG4002` diagnostic is raised.
+
 ### CounterAttribute
 
 Used to create a `Counter<T>` meter.
@@ -81,6 +95,8 @@ Used to create a `Counter<T>` meter.
 | Name | `string?` | Determines the name of the meter. If this is not provided, the name of the method is used. Also available on construction. Defaults to `null`. |
 | Unit | `string?` | Specifies the Unit used during meter generation. Also available on construction. Defaults to `null`. |
 | Description | `string?` | Specifies the Description used during meter generation. Also available on construction. Defaults to `null`. |
+
+When `AutoIncrement` is `true` and an `[InstrumentMeasurementAttribute]` is used on a parameter, the `TSG4002` diagnostic is raised.
 
 ### HistogramAttribute
 

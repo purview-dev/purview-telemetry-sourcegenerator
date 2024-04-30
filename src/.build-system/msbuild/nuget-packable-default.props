@@ -1,7 +1,7 @@
 ﻿<Project>
 
 	<PropertyGroup Label="NuGet Package Defaults">
-
+		
 		<Authors>Kieron Lanning</Authors>
 		<Company>KJL Solutions Ltd.</Company>
 		<Copyright>KJL Solutions Ltd., 2024 | All rights reserved.</Copyright>
