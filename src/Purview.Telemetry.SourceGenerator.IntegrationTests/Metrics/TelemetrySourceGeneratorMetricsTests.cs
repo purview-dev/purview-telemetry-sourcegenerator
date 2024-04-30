@@ -15,7 +15,11 @@ using Purview.Telemetry.Metrics;
 namespace Testing;
 
 [Meter(""testing-meter"")]
-public interface ITestMetrics {{
+public interface ITestMetrics 
+{{
+	[AutoCounter]
+	void AutoCounter({parameterType} genericParameter);
+
 	[Counter(AutoIncrement = true)]
 	void Counter_AutoIncrement({parameterType} genericParameter);
 

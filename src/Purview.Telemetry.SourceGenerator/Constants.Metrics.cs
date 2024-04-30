@@ -21,6 +21,7 @@ partial class Constants
 
 		public static readonly TemplateInfo InstrumentMeasurementAttribute = TemplateInfo.Create("Purview.Telemetry.Metrics.InstrumentMeasurementAttribute");
 
+		public static readonly TemplateInfo AutoCounterAttribute = TemplateInfo.Create("Purview.Telemetry.Metrics.AutoCounterAttribute");
 		public static readonly TemplateInfo CounterAttribute = TemplateInfo.Create("Purview.Telemetry.Metrics.CounterAttribute");
 		public static readonly TemplateInfo UpDownCounterAttribute = TemplateInfo.Create("Purview.Telemetry.Metrics.UpDownCounterAttribute");
 		public static readonly TemplateInfo HistogramAttribute = TemplateInfo.Create("Purview.Telemetry.Metrics.HistogramAttribute");
@@ -30,6 +31,7 @@ partial class Constants
 		public static readonly TemplateInfo ObservableGaugeAttribute = TemplateInfo.Create("Purview.Telemetry.Metrics.ObservableGaugeAttribute");
 
 		public static readonly TemplateInfo[] ValidInstrumentAttributes = [
+			AutoCounterAttribute,
 			CounterAttribute,
 			UpDownCounterAttribute,
 			HistogramAttribute,
@@ -73,6 +75,7 @@ partial class Constants
 
 			InstrumentMeasurementAttribute,
 
+			AutoCounterAttribute,
 			CounterAttribute,
 			UpDownCounterAttribute,
 			HistogramAttribute,

@@ -19,6 +19,7 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
+		System.Diagnostics.Metrics.Counter<System.Int32>? _autoCounterInstrument = null;
 		System.Diagnostics.Metrics.Counter<System.Int32>? _counter_AutoIncrementInstrument = null;
 		System.Diagnostics.Metrics.Counter<int>? _counterInstrument = null;
 		System.Diagnostics.Metrics.Histogram<int>? _histogramInstrument = null;
@@ -68,6 +69,20 @@ namespace Testing
 #else
 				new System.Diagnostics.Metrics.Meter(name: "testing-meter", version: null);
 #endif
+
+#if !NET7_0
+
+			System.Collections.Generic.Dictionary<string, object?> autoCounterTags = new System.Collections.Generic.Dictionary<string, object?>();
+
+			PopulateAutoCounterTags(autoCounterTags);
+
+#endif
+
+			_autoCounterInstrument = _meter.CreateCounter<System.Int32>(name: "AutoCounter", unit: null, description: null
+#if !NET7_0
+				, tags: autoCounterTags
+#endif
+			);
 
 #if !NET7_0
 
@@ -134,6 +149,8 @@ namespace Testing
 
 #if !NET7_0
 
+		partial void PopulateAutoCounterTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+
 		partial void PopulateCounter_AutoIncrementTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
 
 		partial void PopulateCounterTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
@@ -143,6 +160,21 @@ namespace Testing
 		partial void PopulateUpDownCounterTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
 
 #endif
+
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		public void AutoCounter(System.Collections.Generic.IEnumerable<string> genericParameter)
+		{
+			if (_autoCounterInstrument == null)
+			{
+				return;
+			}
+
+			System.Diagnostics.TagList autoCounterTagList = new System.Diagnostics.TagList();
+
+			autoCounterTagList.Add("genericparameter", genericParameter);
+
+			_autoCounterInstrument.Add(1, tagList: autoCounterTagList);
+		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter_AutoIncrement(System.Collections.Generic.IEnumerable<string> genericParameter)

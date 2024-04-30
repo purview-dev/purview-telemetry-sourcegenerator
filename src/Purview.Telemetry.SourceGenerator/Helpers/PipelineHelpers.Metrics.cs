@@ -92,7 +92,6 @@ partial class PipelineHelpers
 		IGenerationLogger? logger,
 		CancellationToken token)
 	{
-
 		token.ThrowIfCancellationRequested();
 
 		var prefix = GeneratePrefix(meterGenerationAttribute, meterAttribute, token);
@@ -112,9 +111,7 @@ partial class PipelineHelpers
 			InstrumentAttributeRecord? instrumentAttribute = null;
 			var isInferred = !SharedHelpers.TryGetInstrumentAttribute(method, token, out var attributeData);
 			if (!isInferred)
-			{
 				instrumentAttribute = SharedHelpers.GetInstrumentAttribute(attributeData!, semanticModel, logger, token);
-			}
 
 			logger?.Debug($"Found possible instrument method {interfaceSymbol.Name}.{method.Name}.");
 
@@ -160,9 +157,7 @@ partial class PipelineHelpers
 					errorDiagnostics.Add(TelemetryDiagnostics.Metrics.NoInstrumentDefined);
 				}
 				else if (!validAutoCounter && measurementParameter == null)
-				{
 					errorDiagnostics.Add(TelemetryDiagnostics.Metrics.NoMeasurementValueDefined);
-				}
 				else
 				{
 					if (validAutoCounter)
