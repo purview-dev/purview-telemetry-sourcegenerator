@@ -95,7 +95,6 @@ partial class PipelineHelpers
 		IGenerationLogger? logger,
 		CancellationToken token)
 	{
-
 		token.ThrowIfCancellationRequested();
 
 		List<LogTarget> methodTargets = [];

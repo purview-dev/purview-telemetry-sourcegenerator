@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 [assembly: ExcludeFromCodeCoverage]
-
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0057:Use range operator")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

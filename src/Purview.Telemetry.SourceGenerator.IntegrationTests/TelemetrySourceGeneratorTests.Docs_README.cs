@@ -30,7 +30,7 @@ interface IActivityTelemetry
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicTelemetry, disableDependencyInjection: false);
+		var generationResult = await GenerateAsync(basicTelemetry, disableDependencyInjection: false);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -70,7 +70,7 @@ enum ItemTypes
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicTelemetry, disableDependencyInjection: false);
+		var generationResult = await GenerateAsync(basicTelemetry, disableDependencyInjection: false);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -112,7 +112,7 @@ interface IMeterTelemetry
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicTelemetry, disableDependencyInjection: false);
+		var generationResult = await GenerateAsync(basicTelemetry, disableDependencyInjection: false);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -151,7 +151,7 @@ interface IServiceTelemetry
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicTelemetry, disableDependencyInjection: false);
+		var generationResult = await GenerateAsync(basicTelemetry, disableDependencyInjection: false);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);

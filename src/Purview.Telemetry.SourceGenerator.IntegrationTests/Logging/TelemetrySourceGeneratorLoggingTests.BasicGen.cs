@@ -19,7 +19,7 @@ public interface ITestLogger {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -41,7 +41,7 @@ public interface ITestLogger {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -54,7 +54,7 @@ public interface ITestLogger {
 	public async Task Generate_GivenInterfaceWithExplicitLogLevelAndAnExceptionParameter_GenerateLogger(string level)
 	{
 		// Arrange
-		string basicLogger = @$"
+		var basicLogger = @$"
 using Purview.Telemetry.Logging;
 
 namespace Testing;
@@ -67,7 +67,7 @@ public interface ITestLogger {{
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids().UseHashedParameters(level));
@@ -89,7 +89,7 @@ public interface ITestLogger {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(), validateNonEmptyDiagnostics: true);
@@ -111,7 +111,7 @@ public interface ITestLogger {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(),
@@ -136,7 +136,7 @@ public interface ITestLogger {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(),
@@ -161,7 +161,7 @@ public interface ITestLogger {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids());
@@ -183,7 +183,7 @@ public interface ITestLogger {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids());
@@ -205,7 +205,7 @@ public interface ITestLogger {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids());

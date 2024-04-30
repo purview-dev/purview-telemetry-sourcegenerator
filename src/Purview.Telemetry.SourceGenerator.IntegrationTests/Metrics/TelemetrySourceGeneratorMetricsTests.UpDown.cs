@@ -23,7 +23,7 @@ public interface ITestMetrics {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicMetric);
+		var generationResult = await GenerateAsync(basicMetric);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -54,7 +54,7 @@ public interface ITestMetrics {
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicMetric);
+		var generationResult = await GenerateAsync(basicMetric);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);

@@ -229,7 +229,7 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 
 	protected async Task<(Project Project, Compilation Compilation)> ObtainProjectAndCompilationAsync(Func<Project, Project>? projectModifier = null, AdditionalText[]? csharpDocuments = null)
 	{
-		AdhocWorkspace workspace = new();
+		using AdhocWorkspace workspace = new();
 		var project = workspace.AddProject(typeof(SourceGeneratorTestBase<>).Namespace, LanguageNames.CSharp);
 
 		project = project

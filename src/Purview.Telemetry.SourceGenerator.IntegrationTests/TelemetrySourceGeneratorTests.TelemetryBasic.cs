@@ -37,7 +37,7 @@ public interface ITestTelemetry
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicTelemetry);
+		var generationResult = await GenerateAsync(basicTelemetry);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -80,7 +80,7 @@ public interface ITestTelemetry
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicTelemetry);
+		var generationResult = await GenerateAsync(basicTelemetry);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -104,7 +104,7 @@ public interface ITestTelemetry
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicTelemetry);
+		var generationResult = await GenerateAsync(basicTelemetry);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -128,7 +128,7 @@ public interface ITestTelemetry
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicTelemetry);
+		var generationResult = await GenerateAsync(basicTelemetry);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -152,7 +152,7 @@ public interface ITestTelemetry
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicTelemetry);
+		var generationResult = await GenerateAsync(basicTelemetry);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -176,7 +176,7 @@ public interface ITestTelemetry
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicTelemetry);
+		var generationResult = await GenerateAsync(basicTelemetry);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -200,7 +200,7 @@ public interface ITestTelemetry
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicTelemetry);
+		var generationResult = await GenerateAsync(basicTelemetry);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -250,7 +250,7 @@ public interface ITestTelemetry
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicTelemetry);
+		var generationResult = await GenerateAsync(basicTelemetry);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, s => s.ScrubInlineGuids(), validateNonEmptyDiagnostics: true, validationCompilation: false);

@@ -7,7 +7,7 @@ partial class TelemetrySourceGeneratorLoggingTests
 	public async Task Generate_GivenLogTargetWithEntryName_GenerateLogger(string logTargetName)
 	{
 		// Arrange
-		string basicLogger = @$"
+		var basicLogger = @$"
 using Purview.Telemetry.Logging;
 
 namespace Testing;
@@ -20,7 +20,7 @@ public interface ITestLogger {{
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c.UseHashedParameters(logTargetName));
@@ -31,13 +31,13 @@ public interface ITestLogger {{
 	public async Task Generate_GivenLogTargetWithPrefixAndEntryName_GenerateLogger(string type, string logTargetName)
 	{
 		// Arrange
-		string prefixType = type switch
+		var prefixType = type switch
 		{
 			"Custom" => type + ", CustomPrefix = \"custom-prefix\"",
 			_ => type
 		};
 
-		string basicLogger = @$"
+		var basicLogger = @$"
 using Purview.Telemetry.Logging;
 
 namespace Testing;
@@ -50,7 +50,7 @@ public interface ITestLogger {{
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c.UseHashedParameters(prefixType, logTargetName));
@@ -62,9 +62,9 @@ public interface ITestLogger {{
 
 		string[] prefixes = ["Default", "Custom", "Interface", "Class", "NoSuffix"];
 
-		foreach (string type in prefixes)
+		foreach (var type in prefixes)
 		{
-			foreach (string entryName in TestEntryNames)
+			foreach (var entryName in TestEntryNames)
 			{
 				data.Add(type, entryName);
 			}
@@ -77,7 +77,7 @@ public interface ITestLogger {{
 	{
 		TheoryData<string> data = [];
 
-		foreach (string entryName in TestEntryNames)
+		foreach (var entryName in TestEntryNames)
 		{
 			data.Add(entryName);
 		}

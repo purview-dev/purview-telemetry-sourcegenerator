@@ -7,7 +7,7 @@ partial class TelemetrySourceGeneratorMetricsTests
 	public async Task Generate_GivenNameUnitsDescription_GeneratesMetrics(string attribute, string measurementParameter)
 	{
 		// Arrange
-		string basicMetric = @$"
+		var basicMetric = @$"
 using Purview.Telemetry.Metrics;
 using System.Diagnostics.Metrics;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ public interface ITestMetrics {{
 ";
 
 		// Act
-		GenerationResult generationResult = await GenerateAsync(basicMetric);
+		var generationResult = await GenerateAsync(basicMetric);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, s => s.UseHashedParameters(attribute, measurementParameter));
