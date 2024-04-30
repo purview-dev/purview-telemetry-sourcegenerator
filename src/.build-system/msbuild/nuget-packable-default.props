@@ -1,10 +1,11 @@
 ﻿<Project>
 
 	<PropertyGroup Label="NuGet Package Defaults">
-
+		
 		<Authors>Kieron Lanning</Authors>
-		<Company>Purview Consultancy</Company>
-		<Copyright>© KJL Solutions Ltd. | All rights reserved.</Copyright>
+		<Company>KJL Solutions Ltd.</Company>
+		<Copyright>KJL Solutions Ltd., 2024 | All rights reserved.</Copyright>
+		<RepositoryUrl>https://github.com/purview-dev/purview-telemetry-sourcegenerator/</RepositoryUrl>
 
 	</PropertyGroup>
 
