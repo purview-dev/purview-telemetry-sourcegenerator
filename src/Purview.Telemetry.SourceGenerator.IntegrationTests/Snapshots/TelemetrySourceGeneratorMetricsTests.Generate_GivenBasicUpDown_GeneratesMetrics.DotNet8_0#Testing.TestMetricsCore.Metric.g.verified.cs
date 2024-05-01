@@ -72,7 +72,7 @@ namespace Testing
 
 #endif
 
-			_upDownInstrument = _meter.CreateUpDownCounter<int>(name: "UpDown", unit: null, description: null
+			_upDownInstrument = _meter.CreateUpDownCounter<int>(name: "updown", unit: null, description: null
 #if !NET7_0
 				, tags: upDownTags
 #endif
@@ -86,7 +86,7 @@ namespace Testing
 
 #endif
 
-			_upDown2Instrument = _meter.CreateUpDownCounter<int>(name: "UpDown2", unit: null, description: null
+			_upDown2Instrument = _meter.CreateUpDownCounter<int>(name: "updown2", unit: null, description: null
 #if !NET7_0
 				, tags: upDown2Tags
 #endif

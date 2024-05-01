@@ -17,7 +17,7 @@ sealed partial class ServiceTelemetryCore : IServiceTelemetry
 {
 	System.Diagnostics.Metrics.Meter _meter = default!;
 
-	System.Diagnostics.Metrics.Counter<System.Int32>? _anAutoIncrementInstrument = null;
+	System.Diagnostics.Metrics.Counter<int>? _anAutoIncrementInstrument = null;
 
 	public ServiceTelemetryCore(Microsoft.Extensions.Logging.ILogger<IServiceTelemetry> logger
 #if NET8_0_OR_GREATER
@@ -70,7 +70,7 @@ sealed partial class ServiceTelemetryCore : IServiceTelemetry
 
 #endif
 
-		_anAutoIncrementInstrument = _meter.CreateCounter<System.Int32>(name: "AnAutoIncrement", unit: null, description: null
+		_anAutoIncrementInstrument = _meter.CreateCounter<int>(name: "anautoincrement", unit: null, description: null
 #if !NET7_0
 			, tags: anAutoIncrementTags
 #endif

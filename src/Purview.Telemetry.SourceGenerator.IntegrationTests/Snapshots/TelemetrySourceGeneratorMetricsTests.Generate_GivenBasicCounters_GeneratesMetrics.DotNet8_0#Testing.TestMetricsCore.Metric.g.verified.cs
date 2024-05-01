@@ -77,7 +77,7 @@ namespace Testing
 
 #endif
 
-			_counterInstrument = _meter.CreateCounter<int>(name: "Counter", unit: null, description: null
+			_counterInstrument = _meter.CreateCounter<int>(name: "counter", unit: null, description: null
 #if !NET7_0
 				, tags: counterTags
 #endif
@@ -91,7 +91,7 @@ namespace Testing
 
 #endif
 
-			_counter2Instrument = _meter.CreateCounter<byte>(name: "Counter2", unit: null, description: null
+			_counter2Instrument = _meter.CreateCounter<byte>(name: "counter2", unit: null, description: null
 #if !NET7_0
 				, tags: counter2Tags
 #endif
@@ -105,7 +105,7 @@ namespace Testing
 
 #endif
 
-			_counter3Instrument = _meter.CreateCounter<long>(name: "Counter3", unit: null, description: null
+			_counter3Instrument = _meter.CreateCounter<long>(name: "counter3", unit: null, description: null
 #if !NET7_0
 				, tags: counter3Tags
 #endif
@@ -119,7 +119,7 @@ namespace Testing
 
 #endif
 
-			_counter4Instrument = _meter.CreateCounter<short>(name: "Counter4", unit: null, description: null
+			_counter4Instrument = _meter.CreateCounter<short>(name: "counter4", unit: null, description: null
 #if !NET7_0
 				, tags: counter4Tags
 #endif
@@ -133,7 +133,7 @@ namespace Testing
 
 #endif
 
-			_counter5Instrument = _meter.CreateCounter<double>(name: "Counter5", unit: null, description: null
+			_counter5Instrument = _meter.CreateCounter<double>(name: "counter5", unit: null, description: null
 #if !NET7_0
 				, tags: counter5Tags
 #endif
@@ -147,7 +147,7 @@ namespace Testing
 
 #endif
 
-			_counter6Instrument = _meter.CreateCounter<float>(name: "Counter6", unit: null, description: null
+			_counter6Instrument = _meter.CreateCounter<float>(name: "counter6", unit: null, description: null
 #if !NET7_0
 				, tags: counter6Tags
 #endif
@@ -161,7 +161,7 @@ namespace Testing
 
 #endif
 
-			_counter7Instrument = _meter.CreateCounter<decimal>(name: "Counter7", unit: null, description: null
+			_counter7Instrument = _meter.CreateCounter<decimal>(name: "counter7", unit: null, description: null
 #if !NET7_0
 				, tags: counter7Tags
 #endif

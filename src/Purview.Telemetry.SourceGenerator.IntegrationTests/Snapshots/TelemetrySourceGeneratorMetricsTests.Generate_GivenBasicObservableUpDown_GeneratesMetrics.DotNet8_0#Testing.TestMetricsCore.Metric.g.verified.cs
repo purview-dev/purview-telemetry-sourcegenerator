@@ -89,7 +89,7 @@ namespace Testing
 			observableUpDownTagList.Add("intparam", intParam);
 			observableUpDownTagList.Add("boolparam", boolParam);
 
-			_observableUpDownInstrument = _meter.CreateObservableUpDownCounter<int>("ObservableUpDown", f, unit: null, description: null
+			_observableUpDownInstrument = _meter.CreateObservableUpDownCounter<int>("observableupdown", f, unit: null, description: null
 #if !NET7_0
 				, tags: observableUpDownTagList
 #endif
@@ -101,7 +101,7 @@ namespace Testing
 		{
 			if (_observableUpDown2Instrument != null)
 			{
-				throw new System.Exception("ObservableUpDown2 has already been initialized.");
+				throw new System.Exception("observableupdown2 has already been initialized.");
 			}
 
 			System.Diagnostics.TagList observableUpDown2TagList = new System.Diagnostics.TagList();
@@ -109,7 +109,7 @@ namespace Testing
 			observableUpDown2TagList.Add("intparam", intParam);
 			observableUpDown2TagList.Add("boolparam", boolParam);
 
-			_observableUpDown2Instrument = _meter.CreateObservableUpDownCounter<int>("ObservableUpDown2", f, unit: null, description: null
+			_observableUpDown2Instrument = _meter.CreateObservableUpDownCounter<int>("observableupdown2", f, unit: null, description: null
 #if !NET7_0
 				, tags: observableUpDown2TagList
 #endif
@@ -129,7 +129,7 @@ namespace Testing
 			observableUpDown3TagList.Add("intparam", intParam);
 			observableUpDown3TagList.Add("boolparam", boolParam);
 
-			_observableUpDown3Instrument = _meter.CreateObservableUpDownCounter<int>("ObservableUpDown3", f, unit: null, description: null
+			_observableUpDown3Instrument = _meter.CreateObservableUpDownCounter<int>("observableupdown3", f, unit: null, description: null
 #if !NET7_0
 				, tags: observableUpDown3TagList
 #endif

@@ -77,8 +77,8 @@ sealed class ActivityAttribute : System.Attribute
 
 	/// <summary>
 	/// If true, the <see cref="System.Diagnostics.Activity"/> is created using
-	/// <see cref="System.Diagnostics.ActivitySource.CreateActivity" />, meaning it is not started by default. Otherwise
-	/// <see cref="System.Diagnostics.ActivitySource.StartActivity" />is used. The default is false.
+	/// <see cref="System.Diagnostics.ActivitySource.CreateActivity(string, System.Diagnostics.ActivityKind, string?, IEnumerable{KeyValuePair{string, object?}}?, IEnumerable{System.Diagnostics.ActivityLink}?, System.Diagnostics.ActivityIdFormat)" />, meaning it is not started by default. Otherwise
+	/// <see cref="System.Diagnostics.ActivitySource.StartActivity(string, System.Diagnostics.ActivityKind, string?, IEnumerable{KeyValuePair{string, object?}}?, IEnumerable{System.Diagnostics.ActivityLink}?, DateTimeOffset)" />is used. The default is false.
 	/// </summary>
 	public bool CreateOnly { get; set; }
 }

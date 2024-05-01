@@ -81,7 +81,7 @@ namespace Testing
 		{
 			if (_counterInstrument != null)
 			{
-				throw new System.Exception("Counter has already been initialized.");
+				throw new System.Exception("counter has already been initialized.");
 			}
 
 			System.Diagnostics.TagList counterTagList = new System.Diagnostics.TagList();
@@ -89,7 +89,7 @@ namespace Testing
 			counterTagList.Add("intparam", intParam);
 			counterTagList.Add("boolparam", boolParam);
 
-			_counterInstrument = _meter.CreateObservableCounter<int>("Counter", counterValue, unit: null, description: null
+			_counterInstrument = _meter.CreateObservableCounter<int>("counter", counterValue, unit: null, description: null
 #if !NET7_0
 				, tags: counterTagList
 #endif
@@ -103,7 +103,7 @@ namespace Testing
 		{
 			if (_gaugeInstrument != null)
 			{
-				throw new System.Exception("Gauge has already been initialized.");
+				throw new System.Exception("gauge has already been initialized.");
 			}
 
 			System.Diagnostics.TagList gaugeTagList = new System.Diagnostics.TagList();
@@ -111,7 +111,7 @@ namespace Testing
 			gaugeTagList.Add("intparam", intParam);
 			gaugeTagList.Add("boolparam", boolParam);
 
-			_gaugeInstrument = _meter.CreateObservableGauge<int>("Gauge", counterValue, unit: null, description: null
+			_gaugeInstrument = _meter.CreateObservableGauge<int>("gauge", counterValue, unit: null, description: null
 #if !NET7_0
 				, tags: gaugeTagList
 #endif
@@ -125,7 +125,7 @@ namespace Testing
 		{
 			if (_upDownInstrument != null)
 			{
-				throw new System.Exception("UpDown has already been initialized.");
+				throw new System.Exception("updown has already been initialized.");
 			}
 
 			System.Diagnostics.TagList upDownTagList = new System.Diagnostics.TagList();
@@ -133,7 +133,7 @@ namespace Testing
 			upDownTagList.Add("intparam", intParam);
 			upDownTagList.Add("boolparam", boolParam);
 
-			_upDownInstrument = _meter.CreateObservableUpDownCounter<int>("UpDown", counterValue, unit: null, description: null
+			_upDownInstrument = _meter.CreateObservableUpDownCounter<int>("updown", counterValue, unit: null, description: null
 #if !NET7_0
 				, tags: upDownTagList
 #endif

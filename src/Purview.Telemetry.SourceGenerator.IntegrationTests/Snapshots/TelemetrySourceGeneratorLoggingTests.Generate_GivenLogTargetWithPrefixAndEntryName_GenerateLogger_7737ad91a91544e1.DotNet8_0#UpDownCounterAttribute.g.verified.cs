@@ -20,6 +20,7 @@ namespace Purview.Telemetry.Metrics;
 /// </summary>
 [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed class UpDownCounterAttribute : System.Attribute
 {
 	/// <summary>

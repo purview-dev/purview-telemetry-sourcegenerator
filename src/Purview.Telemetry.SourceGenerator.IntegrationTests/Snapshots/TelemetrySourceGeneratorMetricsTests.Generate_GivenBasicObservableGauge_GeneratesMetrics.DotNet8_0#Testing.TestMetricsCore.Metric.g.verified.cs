@@ -89,7 +89,7 @@ namespace Testing
 			observableGaugeTagList.Add("intparam", intParam);
 			observableGaugeTagList.Add("boolparam", boolParam);
 
-			_observableGaugeInstrument = _meter.CreateObservableGauge<int>("ObservableGauge", f, unit: null, description: null
+			_observableGaugeInstrument = _meter.CreateObservableGauge<int>("observablegauge", f, unit: null, description: null
 #if !NET7_0
 				, tags: observableGaugeTagList
 #endif
@@ -101,7 +101,7 @@ namespace Testing
 		{
 			if (_observableGauge2Instrument != null)
 			{
-				throw new System.Exception("ObservableGauge2 has already been initialized.");
+				throw new System.Exception("observablegauge2 has already been initialized.");
 			}
 
 			System.Diagnostics.TagList observableGauge2TagList = new System.Diagnostics.TagList();
@@ -109,7 +109,7 @@ namespace Testing
 			observableGauge2TagList.Add("intparam", intParam);
 			observableGauge2TagList.Add("boolparam", boolParam);
 
-			_observableGauge2Instrument = _meter.CreateObservableGauge<int>("ObservableGauge2", f, unit: null, description: null
+			_observableGauge2Instrument = _meter.CreateObservableGauge<int>("observablegauge2", f, unit: null, description: null
 #if !NET7_0
 				, tags: observableGauge2TagList
 #endif
@@ -129,7 +129,7 @@ namespace Testing
 			observableGauge3TagList.Add("intparam", intParam);
 			observableGauge3TagList.Add("boolparam", boolParam);
 
-			_observableGauge3Instrument = _meter.CreateObservableGauge<int>("ObservableGauge3", f, unit: null, description: null
+			_observableGauge3Instrument = _meter.CreateObservableGauge<int>("observablegauge3", f, unit: null, description: null
 #if !NET7_0
 				, tags: observableGauge3TagList
 #endif

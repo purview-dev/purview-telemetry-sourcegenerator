@@ -17,7 +17,7 @@ namespace Purview.Telemetry.Activities;
 
 /// <summary>
 /// Marker attribute used to control the generation
-/// of <see cref="System.Diagnostics.Activity"Evenmt>events</see>.
+/// of <see cref="System.Diagnostics.ActivityEvent">events</see>.
 /// </summary>
 [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
