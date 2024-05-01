@@ -48,5 +48,5 @@ sealed class TagAttribute : System.Attribute
 	/// Determines if the tag is skipped if it equals it's default value.
 	/// Defaults to false.
 	/// </summary>
-	public bool SkipOnNullOrEmpty { get; set; } = false;
+	public bool SkipOnNullOrEmpty { get; set; }
 }

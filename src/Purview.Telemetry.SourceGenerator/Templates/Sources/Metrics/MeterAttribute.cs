@@ -43,7 +43,7 @@ sealed class MeterAttribute : System.Attribute
 
 	/// <summary>
 	/// Determines if the <see cref="CounterAttribute.Name"/>, <see cref="HistogramAttribute.Name"/>, 
-	/// <see cref="UpDownCountAttribute.Name"/>, <see cref="ObservableCounterAttribute.Name"/>,
+	/// <see cref="UpDownCounterAttribute.Name"/>, <see cref="ObservableCounterAttribute.Name"/>,
 	/// <see cref="ObservableGaugeAttribute.Name"/> or <see cref="ObservableUpDownCounterAttribute.Name"/> (including
 	/// any prefixes) are lowercased.
 	/// </summary>

@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34607.79
@@ -31,12 +30,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelemetryRoslynTestHarness", "TelemetryRoslynTestHarness\TelemetryRoslynTestHarness.csproj", "{2D4E0757-5DAF-465A-8B3D-1C1B770D54ED}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurviewTempProjectForAttributeTesting", "PurviewTempProjectForAttributeTesting\PurviewTempProjectForAttributeTesting.csproj", "{C03ADB88-EBBC-4A08-98AC-ABBA0D234266}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C03ADB88-EBBC-4A08-98AC-ABBA0D234266}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C03ADB88-EBBC-4A08-98AC-ABBA0D234266}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C03ADB88-EBBC-4A08-98AC-ABBA0D234266}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C03ADB88-EBBC-4A08-98AC-ABBA0D234266}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E1BF0474-5DD6-4BF0-B58B-B655857265B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E1BF0474-5DD6-4BF0-B58B-B655857265B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1BF0474-5DD6-4BF0-B58B-B655857265B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
