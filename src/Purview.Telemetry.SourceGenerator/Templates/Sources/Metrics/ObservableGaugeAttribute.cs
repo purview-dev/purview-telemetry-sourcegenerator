@@ -1,7 +1,7 @@
 ﻿namespace Purview.Telemetry.Metrics;
 
 /// <summary>
-/// Specifies the meter type generated corresponds to a <see cref="System.Diagnostics.Metrics.ObservableGuage{T}"/>.
+/// Specifies the meter type generated corresponds to a <see cref="System.Diagnostics.Metrics.ObservableGauge{T}"/>.
 /// </summary>
 [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
