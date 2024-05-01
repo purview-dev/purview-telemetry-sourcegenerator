@@ -19,9 +19,9 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.Counter<System.Int32>? _counter1Instrument = null;
-		System.Diagnostics.Metrics.Counter<System.Int32>? _counter2Instrument = null;
-		System.Diagnostics.Metrics.Counter<System.Int32>? _counter3Instrument = null;
+		System.Diagnostics.Metrics.Counter<int>? _counter1Instrument = null;
+		System.Diagnostics.Metrics.Counter<int>? _counter2Instrument = null;
+		System.Diagnostics.Metrics.Counter<int>? _counter3Instrument = null;
 
 		public TestMetricsCore(
 #if NET8_0_OR_GREATER
@@ -73,7 +73,7 @@ namespace Testing
 
 #endif
 
-			_counter1Instrument = _meter.CreateCounter<System.Int32>(name: "Counter1", unit: null, description: null
+			_counter1Instrument = _meter.CreateCounter<int>(name: "counter1", unit: null, description: null
 #if !NET7_0
 				, tags: counter1Tags
 #endif
@@ -87,7 +87,7 @@ namespace Testing
 
 #endif
 
-			_counter2Instrument = _meter.CreateCounter<System.Int32>(name: "Counter2", unit: null, description: null
+			_counter2Instrument = _meter.CreateCounter<int>(name: "counter2", unit: null, description: null
 #if !NET7_0
 				, tags: counter2Tags
 #endif
@@ -101,7 +101,7 @@ namespace Testing
 
 #endif
 
-			_counter3Instrument = _meter.CreateCounter<System.Int32>(name: "Counter3", unit: null, description: null
+			_counter3Instrument = _meter.CreateCounter<int>(name: "counter3", unit: null, description: null
 #if !NET7_0
 				, tags: counter3Tags
 #endif

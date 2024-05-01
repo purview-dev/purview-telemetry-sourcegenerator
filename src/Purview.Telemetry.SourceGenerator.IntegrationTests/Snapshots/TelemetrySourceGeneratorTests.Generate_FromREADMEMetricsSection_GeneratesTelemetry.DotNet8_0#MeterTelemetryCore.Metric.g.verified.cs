@@ -17,7 +17,7 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 {
 	System.Diagnostics.Metrics.Meter _meter = default!;
 
-	System.Diagnostics.Metrics.Counter<System.Int32>? _autoIncrementMeterInstrument = null;
+	System.Diagnostics.Metrics.Counter<int>? _autoIncrementMeterInstrument = null;
 	System.Diagnostics.Metrics.Counter<int>? _counterMeterInstrument = null;
 	System.Diagnostics.Metrics.Histogram<int>? _histogramMeterInstrument = null;
 	System.Diagnostics.Metrics.ObservableCounter<float>? _observableCounterMeterInstrument = null;
@@ -75,7 +75,7 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 
 #endif
 
-		_autoIncrementMeterInstrument = _meter.CreateCounter<System.Int32>(name: "AutoIncrementMeter", unit: null, description: null
+		_autoIncrementMeterInstrument = _meter.CreateCounter<int>(name: "autoincrementmeter", unit: null, description: null
 #if !NET7_0
 			, tags: autoIncrementMeterTags
 #endif
@@ -89,7 +89,7 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 
 #endif
 
-		_counterMeterInstrument = _meter.CreateCounter<int>(name: "CounterMeter", unit: null, description: null
+		_counterMeterInstrument = _meter.CreateCounter<int>(name: "countermeter", unit: null, description: null
 #if !NET7_0
 			, tags: counterMeterTags
 #endif
@@ -103,7 +103,7 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 
 #endif
 
-		_histogramMeterInstrument = _meter.CreateHistogram<int>(name: "HistogramMeter", unit: null, description: null
+		_histogramMeterInstrument = _meter.CreateHistogram<int>(name: "histogrammeter", unit: null, description: null
 #if !NET7_0
 			, tags: histogramMeterTags
 #endif
@@ -117,7 +117,7 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 
 #endif
 
-		_upDownCounterMeterInstrument = _meter.CreateUpDownCounter<decimal>(name: "UpDownCounterMeter", unit: null, description: null
+		_upDownCounterMeterInstrument = _meter.CreateUpDownCounter<decimal>(name: "updowncountermeter", unit: null, description: null
 #if !NET7_0
 			, tags: upDownCounterMeterTags
 #endif
@@ -200,7 +200,7 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 
 		observableCounterMeterTagList.Add("somevalue", someValue);
 
-		_observableCounterMeterInstrument = _meter.CreateObservableCounter<float>("ObservableCounterMeter", measurement, unit: null, description: null
+		_observableCounterMeterInstrument = _meter.CreateObservableCounter<float>("observablecountermeter", measurement, unit: null, description: null
 #if !NET7_0
 			, tags: observableCounterMeterTagList
 #endif
@@ -219,7 +219,7 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 
 		observableGaugeMeterTagList.Add("somevalue", someValue);
 
-		_observableGaugeMeterInstrument = _meter.CreateObservableGauge<float>("ObservableGaugeMeter", measurement, unit: null, description: null
+		_observableGaugeMeterInstrument = _meter.CreateObservableGauge<float>("observablegaugemeter", measurement, unit: null, description: null
 #if !NET7_0
 			, tags: observableGaugeMeterTagList
 #endif
@@ -238,7 +238,7 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 
 		observableUpDownCounterTagList.Add("somevalue", someValue);
 
-		_observableUpDownCounterInstrument = _meter.CreateObservableUpDownCounter<byte>("ObservableUpDownCounter", measurement, unit: null, description: null
+		_observableUpDownCounterInstrument = _meter.CreateObservableUpDownCounter<byte>("observableupdowncounter", measurement, unit: null, description: null
 #if !NET7_0
 			, tags: observableUpDownCounterTagList
 #endif

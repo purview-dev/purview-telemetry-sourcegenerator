@@ -89,7 +89,7 @@ namespace Testing
 			observableCounterTagList.Add("intparam", intParam);
 			observableCounterTagList.Add("boolparam", boolParam);
 
-			_observableCounterInstrument = _meter.CreateObservableCounter<int>("ObservableCounter", f, unit: null, description: null
+			_observableCounterInstrument = _meter.CreateObservableCounter<int>("observablecounter", f, unit: null, description: null
 #if !NET7_0
 				, tags: observableCounterTagList
 #endif
@@ -101,7 +101,7 @@ namespace Testing
 		{
 			if (_observableCounter2Instrument != null)
 			{
-				throw new System.Exception("ObservableCounter2 has already been initialized.");
+				throw new System.Exception("observablecounter2 has already been initialized.");
 			}
 
 			System.Diagnostics.TagList observableCounter2TagList = new System.Diagnostics.TagList();
@@ -109,7 +109,7 @@ namespace Testing
 			observableCounter2TagList.Add("intparam", intParam);
 			observableCounter2TagList.Add("boolparam", boolParam);
 
-			_observableCounter2Instrument = _meter.CreateObservableCounter<int>("ObservableCounter2", f, unit: null, description: null
+			_observableCounter2Instrument = _meter.CreateObservableCounter<int>("observablecounter2", f, unit: null, description: null
 #if !NET7_0
 				, tags: observableCounter2TagList
 #endif
@@ -129,7 +129,7 @@ namespace Testing
 			observableCounter3TagList.Add("intparam", intParam);
 			observableCounter3TagList.Add("boolparam", boolParam);
 
-			_observableCounter3Instrument = _meter.CreateObservableCounter<int>("ObservableCounter3", f, unit: null, description: null
+			_observableCounter3Instrument = _meter.CreateObservableCounter<int>("observablecounter3", f, unit: null, description: null
 #if !NET7_0
 				, tags: observableCounter3TagList
 #endif

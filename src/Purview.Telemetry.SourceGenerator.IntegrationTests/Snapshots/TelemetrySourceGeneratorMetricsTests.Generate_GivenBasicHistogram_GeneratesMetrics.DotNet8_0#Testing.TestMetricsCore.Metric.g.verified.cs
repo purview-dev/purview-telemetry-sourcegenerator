@@ -72,7 +72,7 @@ namespace Testing
 
 #endif
 
-			_histogramInstrument = _meter.CreateHistogram<int>(name: "Histogram", unit: null, description: null
+			_histogramInstrument = _meter.CreateHistogram<int>(name: "histogram", unit: null, description: null
 #if !NET7_0
 				, tags: histogramTags
 #endif
@@ -86,7 +86,7 @@ namespace Testing
 
 #endif
 
-			_histogram1Instrument = _meter.CreateHistogram<int>(name: "Histogram1", unit: null, description: null
+			_histogram1Instrument = _meter.CreateHistogram<int>(name: "histogram1", unit: null, description: null
 #if !NET7_0
 				, tags: histogram1Tags
 #endif

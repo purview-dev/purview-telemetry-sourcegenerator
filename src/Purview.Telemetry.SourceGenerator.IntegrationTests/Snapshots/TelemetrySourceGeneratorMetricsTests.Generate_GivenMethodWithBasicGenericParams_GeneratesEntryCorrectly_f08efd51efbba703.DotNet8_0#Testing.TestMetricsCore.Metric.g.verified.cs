@@ -19,8 +19,8 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.Counter<System.Int32>? _autoCounterInstrument = null;
-		System.Diagnostics.Metrics.Counter<System.Int32>? _counter_AutoIncrementInstrument = null;
+		System.Diagnostics.Metrics.Counter<int>? _autoCounterInstrument = null;
+		System.Diagnostics.Metrics.Counter<int>? _counter_AutoIncrementInstrument = null;
 		System.Diagnostics.Metrics.Counter<int>? _counterInstrument = null;
 		System.Diagnostics.Metrics.Histogram<int>? _histogramInstrument = null;
 		System.Diagnostics.Metrics.UpDownCounter<int>? _upDownCounterInstrument = null;
@@ -78,7 +78,7 @@ namespace Testing
 
 #endif
 
-			_autoCounterInstrument = _meter.CreateCounter<System.Int32>(name: "AutoCounter", unit: null, description: null
+			_autoCounterInstrument = _meter.CreateCounter<int>(name: "autocounter", unit: null, description: null
 #if !NET7_0
 				, tags: autoCounterTags
 #endif
@@ -92,7 +92,7 @@ namespace Testing
 
 #endif
 
-			_counter_AutoIncrementInstrument = _meter.CreateCounter<System.Int32>(name: "Counter_AutoIncrement", unit: null, description: null
+			_counter_AutoIncrementInstrument = _meter.CreateCounter<int>(name: "counter_autoincrement", unit: null, description: null
 #if !NET7_0
 				, tags: counter_AutoIncrementTags
 #endif
@@ -106,7 +106,7 @@ namespace Testing
 
 #endif
 
-			_counterInstrument = _meter.CreateCounter<int>(name: "Counter", unit: null, description: null
+			_counterInstrument = _meter.CreateCounter<int>(name: "counter", unit: null, description: null
 #if !NET7_0
 				, tags: counterTags
 #endif
@@ -120,7 +120,7 @@ namespace Testing
 
 #endif
 
-			_histogramInstrument = _meter.CreateHistogram<int>(name: "Histogram", unit: null, description: null
+			_histogramInstrument = _meter.CreateHistogram<int>(name: "histogram", unit: null, description: null
 #if !NET7_0
 				, tags: histogramTags
 #endif
@@ -134,7 +134,7 @@ namespace Testing
 
 #endif
 
-			_upDownCounterInstrument = _meter.CreateUpDownCounter<int>(name: "UpDownCounter", unit: null, description: null
+			_upDownCounterInstrument = _meter.CreateUpDownCounter<int>(name: "updowncounter", unit: null, description: null
 #if !NET7_0
 				, tags: upDownCounterTags
 #endif
@@ -248,7 +248,7 @@ namespace Testing
 
 			observableCounterTagList.Add("genericparameter", genericParameter);
 
-			_observableCounterInstrument = _meter.CreateObservableCounter<int>("ObservableCounter", valueFunc, unit: null, description: null
+			_observableCounterInstrument = _meter.CreateObservableCounter<int>("observablecounter", valueFunc, unit: null, description: null
 #if !NET7_0
 				, tags: observableCounterTagList
 #endif
@@ -267,7 +267,7 @@ namespace Testing
 
 			observableGaugeTagList.Add("genericparameter", genericParameter);
 
-			_observableGaugeInstrument = _meter.CreateObservableGauge<int>("ObservableGauge", valueFunc, unit: null, description: null
+			_observableGaugeInstrument = _meter.CreateObservableGauge<int>("observablegauge", valueFunc, unit: null, description: null
 #if !NET7_0
 				, tags: observableGaugeTagList
 #endif
@@ -286,7 +286,7 @@ namespace Testing
 
 			observableUpDownCounterTagList.Add("genericparameter", genericParameter);
 
-			_observableUpDownCounterInstrument = _meter.CreateObservableUpDownCounter<int>("ObservableUpDownCounter", valueFunc, unit: null, description: null
+			_observableUpDownCounterInstrument = _meter.CreateObservableUpDownCounter<int>("observableupdowncounter", valueFunc, unit: null, description: null
 #if !NET7_0
 				, tags: observableUpDownCounterTagList
 #endif

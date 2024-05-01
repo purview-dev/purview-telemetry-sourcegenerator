@@ -70,7 +70,7 @@ sealed partial class TestTelemetryCore : ITestTelemetry
 
 #endif
 
-		_counterInstrument = _meter.CreateCounter<int>(name: "Counter", unit: null, description: null
+		_counterInstrument = _meter.CreateCounter<int>(name: "counter", unit: null, description: null
 #if !NET7_0
 			, tags: counterTags
 #endif

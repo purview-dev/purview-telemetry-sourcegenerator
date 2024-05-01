@@ -1,8 +1,6 @@
 ﻿using System.Collections.Immutable;
-
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-
 using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
@@ -94,6 +92,12 @@ partial class PipelineHelpers
 	{
 		token.ThrowIfCancellationRequested();
 
+		var lowercaseInstrumentName = meterAttribute.LowercaseInstrumentName.IsSet
+			? meterAttribute.LowercaseInstrumentName.Value!.Value
+			: meterGenerationAttribute?.LowercaseInstrumentName?.IsSet == true
+				? meterGenerationAttribute.LowercaseInstrumentName.Value!.Value
+				: true;
+
 		var prefix = GeneratePrefix(meterGenerationAttribute, meterAttribute, token);
 		var lowercaseTagKeys = meterAttribute.LowercaseTagKeys!.Value!.Value;
 
@@ -115,7 +119,7 @@ partial class PipelineHelpers
 
 			logger?.Debug($"Found possible instrument method {interfaceSymbol.Name}.{method.Name}.");
 
-			var parameters = GetInstrumentParameters(method, prefix, lowercaseTagKeys, semanticModel, logger, token);
+			var parameters = GetInstrumentParameters(method, lowercaseTagKeys, semanticModel, logger, token);
 			var measurementParameters = parameters.Where(m => m.ParamDestination == InstrumentParameterDestination.Measurement).ToImmutableArray();
 			var tagParameters = parameters.Where(m => m.ParamDestination == InstrumentParameterDestination.Tag).ToImmutableArray();
 			var measurementParameter = measurementParameters.FirstOrDefault();
@@ -124,9 +128,17 @@ partial class PipelineHelpers
 				? Constants.System.VoidKeyword
 				: Utilities.GetFullyQualifiedOrSystemName(method.ReturnType);
 			var fieldName = $"_{Utilities.LowercaseFirstChar(method.Name)}Instrument";
-			var metricName = instrumentAttribute?.Name.Value;
-			if (string.IsNullOrWhiteSpace(metricName))
-				metricName = method.Name;
+			var instrumentName = instrumentAttribute?.Name?.Value;
+			if (string.IsNullOrWhiteSpace(instrumentName))
+				instrumentName = method.Name;
+
+			if (lowercaseInstrumentName)
+			{
+#pragma warning disable CA1308 // Normalize strings to uppercase
+				instrumentName = instrumentName!.ToLowerInvariant();
+				prefix = prefix?.ToLowerInvariant();
+#pragma warning restore CA1308 // Normalize strings to uppercase
+			}
 
 			var validAutoCounter = instrumentAttribute?.InstrumentType is InstrumentTypes.Counter && instrumentAttribute.IsAutoIncrement;
 
@@ -139,13 +151,11 @@ partial class PipelineHelpers
 				if (targetGenerationState.RaiseMultiGenerationTargetsNotSupported)
 				{
 					logger?.Debug($"Identified {interfaceSymbol.Name}.{method.Name} as problematic as it has another target types.");
-
 					errorDiagnostics.Add(TelemetryDiagnostics.General.MultiGenerationTargetsNotSupported);
 				}
 				else if (targetGenerationState.RaiseInferenceNotSupportedWithMultiTargeting)
 				{
 					logger?.Debug($"Identified {interfaceSymbol.Name}.{method.Name} as problematic as it is inferred.");
-
 					errorDiagnostics.Add(TelemetryDiagnostics.General.InferenceNotSupportedWithMultiTargeting);
 				}
 			}
@@ -188,7 +198,7 @@ partial class PipelineHelpers
 				}
 			}
 
-			var instrumentMeasurementType = measurementParameter?.InstrumentType ?? Constants.System.Int32;
+			var instrumentMeasurementType = measurementParameter?.InstrumentType ?? Constants.System.IntKeyword;
 
 			if (measurementParameter != null && !measurementParameter.IsValidInstrumentType)
 				errorDiagnostics.Add(TelemetryDiagnostics.Metrics.InvalidMeasurementType);
@@ -201,7 +211,7 @@ partial class PipelineHelpers
 				FieldName: fieldName,
 				IsObservable: instrumentAttribute?.IsObservable == true,
 
-				MetricName: metricName!,
+				MetricName: prefix + instrumentName!,
 				InstrumentMeasurementType: instrumentMeasurementType,
 
 				MethodLocation: method.Locations.FirstOrDefault(),
@@ -223,13 +233,11 @@ partial class PipelineHelpers
 
 	static ImmutableArray<InstrumentParameterTarget> GetInstrumentParameters(
 		IMethodSymbol method,
-		string? prefix,
 		bool lowercaseTagKeys,
 		SemanticModel semanticModel,
 		IGenerationLogger? logger,
 		CancellationToken token)
 	{
-
 		List<InstrumentParameterTarget> parameterTargets = [];
 		foreach (var parameter in method.Parameters)
 		{
@@ -345,11 +353,11 @@ partial class PipelineHelpers
 			}
 
 			var parameterName = parameter.Name;
-			var generatedName = GenerateParameterName(tagAttribute?.Name.Value ?? parameterName, prefix, lowercaseTagKeys);
+			var generatedName = GenerateParameterName(tagAttribute?.Name.Value ?? parameterName, null, lowercaseTagKeys);
 
 			parameterTargets.Add(new(
 				ParameterName: parameterName,
-				ParameterType: parameter.Type.ToDisplayString(),
+				ParameterType: Utilities.GetFullyQualifiedOrSystemName(parameter.Type),
 
 				IsFunc: isFuncType,
 				IsIEnumerable: isIEnumerableType,
@@ -375,31 +383,21 @@ partial class PipelineHelpers
 		MeterAttributeRecord meterAttribute,
 		CancellationToken token)
 	{
-
 		token.ThrowIfCancellationRequested();
 
 		string? prefix = null;
 		var separator = meterGenerationAttribute?
 			.InstrumentSeparator.Or(Constants.Metrics.InstrumentSeparatorDefault);
 
-		if (meterGenerationAttribute?.InstrumentPrefix.IsSet == true
-			&& !string.IsNullOrWhiteSpace(meterGenerationAttribute?.InstrumentPrefix.Value))
+		if (meterAttribute.IncludeAssemblyInstrumentPrefix.Value == true)
 		{
-			prefix = meterGenerationAttribute!.InstrumentPrefix.Value! + separator;
+			if (meterGenerationAttribute?.InstrumentPrefix.IsSet == true
+				&& !string.IsNullOrWhiteSpace(meterGenerationAttribute?.InstrumentPrefix.Value))
+				prefix = meterGenerationAttribute!.InstrumentPrefix.Value! + separator;
 		}
 
-		if (meterAttribute.InstrumentPrefix.IsSet && !string.IsNullOrWhiteSpace(meterAttribute.InstrumentPrefix.Value))
-		{
-			if (meterAttribute.IncludeAssemblyInstrumentPrefix.Value == true
-				&& !string.IsNullOrWhiteSpace(meterGenerationAttribute?.InstrumentPrefix.Value))
-			{
-				prefix += meterGenerationAttribute!.InstrumentPrefix.Value + separator;
-			}
-			else
-			{
-				prefix = meterAttribute.InstrumentPrefix.Value + separator;
-			}
-		}
+		if (!string.IsNullOrWhiteSpace(meterAttribute.InstrumentPrefix.Value))
+			prefix += meterAttribute.InstrumentPrefix.Value! + separator;
 
 		return prefix;
 	}

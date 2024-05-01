@@ -19,7 +19,7 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.Counter<System.Int32>? _metricInstrument = null;
+		System.Diagnostics.Metrics.Counter<int>? _metricInstrument = null;
 
 		public TestMetricsCore(
 #if NET8_0_OR_GREATER
@@ -71,7 +71,7 @@ namespace Testing
 
 #endif
 
-			_metricInstrument = _meter.CreateCounter<System.Int32>(name: "a-counter-name-param", unit: "cakes-param", description: "cake sales per-capita-param."
+			_metricInstrument = _meter.CreateCounter<int>(name: "a-counter-name-param", unit: "cakes-param", description: "cake sales per-capita-param."
 #if !NET7_0
 				, tags: metricTags
 #endif

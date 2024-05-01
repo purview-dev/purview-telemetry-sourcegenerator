@@ -19,7 +19,7 @@ namespace Testing
 	{
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.Counter<System.Int32>? _autoCounterInstrument = null;
+		System.Diagnostics.Metrics.Counter<int>? _autoCounterInstrument = null;
 
 		public TestMetricsCore(
 #if NET8_0_OR_GREATER
@@ -71,7 +71,7 @@ namespace Testing
 
 #endif
 
-			_autoCounterInstrument = _meter.CreateCounter<System.Int32>(name: "AutoCounter", unit: null, description: null
+			_autoCounterInstrument = _meter.CreateCounter<int>(name: "autocounter", unit: null, description: null
 #if !NET7_0
 				, tags: autoCounterTags
 #endif
