@@ -62,5 +62,5 @@ sealed class BaggageAttribute : System.Attribute
 	/// <summary>
 	/// Determines if the parameter should be skipped when the value is a default value.
 	/// </summary>
-	public bool SkipOnNullOrEmpty { get; set; } = false;
+	public bool SkipOnNullOrEmpty { get; set; }
 }

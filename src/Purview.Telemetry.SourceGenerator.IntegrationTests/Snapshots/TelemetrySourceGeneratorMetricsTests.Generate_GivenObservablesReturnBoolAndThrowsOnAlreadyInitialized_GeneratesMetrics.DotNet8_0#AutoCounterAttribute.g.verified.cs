@@ -36,13 +36,11 @@ sealed class AutoCounterAttribute : System.Attribute
 
 	/// <summary>
 	/// Creates a new instance of the <see cref="AutoCounterAttribute"/> class, and specifies the
-	/// <see cref="Name"/>, and optionally the <see cref="Unit"/>, <see cref="Description"/>
-	/// and <see cref="AutoIncrement"/>.
+	/// <see cref="Name"/>, and optionally the <see cref="Unit"/> and <see cref="Description"/>.
 	/// </summary>
 	/// <param name="name">Specifies the <see cref="Name"/>.</param>
 	/// <param name="unit">Optionally specifies the <see cref="Unit"/>.</param>
 	/// <param name="description">Optionally specifies the <see cref="Description"/>.</param>
-	/// <param name="autoIncrement">Optionally specifies if the counter is <see cref="AutoIncrement">auto incremented</see>.</param>
 	public AutoCounterAttribute(string name, string? unit = null, string? description = null)
 	{
 		Name = name;

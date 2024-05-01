@@ -35,9 +35,9 @@ sealed class LoggerAttribute : System.Attribute
 	/// Creates a new instance of the <see cref="LoggerAttribute"/>, specifying the <see cref="DefaultLevel"/>
 	/// and optionally the <see cref="CustomPrefix"/>.
 	/// </summary>
-	/// <param name="defaultLevel">The default <see cref="Microsoft.Extension.Logging.LogLevel"/> to use
+	/// <param name="defaultLevel">The default <see cref="Microsoft.Extensions.Logging.LogLevel"/> to use
 	/// when one is not specified.</param>
-	/// <param name="customPrefix">If specified, also sets the <see cref="PrefixType"/> to <see cref="LogPrefix.Custom"/>.</param>
+	/// <param name="customPrefix">If specified, also sets the <see cref="PrefixType"/> to <see cref="LogPrefixType.Custom"/>.</param>
 	public LoggerAttribute(Microsoft.Extensions.Logging.LogLevel defaultLevel, string? customPrefix = null)
 	{
 		DefaultLevel = defaultLevel;
