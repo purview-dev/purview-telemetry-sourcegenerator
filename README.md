@@ -13,22 +13,37 @@ The latest version is available on [NuGet](https://www.nuget.org/packages/Purvie
 [ActivitySource]
 [Logger]
 [Meter]
-interface IServiceTelemetry
+interface IEntityStoreTelemetry
 {
+    /// <summary>
+    /// Creates and starts an Activity and adds the parameters as Tags and Baggage.
+    /// </summary>
     [Activity]
-    Activity? StartsAnActivity(string tagStringParam, [Baggage]int entityId);
+    void GettingEntityFromStore(int entityId, [Baggage]string serviceUrl);
 
+    /// <summary>
+    /// Adds an ActivityEvent to the Activity with the parameters as Tags.
+    /// </summary>
     [Event]
-    void AnInterestingEvent(Activity? activity, float aTagValue);
+    void GetDuration(int durationInMS);
 
+    /// <summary>
+    /// Adds the parameters as Baggage to the Activity.
+    /// </summary>
     [Context]
-    void InterestingInfo(Activity? activity, float anotherTagValue, int intTagValue);
+    void RetrievedEntity(float totalValue, int lastUpdatedByUserId);
 
+    /// <summary>
+    /// Generates a structured log message using an ILogger.
+    /// </summary>
     [Log]
-    void ProcessingEntity(int entityId, string property);
+    void ProcessingEntity(int entityId, string updateState);
 
+    /// <summary>
+    /// Adds 1 to a Counter<T> with the entityId as a Tag.
+    /// </summary>
     [AutoCounter]
-    void AnAutoIncrementCounter([Tag]int entityId);
+    void RetrievingEntity(int entityId);
 }
 ```
 
