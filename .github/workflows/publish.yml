@@ -43,10 +43,10 @@ jobs:
     
     - uses: dotnet/nbgv@master
       id: nbgv
-    - run: echo 'SemVer2=${{ steps.nbgv.outputs.SemVer2 }}'
+    - run: echo 'SemVer2=${{ steps.nbgv.outputs.NuGetPackageVersion }}'
     
     - name: Pack NuGet packages
-      run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }} --property:Version=${{ steps.nbgv.outputs.SemVer2 }} --include-symbols
+      run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }} --property:Version=${{ steps.nbgv.outputs.NuGetPackageVersion }} --include-symbols
 
     - uses: actions/upload-artifact@v4
       with:
