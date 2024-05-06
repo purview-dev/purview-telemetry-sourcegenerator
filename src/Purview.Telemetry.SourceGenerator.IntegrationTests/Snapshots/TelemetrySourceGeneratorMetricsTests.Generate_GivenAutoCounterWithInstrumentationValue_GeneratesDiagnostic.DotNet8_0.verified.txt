@@ -2,7 +2,7 @@
   Diagnostics: [
     {
       Id: TSG4002,
-      Title: Auto increment counter and measurement defined.,
+      Title: Auto increment counter and measurement defined,
       Severity: Error,
       WarningLevel: 0,
       Location: Guid_1: (13,6)-(13,17),
