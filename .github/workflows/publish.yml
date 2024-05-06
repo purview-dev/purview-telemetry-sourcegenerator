@@ -43,10 +43,10 @@ jobs:
     
     - uses: dotnet/nbgv@master
       id: nbgv
-    - run: echo 'SemVer2=${{ steps.nbgv.outputs.NuGetPackageVersion }}'
+    - run: echo 'SimpleVersion=${{ steps.nbgv.outputs.SimpleVersion }}'
     
     - name: Pack NuGet packages
-      run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }} --property:Version=${{ steps.nbgv.outputs.NuGetPackageVersion }} --include-symbols
+      run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }} --property:Version=${{ steps.nbgv.outputs.SimpleVersion }} --include-symbols
 
     - uses: actions/upload-artifact@v4
       with:
@@ -78,11 +78,18 @@ jobs:
           name: nuget
           path: ${{ env.NuGetDirectory }}
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          global-json-file: ./src/global.json
-          source-url: https://api.nuget.org/v3/index.json
+      - name: Upload release
+        uses: fnkr/github-action-ghr@v1
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-          run: dotnet nuget push ${{ env.NuGetDirectory }}/*.nupkg
+          GHR_COMPRESS: xz
+          GHR_PATH: ${{ env.NuGetDirectory }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Setup .NET
+      #   uses: actions/setup-dotnet@v4
+      #   with:
+      #     global-json-file: ./src/global.json
+      #     source-url: https://api.nuget.org/v3/index.json
+      #   env:
+      #     NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      #     run: dotnet nuget push ${{ env.NuGetDirectory }}/*.nupkg
