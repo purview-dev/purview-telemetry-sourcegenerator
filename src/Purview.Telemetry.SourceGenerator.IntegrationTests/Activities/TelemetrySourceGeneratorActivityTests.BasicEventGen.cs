@@ -13,7 +13,11 @@ using System.Diagnostics;
 namespace Testing;
 
 [ActivitySource(""testing-activity-source"")]
-public interface ITestActivities {
+public interface ITestActivities 
+{
+	[Activity]
+	void Activity();
+
 	[Event]
 	void Event(Activity activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
@@ -37,7 +41,11 @@ using System.Diagnostics;
 namespace Testing;
 
 [ActivitySource(""testing-activity-source"")]
-public interface ITestActivities {
+public interface ITestActivities 
+{
+	[Activity]
+	void Activity();
+
 	[Event]
 	void Event(Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }

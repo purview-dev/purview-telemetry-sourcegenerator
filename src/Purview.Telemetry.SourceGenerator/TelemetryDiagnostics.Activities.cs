@@ -103,5 +103,13 @@ partial class TelemetryDiagnostics
 			Category: Constants.Diagnostics.Activity.Usage,
 			Severity: DiagnosticSeverity.Error
 		);
+
+		public static readonly TelemetryDiagnosticDescriptor NoActivityMethodsDefined = new(
+			Id: "TSG3012",
+			Title: "There are no Activity methods defined, assumed use of Activity.Current.",
+			Description: "As Event and/ or Context methods are defined, it's best practise to create a specific Activity otherwise the Activity will belong to another operation.",
+			Category: Constants.Diagnostics.Activity.Usage,
+			Severity: DiagnosticSeverity.Info
+		);
 	}
 }
