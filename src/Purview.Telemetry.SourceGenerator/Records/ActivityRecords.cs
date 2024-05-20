@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-
 using Microsoft.CodeAnalysis;
 
 namespace Purview.Telemetry.SourceGenerator.Records;
@@ -23,7 +22,8 @@ record ActivitySourceTarget(
 
 	ImmutableArray<ActivityBasedGenerationTarget> ActivityMethods
 ,
-	ActivitySourceAttributeRecord ActivityTargetAttributeRecord
+	ActivitySourceAttributeRecord ActivityTargetAttributeRecord,
+	Location? InterfaceLocation
 );
 
 record ActivityBasedGenerationTarget(

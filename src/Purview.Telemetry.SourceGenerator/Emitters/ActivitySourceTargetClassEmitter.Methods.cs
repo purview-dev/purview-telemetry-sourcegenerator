@@ -13,6 +13,16 @@ partial class ActivitySourceTargetClassEmitter
 
 		EmitRecordExceptionEvent(builder, indent, context, logger);
 
+		if (!target.ActivityMethods.Any(m => m.MethodType == ActivityMethodType.Activity))
+		{
+			if (target.ActivityMethods.Any(m => m.MethodType != ActivityMethodType.Activity))
+			{
+				logger?.Diagnostic("There are no Activity methods defined, however there are Events/ Context methods.");
+
+				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Activities.NoActivityMethodsDefined, target.InterfaceLocation);
+			}
+		}
+
 		foreach (var methodTarget in target.ActivityMethods)
 		{
 			context.CancellationToken.ThrowIfCancellationRequested();

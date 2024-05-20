@@ -29,6 +29,32 @@ public interface ITestActivities {
 	}
 
 	[Fact]
+	public async Task Generate_GivenInterfaceWithNoActivityButOtherActivityBasedMethods_GeneratesDiagnostic()
+	{
+		// Arrange
+		const string basicActivity = @"
+using Purview.Telemetry.Activities;
+
+namespace Testing;
+
+[ActivitySource(""testing-activity-source"")]
+public interface ITestActivities {
+	[Context]
+	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+
+	[Event]
+	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicActivity);
+
+		// Assert
+		await TestHelpers.Verify(generationResult, config: s => s.ScrubInlineGuids(), validateNonEmptyDiagnostics: true);
+	}
+
+	[Fact]
 	public async Task Generate_GivenBasicGenAndNoActivityName_GeneratesActivity()
 	{
 		// Arrange

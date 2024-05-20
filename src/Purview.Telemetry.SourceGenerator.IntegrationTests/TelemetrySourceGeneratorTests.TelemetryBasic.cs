@@ -98,6 +98,9 @@ namespace Testing;
 [ActivitySource(""activity-source"")]
 public interface ITestTelemetry
 {
+	[Activity]
+	void Activity();
+
 	[Event]
 	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException);
 }
@@ -122,6 +125,9 @@ namespace Testing;
 [ActivitySource(""activity-source"")]
 public interface ITestTelemetry
 {
+	[Activity]
+	void Activity();
+
 	[Event]
 	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
 }
@@ -146,6 +152,9 @@ namespace Testing;
 [ActivitySource(""activity-source"")]
 public interface ITestTelemetry
 {
+	[Activity]
+	void Activity();
+
 	[Event(UseRecordExceptionRules = false)]
 	void EventMethod([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
 }
@@ -170,6 +179,9 @@ namespace Testing;
 [ActivitySource(""activity-source"")]
 public interface ITestTelemetry
 {
+	[Activity]
+	void Activity();
+
 	[Event(name: ""exception"", UseRecordExceptionRules = false)]
 	void EventMethod([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
 }
@@ -194,6 +206,9 @@ namespace Testing;
 [ActivitySource(""activity-source"")]
 public interface ITestTelemetry
 {
+	[Activity]
+	void Activity();
+
 	[Event(name: ""exception"", UseRecordExceptionRules = true)]
 	void EventMethod([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
 }
