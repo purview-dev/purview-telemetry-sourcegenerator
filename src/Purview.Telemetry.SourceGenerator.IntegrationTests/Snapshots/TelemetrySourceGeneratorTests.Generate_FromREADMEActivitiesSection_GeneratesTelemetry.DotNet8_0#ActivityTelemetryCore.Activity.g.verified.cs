@@ -39,6 +39,11 @@ sealed partial class ActivityTelemetryCore : IActivityTelemetry
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void GettingItemFromCache(string key, string itemType)
 	{
+		if (!_activitySource.HasListeners())
+		{
+			return;
+		}
+
 		System.Diagnostics.Activity? activityGettingItemFromCache = _activitySource.StartActivity(name: "GettingItemFromCache", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
 
 		if (activityGettingItemFromCache != null)
@@ -55,6 +60,11 @@ sealed partial class ActivityTelemetryCore : IActivityTelemetry
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void Miss()
 	{
+		if (!_activitySource.HasListeners())
+		{
+			return;
+		}
+
 		if (System.Diagnostics.Activity.Current != null)
 		{
 
@@ -67,6 +77,11 @@ sealed partial class ActivityTelemetryCore : IActivityTelemetry
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void Hit()
 	{
+		if (!_activitySource.HasListeners())
+		{
+			return;
+		}
+
 		if (System.Diagnostics.Activity.Current != null)
 		{
 
@@ -79,6 +94,11 @@ sealed partial class ActivityTelemetryCore : IActivityTelemetry
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void Error(System.Exception ex)
 	{
+		if (!_activitySource.HasListeners())
+		{
+			return;
+		}
+
 		if (System.Diagnostics.Activity.Current != null)
 		{
 			System.Diagnostics.ActivityTagsCollection tagsCollectionError = new System.Diagnostics.ActivityTagsCollection();
@@ -94,6 +114,11 @@ sealed partial class ActivityTelemetryCore : IActivityTelemetry
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void Finished(System.TimeSpan duration)
 	{
+		if (!_activitySource.HasListeners())
+		{
+			return;
+		}
+
 		if (System.Diagnostics.Activity.Current != null)
 		{
 			System.Diagnostics.ActivityTagsCollection tagsCollectionFinished = new System.Diagnostics.ActivityTagsCollection();

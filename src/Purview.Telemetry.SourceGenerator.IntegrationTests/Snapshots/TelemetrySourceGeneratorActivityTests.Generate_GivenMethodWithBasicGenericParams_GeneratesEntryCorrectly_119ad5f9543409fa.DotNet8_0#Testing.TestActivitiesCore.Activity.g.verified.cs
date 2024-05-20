@@ -41,6 +41,11 @@ namespace Testing
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Activity(System.Collections.Generic.List<string> paramName)
 		{
+			if (!_activitySource.HasListeners())
+			{
+				return;
+			}
+
 			System.Diagnostics.Activity? activityActivity = _activitySource.StartActivity(name: "Activity", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
 
 			if (activityActivity != null)
@@ -52,6 +57,11 @@ namespace Testing
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Event(System.Collections.Generic.List<string> paramName)
 		{
+			if (!_activitySource.HasListeners())
+			{
+				return;
+			}
+
 			if (System.Diagnostics.Activity.Current != null)
 			{
 				System.Diagnostics.ActivityTagsCollection tagsCollectionEvent = new System.Diagnostics.ActivityTagsCollection();
@@ -66,6 +76,11 @@ namespace Testing
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Context(System.Collections.Generic.List<string> paramName)
 		{
+			if (!_activitySource.HasListeners())
+			{
+				return;
+			}
+
 			if (System.Diagnostics.Activity.Current != null)
 			{
 				System.Diagnostics.Activity.Current.SetTag("paramname", paramName);

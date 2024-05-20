@@ -64,6 +64,8 @@ partial class ActivitySourceTargetClassEmitter
 			return;
 		}
 
+		EmitHasListenersTest(builder, indent, methodTarget);
+
 		builder
 			.Append(indent, "if (", withNewLine: false)
 			.Append(activityVariableName)

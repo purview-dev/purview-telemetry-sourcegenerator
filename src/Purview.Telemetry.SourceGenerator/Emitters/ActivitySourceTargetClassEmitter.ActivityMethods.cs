@@ -49,6 +49,8 @@ partial class ActivitySourceTargetClassEmitter
 			return;
 		}
 
+		EmitHasListenersTest(builder, indent, methodTarget);
+
 		var activityVariableName = "activity" + methodTarget.MethodName;
 
 		builder
@@ -132,5 +134,20 @@ partial class ActivitySourceTargetClassEmitter
 				.AppendLine(';')
 			;
 		}
+	}
+
+	static void EmitHasListenersTest(StringBuilder builder, int indent, ActivityBasedGenerationTarget methodTarget)
+	{
+		var returnsVoid = methodTarget.ReturnType == null || methodTarget.ReturnType == Constants.System.VoidKeyword;
+		builder
+			.Append(indent, "if (!", withNewLine: false)
+			.Append(Constants.Activities.ActivitySourceFieldName)
+			.Append(".HasListeners())")
+			.AppendLine()
+			.Append(indent, '{')
+			.Append(indent + 1, "return" + (returnsVoid ? null : " null" + (methodTarget.IsNullableReturn ? null : "!")) + ";")
+			.Append(indent, '}')
+			.AppendLine()
+		;
 	}
 }

@@ -41,12 +41,22 @@ namespace Testing
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Activity()
 		{
+			if (!_activitySource.HasListeners())
+			{
+				return;
+			}
+
 			System.Diagnostics.Activity? activityActivity = _activitySource.StartActivity(name: "Activity", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Event(System.Diagnostics.Activity? activity, string stringParam, int intParam, bool boolParam)
 		{
+			if (!_activitySource.HasListeners())
+			{
+				return;
+			}
+
 			if (activity != null)
 			{
 				System.Diagnostics.ActivityTagsCollection tagsCollectionEvent = new System.Diagnostics.ActivityTagsCollection();
