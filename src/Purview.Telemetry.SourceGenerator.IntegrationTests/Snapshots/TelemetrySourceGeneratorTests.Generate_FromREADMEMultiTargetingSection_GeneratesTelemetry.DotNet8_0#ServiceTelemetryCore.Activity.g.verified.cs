@@ -39,6 +39,11 @@ sealed partial class ServiceTelemetryCore : IServiceTelemetry
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public System.Diagnostics.Activity? StartAnActivity(int tagIntParam, string entityId)
 	{
+		if (!_activitySource.HasListeners())
+		{
+			return null;
+		}
+
 		System.Diagnostics.Activity? activityStartAnActivity = _activitySource.StartActivity(name: "StartAnActivity", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
 
 		if (activityStartAnActivity != null)
@@ -57,6 +62,11 @@ sealed partial class ServiceTelemetryCore : IServiceTelemetry
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void AnInterestingEvent(System.Diagnostics.Activity? activity, float aTagValue)
 	{
+		if (!_activitySource.HasListeners())
+		{
+			return;
+		}
+
 		if (activity != null)
 		{
 			System.Diagnostics.ActivityTagsCollection tagsCollectionAnInterestingEvent = new System.Diagnostics.ActivityTagsCollection();
@@ -71,6 +81,11 @@ sealed partial class ServiceTelemetryCore : IServiceTelemetry
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void InterestingInfo(System.Diagnostics.Activity? activity, float anotherTagValue, int intTagValue)
 	{
+		if (!_activitySource.HasListeners())
+		{
+			return;
+		}
+
 		if (activity != null)
 		{
 			activity.SetTag("anothertagvalue", anotherTagValue);

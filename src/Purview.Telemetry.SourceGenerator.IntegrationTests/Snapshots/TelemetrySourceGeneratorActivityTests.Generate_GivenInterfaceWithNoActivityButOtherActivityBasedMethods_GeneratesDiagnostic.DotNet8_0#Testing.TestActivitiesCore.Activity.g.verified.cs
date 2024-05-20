@@ -41,6 +41,11 @@ namespace Testing
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Activity(string stringParam, int intParam, bool boolParam)
 		{
+			if (!_activitySource.HasListeners())
+			{
+				return;
+			}
+
 			if (System.Diagnostics.Activity.Current != null)
 			{
 				System.Diagnostics.Activity.Current.SetTag("intparam", intParam);
@@ -52,6 +57,11 @@ namespace Testing
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Event(string stringParam, int intParam, bool boolParam)
 		{
+			if (!_activitySource.HasListeners())
+			{
+				return;
+			}
+
 			if (System.Diagnostics.Activity.Current != null)
 			{
 				System.Diagnostics.ActivityTagsCollection tagsCollectionEvent = new System.Diagnostics.ActivityTagsCollection();
