@@ -1,6 +1,4 @@
-﻿using SampleApp.Host.Interfaces.Services;
-
-namespace SampleApp.Host.Services;
+﻿namespace SampleApp.Host.Services;
 
 sealed class WeatherService(IWeatherServiceTelemetry telemetry) : IWeatherService
 {
