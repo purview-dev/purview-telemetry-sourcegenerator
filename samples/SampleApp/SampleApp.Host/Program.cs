@@ -1,4 +1,3 @@
-using SampleApp.Host.Interfaces.Services;
 using SampleApp.Host.Services;
 
 namespace SampleApp.Host;

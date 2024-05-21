@@ -4,7 +4,7 @@ using Purview.Telemetry.Activities;
 using Purview.Telemetry.Logging;
 using Purview.Telemetry.Metrics;
 
-namespace SampleApp.Host.Interfaces.Services;
+namespace SampleApp.Host.Services;
 
 /* 
  * A multi-target interface that defines

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using SampleApp.Host.Interfaces.Services;
+using SampleApp.Host.Services;
 
 namespace SampleApp.Host.Controllers;
 
@@ -8,10 +8,10 @@ namespace SampleApp.Host.Controllers;
 public class WeatherForecastController(IWeatherService service) : ControllerBase
 {
 	[HttpGet(Name = "GetWeatherForecast")]
-	public IEnumerable<WeatherForecast> Get() 
+	public IEnumerable<WeatherForecast> Get()
 		=> service.GetWeatherForecastsAsync(5);
 
 	[HttpGet("{requestCount}", Name = "GetWeatherForecastWithRequest")]
-	public IEnumerable<WeatherForecast> Get(int requestCount) 
+	public IEnumerable<WeatherForecast> Get(int requestCount)
 		=> service.GetWeatherForecastsAsync(requestCount);
 }
