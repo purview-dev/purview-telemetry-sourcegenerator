@@ -39,25 +39,27 @@ namespace Testing
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void Activity()
+		public System.Diagnostics.Activity? Activity()
 		{
 			if (!_activitySource.HasListeners())
 			{
-				return;
+				return null;
 			}
 
 			System.Diagnostics.Activity? activityActivity = _activitySource.StartActivity(name: "Activity", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
+
+			return activityActivity;
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void EventMethod(string stringParam, int intParam, bool boolParam, System.Exception anException, bool escape)
+		public void EventMethod(System.Diagnostics.Activity? activity, string stringParam, int intParam, bool boolParam, System.Exception anException, bool escape)
 		{
 			if (!_activitySource.HasListeners())
 			{
 				return;
 			}
 
-			if (System.Diagnostics.Activity.Current != null)
+			if (activity != null)
 			{
 				System.Diagnostics.ActivityTagsCollection tagsCollectionEventMethod = new System.Diagnostics.ActivityTagsCollection();
 				tagsCollectionEventMethod.Add("intparam", intParam);
@@ -72,9 +74,9 @@ namespace Testing
 
 				System.Diagnostics.ActivityEvent activityEventEventMethod = new System.Diagnostics.ActivityEvent(name: "exception", timestamp: default, tags: tagsCollectionEventMethod);
 
-				System.Diagnostics.Activity.Current.AddEvent(activityEventEventMethod);
+				activity.AddEvent(activityEventEventMethod);
 
-				System.Diagnostics.Activity.Current.SetBaggage("stringparam", stringParam);
+				activity.SetBaggage("stringparam", stringParam);
 			}
 		}
 

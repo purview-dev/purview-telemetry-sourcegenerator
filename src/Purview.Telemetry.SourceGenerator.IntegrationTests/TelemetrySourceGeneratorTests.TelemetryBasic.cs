@@ -17,13 +17,13 @@ using Purview.Telemetry.Metrics;
 public interface ITestTelemetry
 {
 	[Activity]
-	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	System.Diagnostics.Activity? Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[Event]
-	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	void Event(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[Context]
-	void Context([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	void Context(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[Log]
 	void Log([Tag]int intParam, bool boolParam);
@@ -60,13 +60,13 @@ namespace Testing;
 public interface ITestTelemetry
 {
 	[Activity]
-	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	System.Diagnostics.Activity? Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[Event]
-	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	void Event(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[Context]
-	void Context([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	void Context(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[Log]
 	void Log([Tag]int intParam, bool boolParam);
@@ -99,10 +99,10 @@ namespace Testing;
 public interface ITestTelemetry
 {
 	[Activity]
-	void Activity();
+	System.Diagnostics.Activity? Activity();
 
 	[Event]
-	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException);
+	void Event(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException);
 }
 ";
 
@@ -126,10 +126,10 @@ namespace Testing;
 public interface ITestTelemetry
 {
 	[Activity]
-	void Activity();
+	System.Diagnostics.Activity? Activity();
 
 	[Event]
-	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
+	void Event(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
 }
 ";
 
@@ -153,10 +153,10 @@ namespace Testing;
 public interface ITestTelemetry
 {
 	[Activity]
-	void Activity();
+	System.Diagnostics.Activity? Activity();
 
 	[Event(UseRecordExceptionRules = false)]
-	void EventMethod([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
+	void EventMethod(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
 }
 ";
 
@@ -180,10 +180,10 @@ namespace Testing;
 public interface ITestTelemetry
 {
 	[Activity]
-	void Activity();
+	System.Diagnostics.Activity? Activity();
 
 	[Event(name: ""exception"", UseRecordExceptionRules = false)]
-	void EventMethod([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
+	void EventMethod(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
 }
 ";
 
@@ -207,10 +207,10 @@ namespace Testing;
 public interface ITestTelemetry
 {
 	[Activity]
-	void Activity();
+	System.Diagnostics.Activity? Activity();
 
 	[Event(name: ""exception"", UseRecordExceptionRules = true)]
-	void EventMethod([Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
+	void EventMethod(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam, Exception anException, [Escape]bool escape);
 }
 ";
 
