@@ -3,29 +3,49 @@
 partial class TelemetrySourceGeneratorTests
 {
 	[Fact]
-	public async Task Generate_FromREADMEActivitiesSection_GeneratesTelemetry()
+	public async Task Generate_FromREADMESection_GeneratesTelemetry()
 	{
 		// Arrange
 		const string basicTelemetry = @"
 using Purview.Telemetry.Activities;
+using Purview.Telemetry.Logging;
+using Purview.Telemetry.Metrics;
+using System.Diagnostics;
 
-[ActivitySource(""some-activity"")]
-interface IActivityTelemetry
+[ActivitySource]
+[Logger]
+[Meter]
+interface IEntityStoreTelemetry
 {
+    /// <summary>
+    /// Creates and starts an Activity and adds the parameters as Tags and Baggage.
+    /// </summary>
     [Activity]
-    void GettingItemFromCache([Baggage]string key, [Tag]string itemType);
+    Activity? GettingEntityFromStore(int entityId, [Baggage]string serviceUrl);
 
-    [Event(""cachemiss"")]
-    void Miss();
-
-    [Event(""cachehit"")]
-    void Hit();
-
+    /// <summary>
+    /// Adds an ActivityEvent to the Activity with the parameters as Tags.
+    /// </summary>
     [Event]
-    void Error(Exception ex);
+    void GetDuration(Activity? activity, int durationInMS);
 
-    [Event]
-    void Finished([Tag]TimeSpan duration);
+    /// <summary>
+    /// Adds the parameters as Baggage to the Activity.
+    /// </summary>
+    [Context]
+    void RetrievedEntity(Activity? activity, float totalValue, int lastUpdatedByUserId);
+
+    /// <summary>
+    /// Generates a structured log message using an ILogger.
+    /// </summary>
+    [Log]
+    void ProcessingEntity(int entityId, string updateState);
+
+    /// <summary>
+    /// Adds 1 to a Counter<T> with the entityId as a Tag.
+    /// </summary>
+    [AutoCounter]
+    void RetrievingEntity(int entityId);
 }
 ";
 
@@ -37,7 +57,42 @@ interface IActivityTelemetry
 	}
 
 	[Fact]
-	public async Task Generate_FromREADMELoggingSection_GeneratesTelemetry()
+	public async Task Generate_FromWikiActivitiesSection_GeneratesTelemetry()
+	{
+		// Arrange
+		const string basicTelemetry = @"
+using Purview.Telemetry.Activities;
+using System.Diagnostics;
+
+[ActivitySource(""some-activity"")]
+interface IActivityTelemetry
+{
+    [Activity]
+    Activity? GettingItemFromCache([Baggage]string key, [Tag]string itemType);
+
+    [Event(""cachemiss"")]
+    void Miss(Activity? activity);
+
+    [Event(""cachehit"")]
+    void Hit(Activity? activity);
+
+    [Event]
+    void Error(Activity? activity, Exception ex);
+
+    [Event]
+    void Finished(Activity? activity, [Tag]TimeSpan duration);
+}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicTelemetry, disableDependencyInjection: false);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
+	public async Task Generate_FromWikiLoggingSection_GeneratesTelemetry()
 	{
 		// Arrange
 		const string basicTelemetry = @"
@@ -77,7 +132,7 @@ enum ItemTypes
 	}
 
 	[Fact]
-	public async Task Generate_FromREADMEMetricsSection_GeneratesTelemetry()
+	public async Task Generate_FromWikiMetricsSection_GeneratesTelemetry()
 	{
 		// Arrange
 		const string basicTelemetry = @"
@@ -88,6 +143,9 @@ using System.Diagnostics.Metrics;
 [Meter]
 interface IMeterTelemetry
 {
+    [AutoCounter]
+    void AutoCounterMeter([Tag]string someValue);
+
     [Counter(AutoIncrement = true)]
     void AutoIncrementMeter([Tag]string someValue);
 
@@ -119,7 +177,7 @@ interface IMeterTelemetry
 	}
 
 	[Fact]
-	public async Task Generate_FromREADMEMultiTargetingSection_GeneratesTelemetry()
+	public async Task Generate_FromWikiMultiTargetingSection_GeneratesTelemetry()
 	{
 		// Arrange
 		const string basicTelemetry = @"

@@ -8,6 +8,7 @@ The latest version is available on [NuGet](https://www.nuget.org/packages/Purvie
 * .NET Framework 4.8
 * .NET 7
 * .NET 8
+* .NET 9
 
 ```csharp
 [ActivitySource]
@@ -19,19 +20,19 @@ interface IEntityStoreTelemetry
     /// Creates and starts an Activity and adds the parameters as Tags and Baggage.
     /// </summary>
     [Activity]
-    void GettingEntityFromStore(int entityId, [Baggage]string serviceUrl);
+    Activity? GettingEntityFromStore(int entityId, [Baggage]string serviceUrl);
 
     /// <summary>
     /// Adds an ActivityEvent to the Activity with the parameters as Tags.
     /// </summary>
     [Event]
-    void GetDuration(int durationInMS);
+    void GetDuration(Activity? activity, int durationInMS);
 
     /// <summary>
     /// Adds the parameters as Baggage to the Activity.
     /// </summary>
     [Context]
-    void RetrievedEntity(float totalValue, int lastUpdatedByUserId);
+    void RetrievedEntity(Activity? activity, float totalValue, int lastUpdatedByUserId);
 
     /// <summary>
     /// Generates a structured log message using an ILogger.

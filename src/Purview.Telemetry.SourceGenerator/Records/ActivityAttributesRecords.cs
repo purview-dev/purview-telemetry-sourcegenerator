@@ -13,7 +13,8 @@ record ActivitySourceGenerationAttributeRecord(
 	AttributeValue<bool> DefaultToTags,
 	AttributeStringValue BaggageAndTagPrefix,
 	AttributeStringValue BaggageAndTagSeparator,
-	AttributeValue<bool> LowercaseBaggageAndTagKeys
+	AttributeValue<bool> LowercaseBaggageAndTagKeys,
+	AttributeValue<bool> GenerateDiagnosticsForMissingActivity
 );
 
 record ActivityAttributeRecord(

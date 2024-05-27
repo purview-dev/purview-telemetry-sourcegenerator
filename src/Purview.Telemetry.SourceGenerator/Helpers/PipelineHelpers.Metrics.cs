@@ -119,7 +119,9 @@ partial class PipelineHelpers
 
 			logger?.Debug($"Found possible instrument method {interfaceSymbol.Name}.{method.Name}.");
 
-			var parameters = GetInstrumentParameters(method, lowercaseTagKeys, semanticModel, logger, token);
+			var validAutoCounter = instrumentAttribute?.InstrumentType is InstrumentTypes.Counter && instrumentAttribute.IsAutoIncrement;
+
+			var parameters = GetInstrumentParameters(method, lowercaseTagKeys, validAutoCounter, semanticModel, logger, token);
 			var measurementParameters = parameters.Where(m => m.ParamDestination == InstrumentParameterDestination.Measurement).ToImmutableArray();
 			var tagParameters = parameters.Where(m => m.ParamDestination == InstrumentParameterDestination.Tag).ToImmutableArray();
 			var measurementParameter = measurementParameters.FirstOrDefault();
@@ -139,8 +141,6 @@ partial class PipelineHelpers
 				prefix = prefix?.ToLowerInvariant();
 #pragma warning restore CA1308 // Normalize strings to uppercase
 			}
-
-			var validAutoCounter = instrumentAttribute?.InstrumentType is InstrumentTypes.Counter && instrumentAttribute.IsAutoIncrement;
 
 			List<TelemetryDiagnosticDescriptor> errorDiagnostics = [];
 
@@ -234,6 +234,7 @@ partial class PipelineHelpers
 	static ImmutableArray<InstrumentParameterTarget> GetInstrumentParameters(
 		IMethodSymbol method,
 		bool lowercaseTagKeys,
+		bool isAutoCounter,
 		SemanticModel semanticModel,
 		IGenerationLogger? logger,
 		CancellationToken token)
@@ -335,7 +336,7 @@ partial class PipelineHelpers
 					{
 						// For non-observable instruments.
 						isValidInstrumentType = SharedHelpers.IsValidMeasurementValueType(parameterType);
-						if (isValidInstrumentType)
+						if (isValidInstrumentType && !isAutoCounter)
 						{
 							instrumentType = Utilities.GetFullyQualifiedOrSystemName(parameterType);
 							destination = InstrumentParameterDestination.Measurement;

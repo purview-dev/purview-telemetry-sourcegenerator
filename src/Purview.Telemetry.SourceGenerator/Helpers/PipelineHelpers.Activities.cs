@@ -80,7 +80,7 @@ partial class PipelineHelpers
 			InterfaceName: interfaceSymbol.Name,
 			FullyQualifiedInterfaceName: fullNamespace + interfaceSymbol.Name,
 
-			ActivitySourceAttribute: activitySourceGenerationAttribute,
+			ActivitySourceGenerationAttribute: activitySourceGenerationAttribute,
 			ActivitySourceName: activitySourceName,
 
 			ActivityTargetAttributeRecord: activitySourceAttribute,
@@ -144,6 +144,8 @@ partial class PipelineHelpers
 				ReturnType: returnType,
 				IsNullableReturn: method.ReturnType.NullableAnnotation == NullableAnnotation.Annotated,
 				ActivityOrEventName: activityOrEventName!,
+				HasActivityParameter: parameters.Any(m => Constants.Activities.SystemDiagnostics.Activity.Equals(m.ParameterType)),
+
 				MethodLocation: method.Locations.FirstOrDefault(),
 
 				ActivityAttribute: activityAttribute,

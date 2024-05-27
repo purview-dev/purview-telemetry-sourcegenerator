@@ -65,12 +65,10 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 					_ => "???",
 				};
 
-				testOutputHelper.WriteLine(prefix + ": " + message);
+				testOutputHelper.WriteLine($"{prefix}: {message}");
 
 				if (ThrowOnLoggedOnError)
-				{
 					outputType.Should().NotBe(OutputType.Error, message);
-				}
 			});
 		}
 	}
@@ -160,14 +158,11 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 			bool disableDependencyInjection = true,
 			bool debugLog = true)
 	{
-
 		CSharpParseOptions parseOptions = new(kind: SourceCodeKind.Regular, documentationMode: DocumentationMode.Parse);
 
 		globalOptions ??= ImmutableDictionary<string, string>.Empty;
 		if (debugLog)
-		{
 			globalOptions = globalOptions.SetItem("purview_debug_log", "true");
-		}
 
 		globalOptions = globalOptions.SetItem("CompilerVersion", "v4.7");
 

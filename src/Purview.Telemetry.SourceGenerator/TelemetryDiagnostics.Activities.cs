@@ -106,8 +106,32 @@ partial class TelemetryDiagnostics
 
 		public static readonly TelemetryDiagnosticDescriptor NoActivityMethodsDefined = new(
 			Id: "TSG3012",
-			Title: "There are no Activity methods defined, assumed use of Activity.Current.",
+			Title: "There are no Activity methods defined, assumed use of Activity.Current",
 			Description: "As Event and/ or Context methods are defined, it's best practise to create a specific Activity otherwise the Activity will belong to another operation.",
+			Category: Constants.Diagnostics.Activity.Usage,
+			Severity: DiagnosticSeverity.Info
+		);
+
+		public static readonly TelemetryDiagnosticDescriptor DoesNotReturnActivity = new(
+			Id: "TSG3013",
+			Title: "Should return the created Activity",
+			Description: "It's best practice to return the created Activity so you can dispose of it, and use it for Event or Context methods.",
+			Category: Constants.Diagnostics.Activity.Usage,
+			Severity: DiagnosticSeverity.Warning
+		);
+
+		public static readonly TelemetryDiagnosticDescriptor DoesNotAcceptActivityParameter = new(
+			Id: "TSG3014",
+			Title: "Should accept an Activity to apply the Event/ Tags/ Baggage too",
+			Description: "It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.",
+			Category: Constants.Diagnostics.Activity.Usage,
+			Severity: DiagnosticSeverity.Warning
+		);
+
+		public static readonly TelemetryDiagnosticDescriptor ActivityShouldBeTheFirstParameter = new(
+			Id: "TSG3015",
+			Title: "Activity should be the first parameter",
+			Description: "For readability, ensure the Activity parameter is the first one defined.",
 			Category: Constants.Diagnostics.Activity.Usage,
 			Severity: DiagnosticSeverity.Info
 		);

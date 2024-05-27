@@ -15,10 +15,10 @@ namespace Testing;
 public interface ITestActivities
 {
 	[Activity]
-	void Activity();
+	System.Diagnostics.Activity? Activity();
 
 	[Context]
-	void Context([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	void Context(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
 
@@ -43,10 +43,10 @@ namespace Testing;
 public interface ITestActivities 
 {
 	[Activity]
-	void Activity();
+	System.Diagnostics.Activity? Activity();
 
 	[Context]
-	Activity Context([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	Activity Context(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
 
@@ -70,13 +70,13 @@ namespace Testing;
 [ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
 	[Activity]
-	void Activity();
+	System.Diagnostics.Activity? Activity();
 
 	[Context]
-	Activity Context([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	Activity Context(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[Context]
-	Activity? ContextWithNullableReturnActivity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	Activity? ContextWithNullableReturnActivity(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
 
@@ -101,13 +101,13 @@ namespace Testing;
 public interface ITestActivities 
 {
 	[Activity]
-	void Activity();
+	System.Diagnostics.Activity? Activity();
 
 	[Context]
-	Activity Context([Baggage]string? stringParam, [Tag]int? intParam, bool? boolParam);
+	Activity Context(System.Diagnostics.Activity? activity, [Baggage]string? stringParam, [Tag]int? intParam, bool? boolParam);
 
 	[Context]
-	Activity? ContextWithNullableParams([Baggage]string? stringParam, [Tag]int? intParam, bool? boolParam);
+	Activity? ContextWithNullableParams(System.Diagnostics.Activity? activity, [Baggage]string? stringParam, [Tag]int? intParam, bool? boolParam);
 }
 ";
 
@@ -132,7 +132,7 @@ namespace Testing;
 public interface ITestActivities 
 {
 	[Activity]
-	void Activity();
+	System.Diagnostics.Activity? Activity();
 
 	[Context]
 	Activity Context(Activity activityParameter, [Baggage]string? stringParam, [Tag]int? intParam, bool? boolParam);
@@ -163,7 +163,7 @@ namespace Testing;
 public interface ITestActivities 
 {
 	[Activity]
-	void Activity();
+	System.Diagnostics.Activity? Activity();
 
 	[Context]
 	void Context(Activity activityParameter, [Baggage]string? stringParam, [Tag]int? intParam, bool? boolParam);

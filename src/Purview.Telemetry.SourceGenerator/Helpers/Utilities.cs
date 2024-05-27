@@ -49,6 +49,7 @@ static class Utilities
 		var loggingCount = attributes.Count(Constants.Logging.LogAttribute.Equals);
 		var metricsCount = attributes.Count(m =>
 			Constants.Metrics.CounterAttribute.Equals(m)
+			|| Constants.Metrics.AutoCounterAttribute.Equals(m)
 			|| Constants.Metrics.UpDownCounterAttribute.Equals(m)
 			|| Constants.Metrics.HistogramAttribute.Equals(m)
 			|| Constants.Metrics.ObservableCounterAttribute.Equals(m)
@@ -157,7 +158,6 @@ static class Utilities
 
 		return builder;
 	}
-
 
 	public static StringBuilder Append(this StringBuilder builder, Templates.TypeInfo typeInfo)
 	{

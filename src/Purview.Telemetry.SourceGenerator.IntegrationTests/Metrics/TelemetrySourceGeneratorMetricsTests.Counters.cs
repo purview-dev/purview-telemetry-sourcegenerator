@@ -3,6 +3,54 @@
 partial class TelemetrySourceGeneratorMetricsTests
 {
 	[Fact]
+	public async Task Generate_GivenBasicAutoCounterWithInferredTagsOfInstrumentType_GeneratesMetrics()
+	{
+		// Arrange
+		const string basicMetric = @"
+using Purview.Telemetry.Metrics;
+
+namespace Testing;
+
+[Meter(""testing-meter"")]
+public interface ITestMetrics 
+{
+	[AutoCounter]
+	void AutoCounter(int intParam);
+}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicMetric);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
+	public async Task Generate_GivenBasicAutoCounterWithSpecifiedInstrumentMeasurement_GeneratesDiagnostic()
+	{
+		// Arrange
+		const string basicMetric = @"
+using Purview.Telemetry.Metrics;
+
+namespace Testing;
+
+[Meter(""testing-meter"")]
+public interface ITestMetrics 
+{
+	[AutoCounter]
+	void AutoCounter([InstrumentMeasurement]int intParam);
+}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicMetric);
+
+		// Assert
+		await TestHelpers.Verify(generationResult, config: c => c.ScrubInlineGuids(), validateNonEmptyDiagnostics: true, validationCompilation: false);
+	}
+
+	[Fact]
 	public async Task Generate_GivenBasicAutoCounter_GeneratesMetrics()
 	{
 		// Arrange

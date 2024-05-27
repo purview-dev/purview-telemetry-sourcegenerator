@@ -63,14 +63,14 @@ namespace Testing
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public System.Diagnostics.Activity Event(string stringParam, int intParam, bool boolParam)
+		public System.Diagnostics.Activity Event(System.Diagnostics.Activity? activity, string stringParam, int intParam, bool boolParam)
 		{
 			if (!_activitySource.HasListeners())
 			{
 				return null!;
 			}
 
-			if (System.Diagnostics.Activity.Current != null)
+			if (activity != null)
 			{
 				System.Diagnostics.ActivityTagsCollection tagsCollectionEvent = new System.Diagnostics.ActivityTagsCollection();
 				tagsCollectionEvent.Add("intparam", intParam);
@@ -78,12 +78,12 @@ namespace Testing
 
 				System.Diagnostics.ActivityEvent activityEventEvent = new System.Diagnostics.ActivityEvent(name: "Event", timestamp: default, tags: tagsCollectionEvent);
 
-				System.Diagnostics.Activity.Current.AddEvent(activityEventEvent);
+				activity.AddEvent(activityEventEvent);
 
-				System.Diagnostics.Activity.Current.SetBaggage("stringparam", stringParam);
+				activity.SetBaggage("stringparam", stringParam);
 			}
 
-			return System.Diagnostics.Activity.Current;
+			return activity;
 		}
 
 	}

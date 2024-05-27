@@ -66,6 +66,7 @@ partial class SharedHelpers
 		AttributeStringValue? baggageAndTagPrefix = null;
 		AttributeStringValue? baggageAndTagSeparator = null;
 		AttributeValue<bool>? lowercaseBaggageAndTagKeys = null;
+		AttributeValue<bool>? generateDiagnosticsForMissingActivity = null;
 
 		if (!AttributeParser(attributeData,
 		(name, value) =>
@@ -80,6 +81,8 @@ partial class SharedHelpers
 				baggageAndTagSeparator = new((string)value);
 			else if (name.Equals("LowercaseBaggageAndTagKeys", StringComparison.OrdinalIgnoreCase))
 				lowercaseBaggageAndTagKeys = new((bool)value);
+			else if (name.Equals("GenerateDiagnosticsForMissingActivity", StringComparison.OrdinalIgnoreCase))
+				generateDiagnosticsForMissingActivity = new((bool)value);
 		}, semanticModel, logger, token))
 		{
 			// Failed to parse correctly, so null it out.
@@ -91,7 +94,8 @@ partial class SharedHelpers
 			DefaultToTags: defaultToTags ?? new(),
 			BaggageAndTagPrefix: baggageAndTagPrefix ?? new(),
 			BaggageAndTagSeparator: baggageAndTagSeparator ?? new("."),
-			LowercaseBaggageAndTagKeys: lowercaseBaggageAndTagKeys ?? new(true)
+			LowercaseBaggageAndTagKeys: lowercaseBaggageAndTagKeys ?? new(true),
+			GenerateDiagnosticsForMissingActivity: generateDiagnosticsForMissingActivity ?? new(true)
 		);
 	}
 

@@ -5,7 +5,7 @@
       Title: Baggage parameter types only accept strings,
       Severity: Warning,
       WarningLevel: 1,
-      Location: Guid_1: (12,64)-(12,72),
+      Location: Guid_1: (12,89)-(12,97),
       MessageFormat: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Message: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Category: Activity.Usage
@@ -15,7 +15,7 @@
       Title: Baggage parameter types only accept strings,
       Severity: Warning,
       WarningLevel: 1,
-      Location: Guid_1: (12,88)-(12,97),
+      Location: Guid_1: (12,113)-(12,122),
       MessageFormat: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Message: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Category: Activity.Usage
@@ -25,7 +25,7 @@
       Title: Baggage parameter types only accept strings,
       Severity: Warning,
       WarningLevel: 1,
-      Location: Guid_1: (15,64)-(15,72),
+      Location: Guid_1: (15,103)-(15,111),
       MessageFormat: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Message: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Category: Activity.Usage
@@ -35,7 +35,7 @@
       Title: Baggage parameter types only accept strings,
       Severity: Warning,
       WarningLevel: 1,
-      Location: Guid_1: (15,89)-(15,98),
+      Location: Guid_1: (15,128)-(15,137),
       MessageFormat: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Message: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Category: Activity.Usage
@@ -45,7 +45,7 @@
       Title: Baggage parameter types only accept strings,
       Severity: Warning,
       WarningLevel: 1,
-      Location: Guid_1: (18,31)-(18,42),
+      Location: Guid_1: (18,70)-(18,81),
       MessageFormat: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Message: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Category: Activity.Usage
@@ -55,7 +55,7 @@
       Title: Baggage parameter types only accept strings,
       Severity: Warning,
       WarningLevel: 1,
-      Location: Guid_1: (18,96)-(18,106),
+      Location: Guid_1: (18,135)-(18,145),
       MessageFormat: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Message: Baggage parameter types only accept strings, be aware this parameter will have ToString() called.,
       Category: Activity.Usage
