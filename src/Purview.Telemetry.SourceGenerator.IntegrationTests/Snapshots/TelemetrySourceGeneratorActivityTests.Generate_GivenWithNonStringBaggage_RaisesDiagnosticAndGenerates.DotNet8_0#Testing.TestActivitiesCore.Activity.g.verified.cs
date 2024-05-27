@@ -39,11 +39,11 @@ namespace Testing
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void Activity(string stringNonNullParam, int intParam, bool boolParam)
+		public System.Diagnostics.Activity? Activity(string stringNonNullParam, int intParam, bool boolParam)
 		{
 			if (!_activitySource.HasListeners())
 			{
-				return;
+				return null;
 			}
 
 			System.Diagnostics.Activity? activityActivity = _activitySource.StartActivity(name: "Activity", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
@@ -54,42 +54,44 @@ namespace Testing
 				activityActivity.SetBaggage("intparam", intParam.ToString());
 				activityActivity.SetBaggage("boolparam", boolParam.ToString());
 			}
+
+			return activityActivity;
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void Event(string? stringNullableParam, int? intParam, bool? boolParam)
+		public void Event(System.Diagnostics.Activity? activity, string? stringNullableParam, int? intParam, bool? boolParam)
 		{
 			if (!_activitySource.HasListeners())
 			{
 				return;
 			}
 
-			if (System.Diagnostics.Activity.Current != null)
+			if (activity != null)
 			{
 
 				System.Diagnostics.ActivityEvent activityEventEvent = new System.Diagnostics.ActivityEvent(name: "Event", timestamp: default, tags: default);
 
-				System.Diagnostics.Activity.Current.AddEvent(activityEventEvent);
+				activity.AddEvent(activityEventEvent);
 
-				System.Diagnostics.Activity.Current.SetBaggage("stringnullableparam", stringNullableParam);
-				System.Diagnostics.Activity.Current.SetBaggage("intparam", intParam?.ToString());
-				System.Diagnostics.Activity.Current.SetBaggage("boolparam", boolParam?.ToString());
+				activity.SetBaggage("stringnullableparam", stringNullableParam);
+				activity.SetBaggage("intparam", intParam?.ToString());
+				activity.SetBaggage("boolparam", boolParam?.ToString());
 			}
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void Context(System.Object? objectParam, string stringNonNullParam, float? floatParam)
+		public void Context(System.Diagnostics.Activity? activity, System.Object? objectParam, string stringNonNullParam, float? floatParam)
 		{
 			if (!_activitySource.HasListeners())
 			{
 				return;
 			}
 
-			if (System.Diagnostics.Activity.Current != null)
+			if (activity != null)
 			{
-				System.Diagnostics.Activity.Current.SetBaggage("objectparam", objectParam?.ToString());
-				System.Diagnostics.Activity.Current.SetBaggage("stringnonnullparam", stringNonNullParam);
-				System.Diagnostics.Activity.Current.SetBaggage("floatparam", floatParam?.ToString());
+				activity.SetBaggage("objectparam", objectParam?.ToString());
+				activity.SetBaggage("stringnonnullparam", stringNonNullParam);
+				activity.SetBaggage("floatparam", floatParam?.ToString());
 			}
 		}
 

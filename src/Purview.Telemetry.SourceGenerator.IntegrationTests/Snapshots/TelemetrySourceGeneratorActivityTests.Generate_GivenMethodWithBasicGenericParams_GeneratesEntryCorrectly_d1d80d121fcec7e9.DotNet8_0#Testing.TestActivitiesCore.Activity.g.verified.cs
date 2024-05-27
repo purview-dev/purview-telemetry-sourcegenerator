@@ -39,11 +39,11 @@ namespace Testing
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void Activity(System.Collections.Generic.Dictionary<string, int> paramName)
+		public System.Diagnostics.Activity? Activity(System.Collections.Generic.Dictionary<string, int> paramName)
 		{
 			if (!_activitySource.HasListeners())
 			{
-				return;
+				return null;
 			}
 
 			System.Diagnostics.Activity? activityActivity = _activitySource.StartActivity(name: "Activity", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
@@ -52,38 +52,40 @@ namespace Testing
 			{
 				activityActivity.SetTag("paramname", paramName);
 			}
+
+			return activityActivity;
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void Event(System.Collections.Generic.Dictionary<string, int> paramName)
+		public void Event(System.Diagnostics.Activity? activity, System.Collections.Generic.Dictionary<string, int> paramName)
 		{
 			if (!_activitySource.HasListeners())
 			{
 				return;
 			}
 
-			if (System.Diagnostics.Activity.Current != null)
+			if (activity != null)
 			{
 				System.Diagnostics.ActivityTagsCollection tagsCollectionEvent = new System.Diagnostics.ActivityTagsCollection();
 				tagsCollectionEvent.Add("paramname", paramName);
 
 				System.Diagnostics.ActivityEvent activityEventEvent = new System.Diagnostics.ActivityEvent(name: "Event", timestamp: default, tags: tagsCollectionEvent);
 
-				System.Diagnostics.Activity.Current.AddEvent(activityEventEvent);
+				activity.AddEvent(activityEventEvent);
 			}
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void Context(System.Collections.Generic.Dictionary<string, int> paramName)
+		public void Context(System.Diagnostics.Activity? activity, System.Collections.Generic.Dictionary<string, int> paramName)
 		{
 			if (!_activitySource.HasListeners())
 			{
 				return;
 			}
 
-			if (System.Diagnostics.Activity.Current != null)
+			if (activity != null)
 			{
-				System.Diagnostics.Activity.Current.SetTag("paramname", paramName);
+				activity.SetTag("paramname", paramName);
 			}
 		}
 

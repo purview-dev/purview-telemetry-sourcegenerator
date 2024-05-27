@@ -18,13 +18,13 @@ namespace Testing;
 public interface ITestActivities 
 {{
 	[Activity]
-	void Activity({parameterType} paramName);
+	System.Diagnostics.Activity? Activity({parameterType} paramName);
 
 	[Event]
-	void Event({parameterType} paramName);
+	void Event(System.Diagnostics.Activity? activity, {parameterType} paramName);
 
 	[Context]
-	void Context({parameterType} paramName);
+	void Context(System.Diagnostics.Activity? activity, {parameterType} paramName);
 }}
 ";
 

@@ -17,7 +17,7 @@ record ActivitySourceTarget(
 	string InterfaceName,
 	string FullyQualifiedInterfaceName,
 
-	ActivitySourceGenerationAttributeRecord? ActivitySourceAttribute,
+	ActivitySourceGenerationAttributeRecord? ActivitySourceGenerationAttribute,
 	string? ActivitySourceName,
 
 	ImmutableArray<ActivityBasedGenerationTarget> ActivityMethods
@@ -31,6 +31,8 @@ record ActivityBasedGenerationTarget(
 	string ReturnType,
 	bool IsNullableReturn,
 	string ActivityOrEventName,
+
+	bool HasActivityParameter,
 
 	Location? MethodLocation,
 

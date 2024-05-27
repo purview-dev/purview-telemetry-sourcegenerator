@@ -1,0 +1,24 @@
+﻿{
+  Diagnostics: [
+    {
+      Id: TSG3013,
+      Title: Should return the created Activity,
+      Severity: Warning,
+      WarningLevel: 1,
+      Location: a5a6f35c-849d-4d58-917f-d2c8aeb8e0d0: (13,6)-(13,14),
+      MessageFormat: It's best practice to return the created Activity so you can dispose of it, and use it for Event or Context methods.,
+      Message: It's best practice to return the created Activity so you can dispose of it, and use it for Event or Context methods.,
+      Category: Activity.Usage
+    },
+    {
+      Id: TSG3014,
+      Title: Should accept an Activity to apply the Event/ Tags/ Baggage too,
+      Severity: Warning,
+      WarningLevel: 1,
+      Location: a5a6f35c-849d-4d58-917f-d2c8aeb8e0d0: (16,6)-(16,17),
+      MessageFormat: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
+      Message: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
+      Category: Activity.Usage
+    }
+  ]
+}

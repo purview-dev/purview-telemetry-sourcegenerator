@@ -8,6 +8,7 @@ partial class TelemetrySourceGeneratorActivityTests
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
+using System.Diagnostics;
 
 [assembly: TelemetryGeneration(GenerateDependencyExtension = true)]
 
@@ -16,10 +17,10 @@ namespace Testing;
 [ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
 	[Activity]
-	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	Activity? Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[Event]
-	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	void Event(Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
 
@@ -36,6 +37,7 @@ public interface ITestActivities {
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
+using System.Diagnostics;
 
 namespace Testing;
 
@@ -43,10 +45,10 @@ namespace Testing;
 [ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
 	[Activity]
-	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	Activity? Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[Event]
-	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	void Event(Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
 
@@ -63,6 +65,7 @@ public interface ITestActivities {
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
+using System.Diagnostics;
 
 [assembly: TelemetryGeneration(GenerateDependencyExtension = false)]
 
@@ -72,10 +75,10 @@ namespace Testing;
 [ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
 	[Activity]
-	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	Activity? Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[Event]
-	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	void Event(Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
 
@@ -92,6 +95,7 @@ public interface ITestActivities {
 		// Arrange
 		const string basicActivity = @"
 using Purview.Telemetry.Activities;
+using System.Diagnostics;
 
 [assembly: TelemetryGeneration(GenerateDependencyExtension = true)]
 
@@ -101,10 +105,10 @@ namespace Testing;
 [ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
 	[Activity]
-	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	Activity? Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[Event]
-	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	void Event(Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
 

@@ -14,10 +14,10 @@ namespace Testing;
 [ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
 	[Activity]
-	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	System.Diagnostics.Activity? Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[Event]
-	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	void Event(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
 
@@ -40,10 +40,10 @@ namespace Testing;
 [ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
 	[Context]
-	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	void Context(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[Event]
-	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	void Event(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
 
@@ -67,10 +67,10 @@ namespace Testing;
 public interface ITestActivities 
 {
 	[Activity]
-	void Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	System.Diagnostics.Activity? Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[Event]
-	void Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	void Event(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
 
@@ -93,13 +93,13 @@ namespace Testing;
 [ActivitySource(""testing-activity-source"")]
 public interface ITestActivities {
 	[Activity]
-	void Activity([Baggage]string stringNonNullParam, [Baggage]int intParam, [Baggage]bool boolParam);
+	System.Diagnostics.Activity?  Activity([Baggage]string stringNonNullParam, [Baggage]int intParam, [Baggage]bool boolParam);
 
 	[Event]
-	void Event([Baggage]string? stringNullableParam, [Baggage]int? intParam, [Baggage]bool? boolParam);
+	void Event(System.Diagnostics.Activity? activity, [Baggage]string? stringNullableParam, [Baggage]int? intParam, [Baggage]bool? boolParam);
 
 	[Context]
-	void Context([Baggage]object? objectParam, [Baggage]string stringNonNullParam, [Baggage]float? floatParam);
+	void Context(System.Diagnostics.Activity? activity, [Baggage]object? objectParam, [Baggage]string stringNonNullParam, [Baggage]float? floatParam);
 }
 ";
 
@@ -126,7 +126,7 @@ public interface ITestActivities {
 	Activity Activity([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 
 	[Event]
-	Activity Event([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+	Activity Event(System.Diagnostics.Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
 }
 ";
 

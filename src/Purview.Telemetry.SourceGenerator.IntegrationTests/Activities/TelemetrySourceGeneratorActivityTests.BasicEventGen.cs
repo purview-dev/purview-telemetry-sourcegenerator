@@ -16,7 +16,7 @@ namespace Testing;
 public interface ITestActivities 
 {
 	[Activity]
-	void Activity();
+	System.Diagnostics.Activity? Activity();
 
 	[Event]
 	void Event(Activity activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);
@@ -44,7 +44,7 @@ namespace Testing;
 public interface ITestActivities 
 {
 	[Activity]
-	void Activity();
+	System.Diagnostics.Activity? Activity();
 
 	[Event]
 	void Event(Activity? activity, [Baggage]string stringParam, [Tag]int intParam, bool boolParam);

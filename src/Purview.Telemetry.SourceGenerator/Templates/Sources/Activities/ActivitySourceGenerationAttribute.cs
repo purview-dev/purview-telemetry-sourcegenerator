@@ -14,16 +14,16 @@ sealed class ActivitySourceGenerationAttribute : System.Attribute
 	/// </summary>
 	/// <param name="name">The name of the activity source.</param>
 	/// <param name="defaultToTags">Determines if the default for method parameters are Tags (default) or Baggage.</param>
+	/// <param name="generateDiagnosticsForMissingActivity">Determines if diagnostics are generated for missing activities. Defaults to true.</param>
 	/// <exception cref="ArgumentNullException">If the <paramref name="name"/> is null, empty or whitespace.</exception>
-	public ActivitySourceGenerationAttribute(string name, bool defaultToTags = true)
+	public ActivitySourceGenerationAttribute(string name, bool defaultToTags = true, bool generateDiagnosticsForMissingActivity = true)
 	{
 		if (string.IsNullOrWhiteSpace(name))
-		{
 			throw new System.ArgumentNullException(nameof(name));
-		}
 
 		Name = name;
 		DefaultToTags = defaultToTags;
+		GenerateDiagnosticsForMissingActivity = generateDiagnosticsForMissingActivity;
 	}
 
 	/// <summary>
@@ -60,4 +60,10 @@ sealed class ActivitySourceGenerationAttribute : System.Attribute
 	/// explicitly marked. Overridden when specifying <see cref="ActivitySourceAttribute.LowercaseBaggageAndTagKeys"/>.
 	/// </summary>
 	public bool LowercaseBaggageAndTagKeys { get; set; } = true;
+
+	/// <summary>
+	/// Determines if diagnostics are generated for when an Activity method does not return an activity, or 
+	/// when an Event or Context method does not include and Activity as a parameter.
+	/// </summary>
+	public bool GenerateDiagnosticsForMissingActivity { get; set; } = true;
 }
