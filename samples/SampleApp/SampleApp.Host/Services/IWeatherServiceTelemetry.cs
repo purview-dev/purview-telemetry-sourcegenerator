@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Purview.Telemetry;
 using Purview.Telemetry.Activities;
 using Purview.Telemetry.Logging;
 using Purview.Telemetry.Metrics;
@@ -11,7 +10,7 @@ namespace SampleApp.Host.Services;
  * the telemetry methods for the WeatherService, including
  * Activities, Events, Logs, and Metrics.
  * 
- * As it's multi-target, each target needs to be
+ * As it's multi-target, each target (method) needs to be
  * explicitly defined.
 */
 
@@ -24,7 +23,16 @@ public interface IWeatherServiceTelemetry
 	Activity? GettingWeatherForecastFromUpstreamService([Baggage] string someRandomBaggageInfo, int requestedCount, int validatedRequestedCount);
 
 	[Event]
-	void MinAndMaxReceived(Activity? activity, int minTempInC, int maxTempInC);
+	void ForecastReceived(Activity? activity, int minTempInC, int maxTempInC);
+
+	[Event]
+	void FailedToRetrieveForecast(Activity? activity, Exception ex);
+
+	[AutoCounter]
+	void WeatherForecastRequested();
+
+	[AutoCounter]
+	void ItsTooCold(int tooColdCount);
 
 	[Log(LogLevel.Warning)]
 	void TemperatureOutOfRange(int minTempInC);
@@ -32,12 +40,9 @@ public interface IWeatherServiceTelemetry
 	[Log(LogLevel.Warning)]
 	void RequestedCountIsTooSmall(int requestCount, int validatedRequestedCount);
 
-	[Counter(AutoIncrement = true)]
-	void WeatherForecastRequested();
-
-	[Counter(AutoIncrement = true)]
-	void ItsTooCold([Tag] int tooColdCount);
-
 	[Log]
 	void TemperatureWithinRange();
+
+	[Log(LogLevel.Error)]
+	void WeatherForecastRequestFailed(Exception ex);
 }
