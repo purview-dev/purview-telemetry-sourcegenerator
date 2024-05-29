@@ -28,6 +28,17 @@ sealed class WeatherService(IWeatherServiceTelemetry telemetry) : IWeatherServic
 		// This would usually be async of course...
 		cancellationToken.ThrowIfCancellationRequested();
 
+		var shouldThrow = Random.Shared.Next(1, 11) == 8; // Eight ball says boom.
+		if (shouldThrow)
+		{
+			Exception ex = new("Failed to retrieve forecast from (simulated) upstream service.");
+
+			telemetry.FailedToRetrieveForecast(activity, ex);
+			telemetry.WeatherForecastRequestFailed(ex);
+
+			throw ex;
+		}
+
 		var results = Enumerable.Range(1, validatedRequestedCount).Select(index => new WeatherForecast
 		{
 			Date = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(index)),
@@ -36,7 +47,7 @@ sealed class WeatherService(IWeatherServiceTelemetry telemetry) : IWeatherServic
 		}).ToArray();
 
 		var minTempInC = results.Min(m => m.TemperatureC);
-		telemetry.MinAndMaxReceived(activity,
+		telemetry.ForecastReceived(activity,
 			minTempInC,
 			results.Max(wf => wf.TemperatureC)
 		);

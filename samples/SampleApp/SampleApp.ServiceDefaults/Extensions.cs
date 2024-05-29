@@ -40,31 +40,27 @@ public static class Extensions
 		});
 
 		builder.Services.AddOpenTelemetry()
-			.WithMetrics(metrics =>
-			{
-				metrics.AddAspNetCoreInstrumentation()
-					   .AddHttpClientInstrumentation()
-					   .AddProcessInstrumentation()
-					   .AddRuntimeInstrumentation()
-					   .AddMeter([
-						   "WeatherServiceTelemetry" // This is the name of the meter
-						 ]);
-			})
+			.WithMetrics(metrics => metrics
+				.AddAspNetCoreInstrumentation()
+				.AddHttpClientInstrumentation()
+				.AddProcessInstrumentation()
+				.AddRuntimeInstrumentation()
+				.AddMeter([
+					"WeatherServiceTelemetry" // This is the name of the meter
+				]))
 			.WithTracing(tracing =>
 			{
 				if (builder.Environment.IsDevelopment())
-				{
 					// We want to view all traces in development
 					tracing.SetSampler(new AlwaysOnSampler());
-				}
 
-				tracing.AddAspNetCoreInstrumentation()
-					   .AddGrpcClientInstrumentation()
-					   .AddHttpClientInstrumentation()
-					   .AddSource([
-							"sample-weather-app" // This is the name of the activity source
-						])
-				 ;
+				tracing
+					.AddAspNetCoreInstrumentation()
+					.AddGrpcClientInstrumentation()
+					.AddHttpClientInstrumentation()
+					.AddSource([
+						"sample-weather-app" // This is the name of the activity source
+					]);
 			});
 
 		builder.AddOpenTelemetryExporters();
@@ -72,7 +68,7 @@ public static class Extensions
 		return builder;
 	}
 
-	private static IHostApplicationBuilder AddOpenTelemetryExporters(this IHostApplicationBuilder builder)
+	static IHostApplicationBuilder AddOpenTelemetryExporters(this IHostApplicationBuilder builder)
 	{
 		var useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
 
