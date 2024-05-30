@@ -20,6 +20,23 @@ partial class Constants
 		public static readonly TemplateInfo LogAttribute = TemplateInfo.Create("Purview.Telemetry.Logging.LogAttribute");
 		public static readonly TemplateInfo LogPrefixType = TemplateInfo.Create("Purview.Telemetry.Logging.LogPrefixType");
 
+		public static readonly TemplateInfo TraceAttribute = TemplateInfo.Create("Purview.Telemetry.Logging.TraceAttribute");
+		public static readonly TemplateInfo DebugAttribute = TemplateInfo.Create("Purview.Telemetry.Logging.DebugAttribute");
+		public static readonly TemplateInfo InfoAttribute = TemplateInfo.Create("Purview.Telemetry.Logging.InfoAttribute");
+		public static readonly TemplateInfo WarningAttribute = TemplateInfo.Create("Purview.Telemetry.Logging.WarningAttribute");
+		public static readonly TemplateInfo ErrorAttribute = TemplateInfo.Create("Purview.Telemetry.Logging.ErrorAttribute");
+		public static readonly TemplateInfo CriticalAttribute = TemplateInfo.Create("Purview.Telemetry.Logging.CriticalAttribute");
+
+		public static readonly TemplateInfo[] SpecificLogAttributes = [
+			TraceAttribute,
+			DebugAttribute,
+			InfoAttribute,
+			WarningAttribute,
+			ErrorAttribute,
+			CriticalAttribute
+		];
+
+
 		public static readonly ImmutableDictionary<int, TypeInfo> LogLevelTypeMap = new Dictionary<int, TypeInfo> {
 			{ 0, MicrosoftExtensions.LogLevel_Trace },
 			{ 1, MicrosoftExtensions.LogLevel_Debug },
@@ -30,11 +47,27 @@ partial class Constants
 			{ 6, MicrosoftExtensions.LogLevel_None },
 		}.ToImmutableDictionary();
 
+		public static readonly ImmutableDictionary<TemplateInfo, int> SpecificLogAttributesToLevel = new Dictionary<TemplateInfo, int> {
+			{ TraceAttribute, 0 },
+			{ DebugAttribute, 1 },
+			{ InfoAttribute, 2 },
+			{ WarningAttribute, 3 },
+			{ ErrorAttribute, 4 },
+			{ CriticalAttribute, 5 }
+		}.ToImmutableDictionary();
+
 		public static TemplateInfo[] GetTemplates() => [
 			LoggerGenerationAttribute,
 			LoggerAttribute,
 			LogAttribute,
-			LogPrefixType
+			LogPrefixType,
+
+			TraceAttribute,
+			DebugAttribute,
+			InfoAttribute,
+			WarningAttribute,
+			ErrorAttribute,
+			CriticalAttribute
 		];
 
 		public static class MicrosoftExtensions

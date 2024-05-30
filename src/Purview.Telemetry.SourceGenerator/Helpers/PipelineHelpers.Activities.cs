@@ -86,7 +86,8 @@ partial class PipelineHelpers
 			ActivityTargetAttributeRecord: activitySourceAttribute,
 
 			ActivityMethods: activityMethods,
-			InterfaceLocation: interfaceDeclaration.GetLocation()
+			InterfaceLocation: interfaceDeclaration.GetLocation(),
+			DuplicateMethods: BuildDuplicateMethods(interfaceSymbol)
 		);
 	}
 

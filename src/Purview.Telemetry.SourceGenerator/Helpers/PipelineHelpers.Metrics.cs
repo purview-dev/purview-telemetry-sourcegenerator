@@ -77,7 +77,8 @@ partial class PipelineHelpers
 
 			MeterGeneration: meterGenerationAttribute,
 
-			InstrumentationMethods: instrumentMethods
+			InstrumentationMethods: instrumentMethods,
+			DuplicateMethods: BuildDuplicateMethods(interfaceSymbol)
 		);
 	}
 
