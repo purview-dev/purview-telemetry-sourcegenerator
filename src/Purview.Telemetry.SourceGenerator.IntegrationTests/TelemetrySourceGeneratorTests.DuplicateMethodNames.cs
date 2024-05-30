@@ -1,0 +1,151 @@
+﻿namespace Purview.Telemetry.SourceGenerator;
+
+partial class TelemetrySourceGeneratorTests
+{
+	[Fact]
+	public async Task Generate_GivenDuplicateActivityMethodNames_GeneratesDiagnostic()
+	{
+		// Arrange
+		const string basicTelemetry = @"
+using Purview.Telemetry.Activities;
+
+[ActivitySource(""activity-source"")]
+public interface ITestTelemetry
+{
+	[Activity]
+	System.Diagnostics.Activity? DuplicateMethodName([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+
+	[Activity]
+	System.Diagnostics.Activity? DuplicateMethodName();
+}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicTelemetry);
+
+		// Assert
+		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(), validateNonEmptyDiagnostics: true);
+	}
+
+	[Fact]
+	public async Task Generate_GivenDuplicateActivityEventContextMethodNames_GeneratesDiagnostic()
+	{
+		// Arrange
+		const string basicTelemetry = @"
+using Purview.Telemetry.Activities;
+
+[ActivitySource(""activity-source"")]
+public interface ITestTelemetry
+{
+	[Activity]
+	System.Diagnostics.Activity? DuplicateMethodName([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+
+	[Event]
+	void DuplicateMethodName(System.Diagnostics.Activity? activity, string stringParam);
+
+	[Context]
+	void DuplicateMethodName(System.Diagnostics.Activity? activity, int intParam);
+}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicTelemetry);
+
+		// Assert
+		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(), validateNonEmptyDiagnostics: true);
+	}
+
+	[Fact]
+	public async Task Generate_GivenDuplicateLoggingMethodNames_GeneratesDiagnostic()
+	{
+		// Arrange
+		const string basicTelemetry = @"
+using Purview.Telemetry.Logging;
+
+[Logger]
+public interface ITestTelemetry
+{
+	[Log]
+	IDisposable? DuplicateMethodName(string stringParam, int intParam, bool boolParam);
+
+	[Log]
+	void DuplicateMethodName();
+}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicTelemetry);
+
+		// Assert
+		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(), validateNonEmptyDiagnostics: true);
+	}
+
+	[Fact]
+	public async Task Generate_GivenDuplicateMetricsMethodNames_GeneratesDiagnostic()
+	{
+		// Arrange
+		const string basicTelemetry = @"
+using Purview.Telemetry.Metrics;
+
+[Meter]
+public interface ITestTelemetry
+{
+	[AutoCounter]
+	void DuplicateMethodName(string stringParam, int intParam, bool boolParam);
+
+	[Counter]
+	void DuplicateMethodName(int measurementValue);
+}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicTelemetry);
+
+		// Assert
+		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(), validateNonEmptyDiagnostics: true);
+	}
+
+	[Fact]
+	public async Task Generate_GivenDuplicateMultiTargetMethodNames_GeneratesDiagnostic()
+	{
+		// Arrange
+		const string basicTelemetry = @"
+using Purview.Telemetry.Activities;
+using Purview.Telemetry.Logging;
+using Purview.Telemetry.Metrics;
+
+[ActivitySource(""activity-source"")]
+[Logger]
+[Meter]
+public interface ITestTelemetry
+{
+	[Activity]
+	System.Diagnostics.Activity? DuplicateMethodName([Baggage]string stringParam, [Tag]int intParam, bool boolParam);
+
+	[Event]
+	void DuplicateMethodName(System.Diagnostics.Activity? activity, string stringParam);
+
+	[Context]
+	void DuplicateMethodName(System.Diagnostics.Activity? activity, int intParam);
+
+	[Log]
+	IDisposable? DuplicateMethodName(string stringParam, int intParam, object objectParam);
+
+	[Log]
+	void DuplicateMethodName();
+
+	[AutoCounter]
+	void DuplicateMethodName(string stringParam, int intParam, uint uintParam);
+
+	[Counter]
+	void DuplicateMethodName(int measurementValue);
+}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicTelemetry);
+
+		// Assert
+		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(), validateNonEmptyDiagnostics: true);
+	}
+}

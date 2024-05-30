@@ -14,6 +14,12 @@ static partial class ActivitySourceTargetClassEmitter
 
 		logger?.Debug($"Generating activity class for: {target.FullyQualifiedName}");
 
+		if (EmitHelpers.GenerateDuplicateMethodDiagnostics(GenerationType.Activities, target.GenerationType, target.DuplicateMethods, context, logger))
+		{
+			logger?.Debug("Found duplicate methods while generating activity, exiting.");
+			return;
+		}
+
 		var indent = EmitHelpers.EmitNamespaceStart(target.ClassNamespace, target.ParentClasses, builder, context.CancellationToken);
 		indent = EmitHelpers.EmitClassStart(target.ClassNameToGenerate, target.FullyQualifiedInterfaceName, builder, indent, context.CancellationToken);
 

@@ -23,7 +23,8 @@ record ActivitySourceTarget(
 	ImmutableArray<ActivityBasedGenerationTarget> ActivityMethods
 ,
 	ActivitySourceAttributeRecord ActivityTargetAttributeRecord,
-	Location? InterfaceLocation
+	Location? InterfaceLocation,
+	ImmutableDictionary<string, Location[]> DuplicateMethods
 );
 
 record ActivityBasedGenerationTarget(

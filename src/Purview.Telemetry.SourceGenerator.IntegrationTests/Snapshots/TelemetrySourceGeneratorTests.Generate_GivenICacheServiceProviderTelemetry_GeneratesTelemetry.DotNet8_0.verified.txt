@@ -5,7 +5,7 @@
       Title: Should accept an Activity to apply the Event/ Tags/ Baggage too,
       Severity: Warning,
       WarningLevel: 1,
-      Location: Guid_1: (40,6)-(40,21),
+      Location: Guid_1: (41,6)-(41,21),
       MessageFormat: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
       Message: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
       Category: Activity.Usage
@@ -15,7 +15,7 @@
       Title: Should accept an Activity to apply the Event/ Tags/ Baggage too,
       Severity: Warning,
       WarningLevel: 1,
-      Location: Guid_1: (46,6)-(46,28),
+      Location: Guid_1: (47,6)-(47,28),
       MessageFormat: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
       Message: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
       Category: Activity.Usage
@@ -25,7 +25,7 @@
       Title: Should accept an Activity to apply the Event/ Tags/ Baggage too,
       Severity: Warning,
       WarningLevel: 1,
-      Location: Guid_1: (52,6)-(52,20),
+      Location: Guid_1: (53,6)-(53,20),
       MessageFormat: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
       Message: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
       Category: Activity.Usage
@@ -35,7 +35,7 @@
       Title: Should accept an Activity to apply the Event/ Tags/ Baggage too,
       Severity: Warning,
       WarningLevel: 1,
-      Location: Guid_1: (55,6)-(55,17),
+      Location: Guid_1: (56,6)-(56,17),
       MessageFormat: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
       Message: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
       Category: Activity.Usage
@@ -45,7 +45,7 @@
       Title: Should accept an Activity to apply the Event/ Tags/ Baggage too,
       Severity: Warning,
       WarningLevel: 1,
-      Location: Guid_1: (58,6)-(58,30),
+      Location: Guid_1: (59,6)-(59,30),
       MessageFormat: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
       Message: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
       Category: Activity.Usage
@@ -55,7 +55,7 @@
       Title: Should accept an Activity to apply the Event/ Tags/ Baggage too,
       Severity: Warning,
       WarningLevel: 1,
-      Location: Guid_1: (61,6)-(61,14),
+      Location: Guid_1: (62,6)-(62,14),
       MessageFormat: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
       Message: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
       Category: Activity.Usage
@@ -65,7 +65,7 @@
       Title: Should accept an Activity to apply the Event/ Tags/ Baggage too,
       Severity: Warning,
       WarningLevel: 1,
-      Location: Guid_1: (64,6)-(64,15),
+      Location: Guid_1: (65,6)-(65,15),
       MessageFormat: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
       Message: It's best practice to accept an Activity parameter to ensure the Event, Tags and/ or Baggage are applied to the Activity you intended.,
       Category: Activity.Usage

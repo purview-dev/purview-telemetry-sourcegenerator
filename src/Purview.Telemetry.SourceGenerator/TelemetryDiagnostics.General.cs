@@ -36,5 +36,13 @@ partial class TelemetryDiagnostics
 			Category: Constants.Diagnostics.Usage,
 			Severity: DiagnosticSeverity.Error
 		);
+
+		public static readonly TelemetryDiagnosticDescriptor DuplicateMethodNamesAreNotSupported = new(
+			Id: "TSG1003",
+			Title: "Duplicate method names are not supported",
+			Description: "Two or more methods named '{0}' are defined. Keep method names unique as they're used to generate other members on the implementation class.",
+			Category: Constants.Diagnostics.Usage,
+			Severity: DiagnosticSeverity.Error
+		);
 	}
 }

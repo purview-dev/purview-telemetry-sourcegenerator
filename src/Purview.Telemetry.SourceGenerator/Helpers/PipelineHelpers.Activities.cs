@@ -25,6 +25,8 @@ partial class PipelineHelpers
 			return null;
 		}
 
+		var duplicateMethodNames = BuildDuplicateMethods(interfaceSymbol);
+
 		var semanticModel = context.SemanticModel;
 		var activitySourceAttribute = SharedHelpers.GetActivitySourceAttribute(context.Attributes[0], semanticModel, logger, token);
 		if (activitySourceAttribute == null)
@@ -86,7 +88,8 @@ partial class PipelineHelpers
 			ActivityTargetAttributeRecord: activitySourceAttribute,
 
 			ActivityMethods: activityMethods,
-			InterfaceLocation: interfaceDeclaration.GetLocation()
+			InterfaceLocation: interfaceDeclaration.GetLocation(),
+			DuplicateMethods: BuildDuplicateMethods(interfaceSymbol)
 		);
 	}
 

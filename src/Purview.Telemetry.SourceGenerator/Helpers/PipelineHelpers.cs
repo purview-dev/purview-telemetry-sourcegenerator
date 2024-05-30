@@ -1,4 +1,6 @@
-﻿using Purview.Telemetry.SourceGenerator.Records;
+﻿using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
+using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 
@@ -26,4 +28,21 @@ static partial class PipelineHelpers
 		=> tagOrBaggageAttribute?.SkipOnNullOrEmpty.IsSet == true
 			? tagOrBaggageAttribute.SkipOnNullOrEmpty.Value!.Value
 			: false;
+
+	static ImmutableDictionary<string, Location[]> BuildDuplicateMethods(INamedTypeSymbol interfaceSymbol)
+	{
+		var methods = interfaceSymbol.GetMembers().OfType<IMethodSymbol>();
+		Dictionary<string, List<Location>> dict = [];
+		foreach (var method in methods)
+		{
+			if (dict.TryGetValue(method.Name, out var list))
+				list.AddRange(method.Locations);
+			else
+				dict[method.Name] = [.. method.Locations];
+		}
+
+		return dict
+			.Where(m => m.Value.Count > 1)
+			.ToImmutableDictionary(m => m.Key, m => m.Value.ToArray());
+	}
 }

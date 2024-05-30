@@ -60,7 +60,7 @@ partial class TelemetrySourceGenerator
 		{
 			logger?.Error($"A fatal error occurred while executing the source generation stage: {ex}");
 
-			TelemetryDiagnostics.Report(spc.ReportDiagnostic, TelemetryDiagnostics.General.FatalExecutionDuringExecution, null, ex);
+			TelemetryDiagnostics.Report(spc.ReportDiagnostic, TelemetryDiagnostics.General.FatalExecutionDuringExecution, ex);
 		}
 	}
 }

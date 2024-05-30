@@ -80,7 +80,8 @@ partial class PipelineHelpers
 			LoggerAttribute: loggerAttribute,
 			DefaultLevel: defaultLogLevel.Value,
 
-			LogMethods: logMethods
+			LogMethods: logMethods,
+			DuplicateMethods: BuildDuplicateMethods(interfaceSymbol)
 		);
 	}
 

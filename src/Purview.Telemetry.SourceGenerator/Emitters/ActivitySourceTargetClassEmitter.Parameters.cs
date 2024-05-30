@@ -116,7 +116,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.DuplicateParameterTypes,
-				activityParams.First().Location,
+				activityParams.Where(m => m.Location != null).Select(m => m.Location!),
 				string.Join(", ", activityParams.Select(m => m.ParameterName)),
 				"activity"
 			);
@@ -132,7 +132,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.DuplicateParameterTypes,
-				parentContextOrIdParams.First().Location,
+				parentContextOrIdParams.Where(m => m.Location != null).Select(m => m.Location!),
 				string.Join(", ", parentContextOrIdParams.Select(m => m.ParameterName)),
 				"parent context/ parent context Id"
 			);
@@ -148,7 +148,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.DuplicateParameterTypes,
-				tagsParams.First().Location,
+				tagsParams.Where(m => m.Location != null).Select(m => m.Location!),
 				string.Join(", ", tagsParams.Select(m => m.ParameterName)),
 				"IEnumerable of ActivityTags"
 			);
@@ -164,7 +164,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.DuplicateParameterTypes,
-				linksParams.First().Location,
+				linksParams.Where(m => m.Location != null).Select(m => m.Location!),
 				string.Join(", ", linksParams.Select(m => m.ParameterName)),
 				"IEnumerable of ActivityLinks"
 			);
@@ -180,7 +180,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.DuplicateParameterTypes,
-				escapeParams.First().Location,
+				escapeParams.Where(m => m.Location != null).Select(m => m.Location!),
 				string.Join(", ", escapeParams.Select(m => m.ParameterName)),
 				"escape parameters"
 			);
@@ -196,7 +196,7 @@ partial class ActivitySourceTargetClassEmitter
 				{
 					TelemetryDiagnostics.Report(context.ReportDiagnostic,
 						TelemetryDiagnostics.Activities.EscapedParameterInvalidType,
-						escapeParams.First().Location,
+						escapeParams.Where(m => m.Location != null).Select(m => m.Location!),
 						string.Join(", ", escapeParams.Select(m => m.ParameterName)),
 						"escape parameters"
 					);
@@ -208,7 +208,7 @@ partial class ActivitySourceTargetClassEmitter
 				{
 					TelemetryDiagnostics.Report(context.ReportDiagnostic,
 						TelemetryDiagnostics.Activities.EscapedParameterInvalidType,
-						escapeParams.First().Location,
+						escapeParams.Where(m => m.Location != null).Select(m => m.Location!),
 						escapeParam.ParameterName
 					);
 

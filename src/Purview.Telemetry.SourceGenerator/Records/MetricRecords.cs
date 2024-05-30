@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-
 using Microsoft.CodeAnalysis;
 
 namespace Purview.Telemetry.SourceGenerator.Records;
@@ -22,7 +21,8 @@ record MeterTarget(
 
 	MeterGenerationAttributeRecord? MeterGeneration,
 
-	ImmutableArray<InstrumentTarget> InstrumentationMethods
+	ImmutableArray<InstrumentTarget> InstrumentationMethods,
+	ImmutableDictionary<string, Location[]> DuplicateMethods
 );
 
 record InstrumentTarget(

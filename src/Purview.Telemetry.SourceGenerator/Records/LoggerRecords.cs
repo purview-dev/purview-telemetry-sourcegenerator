@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
 
 namespace Purview.Telemetry.SourceGenerator.Records;
 
@@ -18,7 +19,8 @@ record LoggerTarget(
 	LoggerAttributeRecord LoggerAttribute,
 	int DefaultLevel,
 
-	ImmutableArray<LogTarget> LogMethods
+	ImmutableArray<LogTarget> LogMethods,
+	ImmutableDictionary<string, Location[]> DuplicateMethods
 );
 
 record LogTarget(
@@ -39,7 +41,7 @@ record LogTarget(
 	LogParameterTarget? ExceptionParameter,
 	bool HasMultipleExceptions,
 
-	Microsoft.CodeAnalysis.Location? MethodLocation
+	Location? MethodLocation
 ,
 	bool InferredErrorLevel,
 

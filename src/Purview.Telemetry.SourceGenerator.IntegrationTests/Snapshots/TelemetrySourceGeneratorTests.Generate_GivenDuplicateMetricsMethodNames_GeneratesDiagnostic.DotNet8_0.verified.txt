@@ -1,0 +1,14 @@
+﻿{
+  Diagnostics: [
+    {
+      Id: TSG1003,
+      Title: Duplicate method names are not supported,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Guid_1: (11,6)-(11,25),
+      MessageFormat: Two or more methods named '{0}' are defined. Keep method names unique as they're used to generate other members on the implementation class.,
+      Message: Two or more methods named 'DuplicateMethodName' are defined. Keep method names unique as they're used to generate other members on the implementation class.,
+      Category: Usage
+    }
+  ]
+}

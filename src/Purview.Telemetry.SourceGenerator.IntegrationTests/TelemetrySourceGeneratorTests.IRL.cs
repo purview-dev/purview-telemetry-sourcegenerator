@@ -16,7 +16,8 @@ namespace Purview.Interfaces.ApplicationServices.Caching;
 [ActivitySource]
 [Logger]
 [System.Diagnostics.CodeAnalysis.SuppressMessage(""Design"", ""CA1024:Use properties where appropriate"")]
-public interface ICacheServiceProviderTelemetry {
+public interface ICacheServiceProviderTelemetry 
+{
 	[Log]
 	void FailedToDeserializePayload(int dataLength, Exception ex);
 
