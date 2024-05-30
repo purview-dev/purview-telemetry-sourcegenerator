@@ -12,10 +12,13 @@ partial class SharedHelpers
 		CancellationToken token
 	)
 	{
-		if (!Utilities.TryContainsAttribute(symbol, Constants.Logging.LogAttribute, token, out var attributeData))
+		if (!Utilities.TryContainsAttribute(symbol, [Constants.Logging.LogAttribute, .. Constants.Logging.SpecificLogAttributes], token, out var attributeData, out var matchingTemplate))
 			return null;
 
 		AttributeValue<int>? level = null;
+		if (matchingTemplate != Constants.Logging.LogAttribute)
+			level = new(Constants.Logging.SpecificLogAttributesToLevel[matchingTemplate!]);
+
 		AttributeStringValue? messageTemplate = null;
 		AttributeValue<int>? eventId = null;
 		AttributeStringValue? nameValue = null;
@@ -113,5 +116,5 @@ partial class SharedHelpers
 	}
 
 	public static bool IsLogMethod(IMethodSymbol method, CancellationToken token)
-		=> Utilities.ContainsAttribute(method, Constants.Logging.LogAttribute, token);
+		=> Utilities.ContainsAttribute(method, [Constants.Logging.LogAttribute, .. Constants.Logging.SpecificLogAttributes], token);
 }

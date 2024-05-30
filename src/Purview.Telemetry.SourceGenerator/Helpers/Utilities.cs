@@ -46,7 +46,15 @@ static class Utilities
 			|| Constants.Activities.EventAttribute.Equals(m)
 			|| Constants.Activities.ContextAttribute.Equals(m)
 		);
-		var loggingCount = attributes.Count(Constants.Logging.LogAttribute.Equals);
+		var loggingCount = attributes.Count(m =>
+			Constants.Logging.LogAttribute.Equals(m)
+			|| Constants.Logging.TraceAttribute.Equals(m)
+			|| Constants.Logging.DebugAttribute.Equals(m)
+			|| Constants.Logging.InfoAttribute.Equals(m)
+			|| Constants.Logging.WarningAttribute.Equals(m)
+			|| Constants.Logging.ErrorAttribute.Equals(m)
+			|| Constants.Logging.CriticalAttribute.Equals(m)
+		);
 		var metricsCount = attributes.Count(m =>
 			Constants.Metrics.CounterAttribute.Equals(m)
 			|| Constants.Metrics.AutoCounterAttribute.Equals(m)
@@ -159,12 +167,12 @@ static class Utilities
 		return builder;
 	}
 
-	public static StringBuilder Append(this StringBuilder builder, Templates.TypeInfo typeInfo)
-	{
-		builder.Append(typeInfo.Convert());
+	//public static StringBuilder Append(this StringBuilder builder, Templates.TypeInfo typeInfo)
+	//{
+	//	builder.Append(typeInfo.Convert());
 
-		return builder;
-	}
+	//	return builder;
+	//}
 
 	//static public StringBuilder AppendLines(this StringBuilder builder, int lineCount = 2) {
 	//	for (var i = 0; i < lineCount; i++) {
@@ -188,16 +196,16 @@ static class Utilities
 	public static string Wrap(this string value, char c = '"')
 		=> c + value + c;
 
-	public static string Strip(this string value, char c = '"')
-	{
-		if (value.Length > 1 && value[0] == c)
-			value = value.Substring(1);
+	//public static string Strip(this string value, char c = '"')
+	//{
+	//	if (value.Length > 1 && value[0] == c)
+	//		value = value.Substring(1);
 
-		if (value.Length > 1 && value[value.Length - 1] == c)
-			value = value.Substring(0, value.Length - 1);
+	//	if (value.Length > 1 && value[value.Length - 1] == c)
+	//		value = value.Substring(0, value.Length - 1);
 
-		return value;
-	}
+	//	return value;
+	//}
 
 	//static public string? GetMemberIdentity(MemberDeclarationSyntax memberSyntax) {
 	//	if (memberSyntax is MethodDeclarationSyntax method) {
@@ -221,18 +229,18 @@ static class Utilities
 	//	return null;
 	//}
 
-	public static ClassDeclarationSyntax? GetParentClass(SyntaxNode? node)
-	{
-		while (node != null)
-		{
-			if (node.Parent is ClassDeclarationSyntax classNode)
-				return classNode;
+	//public static ClassDeclarationSyntax? GetParentClass(SyntaxNode? node)
+	//{
+	//	while (node != null)
+	//	{
+	//		if (node.Parent is ClassDeclarationSyntax classNode)
+	//			return classNode;
 
-			node = node.Parent;
-		}
+	//		node = node.Parent;
+	//	}
 
-		return null;
-	}
+	//	return null;
+	//}
 
 	public static string[] GetParentClasses(TypeDeclarationSyntax classDeclaration)
 	{
@@ -349,9 +357,9 @@ static class Utilities
 	public static IncrementalValuesProvider<TSource> WhereNotNull<TSource>(this IncrementalValuesProvider<TSource> source)
 		=> source.Where(static m => m is not null);
 
-	public static bool IsEnumerableOrArray(string parameterType, string fullTypeName)
-		=> IsArray(parameterType, fullTypeName)
-			|| IsEnumerable(parameterType, fullTypeName);
+	//public static bool IsEnumerableOrArray(string parameterType, string fullTypeName)
+	//	=> IsArray(parameterType, fullTypeName)
+	//		|| IsEnumerable(parameterType, fullTypeName);
 
 	public static bool IsArray(string parameterType, string fullTypeName)
 		=> parameterType == (fullTypeName + "[]");
@@ -393,38 +401,41 @@ static class Utilities
 			.ToString()
 			.Flatten();
 
-	public static string Flatten(this SyntaxToken syntax)
-		=> syntax.WithoutTrivia()
-			.ToString()
-			.Flatten();
+	//public static string Flatten(this SyntaxToken syntax)
+	//	=> syntax.WithoutTrivia()
+	//		.ToString()
+	//		.Flatten();
 
 	public static string Flatten(this string value)
 		=> Regex.Replace(value, @"\s+", " ", RegexOptions.None, TimeSpan.FromMilliseconds(2000));
 
-	public static bool ContainsAttribute(ISymbol symbol, Templates.TypeInfo typeInfo, CancellationToken token)
-		=> TryContainsAttribute(symbol, typeInfo, token, out _);
+	//public static bool ContainsAttribute(ISymbol symbol, Templates.TypeInfo typeInfo, CancellationToken token)
+	//	=> TryContainsAttribute(symbol, typeInfo, token, out _);
 
-	public static bool TryContainsAttribute(ISymbol symbol, Templates.TypeInfo typeInfo, CancellationToken token, out AttributeData? attributeData)
-	{
-		attributeData = null;
+	//public static bool TryContainsAttribute(ISymbol symbol, Templates.TypeInfo typeInfo, CancellationToken token, out AttributeData? attributeData)
+	//{
+	//	attributeData = null;
 
-		var attributes = symbol.GetAttributes();
-		foreach (var attribute in attributes)
-		{
-			token.ThrowIfCancellationRequested();
+	//	var attributes = symbol.GetAttributes();
+	//	foreach (var attribute in attributes)
+	//	{
+	//		token.ThrowIfCancellationRequested();
 
-			if (attribute.AttributeClass != null && typeInfo.Equals(attribute.AttributeClass))
-			{
-				attributeData = attribute;
-				return true;
-			}
-		}
+	//		if (attribute.AttributeClass != null && typeInfo.Equals(attribute.AttributeClass))
+	//		{
+	//			attributeData = attribute;
+	//			return true;
+	//		}
+	//	}
 
-		return false;
-	}
+	//	return false;
+	//}
 
 	public static bool ContainsAttribute(ISymbol symbol, Templates.TemplateInfo templateInfo, CancellationToken token)
 		=> TryContainsAttribute(symbol, templateInfo, token, out _);
+
+	public static bool ContainsAttribute(ISymbol symbol, Templates.TemplateInfo[] templateInfo, CancellationToken token)
+		=> TryContainsAttribute(symbol, templateInfo, token, out _, out _);
 
 	public static bool TryContainsAttribute(ISymbol symbol, Templates.TemplateInfo templateInfo, CancellationToken token, out AttributeData? attributeData)
 	{
@@ -444,6 +455,35 @@ static class Utilities
 
 		return false;
 	}
+
+	public static bool TryContainsAttribute(ISymbol symbol, Templates.TemplateInfo[] templateInfo, CancellationToken token, out AttributeData? attributeData, out Templates.TemplateInfo? matchingTemplate)
+	{
+		attributeData = null;
+		matchingTemplate = null;
+
+		var attributes = symbol.GetAttributes();
+		foreach (var attribute in attributes)
+		{
+			token.ThrowIfCancellationRequested();
+
+			if (attribute.AttributeClass == null)
+				continue;
+
+			foreach (var template in templateInfo)
+			{
+				if (template.Equals(attribute.AttributeClass))
+				{
+					attributeData = attribute;
+					matchingTemplate = template;
+
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 
 	public static string LowercaseFirstChar(string value)
 	{
