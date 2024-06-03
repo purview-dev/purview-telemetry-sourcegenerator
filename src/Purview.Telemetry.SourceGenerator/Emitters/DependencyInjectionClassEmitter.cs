@@ -39,7 +39,7 @@ static class DependencyInjectionClassEmitter
 
 		var classNameToGenerate = attribute.DependencyInjectionClassName.Value;
 		if (string.IsNullOrWhiteSpace(classNameToGenerate))
-			classNameToGenerate = implementationClassName;
+			classNameToGenerate = implementationClassName + "DIExtension";
 
 		logger?.Debug($"Generating service dependency class {classNameToGenerate} for: {fullyQualifiedNamespace}{sourceInterfaceName}");
 
@@ -102,21 +102,15 @@ static class DependencyInjectionClassEmitter
 			.Append(Constants.DependencyInjection.IServiceCollection)
 			.AppendLine(" services)")
 			.Append(indent, '{')
-			.Append(indent + 1, "services.Add(new ", withNewLine: false)
-			.Append(Constants.DependencyInjection.ServiceDescriptor)
-			.Append("(typeof(")
+			.Append(indent + 1, "return services.AddSingleton<", withNewLine: false)
 			// serviceType...
 			.Append(fullyQualifiedNamespace)
 			.Append(interfaceName)
-			.Append("), typeof(")
+			.Append(", ")
 			// implementationType
 			.Append(fullyQualifiedNamespace)
 			.Append(className)
-			.Append("), ")
-			.Append(Constants.DependencyInjection.Singleton)
-			.AppendLine("));")
-			.AppendLine()
-			.Append(indent + 1, "return services;")
+			.AppendLine(">();")
 			.Append(indent, '}')
 		;
 	}
