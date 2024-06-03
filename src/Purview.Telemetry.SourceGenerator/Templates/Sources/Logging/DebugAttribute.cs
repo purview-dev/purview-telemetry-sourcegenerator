@@ -41,7 +41,7 @@ sealed class DebugAttribute : System.Attribute
 
 	/// <summary>
 	/// Creates a new instance of the <see cref="DebugAttribute"/>, specifying the <see cref="EventId"/>
-	/// and the <see cref="Level"/>, optionally the <see cref="MessageTemplate"/> and <see cref="Name"/>.
+	/// and optionally the <see cref="MessageTemplate"/> and <see cref="Name"/>.
 	/// </summary>
 	/// <param name="eventId">Specifies the <see cref="EventId"/>.</param>
 	/// <param name="messageTemplate">Optionally specifies the <see cref="MessageTemplate"/>.</param>
