@@ -4,7 +4,7 @@ SOLUTION_FILE = $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator.sln
 TEST_PROJECT = $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator.sln
 CONFIGURATION = Release
 
-PACK_VERSION = 1.0.11
+PACK_VERSION = 1.0.11.1
 ARTIFACT_FOLDER = p:/sync-projects/.local-nuget/
 
 # Targets
