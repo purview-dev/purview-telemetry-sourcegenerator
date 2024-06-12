@@ -64,9 +64,23 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         global-json-file: ./src/global.json
-    
+
     - name: Run tests
-      run: dotnet test ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }}
+      run: dotnet test ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --logger "trx;LogFileName=test-results.trx" --results-directory ./test-results
+
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()    # run this step even if previous step failed
+      with:
+        name: .NET Tests            
+        path: ./src/test-results/*.trx
+        reporter: dotnet-trx
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: ./src/test-results
 
   deploy:
     if: github.event_name == 'release'
