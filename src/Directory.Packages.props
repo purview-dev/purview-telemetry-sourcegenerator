@@ -1,7 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
-    <MSCodeAnalysisCSharpVersion>4.9.2</MSCodeAnalysisCSharpVersion>
+    <MSCodeAnalysisCSharpVersion>4.10.0</MSCodeAnalysisCSharpVersion>
   </PropertyGroup>
   <ItemGroup Label="NuGet Package References" Condition="$(IsTestProject) == 'false'">
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
@@ -25,6 +25,6 @@
     <PackageVersion Include="xunit.analyzers" Version="1.14.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.1" />
     <PackageVersion Include="Verify.SourceGenerators" Version="2.2.0" />
-    <PackageVersion Include="Verify.Xunit" Version="25.0.1" />
+    <PackageVersion Include="Verify.Xunit" Version="25.0.2" />
   </ItemGroup>
 </Project>
