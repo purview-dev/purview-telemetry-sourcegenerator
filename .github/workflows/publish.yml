@@ -69,7 +69,7 @@ jobs:
       run: dotnet test ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --logger "trx;LogFileName=test-results.trx" --results-directory ./test-results
 
     - name: Upload test results
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: ./src/test-results
