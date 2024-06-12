@@ -64,9 +64,15 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         global-json-file: ./src/global.json
-    
+
     - name: Run tests
-      run: dotnet test ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }}
+      run: dotnet test ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --logger "trx;LogFileName=test-results.trx" --results-directory ./test-results
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: ./test-results
 
   deploy:
     if: github.event_name == 'release'
