@@ -27,7 +27,6 @@ env:
 defaults:
   run:
     shell: pwsh
-    working-directory: src
 
 jobs:
   create_nuget:
@@ -54,28 +53,25 @@ jobs:
     
     - name: Copy package meta info to root
       run: cp .node/package* .
-      working-directory: /
 
     - name: npm install
       run: npm install --no-progress --prefer-offline --no-audit
-      working-directory: /
 
     - name: Install semantic-release
       run: npm install -g semantic-release @semantic-release/exec
-      working-directory: /
 
     - name: Get release version
       id: get_version
       run: echo "RELEASE_VERSION=$(npx --no-install semantic-release --branches testing-semantic-release --dry-run | grep "Release version" | awk '{print $3}')" >> $GITHUB_ENV
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      working-directory: /
       
     - name: Display release version
       run: echo "Release version is ${{ env.RELEASE_VERSION }}"
 
     - name: Pack NuGet packages
       run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }} --property:Version=${{ env.RELEASE_VERSION }} --include-symbols
+      working-directory: src
 
     - name: Upload NuGet packages
       uses: actions/upload-artifact@v4
@@ -98,6 +94,7 @@ jobs:
 
     - name: Run tests
       run: dotnet test ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --logger "trx;LogFileName=test-results.trx" --results-directory ./test-results
+      working-directory: src
 
     - name: Test Report
       uses: dorny/test-reporter@v1
