@@ -58,10 +58,12 @@ jobs:
       id: release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        VERSION=$(semantic-release | tee /dev/tty | grep -oP 'Release version: \K[^\s]+')
-        echo "RELEASE_VERSION=${VERSION}" >> $GITHUB_ENV
+      run: semantic-release
 
+    - name: Get release version
+      id: get_version
+      run: echo "RELEASE_VERSION=$(semantic-release --dry-run | grep "Release version" | awk '{print $3}')" >> $GITHUB_ENV
+      
     - name: Display release version
       run: echo "Release version is ${{ env.RELEASE_VERSION }}"
 
