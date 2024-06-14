@@ -191,3 +191,5 @@ nCrunchTemp_*.csproj
 /build-artifacts/
 /src/.artifacts
 /.artifacts
+
+node_modules/

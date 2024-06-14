@@ -52,12 +52,19 @@ jobs:
     #   id: nbgv
     # - run: echo 'SimpleVersion=${{ steps.nbgv.outputs.SimpleVersion }}'
     
+    - name: Copy package meta info to root
+      run: |
+        cp node/package* .
+
+    - name: npm install
+      run: npm install --no-progress --prefer-offline --no-audit
+
     - name: Install semantic-release
       run: npm install -g semantic-release @semantic-release/exec
 
     - name: Get release version
       id: get_version
-      run: echo "RELEASE_VERSION=$(semantic-release --branches testing-semantic-release --dry-run | grep "Release version" | awk '{print $3}')" >> $GITHUB_ENV
+      run: echo "RELEASE_VERSION=$(npx --no-install semantic-release --branches testing-semantic-release --dry-run | grep "Release version" | awk '{print $3}')" >> $GITHUB_ENV
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
