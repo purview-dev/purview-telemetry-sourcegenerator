@@ -41,7 +41,12 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         global-json-file: ./src/global.json
-    
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.x' # Specify your Node.js version here
+
     # - uses: dotnet/nbgv@master
     #   id: nbgv
     # - run: echo 'SimpleVersion=${{ steps.nbgv.outputs.SimpleVersion }}'
