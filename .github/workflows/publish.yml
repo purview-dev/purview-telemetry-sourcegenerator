@@ -45,7 +45,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20.x' # Specify your Node.js version here
+        node-version: 'lts/*' # Specify your Node.js version here
 
     # - uses: dotnet/nbgv@master
     #   id: nbgv
@@ -58,17 +58,15 @@ jobs:
       id: release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: semantic-release
+      run: |
+        VERSION=$(semantic-release | tee /dev/tty | grep -oP 'Release version: \K[^\s]+')
+        echo "RELEASE_VERSION=${VERSION}" >> $GITHUB_ENV
 
-    - name: Get release version
-      id: get_version
-      run: echo "RELEASE_VERSION=$(semantic-release --dry-run | grep "Release version" | awk '{print $3}')" >> $GITHUB_ENV
-      
     - name: Display release version
-      run: echo "$RELEASE_VERSION"
+      run: echo "Release version is ${{ env.RELEASE_VERSION }}"
 
     - name: Pack NuGet packages
-      run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }} --property:Version=$RELEASE_VERSION --include-symbols
+      run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }} --property:Version=${{ env.RELEASE_VERSION }} --include-symbols
 
     - name: Upload NuGet packages
       uses: actions/upload-artifact@v4
