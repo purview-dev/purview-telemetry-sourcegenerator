@@ -59,7 +59,7 @@ jobs:
       id: release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: semantic-release
+      run: semantic-release --branches testing-semantic-release
 
     - name: Get release version
       id: get_version
