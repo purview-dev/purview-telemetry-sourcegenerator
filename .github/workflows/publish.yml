@@ -32,23 +32,41 @@ jobs:
   create_nuget:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
+    - name: Checkout code
+      uses: actions/checkout@v4
+      # with:
+      #   fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
     
-    - uses: actions/setup-dotnet@v4
-      name: Setup .NET
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
       with:
         global-json-file: ./src/global.json
     
-    - uses: dotnet/nbgv@master
-      id: nbgv
-    - run: echo 'SimpleVersion=${{ steps.nbgv.outputs.SimpleVersion }}'
+    # - uses: dotnet/nbgv@master
+    #   id: nbgv
+    # - run: echo 'SimpleVersion=${{ steps.nbgv.outputs.SimpleVersion }}'
     
-    - name: Pack NuGet packages
-      run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }} --property:Version=${{ steps.nbgv.outputs.SimpleVersion }} --include-symbols
+    - name: Install semantic-release
+      run: npm install -g semantic-release @semantic-release/exec
 
-    - uses: actions/upload-artifact@v4
+    - name: Run semantic-release
+      id: release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: semantic-release
+
+    - name: Get release version
+      id: get_version
+      run: echo "RELEASE_VERSION=$(semantic-release --dry-run | grep "Release version" | awk '{print $3}')" >> $GITHUB_ENV
+
+    - name: Update version in csproj
+      run: dotnet msbuild ${{ env.SolutionPath }} /t:UpdateAssemblyInfo /p:Version=$RELEASE_VERSION
+
+    - name: Pack NuGet packages
+      run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }} --property:Version=$RELEASE_VERSION --include-symbols
+
+    - name: Upload NuGet packages
+      uses: actions/upload-artifact@v4
       with:
         name: nuget
         if-no-files-found: error
@@ -58,7 +76,8 @@ jobs:
   run_test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -87,7 +106,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ run_test ]
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download package
+        uses: actions/download-artifact@v4
         with:
           name: nuget
           path: ${{ env.NuGetDirectory }}
