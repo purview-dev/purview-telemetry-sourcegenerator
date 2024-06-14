@@ -60,27 +60,27 @@ jobs:
     # - name: Install semantic-release
     #   run: npm install -g semantic-release @semantic-release/exec
 
+            #echo "RELEASE_VERSION=$(npx --no-install semantic-release --branches testing-semantic-release --dry-run | grep -oP '(?:The next release version is )([0-9]+\.[0-9]+\.[0-9])' | grep -oP '[0-9]+\.[0-9]+\.[0-9]+')" >> $GITHUB_ENV
+#            echo "Release version is $RELEASE_VERSION"
+
     - name: Get release version
       id: get_version
       run: |
-        echo "RELEASE_VERSION=$(npx --no-install semantic-release --branches testing-semantic-release --dry-run | grep -oP '(?:The next release version is )([0-9]+\.[0-9]+\.[0-9])' | grep -oP '[0-9]+\.[0-9]+\.[0-9]+')" >> $GITHUB_ENV
-        echo "RELEASE_VERSION=$(npx --no-install semantic-release --branches testing-semantic-release --dry-run | grep -oP '(?:The next release version is )([0-9]+\.[0-9]+\.[0-9])' | grep -oP '[0-9]+\.[0-9]+\.[0-9]+')"
-        echo "Release version is $RELEASE_VERSION"
-
-      env:
+        echo "::set-output name=RELEASE_VERSION::$(npx --no-install semantic-release --branches testing-semantic-release --dry-run | grep -oP '(?:The next release version is )([0-9]+\.[0-9]+\.[0-9])' | grep -oP '[0-9]+\.[0-9]+\.[0-9]+')"
+     env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-    - name: Get release version
-      id: get_version2
-      run: npx --no-install semantic-release --branches testing-semantic-release --dry-run
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Get release version
+    #   id: get_version2
+    #   run: npx --no-install semantic-release --branches testing-semantic-release --dry-run
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
     - name: Display release version
-      run: echo "Release version is ${{ env.RELEASE_VERSION }}"
+      run: echo "Release version is ${{ steps.get_version.outputs.RELEASE_VERSION }}"
 
     - name: Pack NuGet packages
-      run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }} --property:Version=${{ env.RELEASE_VERSION }} --include-symbols
+      run: dotnet pack ${{ env.SolutionPath }} --configuration ${{ env.BuildConfigutation }} --output ${{ env.NuGetDirectory }} --property:Version=${{ steps.get_version.outputs.RELEASE_VERSION }} --include-symbols
       working-directory: src
 
     - name: Upload NuGet packages
