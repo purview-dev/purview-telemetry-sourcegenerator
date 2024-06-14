@@ -54,7 +54,7 @@ jobs:
     
     - name: Copy package meta info to root
       run: |
-        cp .node/package* .
+        cp /.node/package* .
 
     - name: npm install
       run: npm install --no-progress --prefer-offline --no-audit
