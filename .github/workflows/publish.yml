@@ -62,7 +62,7 @@ jobs:
 
     - name: Get release version
       id: get_version
-      run: echo "RELEASE_VERSION=$(npx --no-install semantic-release --branches testing-semantic-release --dry-run | grep "The next release version is" | awk '{print $11}')" >> $GITHUB_ENV
+      run: echo "RELEASE_VERSION=$(npx --no-install semantic-release --branches testing-semantic-release --dry-run | grep "The next release version is" | awk '{print $8}')" >> $GITHUB_ENV
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
