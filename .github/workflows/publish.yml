@@ -67,7 +67,7 @@ jobs:
       id: get_version
       run: |
         echo "::set-output name=RELEASE_VERSION::$(npx --no-install semantic-release --branches testing-semantic-release --dry-run | grep -oP '(?:The next release version is )([0-9]+\.[0-9]+\.[0-9])' | grep -oP '[0-9]+\.[0-9]+\.[0-9]+')"
-     env:
+      env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
     # - name: Get release version
