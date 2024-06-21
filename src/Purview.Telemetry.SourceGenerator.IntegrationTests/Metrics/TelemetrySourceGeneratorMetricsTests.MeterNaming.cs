@@ -79,6 +79,32 @@ interface ITestMetrics
 	}
 
 	[Fact]
+	public async Task Generate_GivenNameWithAssemblyAndInterfacePrefixAndName_GeneratesMetricsWithPrefix()
+	{
+		// Arrange
+		var basicMetric = @$"
+using Purview.Telemetry.Metrics;
+
+[assembly: MeterGeneration(InstrumentPrefix = ""This.Is.An.Assembly.Prefix"")]
+
+namespace Testing;
+
+[Meter(""testing-meter"", InstrumentPrefix = ""This.Is.A.Prefix"")]
+interface ITestMetrics 
+{{
+	[AutoCounter(""auto-counter"")]
+	void AutoCounterMetric();
+}}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicMetric);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
+	}
+
+	[Fact]
 	public async Task Generate_GivenNameShouldBeLowerCase_GeneratesMetricsWithLowercaseName()
 	{
 		// Arrange
