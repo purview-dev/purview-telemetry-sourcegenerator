@@ -34,7 +34,7 @@ public interface ITestActivities
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c
 			.ScrubInlineGuids()
-			.UseHashedParameters(parameterType)
+			.UseParameters(parameterType)
 		);
 	}
 }

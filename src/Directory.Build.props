@@ -1,5 +1,4 @@
 ﻿<Project>
-
 	<Import Project="./.build-system/Directory.Build.props"/>
 
 	<PropertyGroup>
@@ -7,5 +6,4 @@
 		<NoWarn>$(NoWarn);CA1031;</NoWarn>
 		<PackageTags>logging;source-generator;high-performance-logging;dotnet;aspnet;otel;open-telemetry;traces;tracing;metrics;events;distributed-traces;distributed-tracing;</PackageTags>
 	</PropertyGroup>
-
 </Project>

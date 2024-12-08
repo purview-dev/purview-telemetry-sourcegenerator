@@ -18,6 +18,7 @@ partial class ActivitySourceTargetClassEmitter
 			out var linksParam,
 			out var startTimeParam,
 			out var timestampParam,
+			out var _,
 			out var _))
 		{
 			return;

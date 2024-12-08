@@ -158,6 +158,7 @@ using Purview.Telemetry;
 			.UseDirectory("Snapshots")
 			.DisableRequireUniquePrefix()
 			.DisableDateCounting()
+			.HashParameters()
 			.UniqueForTargetFrameworkAndVersion(typeof(TestHelpers).Assembly)
 			.ScrubInlineDateTimeOffsets("yyyy-MM-dd HH:mm:ss zzzz") // 2024-22-02 14:43:22 +00:00
 			.AutoVerify(file =>

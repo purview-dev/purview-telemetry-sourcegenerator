@@ -26,7 +26,7 @@ public interface ITestLogger {{
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c
 			.ScrubInlineGuids()
-			.UseHashedParameters(parameterType)
+			.UseParameters(parameterType)
 		);
 	}
 }

@@ -49,7 +49,7 @@ public interface ITestMetrics
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c
 			.ScrubInlineGuids()
-			.UseHashedParameters(parameterType)
+			.UseParameters(parameterType)
 		);
 	}
 }

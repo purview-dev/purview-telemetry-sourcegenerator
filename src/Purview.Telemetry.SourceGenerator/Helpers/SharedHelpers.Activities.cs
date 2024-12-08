@@ -26,20 +26,19 @@ partial class SharedHelpers
 		AttributeValue<bool>? includeActivitySourcePrefix = null;
 		AttributeValue<bool>? lowercaseBaggageAndTagKeys = null;
 
-		if (!AttributeParser(attributeData,
-		(name, value) =>
-		{
-			if (name.Equals("Name", StringComparison.OrdinalIgnoreCase))
-				nameValue = new((string)value);
-			else if (name.Equals("DefaultToTags", StringComparison.OrdinalIgnoreCase))
-				defaultToTags = new((bool)value);
-			else if (name.Equals("BaggageAndTagPrefix", StringComparison.OrdinalIgnoreCase))
-				baggageAndTagPrefix = new((string)value);
-			else if (name.Equals("IncludeActivitySourcePrefix", StringComparison.OrdinalIgnoreCase))
-				includeActivitySourcePrefix = new((bool)value);
-			else if (name.Equals("LowercaseBaggageAndTagKeys", StringComparison.OrdinalIgnoreCase))
-				lowercaseBaggageAndTagKeys = new((bool)value);
-		}, semanticModel, logger, token))
+		if (!AttributeParser(attributeData, (name, value) =>
+			{
+				if (name.Equals("Name", StringComparison.OrdinalIgnoreCase))
+					nameValue = new((string)value);
+				else if (name.Equals("DefaultToTags", StringComparison.OrdinalIgnoreCase))
+					defaultToTags = new((bool)value);
+				else if (name.Equals("BaggageAndTagPrefix", StringComparison.OrdinalIgnoreCase))
+					baggageAndTagPrefix = new((string)value);
+				else if (name.Equals("IncludeActivitySourcePrefix", StringComparison.OrdinalIgnoreCase))
+					includeActivitySourcePrefix = new((bool)value);
+				else if (name.Equals("LowercaseBaggageAndTagKeys", StringComparison.OrdinalIgnoreCase))
+					lowercaseBaggageAndTagKeys = new((bool)value);
+			}, semanticModel, logger, token))
 		{
 			// Failed to parse correctly, so null it out.
 			return null;
@@ -60,7 +59,6 @@ partial class SharedHelpers
 		IGenerationLogger? logger,
 		CancellationToken token)
 	{
-
 		AttributeStringValue? nameValue = null;
 		AttributeValue<bool>? defaultToTags = null;
 		AttributeStringValue? baggageAndTagPrefix = null;
@@ -68,22 +66,21 @@ partial class SharedHelpers
 		AttributeValue<bool>? lowercaseBaggageAndTagKeys = null;
 		AttributeValue<bool>? generateDiagnosticsForMissingActivity = null;
 
-		if (!AttributeParser(attributeData,
-		(name, value) =>
-		{
-			if (name.Equals("Name", StringComparison.OrdinalIgnoreCase))
-				nameValue = new((string)value);
-			else if (name.Equals("DefaultToTags", StringComparison.OrdinalIgnoreCase))
-				defaultToTags = new((bool)value);
-			else if (name.Equals("BaggageAndTagPrefix", StringComparison.OrdinalIgnoreCase))
-				baggageAndTagPrefix = new((string)value);
-			else if (name.Equals("BaggageAndTagSeparator", StringComparison.OrdinalIgnoreCase))
-				baggageAndTagSeparator = new((string)value);
-			else if (name.Equals("LowercaseBaggageAndTagKeys", StringComparison.OrdinalIgnoreCase))
-				lowercaseBaggageAndTagKeys = new((bool)value);
-			else if (name.Equals("GenerateDiagnosticsForMissingActivity", StringComparison.OrdinalIgnoreCase))
-				generateDiagnosticsForMissingActivity = new((bool)value);
-		}, semanticModel, logger, token))
+		if (!AttributeParser(attributeData, (name, value) =>
+			{
+				if (name.Equals("Name", StringComparison.OrdinalIgnoreCase))
+					nameValue = new((string)value);
+				else if (name.Equals("DefaultToTags", StringComparison.OrdinalIgnoreCase))
+					defaultToTags = new((bool)value);
+				else if (name.Equals("BaggageAndTagPrefix", StringComparison.OrdinalIgnoreCase))
+					baggageAndTagPrefix = new((string)value);
+				else if (name.Equals("BaggageAndTagSeparator", StringComparison.OrdinalIgnoreCase))
+					baggageAndTagSeparator = new((string)value);
+				else if (name.Equals("LowercaseBaggageAndTagKeys", StringComparison.OrdinalIgnoreCase))
+					lowercaseBaggageAndTagKeys = new((bool)value);
+				else if (name.Equals("GenerateDiagnosticsForMissingActivity", StringComparison.OrdinalIgnoreCase))
+					generateDiagnosticsForMissingActivity = new((bool)value);
+			}, semanticModel, logger, token))
 		{
 			// Failed to parse correctly, so null it out.
 			return null;
@@ -105,21 +102,19 @@ partial class SharedHelpers
 		IGenerationLogger? logger,
 		CancellationToken token)
 	{
-
 		AttributeStringValue? nameValue = null;
 		AttributeValue<int>? kind = null;
 		AttributeValue<bool>? createOnly = null;
 
-		if (!AttributeParser(attributeData,
-		(name, value) =>
-		{
-			if (name.Equals("Name", StringComparison.OrdinalIgnoreCase))
-				nameValue = new((string)value);
-			else if (name.Equals("Kind", StringComparison.OrdinalIgnoreCase))
-				kind = new((int)value);
-			else if (name.Equals("CreateOnly", StringComparison.OrdinalIgnoreCase))
-				createOnly = new((bool)value);
-		}, semanticModel, logger, token))
+		if (!AttributeParser(attributeData, (name, value) =>
+			{
+				if (name.Equals("Name", StringComparison.OrdinalIgnoreCase))
+					nameValue = new((string)value);
+				else if (name.Equals("Kind", StringComparison.OrdinalIgnoreCase))
+					kind = new((int)value);
+				else if (name.Equals("CreateOnly", StringComparison.OrdinalIgnoreCase))
+					createOnly = new((bool)value);
+			}, semanticModel, logger, token))
 		{
 			// Failed to parse correctly, so null it out.
 			return null;
@@ -138,21 +133,25 @@ partial class SharedHelpers
 		IGenerationLogger? logger,
 		CancellationToken token)
 	{
-
 		AttributeStringValue? nameValue = null;
 		AttributeValue<bool>? useRecordExceptionRules = null;
 		AttributeValue<bool>? recordExceptionEscape = null;
+		AttributeValue<int>? statusCode = null;
+		AttributeStringValue? statusDescription = null;
 
-		if (!AttributeParser(attributeData,
-		(name, value) =>
-		{
-			if (name.Equals("Name", StringComparison.OrdinalIgnoreCase))
-				nameValue = new((string)value);
-			else if (name.Equals("UseRecordExceptionRules", StringComparison.OrdinalIgnoreCase))
-				useRecordExceptionRules = new((bool)value);
-			else if (name.Equals("RecordExceptionAsEscaped", StringComparison.OrdinalIgnoreCase))
-				recordExceptionEscape = new((bool)value);
-		}, semanticModel, logger, token))
+		if (!AttributeParser(attributeData, (name, value) =>
+			{
+				if (name.Equals("Name", StringComparison.OrdinalIgnoreCase))
+					nameValue = new((string)value);
+				else if (name.Equals("UseRecordExceptionRules", StringComparison.OrdinalIgnoreCase))
+					useRecordExceptionRules = new((bool)value);
+				else if (name.Equals("RecordExceptionAsEscaped", StringComparison.OrdinalIgnoreCase))
+					recordExceptionEscape = new((bool)value);
+				else if (name.Equals("StatusCode", StringComparison.OrdinalIgnoreCase))
+					statusCode = new((int)value);
+				else if (name.Equals("StatusDescription", StringComparison.OrdinalIgnoreCase))
+					statusDescription = new((string)value);
+			}, semanticModel, logger, token))
 		{
 			// Failed to parse correctly, so null it out.
 			return null;
@@ -161,7 +160,9 @@ partial class SharedHelpers
 		return new(
 			Name: nameValue ?? new(),
 			UseRecordExceptionRules: useRecordExceptionRules ?? new(),
-			RecordExceptionEscape: recordExceptionEscape ?? new()
+			RecordExceptionEscape: recordExceptionEscape ?? new(),
+			StatusCode: statusCode ?? new(),
+			StatusDescription: statusDescription ?? new()
 		);
 	}
 

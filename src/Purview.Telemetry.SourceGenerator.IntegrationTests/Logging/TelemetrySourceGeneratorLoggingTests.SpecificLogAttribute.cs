@@ -24,7 +24,7 @@ public interface ITestLogger
 		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
-		await TestHelpers.Verify(generationResult, c => c.UseHashedParameters(attribute));
+		await TestHelpers.Verify(generationResult, c => c.UseParameters(attribute));
 	}
 
 	[Theory]
@@ -64,7 +64,7 @@ public interface ITestLogger
 		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
-		await TestHelpers.Verify(generationResult, c => c.UseHashedParameters(attribute));
+		await TestHelpers.Verify(generationResult, c => c.UseParameters(attribute));
 	}
 
 	public static TheoryData<string> SpecificLogAttributeTypes
