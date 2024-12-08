@@ -24,7 +24,7 @@ public interface ITestLogger {{
 		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
-		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids().UseHashedParameters(@namespace));
+		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids().UseParameters(@namespace));
 	}
 
 	[Theory]
@@ -51,7 +51,7 @@ public partial class TestClass1 {{
 		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
-		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids().UseHashedParameters(@namespace));
+		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids().UseParameters(@namespace));
 	}
 
 	[Theory]
@@ -82,6 +82,6 @@ public partial class TestClass1 {{
 		var generationResult = await GenerateAsync(basicLogger);
 
 		// Assert
-		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids().UseHashedParameters(@namespace));
+		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids().UseParameters(@namespace));
 	}
 }

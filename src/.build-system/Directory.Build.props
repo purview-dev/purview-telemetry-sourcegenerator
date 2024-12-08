@@ -1,27 +1,20 @@
 ﻿<Project>
-
-	<Import Project="$(MSBuildThisFileDirectory)msbuild/variables.props" />
-	<Import Project="$(MSBuildThisFileDirectory)msbuild/nuget-packable-default.props" />
+	<Import Project="./BuildVariables.props" />
 
 	<!-- All C# Projects -->
 	<PropertyGroup Label="C# Project Property Groups" Condition="'$(IsCSharpProject)' == 'true'">
-
-		<TargetFramework>net8.0</TargetFramework>
-
-		<Deterministic>true</Deterministic>
-		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
- 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-
-		<AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
-
-		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-
- 		<IsPackable>false</IsPackable>
-
-		<LangVersion>12.0</LangVersion>
+		<TargetFramework>net9.0</TargetFramework>
+		<LangVersion>13.0</LangVersion>
 
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+
+		<Deterministic>true</Deterministic>
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IsPackable>false</IsPackable>
 
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
@@ -43,55 +36,58 @@
 
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
 		<GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-
 	</PropertyGroup>
 
 	<ItemGroup>
-
 		<Using Include="$(RootNamespace)" />
-
 	</ItemGroup>
 
 	<ItemGroup Label="C# Project Item Groups" Condition="'$(IsCSharpProject)' == 'true' AND $(IsTestProject) == 'false'">
-
 		<!-- Embedded Resources -->
 		<None Remove="Resources/**/*" />
 		<EmbeddedResource Include="Resources/**/*" />
-
+	</ItemGroup>
+	
+	<ItemGroup Label="Dynamic Versioning" Condition="'$(IsCSharpProject)' == 'true'">
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>"DynamicProxyGenAssembly2"</_Parameter1>
+		</AssemblyAttribute>
+		<AssemblyAttribute Include="System.Reflection.AssemblyCompanyAttribute">
+			<_Parameter1>"KJL Solutions Ltd."</_Parameter1>
+		</AssemblyAttribute>
+		<AssemblyAttribute Include="System.Reflection.AssemblyCopyrightAttribute">
+			<_Parameter1>"KJL Solutions Ltd. © 2024 | All Rights Reserved"</_Parameter1>
+		</AssemblyAttribute>
 	</ItemGroup>
 
-	<ItemGroup Label="Dynamic Versioning" Condition="'$(IsCSharpProject)' == 'true' AND '$(IsTestProject)' == 'false'">
-
-		<Compile Include="$(AutoMSBuildProps)AssemblyInfo_Shared.cs" Link="Properties/SharedAssemblyInfo.cs" />
-
-	</ItemGroup>
+	<PropertyGroup Label="NuGet Package Defaults">
+		<Authors>Kieron Lanning</Authors>
+		<Company>KJL Solutions Ltd.</Company>
+		<Copyright>KJL Solutions Ltd., 2024 | All rights reserved.</Copyright>
+		<RepositoryUrl>https://github.com/purview-dev/purview-telemetry-sourcegenerator/</RepositoryUrl>
+	</PropertyGroup>
 
 	<!-- Package Projects -->
 	<PropertyGroup Label="NuGet Package Project Properties" Condition="'$(IsPackable)' == 'true'">
-
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 
 		<!-- Include symbol files (*.pdb) in the built .nupkg -->
 		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
 
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<!--<PublishRepositoryUrl>true</PublishRepositoryUrl>-->
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-
 	</PropertyGroup>
 
 	<ItemGroup Label="NuGet Package References" Condition="$(IsTestProject) == 'false'">
-
 		<PackageReference Include="Microsoft.SourceLink.GitHub">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
-
 	</ItemGroup>
 
 	<!-- Test Projects. -->
 	<PropertyGroup Label="Testing Project Properties" Condition="'$(IsTestProject)' == 'true'">
-
 		<NoWarn>$(NoWarn);CA1707</NoWarn>
 
 		<CollectCoverage>true</CollectCoverage>
@@ -106,30 +102,28 @@
 
 		<EnableStaticNativeInstrumentation>False</EnableStaticNativeInstrumentation>
 		<EnableDynamicNativeInstrumentation>False</EnableDynamicNativeInstrumentation>
-
 	</PropertyGroup>
 
 	<ItemGroup Label="Test AssemblyInfo and Runner Properties" Condition="'$(IsTestProject)' == 'true'">
-
+		<AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+	
 		<AssemblyAttribute Include="Xunit.AssemblyTrait">
 			<_Parameter1>Category</_Parameter1>
 			<_Parameter2>$(TestingType)</_Parameter2>
 		</AssemblyAttribute>
 
-		<Compile Include="$(AutoMSBuildProps)AssemblyInfo_SharedTesting.cs" Link="Properties/SharedTestingAssemblyInfo.cs" />
-		<Content Include="$(MSBuildThisFileDirectory)xunit/xunit.runner.json" Link="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
-
+		<Content Include="$(MSBuildThisFileDirectory)xunit/xunit.runner.json" Link="Properties/shared-xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 
 	<ItemGroup Label="Testing NuGet Packages" Condition="'$(IsTestProject)' == 'true'">
-
 		<!-- Implicit usings for tests. -->
 		<Using Include="FluentAssertions" />
 		<Using Include="NSubstitute" />
 		<Using Include="Xunit" />
 
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
-		<PackageReference Include="Microsoft.CodeCoverage" />
+		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
+		<PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
 
 		<PackageReference Include="FluentAssertions" />
 		<PackageReference Include="NCrunch.Framework" />
@@ -148,5 +142,4 @@
 		</PackageReference>
 
 	</ItemGroup>
-
 </Project>
