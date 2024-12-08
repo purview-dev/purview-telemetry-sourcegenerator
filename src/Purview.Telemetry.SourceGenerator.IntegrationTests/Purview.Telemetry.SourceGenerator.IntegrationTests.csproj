@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<ItemGroup>
 		<Compile Remove="Resources/**/*" />
 		<EmbeddedResource Include="Resources/**/*" />
@@ -7,6 +6,10 @@
 		<Compile Remove="Snapshots/**" />
 		<EmbeddedResource Remove="Snapshots/**" />
 		<None Remove="Snapshots/**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Purview.Telemetry.SourceGenerator\Purview.Telemetry.SourceGenerator.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -20,21 +23,13 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" />
 		<PackageReference Include="Verify.Xunit" />
 		<PackageReference Include="Verify.SourceGenerators" />
+		<PackageReference Update="xunit.analyzers">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Update="xunit.runner.visualstudio">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\Purview.Telemetry.SourceGenerator\Purview.Telemetry.SourceGenerator.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Update="xunit.analyzers">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-	  <PackageReference Update="xunit.runner.visualstudio">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-	</ItemGroup>
-
 </Project>
