@@ -196,6 +196,11 @@ partial class PipelineHelpers
 				logger?.Debug($"Found escape parameter: {parameter.Name}.");
 				destination = ActivityParameterDestination.Escape;
 			}
+			else if (Utilities.ContainsAttribute(parameter, Constants.Activities.StatusDescriptionAttribute, token))
+			{
+				logger?.Debug($"Found status description parameter: {parameter.Name}.");
+				destination = ActivityParameterDestination.StatusDescription;
+			}
 			else if (Constants.Activities.SystemDiagnostics.Activity.Equals(parameter.Type))
 				destination = ActivityParameterDestination.Activity;
 			else if (Constants.Activities.SystemDiagnostics.ActivityTagsCollection.Equals(parameter.Type)

@@ -135,5 +135,21 @@ partial class TelemetryDiagnostics
 			Category: Constants.Diagnostics.Activity.Usage,
 			Severity: DiagnosticSeverity.Info
 		);
+
+		public static readonly TelemetryDiagnosticDescriptor StatusDescriptionMustBeString = new(
+			Id: "TSG3016",
+			Title: "Status parameter should be string",
+			Description: "Status descriptions can only be of type string.",
+			Category: Constants.Diagnostics.Activity.Usage,
+			Severity: DiagnosticSeverity.Error
+		);
+
+		public static readonly TelemetryDiagnosticDescriptor StatusDescriptionParameterInvalidType = new(
+			Id: "TSG3017",
+			Title: "Status Description parameters are only valid on Events, not Activity or Context methods",
+			Description: "The parameters {0} is not valid on Activity or Context methods, only on Events.",
+			Category: Constants.Diagnostics.Activity.Usage,
+			Severity: DiagnosticSeverity.Error
+		);
 	}
 }

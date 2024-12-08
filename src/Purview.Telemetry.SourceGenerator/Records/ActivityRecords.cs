@@ -70,7 +70,8 @@ enum ActivityParameterDestination
 	Activity,
 	StartTime,
 	Timestamp,
-	Escape
+	Escape,
+	StatusDescription
 }
 
 enum ActivityMethodType

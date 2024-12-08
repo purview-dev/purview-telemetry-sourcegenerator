@@ -91,7 +91,8 @@ partial class ActivitySourceTargetClassEmitter
 		out ActivityBasedParameterTarget? linksParam,
 		out ActivityBasedParameterTarget? startTimeParam,
 		out ActivityBasedParameterTarget? timestampParam,
-		out ActivityBasedParameterTarget? escapeParam
+		out ActivityBasedParameterTarget? escapeParam,
+		out ActivityBasedParameterTarget? statusDescriptionParam
 		)
 	{
 		activityParam = null;
@@ -101,6 +102,7 @@ partial class ActivitySourceTargetClassEmitter
 		startTimeParam = null;
 		timestampParam = null;
 		escapeParam = null;
+		statusDescriptionParam = null;
 
 		var activityParams = methodTarget.Parameters.Where(m => m.ParamDestination == ActivityParameterDestination.Activity).ToImmutableArray();
 		var parentContextOrIdParams = methodTarget.Parameters.Where(m => m.ParamDestination == ActivityParameterDestination.ParentContextOrId).ToImmutableArray();
@@ -109,6 +111,7 @@ partial class ActivitySourceTargetClassEmitter
 		var startTimeParams = methodTarget.Parameters.Where(m => m.ParamDestination == ActivityParameterDestination.StartTime).ToImmutableArray();
 		var timestampParams = methodTarget.Parameters.Where(m => m.ParamDestination == ActivityParameterDestination.Timestamp).ToImmutableArray();
 		var escapeParams = methodTarget.Parameters.Where(m => m.ParamDestination == ActivityParameterDestination.Escape).ToImmutableArray();
+		var statusDescriptionParams = methodTarget.Parameters.Where(m => m.ParamDestination == ActivityParameterDestination.StatusDescription).ToImmutableArray();
 
 		if (activityParams.Length > 1)
 		{
@@ -210,6 +213,49 @@ partial class ActivitySourceTargetClassEmitter
 						TelemetryDiagnostics.Activities.EscapedParameterInvalidType,
 						escapeParams.Where(m => m.Location != null).Select(m => m.Location!),
 						escapeParam.ParameterName
+					);
+
+					return false;
+				}
+			}
+		}
+
+		if (statusDescriptionParams.Length > 1)
+		{
+			logger?.Diagnostic("More than one StatusDescription parameter defined.");
+
+			TelemetryDiagnostics.Report(context.ReportDiagnostic,
+				TelemetryDiagnostics.Activities.DuplicateParameterTypes,
+				statusDescriptionParams.Where(m => m.Location != null).Select(m => m.Location!),
+				string.Join(", ", escapeParams.Select(m => m.ParameterName)),
+				"status description parameters"
+			);
+
+			return false;
+		}
+		else
+		{
+			statusDescriptionParam = statusDescriptionParams.FirstOrDefault();
+			if (statusDescriptionParam != null)
+			{
+				if (!Utilities.IsString(statusDescriptionParam.ParameterType))
+				{
+					TelemetryDiagnostics.Report(context.ReportDiagnostic,
+						TelemetryDiagnostics.Activities.StatusDescriptionMustBeString,
+						statusDescriptionParams.Where(m => m.Location != null).Select(m => m.Location!),
+						string.Join(", ", escapeParams.Select(m => m.ParameterName)),
+						"status description parameters"
+					);
+
+					return false;
+				}
+
+				if (methodTarget.MethodType != ActivityMethodType.Event)
+				{
+					TelemetryDiagnostics.Report(context.ReportDiagnostic,
+						TelemetryDiagnostics.Activities.StatusDescriptionParameterInvalidType,
+						statusDescriptionParams.Where(m => m.Location != null).Select(m => m.Location!),
+						statusDescriptionParam.ParameterName
 					);
 
 					return false;

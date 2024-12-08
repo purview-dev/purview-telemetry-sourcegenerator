@@ -40,6 +40,7 @@ partial class Constants
 		public static readonly TemplateInfo ContextAttribute = TemplateInfo.Create("Purview.Telemetry.Activities.ContextAttribute");
 		public static readonly TemplateInfo BaggageAttribute = TemplateInfo.Create("Purview.Telemetry.Activities.BaggageAttribute");
 		public static readonly TemplateInfo EscapeAttribute = TemplateInfo.Create("Purview.Telemetry.Activities.EscapeAttribute");
+		public static readonly TemplateInfo StatusDescriptionAttribute = TemplateInfo.Create("Purview.Telemetry.Activities.StatusDescriptionAttribute");
 
 		public static readonly ImmutableDictionary<int, TypeInfo> ActivityTypeMap = new Dictionary<int, TypeInfo> {
 			{ 0, SystemDiagnostics.ActivityKind_Internal },
@@ -49,6 +50,12 @@ partial class Constants
 			{ 4, SystemDiagnostics.ActivityKind_Consumer }
 		}.ToImmutableDictionary();
 
+		public static readonly ImmutableDictionary<int, TypeInfo> ActivityStatusCodeMap = new Dictionary<int, TypeInfo> {
+			{ 0, SystemDiagnostics.ActivityStatusCode_Unset },
+			{ 1, SystemDiagnostics.ActivityStatusCode_Ok },
+			{ 2, SystemDiagnostics.ActivityStatusCode_Error }
+		}.ToImmutableDictionary();
+
 		public static TemplateInfo[] GetTemplates() => [
 			ActivitySourceGenerationAttribute,
 			ActivitySourceAttribute,
@@ -56,7 +63,8 @@ partial class Constants
 			EventAttribute,
 			ContextAttribute,
 			BaggageAttribute,
-			EscapeAttribute
+			EscapeAttribute,
+			StatusDescriptionAttribute
 		];
 
 		public static class SystemDiagnostics
@@ -66,6 +74,7 @@ partial class Constants
 			public static readonly TypeInfo ActivityEvent = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityEvent");
 			public static readonly TypeInfo ActivityContext = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityContext");
 			public static readonly TypeInfo ActivityKind = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityKind");
+			public static readonly TypeInfo ActivityStatusCode = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityStatusCode");
 			public static readonly TypeInfo ActivityTagsCollection = TypeInfo.Create(SystemDiagnosticsNamespace + ".ActivityTagsCollection");
 			public static readonly TypeInfo ActivityTagIEnumerable = TypeInfo.Create("System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object?>>");
 
@@ -78,6 +87,10 @@ partial class Constants
 			public static readonly TypeInfo ActivityKind_Client = TypeInfo.Create(ActivityKind + ".Client");
 			public static readonly TypeInfo ActivityKind_Producer = TypeInfo.Create(ActivityKind + ".Producer");
 			public static readonly TypeInfo ActivityKind_Consumer = TypeInfo.Create(ActivityKind + ".Consumer");
+
+			public static readonly TypeInfo ActivityStatusCode_Unset = TypeInfo.Create(ActivityStatusCode + ".Unset");
+			public static readonly TypeInfo ActivityStatusCode_Ok = TypeInfo.Create(ActivityStatusCode + ".Ok");
+			public static readonly TypeInfo ActivityStatusCode_Error = TypeInfo.Create(ActivityStatusCode + ".Error");
 		}
 	}
 }

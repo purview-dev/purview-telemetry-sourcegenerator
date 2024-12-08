@@ -18,13 +18,13 @@ partial class ActivitySourceTargetClassEmitter
 			out var linksParam,
 			out var startTimeParam,
 			out var timestampParam,
-			out var escapeParam))
+			out var escapeParam,
+			out var statusDescriptionParam))
 		{
 			return;
 		}
 
 		var activityVariableName = activityParam?.ParameterName ?? (Constants.Activities.SystemDiagnostics.Activity + ".Current");
-
 		if (parentContextOrId != null)
 		{
 			logger?.Diagnostic("Parent context/ Id not allowed on event method, only activities.");
@@ -76,6 +76,9 @@ partial class ActivitySourceTargetClassEmitter
 		indent++;
 
 		var tagsParameterName = tagsParam?.ParameterName ?? "default";
+		var exceptionParam =
+			methodTarget.Parameters.FirstOrDefault(m => m.IsException)
+			?? methodTarget.Tags.FirstOrDefault(m => m.IsException);
 		if (methodTarget.Tags.Length > 0)
 		{
 			var tagsListVariableName = "tagsCollection" + methodTarget.MethodName;
@@ -214,6 +217,48 @@ partial class ActivitySourceTargetClassEmitter
 			builder.AppendLine();
 
 			EmitTagsOrBaggageParameters(builder, indent, activityVariableName, false, methodTarget, false, context, logger);
+		}
+
+		var statusCode = methodTarget.EventAttribute?.StatusCode.Value ?? 0;
+		if (statusCode != 0)
+		{
+			builder
+					.AppendLine()
+					.Append(indent, activityVariableName, withNewLine: false)
+					.Append(".SetStatus(")
+					.Append(Constants.Activities.ActivityStatusCodeMap[statusCode])
+				;
+
+			// Error
+			if (statusCode == 2)
+			{
+				if (statusDescriptionParam != null)
+				{
+					builder
+						.Append(", ")
+						.Append(statusDescriptionParam.ParameterName)
+					;
+				}
+				else if (methodTarget.EventAttribute!.StatusDescription.IsSet)
+				{
+					builder
+						.Append(", ")
+						.Append(methodTarget.EventAttribute!.StatusDescription.Value!.Wrap())
+					;
+				}
+				else if (exceptionParam != null)
+				{
+					builder
+						.Append(", ")
+						.Append(exceptionParam.ParameterName)
+						.Append("?.Message")
+					;
+				}
+			}
+
+			builder
+				.AppendLine(");")
+			;
 		}
 
 		builder.Append(--indent, '}');
