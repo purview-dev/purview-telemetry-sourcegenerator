@@ -56,14 +56,14 @@
 			<_Parameter1>"KJL Solutions Ltd."</_Parameter1>
 		</AssemblyAttribute>
 		<AssemblyAttribute Include="System.Reflection.AssemblyCopyrightAttribute">
-			<_Parameter1>"KJL Solutions Ltd. © 2024 | All Rights Reserved"</_Parameter1>
+			<_Parameter1>"KJL Solutions Ltd. © 2025 | All Rights Reserved"</_Parameter1>
 		</AssemblyAttribute>
 	</ItemGroup>
 
 	<PropertyGroup Label="NuGet Package Defaults">
 		<Authors>Kieron Lanning</Authors>
 		<Company>KJL Solutions Ltd.</Company>
-		<Copyright>KJL Solutions Ltd., 2024 | All rights reserved.</Copyright>
+		<Copyright>KJL Solutions Ltd., 2025 | All rights reserved.</Copyright>
 		<RepositoryUrl>https://github.com/purview-dev/purview-telemetry-sourcegenerator/</RepositoryUrl>
 	</PropertyGroup>
 
