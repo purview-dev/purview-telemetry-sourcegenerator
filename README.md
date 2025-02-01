@@ -9,7 +9,20 @@ The latest version is available on [NuGet](https://www.nuget.org/packages/Purvie
 * .NET 8
 * .NET 9
 
+Reference in your .props or csproj file:
+
+```xml
+<PackageReference Include="Purview.Telemetry.SourceGenerator" Version="2.0.0">
+  <PrivateAssets>all</PrivateAssets>
+  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+</PackageReference>
+```
+
 ```csharp
+using Purview.Telemetry.Activities;
+using Purview.Telemetry.Logging;
+using Purview.Telemetry.Metrics;
+
 [ActivitySource]
 [Logger]
 [Meter]
@@ -52,5 +65,7 @@ interface IEntityStoreTelemetry
     void RetrievingEntity(int entityId);
 }
 ```
+
+Checkout the [.NET Aspire Sample](https://github.com/purview-dev/purview-telemetry-sourcegenerator/tree/main/samples/SampleApp) Project to see the Activities, Logging, and Metrics working with the dashaboard.
 
 For more information see the [wiki](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki).
