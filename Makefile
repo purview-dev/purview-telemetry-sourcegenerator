@@ -24,3 +24,9 @@ format: ## Formats the code according to the rules of the src/.editorconfig file
 
 act:
 	act -P ubuntu-latest=-self-hosted
+
+vs: ## Opens the project in Visual Studio.
+	@start $(SOLUTION_FILE)
+
+code: ## Opens the project in Visual Studio Code.
+	@code .
