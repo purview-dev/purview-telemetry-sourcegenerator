@@ -194,10 +194,7 @@ using Purview.Telemetry;
 		if (!validationCompilation)
 			return;
 
-#if NET7_0_OR_GREATER
-		await
-#endif
-			using MemoryStream ms = new();
+		await using MemoryStream ms = new();
 
 		EmitResult result = generationResult.Compilation.Emit(ms);
 

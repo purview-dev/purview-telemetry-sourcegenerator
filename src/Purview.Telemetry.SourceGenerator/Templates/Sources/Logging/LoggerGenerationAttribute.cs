@@ -1,5 +1,7 @@
 ﻿namespace Purview.Telemetry.Logging;
 
+#if !EXCLUDE_PURVIEW_TELEMETRY_LOGGING
+
 /// <summary>
 /// Sets defaults for the generation of loggers and log entries.
 /// </summary>
@@ -31,3 +33,5 @@ sealed class LoggerGenerationAttribute : System.Attribute
 	/// </summary>
 	public Microsoft.Extensions.Logging.LogLevel DefaultLevel { get; set; } = Microsoft.Extensions.Logging.LogLevel.Information;
 }
+
+#endif

@@ -23,58 +23,32 @@ namespace Testing
 		System.Diagnostics.Metrics.ObservableUpDownCounter<int>? _observableUpDown2Instrument = null;
 		System.Diagnostics.Metrics.ObservableUpDownCounter<int>? _observableUpDown3Instrument = null;
 
-		public TestMetricsCore(
-#if NET8_0_OR_GREATER
-			System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-		)
+		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
-			InitializeMeters(
-#if NET8_0_OR_GREATER
-				meterFactory
-#endif
-			);
+			InitializeMeters(meterFactory);
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		void InitializeMeters(
-#if NET8_0_OR_GREATER
-			System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-		)
+		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
 			{
 				throw new System.Exception("The meters have already been initialized.");
 			}
 
-#if NET8_0_OR_GREATER
 			System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateMeterTags(meterTags);
-#endif
 
-			_meter = 
-#if NET8_0_OR_GREATER
-				meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-observable-meter")
-				{
-					Version = null,
-					Tags = meterTags
-				});
-#else
-				new System.Diagnostics.Metrics.Meter(name: "testing-observable-meter", version: null);
-#endif
+			_meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-observable-meter")
+			{
+				Version = null,
+				Tags = meterTags
+			});
+
 		}
 
-#if NET8_0_OR_GREATER
-
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
-
-#endif
-
-#if !NET7_0
-
-#endif
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableUpDown(System.Func<int> f, int intParam, bool boolParam)
@@ -90,12 +64,9 @@ namespace Testing
 			observableUpDownTagList.Add("boolparam", boolParam);
 
 			_observableUpDownInstrument = _meter.CreateObservableUpDownCounter<int>("observableupdown", f, unit: null, description: null
-#if !NET7_0
 				, tags: observableUpDownTagList
-#endif
 			);
 		}
-
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableUpDown2(System.Func<System.Diagnostics.Metrics.Measurement<int>> f, int intParam, bool boolParam)
 		{
@@ -110,12 +81,9 @@ namespace Testing
 			observableUpDown2TagList.Add("boolparam", boolParam);
 
 			_observableUpDown2Instrument = _meter.CreateObservableUpDownCounter<int>("observableupdown2", f, unit: null, description: null
-#if !NET7_0
 				, tags: observableUpDown2TagList
-#endif
 			);
 		}
-
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableUpDown3(System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<int>>> f, int intParam, bool boolParam)
 		{
@@ -130,9 +98,7 @@ namespace Testing
 			observableUpDown3TagList.Add("boolparam", boolParam);
 
 			_observableUpDown3Instrument = _meter.CreateObservableUpDownCounter<int>("observableupdown3", f, unit: null, description: null
-#if !NET7_0
 				, tags: observableUpDown3TagList
-#endif
 			);
 		}
 	}

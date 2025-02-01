@@ -15,6 +15,8 @@
 
 namespace Purview.Telemetry.Logging;
 
+#if !EXCLUDE_PURVIEW_TELEMETRY_LOGGING
+
 /// <summary>
 /// Marker attribute required for Log generation.
 /// </summary>
@@ -66,3 +68,5 @@ sealed class LoggerAttribute : System.Attribute
 	/// </summary>
 	public LogPrefixType PrefixType { get; set; } = LogPrefixType.Default;
 }
+
+#endif

@@ -23,106 +23,53 @@ namespace Testing
 		System.Diagnostics.Metrics.Counter<int>? _counter2Instrument = null;
 		System.Diagnostics.Metrics.Counter<int>? _counter3Instrument = null;
 
-		public TestMetricsCore(
-#if NET8_0_OR_GREATER
-			System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-		)
+		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
-			InitializeMeters(
-#if NET8_0_OR_GREATER
-				meterFactory
-#endif
-			);
+			InitializeMeters(meterFactory);
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		void InitializeMeters(
-#if NET8_0_OR_GREATER
-			System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-		)
+		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
 			{
 				throw new System.Exception("The meters have already been initialized.");
 			}
 
-#if NET8_0_OR_GREATER
 			System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateMeterTags(meterTags);
-#endif
 
-			_meter = 
-#if NET8_0_OR_GREATER
-				meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
-				{
-					Version = null,
-					Tags = meterTags
-				});
-#else
-				new System.Diagnostics.Metrics.Meter(name: "testing-meter", version: null);
-#endif
-
-#if !NET7_0
+			_meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
+			{
+				Version = null,
+				Tags = meterTags
+			});
 
 			System.Collections.Generic.Dictionary<string, object?> counter1Tags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateCounter1Tags(counter1Tags);
 
-#endif
-
-			_counter1Instrument = _meter.CreateCounter<int>(name: "counter1", unit: null, description: null
-#if !NET7_0
-				, tags: counter1Tags
-#endif
-			);
-
-#if !NET7_0
-
+			_counter1Instrument = _meter.CreateCounter<int>(name: "counter1", unit: null, description: null, tags: counter1Tags);
 			System.Collections.Generic.Dictionary<string, object?> counter2Tags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateCounter2Tags(counter2Tags);
 
-#endif
-
-			_counter2Instrument = _meter.CreateCounter<int>(name: "counter2", unit: null, description: null
-#if !NET7_0
-				, tags: counter2Tags
-#endif
-			);
-
-#if !NET7_0
-
+			_counter2Instrument = _meter.CreateCounter<int>(name: "counter2", unit: null, description: null, tags: counter2Tags);
 			System.Collections.Generic.Dictionary<string, object?> counter3Tags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateCounter3Tags(counter3Tags);
 
-#endif
-
-			_counter3Instrument = _meter.CreateCounter<int>(name: "counter3", unit: null, description: null
-#if !NET7_0
-				, tags: counter3Tags
-#endif
-			);
+			_counter3Instrument = _meter.CreateCounter<int>(name: "counter3", unit: null, description: null, tags: counter3Tags);
 		}
 
-#if NET8_0_OR_GREATER
-
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
-
-#endif
-
-#if !NET7_0
 
 		partial void PopulateCounter1Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
 
 		partial void PopulateCounter2Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
 
 		partial void PopulateCounter3Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
-#endif
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter1(int intParam, bool boolParam)
@@ -139,7 +86,6 @@ namespace Testing
 
 			_counter1Instrument.Add(1, tagList: counter1TagList);
 		}
-
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter2(int intParam, bool boolParam)
 		{
@@ -155,7 +101,6 @@ namespace Testing
 
 			_counter2Instrument.Add(1, tagList: counter2TagList);
 		}
-
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter3(int intParam, bool boolParam)
 		{

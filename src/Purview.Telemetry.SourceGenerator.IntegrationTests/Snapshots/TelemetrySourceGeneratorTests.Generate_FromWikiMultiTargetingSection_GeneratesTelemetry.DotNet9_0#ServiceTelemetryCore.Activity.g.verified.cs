@@ -15,7 +15,7 @@
 
 sealed partial class ServiceTelemetryCore : IServiceTelemetry
 {
-	readonly static System.Diagnostics.ActivitySource _activitySource = new System.Diagnostics.ActivitySource("multi-targetting");
+	readonly static System.Diagnostics.ActivitySource _activitySource = new System.Diagnostics.ActivitySource("multi-targeting");
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	static void RecordExceptionInternal(System.Diagnostics.Activity? activity, System.Exception? exception, bool escape)

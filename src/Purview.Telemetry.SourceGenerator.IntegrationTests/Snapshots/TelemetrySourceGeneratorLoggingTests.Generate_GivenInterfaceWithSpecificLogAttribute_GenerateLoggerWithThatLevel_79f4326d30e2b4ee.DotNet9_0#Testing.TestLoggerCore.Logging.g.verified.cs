@@ -17,7 +17,7 @@ namespace Testing
 {
 	sealed partial class TestLoggerCore : Testing.ITestLogger
 	{
-		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger = default!;
+		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
 
 		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, string, int, bool, System.Exception?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.Define<string, int, bool>(Microsoft.Extensions.Logging.LogLevel.Debug, default, "Test.Log: stringParam: {StringParam}, intParam: {IntParam}, boolParam: {BoolParam}");
 

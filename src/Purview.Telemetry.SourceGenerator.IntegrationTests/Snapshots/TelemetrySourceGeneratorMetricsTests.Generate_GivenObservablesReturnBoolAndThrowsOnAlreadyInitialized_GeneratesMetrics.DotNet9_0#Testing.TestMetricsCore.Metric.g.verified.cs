@@ -23,58 +23,32 @@ namespace Testing
 		System.Diagnostics.Metrics.ObservableGauge<int>? _gaugeInstrument = null;
 		System.Diagnostics.Metrics.ObservableUpDownCounter<int>? _upDownInstrument = null;
 
-		public TestMetricsCore(
-#if NET8_0_OR_GREATER
-			System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-		)
+		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
-			InitializeMeters(
-#if NET8_0_OR_GREATER
-				meterFactory
-#endif
-			);
+			InitializeMeters(meterFactory);
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		void InitializeMeters(
-#if NET8_0_OR_GREATER
-			System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-		)
+		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
 			{
 				throw new System.Exception("The meters have already been initialized.");
 			}
 
-#if NET8_0_OR_GREATER
 			System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateMeterTags(meterTags);
-#endif
 
-			_meter = 
-#if NET8_0_OR_GREATER
-				meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
-				{
-					Version = null,
-					Tags = meterTags
-				});
-#else
-				new System.Diagnostics.Metrics.Meter(name: "testing-meter", version: null);
-#endif
+			_meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
+			{
+				Version = null,
+				Tags = meterTags
+			});
+
 		}
 
-#if NET8_0_OR_GREATER
-
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
-
-#endif
-
-#if !NET7_0
-
-#endif
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public bool Counter(System.Func<int> counterValue, int intParam, bool boolParam)
@@ -90,14 +64,11 @@ namespace Testing
 			counterTagList.Add("boolparam", boolParam);
 
 			_counterInstrument = _meter.CreateObservableCounter<int>("counter", counterValue, unit: null, description: null
-#if !NET7_0
 				, tags: counterTagList
-#endif
 			);
 
 			return true;
 		}
-
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public bool Gauge(System.Func<int> counterValue, int intParam, bool boolParam)
 		{
@@ -112,14 +83,11 @@ namespace Testing
 			gaugeTagList.Add("boolparam", boolParam);
 
 			_gaugeInstrument = _meter.CreateObservableGauge<int>("gauge", counterValue, unit: null, description: null
-#if !NET7_0
 				, tags: gaugeTagList
-#endif
 			);
 
 			return true;
 		}
-
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public bool UpDown(System.Func<int> counterValue, int intParam, bool boolParam)
 		{
@@ -134,9 +102,7 @@ namespace Testing
 			upDownTagList.Add("boolparam", boolParam);
 
 			_upDownInstrument = _meter.CreateObservableUpDownCounter<int>("updown", counterValue, unit: null, description: null
-#if !NET7_0
 				, tags: upDownTagList
-#endif
 			);
 
 			return true;

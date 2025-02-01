@@ -1,5 +1,7 @@
 ﻿namespace Purview.Telemetry.Logging;
 
+#if !EXCLUDE_PURVIEW_TELEMETRY_LOGGING
+
 /// <summary>
 /// Marker attribute used as an alternative to <see cref="LogAttribute"/>, where the <see cref="LogAttribute.Level"/>
 /// is set to <see cref="Microsoft.Extensions.Logging.LogLevel.Trace"/>.
@@ -69,3 +71,5 @@ sealed class TraceAttribute : System.Attribute
 	/// </summary>
 	public string? Name { get; set; }
 }
+
+#endif

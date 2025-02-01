@@ -26,126 +26,57 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 	System.Diagnostics.Metrics.ObservableUpDownCounter<byte>? _observableUpDownCounterInstrument = null;
 	System.Diagnostics.Metrics.UpDownCounter<decimal>? _upDownCounterMeterInstrument = null;
 
-	public MeterTelemetryCore(
-#if NET8_0_OR_GREATER
-		System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-	)
+	public MeterTelemetryCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 	{
-		InitializeMeters(
-#if NET8_0_OR_GREATER
-			meterFactory
-#endif
-		);
+		InitializeMeters(meterFactory);
 	}
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-	void InitializeMeters(
-#if NET8_0_OR_GREATER
-		System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-	)
+	void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 	{
 		if (_meter != null)
 		{
 			throw new System.Exception("The meters have already been initialized.");
 		}
 
-#if NET8_0_OR_GREATER
 		System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 		PopulateMeterTags(meterTags);
-#endif
 
-		_meter = 
-#if NET8_0_OR_GREATER
-			meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("MeterTelemetry")
-			{
-				Version = null,
-				Tags = meterTags
-			});
-#else
-			new System.Diagnostics.Metrics.Meter(name: "MeterTelemetry", version: null);
-#endif
-
-#if !NET7_0
+		_meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("MeterTelemetry")
+		{
+			Version = null,
+			Tags = meterTags
+		});
 
 		System.Collections.Generic.Dictionary<string, object?> autoCounterMeterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 		PopulateAutoCounterMeterTags(autoCounterMeterTags);
 
-#endif
-
-		_autoCounterMeterInstrument = _meter.CreateCounter<int>(name: "autocountermeter", unit: null, description: null
-#if !NET7_0
-			, tags: autoCounterMeterTags
-#endif
-		);
-
-#if !NET7_0
-
+		_autoCounterMeterInstrument = _meter.CreateCounter<int>(name: "autocountermeter", unit: null, description: null, tags: autoCounterMeterTags);
 		System.Collections.Generic.Dictionary<string, object?> autoIncrementMeterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 		PopulateAutoIncrementMeterTags(autoIncrementMeterTags);
 
-#endif
-
-		_autoIncrementMeterInstrument = _meter.CreateCounter<int>(name: "autoincrementmeter", unit: null, description: null
-#if !NET7_0
-			, tags: autoIncrementMeterTags
-#endif
-		);
-
-#if !NET7_0
-
+		_autoIncrementMeterInstrument = _meter.CreateCounter<int>(name: "autoincrementmeter", unit: null, description: null, tags: autoIncrementMeterTags);
 		System.Collections.Generic.Dictionary<string, object?> counterMeterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 		PopulateCounterMeterTags(counterMeterTags);
 
-#endif
-
-		_counterMeterInstrument = _meter.CreateCounter<int>(name: "countermeter", unit: null, description: null
-#if !NET7_0
-			, tags: counterMeterTags
-#endif
-		);
-
-#if !NET7_0
-
+		_counterMeterInstrument = _meter.CreateCounter<int>(name: "countermeter", unit: null, description: null, tags: counterMeterTags);
 		System.Collections.Generic.Dictionary<string, object?> histogramMeterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 		PopulateHistogramMeterTags(histogramMeterTags);
 
-#endif
-
-		_histogramMeterInstrument = _meter.CreateHistogram<int>(name: "histogrammeter", unit: null, description: null
-#if !NET7_0
-			, tags: histogramMeterTags
-#endif
-		);
-
-#if !NET7_0
-
+		_histogramMeterInstrument = _meter.CreateHistogram<int>(name: "histogrammeter", unit: null, description: null, tags: histogramMeterTags);
 		System.Collections.Generic.Dictionary<string, object?> upDownCounterMeterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 		PopulateUpDownCounterMeterTags(upDownCounterMeterTags);
 
-#endif
-
-		_upDownCounterMeterInstrument = _meter.CreateUpDownCounter<decimal>(name: "updowncountermeter", unit: null, description: null
-#if !NET7_0
-			, tags: upDownCounterMeterTags
-#endif
-		);
+		_upDownCounterMeterInstrument = _meter.CreateUpDownCounter<decimal>(name: "updowncountermeter", unit: null, description: null, tags: upDownCounterMeterTags);
 	}
 
-#if NET8_0_OR_GREATER
-
 	partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
-
-#endif
-
-#if !NET7_0
 
 	partial void PopulateAutoCounterMeterTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
 
@@ -156,8 +87,6 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 	partial void PopulateHistogramMeterTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
 
 	partial void PopulateUpDownCounterMeterTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
-#endif
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void AutoCounterMeter(string someValue)
@@ -173,7 +102,6 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 
 		_autoCounterMeterInstrument.Add(1, tagList: autoCounterMeterTagList);
 	}
-
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void AutoIncrementMeter(string someValue)
 	{
@@ -188,7 +116,6 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 
 		_autoIncrementMeterInstrument.Add(1, tagList: autoIncrementMeterTagList);
 	}
-
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void CounterMeter(int measurement, float someValue)
 	{
@@ -203,7 +130,6 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 
 		_counterMeterInstrument.Add(measurement, tagList: counterMeterTagList);
 	}
-
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void HistogramMeter(int measurement, int someValue, bool anotherValue)
 	{
@@ -219,7 +145,6 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 
 		_histogramMeterInstrument.Record(measurement, tagList: histogramMeterTagList);
 	}
-
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void ObservableCounterMeter(System.Func<float> measurement, double someValue)
 	{
@@ -233,12 +158,9 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 		observableCounterMeterTagList.Add("somevalue", someValue);
 
 		_observableCounterMeterInstrument = _meter.CreateObservableCounter<float>("observablecountermeter", measurement, unit: null, description: null
-#if !NET7_0
 			, tags: observableCounterMeterTagList
-#endif
 		);
 	}
-
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void ObservableGaugeMeter(System.Func<System.Diagnostics.Metrics.Measurement<float>> measurement, double someValue)
 	{
@@ -252,12 +174,9 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 		observableGaugeMeterTagList.Add("somevalue", someValue);
 
 		_observableGaugeMeterInstrument = _meter.CreateObservableGauge<float>("observablegaugemeter", measurement, unit: null, description: null
-#if !NET7_0
 			, tags: observableGaugeMeterTagList
-#endif
 		);
 	}
-
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void ObservableUpDownCounter(System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<byte>>> measurement, double someValue)
 	{
@@ -271,12 +190,9 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 		observableUpDownCounterTagList.Add("somevalue", someValue);
 
 		_observableUpDownCounterInstrument = _meter.CreateObservableUpDownCounter<byte>("observableupdowncounter", measurement, unit: null, description: null
-#if !NET7_0
 			, tags: observableUpDownCounterTagList
-#endif
 		);
 	}
-
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void UpDownCounterMeter(decimal measurement, byte someValue)
 	{

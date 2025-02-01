@@ -21,7 +21,28 @@ record LoggerTarget(
 
 	ImmutableArray<LogTarget> LogMethods,
 	ImmutableDictionary<string, Location[]> DuplicateMethods
-);
+)
+{
+	public TelemetryDiagnosticDescriptor? Failure { get; init; }
+
+	public static LoggerTarget MSLoggingNotReferenced = new(
+		null!,
+		GenerationType.None,
+		null!,
+		null,
+		null!,
+		null,
+		null!,
+		null!,
+		null!,
+		null!,
+		0,
+		[],
+		null!)
+	{
+		Failure = TelemetryDiagnostics.Logging.MSLoggingNotReferencedButAttemptedUse
+	};
+}
 
 record LogTarget(
 	string MethodName,

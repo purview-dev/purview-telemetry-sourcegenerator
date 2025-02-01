@@ -19,83 +19,40 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 
 	System.Diagnostics.Metrics.Counter<int>? _retrievingEntityInstrument = null;
 
-	public EntityStoreTelemetryCore(Microsoft.Extensions.Logging.ILogger<IEntityStoreTelemetry> logger
-#if NET8_0_OR_GREATER
-, 		System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-	)
+	public EntityStoreTelemetryCore(Microsoft.Extensions.Logging.ILogger<IEntityStoreTelemetry> logger, System.Diagnostics.Metrics.IMeterFactory meterFactory)
 	{
 		_logger = logger;
-		InitializeMeters(
-#if NET8_0_OR_GREATER
-			meterFactory
-#endif
-		);
+		InitializeMeters(meterFactory);
 	}
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-	void InitializeMeters(
-#if NET8_0_OR_GREATER
-		System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-	)
+	void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 	{
 		if (_meter != null)
 		{
 			throw new System.Exception("The meters have already been initialized.");
 		}
 
-#if NET8_0_OR_GREATER
 		System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 		PopulateMeterTags(meterTags);
-#endif
 
-		_meter = 
-#if NET8_0_OR_GREATER
-			meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("EntityStoreTelemetry")
-			{
-				Version = null,
-				Tags = meterTags
-			});
-#else
-			new System.Diagnostics.Metrics.Meter(name: "EntityStoreTelemetry", version: null);
-#endif
-
-#if !NET7_0
+		_meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("EntityStoreTelemetry")
+		{
+			Version = null,
+			Tags = meterTags
+		});
 
 		System.Collections.Generic.Dictionary<string, object?> retrievingEntityTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 		PopulateRetrievingEntityTags(retrievingEntityTags);
 
-#endif
-
-		_retrievingEntityInstrument = _meter.CreateCounter<int>(name: "retrievingentity", unit: null, description: null
-#if !NET7_0
-			, tags: retrievingEntityTags
-#endif
-		);
+		_retrievingEntityInstrument = _meter.CreateCounter<int>(name: "retrievingentity", unit: null, description: null, tags: retrievingEntityTags);
 	}
-
-#if NET8_0_OR_GREATER
 
 	partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
 
-#endif
-
-#if !NET7_0
-
-	partial void PopulateGettingEntityFromStoreTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
-	partial void PopulateGetDurationTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
-	partial void PopulateRetrievedEntityTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
-	partial void PopulateProcessingEntityTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
 	partial void PopulateRetrievingEntityTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
-#endif
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void RetrievingEntity(int entityId)

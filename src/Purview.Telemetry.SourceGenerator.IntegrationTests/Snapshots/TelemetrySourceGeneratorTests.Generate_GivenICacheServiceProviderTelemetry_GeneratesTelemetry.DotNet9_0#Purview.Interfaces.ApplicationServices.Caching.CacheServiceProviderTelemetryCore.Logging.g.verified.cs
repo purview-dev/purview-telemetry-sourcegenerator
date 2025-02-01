@@ -17,7 +17,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 {
 	sealed partial class CacheServiceProviderTelemetryCore : Purview.Interfaces.ApplicationServices.Caching.ICacheServiceProviderTelemetry
 	{
-		readonly Microsoft.Extensions.Logging.ILogger<Purview.Interfaces.ApplicationServices.Caching.ICacheServiceProviderTelemetry> _logger = default!;
+		readonly Microsoft.Extensions.Logging.ILogger<Purview.Interfaces.ApplicationServices.Caching.ICacheServiceProviderTelemetry> _logger;
 
 		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, System.Exception?> _failedToDeserializePayloadAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.FailedToDeserializePayload: dataLength: {DataLength}");
 		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, string, System.Exception?> _failedToGetFromCacheAction = Microsoft.Extensions.Logging.LoggerMessage.Define<string>(Microsoft.Extensions.Logging.LogLevel.Information, default, "CacheServiceProviderTelemetry.FailedToGetFromCache: key: {Key}");

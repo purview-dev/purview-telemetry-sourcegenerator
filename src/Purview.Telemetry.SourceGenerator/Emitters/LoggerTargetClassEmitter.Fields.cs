@@ -21,7 +21,7 @@ partial class LoggerTargetClassEmitter
 			.Append('>')
 			.Append(' ')
 			.Append(Constants.Logging.LoggerFieldName)
-			.Append(" = default!;")
+			.Append(';')
 			.AppendLine()
 			.AppendLine()
 		;

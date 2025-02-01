@@ -35,11 +35,6 @@ partial class MeterTargetClassEmitter
 
 		builder
 			.AppendLine()
-			.AppendLine("#if NET8_0_OR_GREATER")
-			.AppendLine()
-		;
-
-		builder
 			.Append(indent, "partial void ", withNewLine: false)
 			.Append(PartialMeterTagsMethod)
 			.Append('(')
@@ -49,16 +44,11 @@ partial class MeterTargetClassEmitter
 			.AppendLine()
 		;
 
-		builder.AppendLine("#endif");
-
-		builder
-			.AppendLine()
-			.AppendLine("#if !NET7_0")
-			.AppendLine()
-		;
-
 		foreach (var instrument in target.InstrumentationMethods)
 		{
+			if (!instrument.TargetGenerationState.IsValid)
+				continue;
+
 			if (instrument.IsObservable)
 				continue;
 
@@ -72,8 +62,6 @@ partial class MeterTargetClassEmitter
 				.AppendLine()
 			;
 		}
-
-		builder.AppendLine("#endif");
 	}
 
 	static void EmitMethod(StringBuilder builder, int indent, InstrumentTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger)
@@ -89,7 +77,6 @@ partial class MeterTargetClassEmitter
 		logger?.Debug($"Emitting instrument method: {methodTarget.MethodName}.");
 
 		builder
-			.AppendLine()
 			.AggressiveInlining(indent)
 			.Append(indent, "public ", withNewLine: false)
 			.Append(methodTarget.ReturnType)
@@ -249,10 +236,8 @@ partial class MeterTargetClassEmitter
 		{
 			builder
 				.AppendLine()
-				.AppendLine("#if !NET7_0")
 				.Append(indent + 1, ", tags: ", withNewLine: false)
 				.AppendLine(tagVariableName)
-				.AppendLine("#endif")
 				.AppendTabs(indent)
 			;
 		}

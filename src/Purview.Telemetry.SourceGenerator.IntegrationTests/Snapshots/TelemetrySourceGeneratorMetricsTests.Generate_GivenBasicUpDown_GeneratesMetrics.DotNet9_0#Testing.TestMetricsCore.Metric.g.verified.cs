@@ -22,90 +22,46 @@ namespace Testing
 		System.Diagnostics.Metrics.UpDownCounter<int>? _upDownInstrument = null;
 		System.Diagnostics.Metrics.UpDownCounter<int>? _upDown2Instrument = null;
 
-		public TestMetricsCore(
-#if NET8_0_OR_GREATER
-			System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-		)
+		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
-			InitializeMeters(
-#if NET8_0_OR_GREATER
-				meterFactory
-#endif
-			);
+			InitializeMeters(meterFactory);
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		void InitializeMeters(
-#if NET8_0_OR_GREATER
-			System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-		)
+		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
 			{
 				throw new System.Exception("The meters have already been initialized.");
 			}
 
-#if NET8_0_OR_GREATER
 			System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateMeterTags(meterTags);
-#endif
 
-			_meter = 
-#if NET8_0_OR_GREATER
-				meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
-				{
-					Version = null,
-					Tags = meterTags
-				});
-#else
-				new System.Diagnostics.Metrics.Meter(name: "testing-meter", version: null);
-#endif
-
-#if !NET7_0
+			_meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
+			{
+				Version = null,
+				Tags = meterTags
+			});
 
 			System.Collections.Generic.Dictionary<string, object?> upDownTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateUpDownTags(upDownTags);
 
-#endif
-
-			_upDownInstrument = _meter.CreateUpDownCounter<int>(name: "updown", unit: null, description: null
-#if !NET7_0
-				, tags: upDownTags
-#endif
-			);
-
-#if !NET7_0
-
+			_upDownInstrument = _meter.CreateUpDownCounter<int>(name: "updown", unit: null, description: null, tags: upDownTags);
 			System.Collections.Generic.Dictionary<string, object?> upDown2Tags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateUpDown2Tags(upDown2Tags);
 
-#endif
-
-			_upDown2Instrument = _meter.CreateUpDownCounter<int>(name: "updown2", unit: null, description: null
-#if !NET7_0
-				, tags: upDown2Tags
-#endif
-			);
+			_upDown2Instrument = _meter.CreateUpDownCounter<int>(name: "updown2", unit: null, description: null, tags: upDown2Tags);
 		}
 
-#if NET8_0_OR_GREATER
-
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
-
-#endif
-
-#if !NET7_0
 
 		partial void PopulateUpDownTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
 
 		partial void PopulateUpDown2Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
-#endif
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void UpDown(int counterValue, int intParam, bool boolParam)
@@ -122,7 +78,6 @@ namespace Testing
 
 			_upDownInstrument.Add(counterValue, tagList: upDownTagList);
 		}
-
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void UpDown2(int counterValue, int intParam, bool boolParam)
 		{

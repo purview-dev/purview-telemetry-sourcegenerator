@@ -17,7 +17,7 @@ namespace Testing
 {
 	sealed partial class TestTelemetryCore : Testing.ITestTelemetry
 	{
-		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestTelemetry> _logger = default!;
+		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestTelemetry> _logger;
 
 	}
 }

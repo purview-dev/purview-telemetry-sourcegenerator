@@ -31,5 +31,21 @@ partial class TelemetryDiagnostics
 			Category: Constants.Diagnostics.Logging.Usage,
 			Severity: DiagnosticSeverity.Info
 		);
+
+		public static readonly TelemetryDiagnosticDescriptor MSLoggingNotReferencedButAttemptedUse = new(
+			Id: "TSG2003",
+			Title: "Could not find a reference to Microsoft.Extensions.Logging.ILogger, but a generation was attempted.",
+			Description: "No reference was found for the ILogger type, no log generation is possible. Add a reference to the appropriate NuGet package, such as Microsoft.Extensions.Logging.",
+			Category: Constants.Diagnostics.Logging.Usage,
+			Severity: DiagnosticSeverity.Error
+		);
+
+		public static readonly TelemetryDiagnosticDescriptor MSLoggingNotReferenced = new(
+			Id: "TSG2004",
+			Title: "Could not find a reference to Microsoft.Extensions.Logging.ILogger, skipping log attributes.",
+			Description: "No reference was found for the ILogger type, no log generation is possible so no logging attributes will be added. Add a reference to the appropriate NuGet package, such as Microsoft.Extensions.Logging.",
+			Category: Constants.Diagnostics.Logging.Usage,
+			Severity: DiagnosticSeverity.Info
+		);
 	}
 }
