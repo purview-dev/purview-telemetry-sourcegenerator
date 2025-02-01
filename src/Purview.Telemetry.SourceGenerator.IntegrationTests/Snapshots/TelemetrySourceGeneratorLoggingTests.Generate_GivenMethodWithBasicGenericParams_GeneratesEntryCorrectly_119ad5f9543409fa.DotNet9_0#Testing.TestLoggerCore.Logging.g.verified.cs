@@ -17,7 +17,7 @@ namespace Testing
 {
 	sealed partial class TestLoggerCore : Testing.ITestLogger
 	{
-		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger = default!;
+		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
 
 		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.Collections.Generic.List<string>, System.Exception?> _logEntryWithGenericTypeParamAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.Collections.Generic.List<string>>(Microsoft.Extensions.Logging.LogLevel.Information, default, "Test.LogEntryWithGenericTypeParam: paramName: {ParamName}");
 

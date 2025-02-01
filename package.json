@@ -1,24 +1,32 @@
 {
-  "name": "purview-telemetry-sourcegenerator",
-  "version": "1.0.0",
-  "description": "Generates [ActivitySource](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource), [High-performance logging](https://learn.microsoft.com/en-us/dotnet/core/extensions/high-performance-logging) and [Metrics](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics) based on methods on an interface, enabling fast iteration cycles, dependency injection and substitutes for testing.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/purview-dev/purview-telemetry-sourcegenerator.git"
-  },
-  "author": "Kieron Lanning",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/purview-dev/purview-telemetry-sourcegenerator/issues"
-  },
-  "homepage": "https://github.com/purview-dev/purview-telemetry-sourcegenerator#readme",
-  "devDependencies": {
-    "@commitlint/cli": "^19.6.0",
-    "@commitlint/config-conventional": "^19.6.0",
-    "husky": "^9.1.7"
-  }
+	"name": "purview-telemetry-sourcegenerator",
+	"version": "1.0.0",
+	"description": "Generates [ActivitySource](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource), [High-performance logging](https://learn.microsoft.com/en-us/dotnet/core/extensions/high-performance-logging) and [Metrics](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics) based on methods on an interface, enabling fast iteration cycles, dependency injection and substitutes for testing.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"release": "commit-and-tag-version"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/purview-dev/purview-telemetry-sourcegenerator.git"
+	},
+	"author": "Kieron Lanning",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/purview-dev/purview-telemetry-sourcegenerator/issues"
+	},
+	"homepage": "https://github.com/purview-dev/purview-telemetry-sourcegenerator#readme",
+	"devDependencies": {
+		"@commitlint/cli": "^19.6.1",
+		"@commitlint/config-conventional": "^19.6.0",
+		"commit-and-tag-version": "^12.5.0",
+		"commitlint": "^19.6.1",
+		"husky": "^9.1.7"
+	},
+	"commitlint": {
+		"extends": [
+			"@commitlint/config-conventional"
+		]
+	}
 }

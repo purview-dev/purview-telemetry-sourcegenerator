@@ -6,7 +6,6 @@ The latest version is available on [NuGet](https://www.nuget.org/packages/Purvie
 
 * .NET Framework 4.7.2
 * .NET Framework 4.8
-* .NET 7
 * .NET 8
 * .NET 9
 
@@ -35,10 +34,16 @@ interface IEntityStoreTelemetry
     void RetrievedEntity(Activity? activity, float totalValue, int lastUpdatedByUserId);
 
     /// <summary>
-    /// Generates a structured log message using an ILogger.
+    /// Generates a structured log message using an ILogger - defaults to Informational.
     /// </summary>
     [Log]
     void ProcessingEntity(int entityId, string updateState);
+
+    /// <summary>
+    /// Generates a structured log message using an ILogger, specifically defined as Informational.
+    /// </summary>
+    [Info]
+    void ProcessingAnotherEntity(int entityId, string updateState);
 
     /// <summary>
     /// Adds 1 to a Counter<T> with the entityId as a Tag.

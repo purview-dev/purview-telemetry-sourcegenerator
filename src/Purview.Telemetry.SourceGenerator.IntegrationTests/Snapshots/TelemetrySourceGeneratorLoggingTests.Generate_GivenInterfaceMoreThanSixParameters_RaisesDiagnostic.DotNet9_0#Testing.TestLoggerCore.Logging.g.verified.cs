@@ -17,7 +17,7 @@ namespace Testing
 {
 	sealed partial class TestLoggerCore : Testing.ITestLogger
 	{
-		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger = default!;
+		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
 
 
 		public TestLoggerCore(Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)

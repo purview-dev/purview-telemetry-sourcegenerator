@@ -15,7 +15,7 @@
 
 sealed partial class LoggingTelemetryCore : ILoggingTelemetry
 {
-	readonly Microsoft.Extensions.Logging.ILogger<ILoggingTelemetry> _logger = default!;
+	readonly Microsoft.Extensions.Logging.ILogger<ILoggingTelemetry> _logger;
 
 	static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.Guid, System.IDisposable?> _processingWorkItemAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.Guid>("LoggingTelemetry.ProcessingWorkItem: id: {Id}");
 	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, ItemTypes, System.Exception?> _processingItemTypeAction = Microsoft.Extensions.Logging.LoggerMessage.Define<ItemTypes>(Microsoft.Extensions.Logging.LogLevel.Trace, default, "LoggingTelemetry.ProcessingItemType: itemType: {ItemType}");

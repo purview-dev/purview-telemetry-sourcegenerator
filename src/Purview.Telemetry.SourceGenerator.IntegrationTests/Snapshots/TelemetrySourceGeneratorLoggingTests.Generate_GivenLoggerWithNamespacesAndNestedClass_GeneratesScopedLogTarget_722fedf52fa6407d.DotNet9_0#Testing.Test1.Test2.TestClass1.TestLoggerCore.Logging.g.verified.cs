@@ -19,7 +19,7 @@ namespace Testing.Test1.Test2
 	{
 		sealed partial class TestLoggerCore : Testing.Test1.Test2.TestClass1.ITestLogger
 		{
-			readonly Microsoft.Extensions.Logging.ILogger<Testing.Test1.Test2.TestClass1.ITestLogger> _logger = default!;
+			readonly Microsoft.Extensions.Logging.ILogger<Testing.Test1.Test2.TestClass1.ITestLogger> _logger;
 
 			static readonly System.Func<Microsoft.Extensions.Logging.ILogger, string, int, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<string, int>("Test.Log: stringParam: {StringParam}, intParam: {IntParam}");
 

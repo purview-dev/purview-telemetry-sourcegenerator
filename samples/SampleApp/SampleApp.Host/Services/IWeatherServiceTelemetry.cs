@@ -37,12 +37,12 @@ public interface IWeatherServiceTelemetry
 	[Log(LogLevel.Warning)]
 	void TemperatureOutOfRange(int minTempInC);
 
-	[Log(LogLevel.Warning)]
+	[Warning]
 	void RequestedCountIsTooSmall(int requestCount, int validatedRequestedCount);
 
-	[Log]
+	[Info]
 	void TemperatureWithinRange();
 
-	[Log(LogLevel.Error)]
+	[Error]
 	void WeatherForecastRequestFailed(Exception ex);
 }

@@ -15,19 +15,32 @@
 
 sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 {
-	readonly Microsoft.Extensions.Logging.ILogger<IEntityStoreTelemetry> _logger = default!;
+	readonly Microsoft.Extensions.Logging.ILogger<IEntityStoreTelemetry> _logger;
 
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, string, System.Exception?> _processingEntityAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int, string>(Microsoft.Extensions.Logging.LogLevel.Information, default, "EntityStoreTelemetry.ProcessingEntity: entityId: {EntityId}, updateState: {UpdateState}");
+	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, string, System.Exception?> _logMessageAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int, string>(Microsoft.Extensions.Logging.LogLevel.Information, default, "EntityStoreTelemetry.LogMessage: entityId: {EntityId}, updateState: {UpdateState}");
+	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, string, System.Exception?> _explicitInfoMessageAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int, string>(Microsoft.Extensions.Logging.LogLevel.Information, default, "EntityStoreTelemetry.ExplicitInfoMessage: entityId: {EntityId}, updateState: {UpdateState}");
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-	public void ProcessingEntity(int entityId, string updateState)
+	public void LogMessage(int entityId, string updateState)
 	{
 		if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
 		{
 			return;
 		}
 
-		_processingEntityAction(_logger, entityId, updateState, null);
+		_logMessageAction(_logger, entityId, updateState, null);
+	}
+
+
+	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	public void ExplicitInfoMessage(int entityId, string updateState)
+	{
+		if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
+		{
+			return;
+		}
+
+		_explicitInfoMessageAction(_logger, entityId, updateState, null);
 	}
 
 }

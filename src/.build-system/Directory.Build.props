@@ -47,7 +47,7 @@
 		<None Remove="Resources/**/*" />
 		<EmbeddedResource Include="Resources/**/*" />
 	</ItemGroup>
-	
+
 	<ItemGroup Label="Dynamic Versioning" Condition="'$(IsCSharpProject)' == 'true'">
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
 			<_Parameter1>"DynamicProxyGenAssembly2"</_Parameter1>
@@ -56,14 +56,14 @@
 			<_Parameter1>"KJL Solutions Ltd."</_Parameter1>
 		</AssemblyAttribute>
 		<AssemblyAttribute Include="System.Reflection.AssemblyCopyrightAttribute">
-			<_Parameter1>"KJL Solutions Ltd. © 2024 | All Rights Reserved"</_Parameter1>
+			<_Parameter1>"KJL Solutions Ltd. © 2025 | All Rights Reserved"</_Parameter1>
 		</AssemblyAttribute>
 	</ItemGroup>
 
 	<PropertyGroup Label="NuGet Package Defaults">
 		<Authors>Kieron Lanning</Authors>
 		<Company>KJL Solutions Ltd.</Company>
-		<Copyright>KJL Solutions Ltd., 2024 | All rights reserved.</Copyright>
+		<Copyright>KJL Solutions Ltd., 2025 | All rights reserved.</Copyright>
 		<RepositoryUrl>https://github.com/purview-dev/purview-telemetry-sourcegenerator/</RepositoryUrl>
 	</PropertyGroup>
 
@@ -88,12 +88,15 @@
 
 	<!-- Test Projects. -->
 	<PropertyGroup Label="Testing Project Properties" Condition="'$(IsTestProject)' == 'true'">
-		<NoWarn>$(NoWarn);CA1707</NoWarn>
+		<OutputType>Exe</OutputType>
+
+		<UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+
+		<NoWarn>$(NoWarn);CA1707;CA1822</NoWarn>
 
 		<CollectCoverage>true</CollectCoverage>
-		<CoverletOutput Condition=" '$(OutputPath)' != '' ">$(OutputPath)/</CoverletOutput>
-		<CoverletOutputFormat>cobertura,json</CoverletOutputFormat>
-		<Exclude>[NSubstitute*]*,[xunit.*]*</Exclude>
+		<Exclude>[NSubstitute*]*,[xunit.*]*,[TUnit.*]*</Exclude>
 		<ExcludeByAttribute>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ExcludeByAttribute>
 
 		<Packable>false</Packable>
@@ -104,42 +107,42 @@
 		<EnableDynamicNativeInstrumentation>False</EnableDynamicNativeInstrumentation>
 	</PropertyGroup>
 
-	<ItemGroup Label="Test AssemblyInfo and Runner Properties" Condition="'$(IsTestProject)' == 'true'">
-		<AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
-	
-		<AssemblyAttribute Include="Xunit.AssemblyTrait">
+	<ItemGroup Label="Testing NuGet Packages" Condition="'$(IsTestProject)' == 'true'">
+		<Using Include="Shouldly" />
+		<Using Include="Xunit" />
+		<Using Include="NSubstitute" />
+
+		<Content Include="$(MSBuildThisFileDirectory)xunit/xunit.runner.json" Link="Properties/shared-xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+
+		<AssemblyAttribute Include="Xunit.Trait">
 			<_Parameter1>Category</_Parameter1>
 			<_Parameter2>$(TestingType)</_Parameter2>
 		</AssemblyAttribute>
 
-		<Content Include="$(MSBuildThisFileDirectory)xunit/xunit.runner.json" Link="Properties/shared-xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
-	</ItemGroup>
+		<AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
 
-	<ItemGroup Label="Testing NuGet Packages" Condition="'$(IsTestProject)' == 'true'">
-		<!-- Implicit usings for tests. -->
-		<Using Include="FluentAssertions" />
-		<Using Include="NSubstitute" />
-		<Using Include="Xunit" />
-
-		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
 		<PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 
-		<PackageReference Include="FluentAssertions" />
-		<PackageReference Include="NCrunch.Framework" />
+		<PackageReference Include="Shouldly" />
+
 		<PackageReference Include="NSubstitute" />
-
 		<PackageReference Include="NSubstitute.Analyzers.CSharp">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 
-		<PackageReference Include="xunit" />
-		<PackageReference Include="xunit.analyzers" />
+		<PackageReference Include="NCrunch.Framework" />
+
+		<PackageReference Include="xunit.v3" />
+		<PackageReference Include="xunit.analyzers">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="xunit.runner.visualstudio">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-
 	</ItemGroup>
 </Project>

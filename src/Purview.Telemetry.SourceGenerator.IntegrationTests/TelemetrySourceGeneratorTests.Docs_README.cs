@@ -36,10 +36,16 @@ interface IEntityStoreTelemetry
     void RetrievedEntity(Activity? activity, float totalValue, int lastUpdatedByUserId);
 
     /// <summary>
-    /// Generates a structured log message using an ILogger.
+    /// Generates a structured log message using an ILogger - defaults to Informational.
     /// </summary>
     [Log]
-    void ProcessingEntity(int entityId, string updateState);
+    void LogMessage(int entityId, string updateState);
+
+    /// <summary>
+    /// Generates a structured log message using an ILogger, specifically defined as Informational.
+    /// </summary>
+    [Info]
+    void ExplicitInfoMessage(int entityId, string updateState);
 
     /// <summary>
     /// Adds 1 to a Counter<T> with the entityId as a Tag.
@@ -186,7 +192,7 @@ using Purview.Telemetry.Logging;
 using Purview.Telemetry.Metrics;
 using System.Diagnostics;
 
-[ActivitySource(""multi-targetting"")]
+[ActivitySource(""multi-targeting"")]
 [Logger]
 [Meter]
 interface IServiceTelemetry

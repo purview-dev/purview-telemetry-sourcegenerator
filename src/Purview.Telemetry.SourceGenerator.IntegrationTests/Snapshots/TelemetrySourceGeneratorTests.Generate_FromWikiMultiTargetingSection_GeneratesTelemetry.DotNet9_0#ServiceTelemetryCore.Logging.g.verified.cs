@@ -15,7 +15,7 @@
 
 sealed partial class ServiceTelemetryCore : IServiceTelemetry
 {
-	readonly Microsoft.Extensions.Logging.ILogger<IServiceTelemetry> _logger = default!;
+	readonly Microsoft.Extensions.Logging.ILogger<IServiceTelemetry> _logger;
 
 	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, string, System.Exception?> _processingEntityAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int, string>(Microsoft.Extensions.Logging.LogLevel.Information, default, "ServiceTelemetry.ProcessingEntity: entityId: {EntityId}, property1: {Property1}");
 

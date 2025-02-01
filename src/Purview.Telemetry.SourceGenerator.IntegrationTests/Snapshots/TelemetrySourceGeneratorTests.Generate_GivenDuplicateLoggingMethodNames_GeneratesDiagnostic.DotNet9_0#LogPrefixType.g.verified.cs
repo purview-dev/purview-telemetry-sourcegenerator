@@ -15,6 +15,8 @@
 
 namespace Purview.Telemetry.Logging;
 
+#if !EXCLUDE_PURVIEW_TELEMETRY_LOGGING
+
 /// <summary>
 /// The types of prefixes that can be used for the log entry name generation.
 /// </summary>
@@ -47,3 +49,5 @@ enum LogPrefixType
 	/// </summary>
 	NoSuffix
 }
+
+#endif

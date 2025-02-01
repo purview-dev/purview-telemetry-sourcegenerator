@@ -47,6 +47,16 @@ partial class TelemetrySourceGenerator
 		if (targets.Length == 0)
 			return;
 
+		if (targets.Any(m => m!.Failure != null))
+		{
+			// Managed to get to the point of generation, with no ILogger defined. Probably impossible though.
+			var target = targets.First(m => m!.Failure != null)!;
+
+			TelemetryDiagnostics.Report(spc.ReportDiagnostic, target.Failure!);
+
+			return;
+		}
+
 		try
 		{
 			foreach (var target in targets)

@@ -66,23 +66,13 @@ static class ConstructorEmitter
 
 		if (generationType.HasFlag(GenerationType.Metrics))
 		{
-			builder
-				.AppendLine()
-				.AppendLine("#if NET8_0_OR_GREATER")
-			;
-
 			if (generationType.HasFlag(GenerationType.Logging))
 				builder.Append(", ");
 
 			builder
-				.Append(indent + 1, Constants.Metrics.SystemDiagnostics.IMeterFactory, withNewLine: false)
+				.Append(Constants.Metrics.SystemDiagnostics.IMeterFactory)
 				.Append(' ')
-				.AppendLine(Constants.Metrics.MeterFactoryParameterName)
-			;
-
-			builder
-				.AppendLine("#endif")
-				.AppendTabs(indent)
+				.Append(Constants.Metrics.MeterFactoryParameterName)
 			;
 		}
 	}
@@ -103,16 +93,10 @@ static class ConstructorEmitter
 		{
 			builder
 				.Append(indent + 1, Constants.Metrics.MeterInitializationMethod, withNewLine: false)
-				.AppendLine('(')
+				.Append('(')
+				.Append(Constants.Metrics.MeterFactoryParameterName)
+				.AppendLine(");")
 			;
-
-			builder
-				.AppendLine("#if NET8_0_OR_GREATER")
-				.Append(indent + 2, Constants.Metrics.MeterFactoryParameterName)
-				.AppendLine("#endif")
-			;
-
-			builder.Append(indent + 1, ");");
 		}
 	}
 }

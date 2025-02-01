@@ -22,90 +22,46 @@ namespace Testing
 		System.Diagnostics.Metrics.Histogram<int>? _histogramInstrument = null;
 		System.Diagnostics.Metrics.Histogram<int>? _histogram1Instrument = null;
 
-		public TestMetricsCore(
-#if NET8_0_OR_GREATER
-			System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-		)
+		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
-			InitializeMeters(
-#if NET8_0_OR_GREATER
-				meterFactory
-#endif
-			);
+			InitializeMeters(meterFactory);
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		void InitializeMeters(
-#if NET8_0_OR_GREATER
-			System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-		)
+		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
 			{
 				throw new System.Exception("The meters have already been initialized.");
 			}
 
-#if NET8_0_OR_GREATER
 			System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateMeterTags(meterTags);
-#endif
 
-			_meter = 
-#if NET8_0_OR_GREATER
-				meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
-				{
-					Version = null,
-					Tags = meterTags
-				});
-#else
-				new System.Diagnostics.Metrics.Meter(name: "testing-meter", version: null);
-#endif
-
-#if !NET7_0
+			_meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
+			{
+				Version = null,
+				Tags = meterTags
+			});
 
 			System.Collections.Generic.Dictionary<string, object?> histogramTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateHistogramTags(histogramTags);
 
-#endif
-
-			_histogramInstrument = _meter.CreateHistogram<int>(name: "histogram", unit: null, description: null
-#if !NET7_0
-				, tags: histogramTags
-#endif
-			);
-
-#if !NET7_0
-
+			_histogramInstrument = _meter.CreateHistogram<int>(name: "histogram", unit: null, description: null, tags: histogramTags);
 			System.Collections.Generic.Dictionary<string, object?> histogram1Tags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateHistogram1Tags(histogram1Tags);
 
-#endif
-
-			_histogram1Instrument = _meter.CreateHistogram<int>(name: "histogram1", unit: null, description: null
-#if !NET7_0
-				, tags: histogram1Tags
-#endif
-			);
+			_histogram1Instrument = _meter.CreateHistogram<int>(name: "histogram1", unit: null, description: null, tags: histogram1Tags);
 		}
 
-#if NET8_0_OR_GREATER
-
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
-
-#endif
-
-#if !NET7_0
 
 		partial void PopulateHistogramTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
 
 		partial void PopulateHistogram1Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
-#endif
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Histogram(int counterValue, int intParam, bool boolParam)
@@ -122,7 +78,6 @@ namespace Testing
 
 			_histogramInstrument.Record(counterValue, tagList: histogramTagList);
 		}
-
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Histogram1(int counterValue, int intParam, bool boolParam)
 		{

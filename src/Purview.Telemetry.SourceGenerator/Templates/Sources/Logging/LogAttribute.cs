@@ -1,5 +1,7 @@
 ﻿namespace Purview.Telemetry.Logging;
 
+#if !EXCLUDE_PURVIEW_TELEMETRY_LOGGING
+
 /// <summary>
 /// Marker attribute required for log entry generation, based on
 /// high-performance <see cref="Microsoft.Extensions.Logging.LoggerMessage"/>.
@@ -87,3 +89,5 @@ sealed class LogAttribute : System.Attribute
 	/// </summary>
 	public string? Name { get; set; }
 }
+
+#endif

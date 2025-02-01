@@ -19,83 +19,40 @@ sealed partial class ServiceTelemetryCore : IServiceTelemetry
 
 	System.Diagnostics.Metrics.Counter<int>? _anAutoIncrementInstrument = null;
 
-	public ServiceTelemetryCore(Microsoft.Extensions.Logging.ILogger<IServiceTelemetry> logger
-#if NET8_0_OR_GREATER
-, 		System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-	)
+	public ServiceTelemetryCore(Microsoft.Extensions.Logging.ILogger<IServiceTelemetry> logger, System.Diagnostics.Metrics.IMeterFactory meterFactory)
 	{
 		_logger = logger;
-		InitializeMeters(
-#if NET8_0_OR_GREATER
-			meterFactory
-#endif
-		);
+		InitializeMeters(meterFactory);
 	}
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-	void InitializeMeters(
-#if NET8_0_OR_GREATER
-		System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-	)
+	void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 	{
 		if (_meter != null)
 		{
 			throw new System.Exception("The meters have already been initialized.");
 		}
 
-#if NET8_0_OR_GREATER
 		System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 		PopulateMeterTags(meterTags);
-#endif
 
-		_meter = 
-#if NET8_0_OR_GREATER
-			meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("ServiceTelemetry")
-			{
-				Version = null,
-				Tags = meterTags
-			});
-#else
-			new System.Diagnostics.Metrics.Meter(name: "ServiceTelemetry", version: null);
-#endif
-
-#if !NET7_0
+		_meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("ServiceTelemetry")
+		{
+			Version = null,
+			Tags = meterTags
+		});
 
 		System.Collections.Generic.Dictionary<string, object?> anAutoIncrementTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 		PopulateAnAutoIncrementTags(anAutoIncrementTags);
 
-#endif
-
-		_anAutoIncrementInstrument = _meter.CreateCounter<int>(name: "anautoincrement", unit: null, description: null
-#if !NET7_0
-			, tags: anAutoIncrementTags
-#endif
-		);
+		_anAutoIncrementInstrument = _meter.CreateCounter<int>(name: "anautoincrement", unit: null, description: null, tags: anAutoIncrementTags);
 	}
-
-#if NET8_0_OR_GREATER
 
 	partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
 
-#endif
-
-#if !NET7_0
-
-	partial void PopulateStartAnActivityTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
-	partial void PopulateAnInterestingEventTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
-	partial void PopulateInterestingInfoTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
-	partial void PopulateProcessingEntityTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
 	partial void PopulateAnAutoIncrementTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
-#endif
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void AnAutoIncrement(int value)

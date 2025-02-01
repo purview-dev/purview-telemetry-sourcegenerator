@@ -28,126 +28,57 @@ namespace Testing
 		System.Diagnostics.Metrics.ObservableGauge<int>? _observableGaugeInstrument = null;
 		System.Diagnostics.Metrics.ObservableUpDownCounter<int>? _observableUpDownCounterInstrument = null;
 
-		public TestMetricsCore(
-#if NET8_0_OR_GREATER
-			System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-		)
+		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
-			InitializeMeters(
-#if NET8_0_OR_GREATER
-				meterFactory
-#endif
-			);
+			InitializeMeters(meterFactory);
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		void InitializeMeters(
-#if NET8_0_OR_GREATER
-			System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-		)
+		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
 			{
 				throw new System.Exception("The meters have already been initialized.");
 			}
 
-#if NET8_0_OR_GREATER
 			System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateMeterTags(meterTags);
-#endif
 
-			_meter = 
-#if NET8_0_OR_GREATER
-				meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
-				{
-					Version = null,
-					Tags = meterTags
-				});
-#else
-				new System.Diagnostics.Metrics.Meter(name: "testing-meter", version: null);
-#endif
-
-#if !NET7_0
+			_meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
+			{
+				Version = null,
+				Tags = meterTags
+			});
 
 			System.Collections.Generic.Dictionary<string, object?> autoCounterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateAutoCounterTags(autoCounterTags);
 
-#endif
-
-			_autoCounterInstrument = _meter.CreateCounter<int>(name: "autocounter", unit: null, description: null
-#if !NET7_0
-				, tags: autoCounterTags
-#endif
-			);
-
-#if !NET7_0
-
+			_autoCounterInstrument = _meter.CreateCounter<int>(name: "autocounter", unit: null, description: null, tags: autoCounterTags);
 			System.Collections.Generic.Dictionary<string, object?> counter_AutoIncrementTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateCounter_AutoIncrementTags(counter_AutoIncrementTags);
 
-#endif
-
-			_counter_AutoIncrementInstrument = _meter.CreateCounter<int>(name: "counter_autoincrement", unit: null, description: null
-#if !NET7_0
-				, tags: counter_AutoIncrementTags
-#endif
-			);
-
-#if !NET7_0
-
+			_counter_AutoIncrementInstrument = _meter.CreateCounter<int>(name: "counter_autoincrement", unit: null, description: null, tags: counter_AutoIncrementTags);
 			System.Collections.Generic.Dictionary<string, object?> counterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateCounterTags(counterTags);
 
-#endif
-
-			_counterInstrument = _meter.CreateCounter<int>(name: "counter", unit: null, description: null
-#if !NET7_0
-				, tags: counterTags
-#endif
-			);
-
-#if !NET7_0
-
+			_counterInstrument = _meter.CreateCounter<int>(name: "counter", unit: null, description: null, tags: counterTags);
 			System.Collections.Generic.Dictionary<string, object?> histogramTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateHistogramTags(histogramTags);
 
-#endif
-
-			_histogramInstrument = _meter.CreateHistogram<int>(name: "histogram", unit: null, description: null
-#if !NET7_0
-				, tags: histogramTags
-#endif
-			);
-
-#if !NET7_0
-
+			_histogramInstrument = _meter.CreateHistogram<int>(name: "histogram", unit: null, description: null, tags: histogramTags);
 			System.Collections.Generic.Dictionary<string, object?> upDownCounterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateUpDownCounterTags(upDownCounterTags);
 
-#endif
-
-			_upDownCounterInstrument = _meter.CreateUpDownCounter<int>(name: "updowncounter", unit: null, description: null
-#if !NET7_0
-				, tags: upDownCounterTags
-#endif
-			);
+			_upDownCounterInstrument = _meter.CreateUpDownCounter<int>(name: "updowncounter", unit: null, description: null, tags: upDownCounterTags);
 		}
 
-#if NET8_0_OR_GREATER
-
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
-
-#endif
-
-#if !NET7_0
 
 		partial void PopulateAutoCounterTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
 
@@ -158,8 +89,6 @@ namespace Testing
 		partial void PopulateHistogramTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
 
 		partial void PopulateUpDownCounterTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
-#endif
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void AutoCounter(System.Collections.Generic.List<string> genericParameter)
@@ -175,7 +104,6 @@ namespace Testing
 
 			_autoCounterInstrument.Add(1, tagList: autoCounterTagList);
 		}
-
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter_AutoIncrement(System.Collections.Generic.List<string> genericParameter)
 		{
@@ -190,7 +118,6 @@ namespace Testing
 
 			_counter_AutoIncrementInstrument.Add(1, tagList: counter_AutoIncrementTagList);
 		}
-
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter(int value, System.Collections.Generic.List<string> genericParameter)
 		{
@@ -205,7 +132,6 @@ namespace Testing
 
 			_counterInstrument.Add(value, tagList: counterTagList);
 		}
-
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Histogram(int value, System.Collections.Generic.List<string> genericParameter)
 		{
@@ -220,7 +146,6 @@ namespace Testing
 
 			_histogramInstrument.Record(value, tagList: histogramTagList);
 		}
-
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void UpDownCounter(int value, System.Collections.Generic.List<string> genericParameter)
 		{
@@ -235,7 +160,6 @@ namespace Testing
 
 			_upDownCounterInstrument.Add(value, tagList: upDownCounterTagList);
 		}
-
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableCounter(System.Func<int> valueFunc, System.Collections.Generic.List<string> genericParameter)
 		{
@@ -249,12 +173,9 @@ namespace Testing
 			observableCounterTagList.Add("genericparameter", genericParameter);
 
 			_observableCounterInstrument = _meter.CreateObservableCounter<int>("observablecounter", valueFunc, unit: null, description: null
-#if !NET7_0
 				, tags: observableCounterTagList
-#endif
 			);
 		}
-
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableGauge(System.Func<int> valueFunc, System.Collections.Generic.List<string> genericParameter)
 		{
@@ -268,12 +189,9 @@ namespace Testing
 			observableGaugeTagList.Add("genericparameter", genericParameter);
 
 			_observableGaugeInstrument = _meter.CreateObservableGauge<int>("observablegauge", valueFunc, unit: null, description: null
-#if !NET7_0
 				, tags: observableGaugeTagList
-#endif
 			);
 		}
-
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableUpDownCounter(System.Func<int> valueFunc, System.Collections.Generic.List<string> genericParameter)
 		{
@@ -287,9 +205,7 @@ namespace Testing
 			observableUpDownCounterTagList.Add("genericparameter", genericParameter);
 
 			_observableUpDownCounterInstrument = _meter.CreateObservableUpDownCounter<int>("observableupdowncounter", valueFunc, unit: null, description: null
-#if !NET7_0
 				, tags: observableUpDownCounterTagList
-#endif
 			);
 		}
 	}

@@ -21,74 +21,39 @@ namespace Testing
 
 		System.Diagnostics.Metrics.Counter<int>? _autoCounterMetricInstrument = null;
 
-		public TestMetricsCore(
-#if NET8_0_OR_GREATER
-			System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-		)
+		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
-			InitializeMeters(
-#if NET8_0_OR_GREATER
-				meterFactory
-#endif
-			);
+			InitializeMeters(meterFactory);
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		void InitializeMeters(
-#if NET8_0_OR_GREATER
-			System.Diagnostics.Metrics.IMeterFactory meterFactory
-#endif
-		)
+		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
 			{
 				throw new System.Exception("The meters have already been initialized.");
 			}
 
-#if NET8_0_OR_GREATER
 			System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateMeterTags(meterTags);
-#endif
 
-			_meter = 
-#if NET8_0_OR_GREATER
-				meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
-				{
-					Version = null,
-					Tags = meterTags
-				});
-#else
-				new System.Diagnostics.Metrics.Meter(name: "testing-meter", version: null);
-#endif
-
-#if !NET7_0
+			_meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
+			{
+				Version = null,
+				Tags = meterTags
+			});
 
 			System.Collections.Generic.Dictionary<string, object?> autoCounterMetricTags = new System.Collections.Generic.Dictionary<string, object?>();
 
 			PopulateAutoCounterMetricTags(autoCounterMetricTags);
 
-#endif
-
-			_autoCounterMetricInstrument = _meter.CreateCounter<int>(name: "this.is.an.assembly.prefix.autocountermetric", unit: null, description: null
-#if !NET7_0
-				, tags: autoCounterMetricTags
-#endif
-			);
+			_autoCounterMetricInstrument = _meter.CreateCounter<int>(name: "this.is.an.assembly.prefix.autocountermetric", unit: null, description: null, tags: autoCounterMetricTags);
 		}
-
-#if NET8_0_OR_GREATER
 
 		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
 
-#endif
-
-#if !NET7_0
-
 		partial void PopulateAutoCounterMetricTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
-
-#endif
 
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void AutoCounterMetric()

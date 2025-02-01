@@ -19,6 +19,13 @@ partial class PipelineHelpers
 	{
 		token.ThrowIfCancellationRequested();
 
+		var iLoggerTypeSymbol = context.SemanticModel.Compilation.GetTypeByMetadataName(Constants.Logging.MicrosoftExtensions.ILogger.FullName);
+		if (iLoggerTypeSymbol is null)
+		{
+			logger?.Diagnostic($"Requested a Logger target to be generated, but could not find the ILogger symbol referenced '{context.TargetNode.Flatten()}'.");
+			return LoggerTarget.MSLoggingNotReferenced;
+		}
+
 		if (context.TargetNode is not InterfaceDeclarationSyntax interfaceDeclaration)
 		{
 			logger?.Error($"Could not find interface syntax from the target node '{context.TargetNode.Flatten()}'.");
@@ -36,7 +43,6 @@ partial class PipelineHelpers
 		if (loggerAttribute == null)
 		{
 			logger?.Error($"Could not find {Constants.Logging.LoggerAttribute} when one was expected '{interfaceDeclaration.Flatten()}'.");
-
 			return null;
 		}
 
