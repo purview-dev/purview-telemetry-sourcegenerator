@@ -187,9 +187,9 @@ using Purview.Telemetry;
 			diag = diag.Where(m => m.Severity == DiagnosticSeverity.Error);
 
 		if (validateNonEmptyDiagnostics)
-			diag.Should().NotBeEmpty();
+			diag.ShouldNotBeEmpty();
 		else
-			diag.Should().BeEmpty();
+			diag.ShouldBeEmpty();
 
 		if (!validationCompilation)
 			return;
@@ -206,8 +206,7 @@ using Purview.Telemetry;
 			result
 				.Diagnostics
 				.Where(m => !m.Id.StartsWith("TSG", StringComparison.Ordinal))
-				.Should()
-				.BeEmpty(string.Join(Environment.NewLine, result.Diagnostics.Select(d => d.ToString() + Environment.NewLine + "-----------------------------------------------------")));
+				.ShouldBeEmpty(string.Join(Environment.NewLine, result.Diagnostics.Select(d => d.ToString() + Environment.NewLine + "-----------------------------------------------------")));
 		}
 	}
 }

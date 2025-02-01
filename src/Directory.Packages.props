@@ -5,6 +5,8 @@
   </PropertyGroup>
   <ItemGroup Label="NuGet Package References" Condition="$(IsTestProject) == 'false'">
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+    <PackageVersion Include="Verify.XunitV3" />
+    <PackageVersion Include="Verify.XunitV3" />
   </ItemGroup>
   <ItemGroup Label=".NET Packages">
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="$(MSCodeAnalysisCSharpVersion)" />
@@ -26,6 +28,6 @@
     <PackageVersion Include="xunit.analyzers" Version="1.19.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.1" />
     <PackageVersion Include="Verify.SourceGenerators" Version="2.5.0" />
-    <PackageVersion Include="Verify.Xunit" Version="28.9.0" />
+    <PackageVersion Include="Verify.Xunitv3" Version="28.9.0" />
   </ItemGroup>
 </Project>

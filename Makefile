@@ -1,7 +1,7 @@
 include .build/common.mk
 
 # Variables
-ROOT_FOLDER = src/
+ROOT_FOLDER = ./src/
 SOLUTION_FILE = $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator.sln
 TEST_PROJECT = $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator.sln
 CONFIGURATION = Release

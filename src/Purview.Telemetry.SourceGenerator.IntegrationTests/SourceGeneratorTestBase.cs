@@ -3,7 +3,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Purview.Telemetry.SourceGenerator.BuildTools;
 using Purview.Telemetry.SourceGenerator.Helpers;
-using Xunit.Abstractions;
 
 namespace Purview.Telemetry.SourceGenerator;
 
@@ -68,7 +67,7 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 				testOutputHelper.WriteLine($"{prefix}: {message}");
 
 				if (ThrowOnLoggedOnError)
-					outputType.Should().NotBe(OutputType.Error, message);
+					outputType.ShouldNotBe(OutputType.Error, message);
 			});
 		}
 	}
@@ -80,10 +79,10 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 		=> new InMemoryAdditionalText(path, (autoIncludeUsings ? TestHelpers.DefaultUsingSet : "") + content);
 
 	protected static AdditionalText[] Texts(params (string path, string content)[] pairs)
-		=> pairs.Select(pair => new InMemoryAdditionalText(pair.path, pair.content)).ToArray();
+		=> [.. pairs.Select(pair => new InMemoryAdditionalText(pair.path, pair.content))];
 
 	protected static AdditionalText[] Texts(params (string path, string content, (string key, string value)[]? options)[] pairs)
-		=> pairs.Select(pair => new InMemoryAdditionalText(pair.path, pair.content, pair.options)).ToArray();
+		=> [.. pairs.Select(pair => new InMemoryAdditionalText(pair.path, pair.content, pair.options))];
 
 	protected static ImmutableDictionary<string, string> Options(params (string key, string value)[] pairs)
 		=> pairs.ToImmutableDictionary(pair => pair.key, pair => pair.value);
@@ -106,7 +105,7 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 	{
 		var assembly = GetAssembly(result);
 
-		return assembly.GetType(typeName, true).Should().NotBeNull().And.Subject;
+		return assembly.GetType(typeName, true).ShouldNotBeNull();
 	}
 
 	protected Assembly GetAssembly(GenerationResult result)
@@ -118,8 +117,8 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 		using (var stream = new MemoryStream())
 		{
 			var emitResult = result.Compilation.Emit(stream);
-			emitResult.Should().NotBeNull();
-			emitResult.Success.Should().BeTrue(string.Join("\n", emitResult.Diagnostics));
+			emitResult.ShouldNotBeNull();
+			emitResult.Success.ShouldBeTrue(string.Join("\n", emitResult.Diagnostics));
 
 			assembly = Assembly.Load(stream.GetBuffer());
 		}
@@ -206,8 +205,7 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 		runResult.Results
 			.Where(m => m.Exception != null)
 			.Select(m => m.Exception)
-			.Should()
-			.BeEmpty();
+			.ShouldBeEmpty();
 
 		return new(runResult, diagnostics, outputCompilation);
 	}
