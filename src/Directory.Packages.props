@@ -3,10 +3,8 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
     <MSCodeAnalysisCSharpVersion>4.12.0</MSCodeAnalysisCSharpVersion>
   </PropertyGroup>
-  <ItemGroup Label="NuGet Package References" Condition="$(IsTestProject) == 'false'">
+  <ItemGroup Label="NuGet Package References">
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
-    <PackageVersion Include="Verify.XunitV3" />
-    <PackageVersion Include="Verify.XunitV3" />
   </ItemGroup>
   <ItemGroup Label=".NET Packages">
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="$(MSCodeAnalysisCSharpVersion)" />

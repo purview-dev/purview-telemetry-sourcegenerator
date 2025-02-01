@@ -19,7 +19,7 @@ namespace Purview.Telemetry.Logging;
 
 /// <summary>
 /// Marker attribute used as an alternative to <see cref="LogAttribute"/>, where the <see cref="LogAttribute.Level"/>
-/// is set to <see cref="Microsoft.Extensions.Logging.LogLevel.Info"/>.
+/// is set to <see cref="Microsoft.Extensions.Logging.LogLevel.Information"/>.
 /// </summary>
 [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
 [System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
