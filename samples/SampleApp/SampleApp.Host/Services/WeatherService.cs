@@ -1,27 +1,30 @@
-﻿namespace SampleApp.Host.Services;
+﻿using System.Diagnostics;
+
+namespace SampleApp.Host.Services;
 
 sealed class WeatherService(IWeatherServiceTelemetry telemetry) : IWeatherService
 {
-	const int _tooColdTempInC = -10;
+	const int TooColdTempInC = -10;
 
-	static readonly string[] _summaries =
+	static readonly string[] Summaries =
 	[
 		"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 	];
 
-	public IEnumerable<WeatherForecast> GetWeatherForecastsAsync(int requestCount, CancellationToken cancellationToken = default)
+	public Task<IEnumerable<WeatherForecast>> GetWeatherForecastsAsync(int requestCount, CancellationToken cancellationToken = default)
 	{
-		var validatedRequestedCount = requestCount;
-		if (validatedRequestedCount < 5)
-		{
-			validatedRequestedCount = 5;
+		const int minRequestCount = 5;
+		const int maxRequestCount = 20;
 
-			telemetry.RequestedCountIsTooSmall(requestCount, validatedRequestedCount);
+		if (requestCount < minRequestCount || requestCount > maxRequestCount)
+		{
+			telemetry.RequestedCountIsTooSmall(requestCount);
+
+			throw new ArgumentOutOfRangeException(nameof(requestCount), $"Requested count must be at least {minRequestCount}, and no greater than {maxRequestCount}.");
 		}
 
-		using var activity = telemetry.GettingWeatherForecastFromUpstreamService($"{Guid.NewGuid()}",
-			requestCount,
-			validatedRequestedCount);
+		var sw = Stopwatch.StartNew();
+		using var activity = telemetry.GettingWeatherForecastFromUpstreamService($"{Guid.NewGuid()}", requestCount);
 
 		telemetry.WeatherForecastRequested();
 
@@ -39,12 +42,15 @@ sealed class WeatherService(IWeatherServiceTelemetry telemetry) : IWeatherServic
 			throw ex;
 		}
 
-		var results = Enumerable.Range(1, validatedRequestedCount).Select(index => new WeatherForecast
+		var results = Enumerable.Range(1, requestCount).Select(index => new WeatherForecast
 		{
-			Date = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(index)),
+			Date = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(--index)),
 			TemperatureC = Random.Shared.Next(-20, 55),
-			Summary = _summaries[Random.Shared.Next(_summaries.Length)]
+			Summary = Summaries[Random.Shared.Next(Summaries.Length)]
 		}).ToArray();
+
+		foreach (var wf in results)
+			telemetry.HistogramOfTemperature(wf.TemperatureC);
 
 		var minTempInC = results.Min(m => m.TemperatureC);
 		telemetry.ForecastReceived(activity,
@@ -52,14 +58,19 @@ sealed class WeatherService(IWeatherServiceTelemetry telemetry) : IWeatherServic
 			results.Max(wf => wf.TemperatureC)
 		);
 
-		if (minTempInC < _tooColdTempInC)
+		if (minTempInC < TooColdTempInC)
 		{
 			telemetry.TemperatureOutOfRange(minTempInC);
-			telemetry.ItsTooCold(results.Count(wf => wf.TemperatureC < _tooColdTempInC));
+			telemetry.ItsTooCold(results.Count(wf => wf.TemperatureC < TooColdTempInC));
 		}
 		else
-			telemetry.TemperatureWithinRange();
+			telemetry.TemperaturesWithinRange();
 
-		return results;
+		sw.Stop();
+
+		telemetry.TemperaturesReceived(activity, sw.Elapsed);
+
+		// This isn't really async, we're just pretending.
+		return Task.FromResult(results.AsEnumerable());
 	}
 }

@@ -1,46 +1,31 @@
+using SampleApp.Host.APIs;
 using SampleApp.Host.Services;
 
-namespace SampleApp.Host;
+var builder = WebApplication.CreateSlimBuilder(args);
 
-public class Program
-{
-	public static void Main(string[] args)
-	{
-		var builder = WebApplication.CreateBuilder(args);
-		builder.AddServiceDefaults();
-		builder.Services.AddMetrics();
+builder
+	.AddServiceDefaults()
+	.AddDefaultOpenAPI(
+	//builder.Services.AddApiVersioning()
+	)
+;
 
-		// Add services to the container.
+builder.Services
+	.AddScoped<IWeatherService, WeatherService>()
+	.AddWeatherServiceTelemetry()
+;
 
-		// This is a generated method that adds the
-		// IWeatherServiceTelemetry interface to the container
-		// as a singleton.
-		builder.Services.AddWeatherServiceTelemetry();
+var app = builder.Build();
 
-		builder.Services.AddTransient<IWeatherService, WeatherService>();
+app.MapDefaultEndpoints();
 
-		builder.Services.AddControllers();
-		// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-		builder.Services.AddEndpointsApiExplorer();
-		builder.Services.AddSwaggerGen();
+//app
+//.NewVersionedApi("Weather API")
+//.MapToApiVersion(1.0)
+//;
 
-		var app = builder.Build();
+app.MapWeatherAPIv1();
 
-		app.MapDefaultEndpoints();
+app.UseDefaultOpenAPI();
 
-		// Configure the HTTP request pipeline.
-		if (app.Environment.IsDevelopment())
-		{
-			app.UseSwagger();
-			app.UseSwaggerUI();
-		}
-
-		app.UseHttpsRedirection();
-
-		app.UseAuthorization();
-
-		app.MapControllers();
-
-		app.Run();
-	}
-}
+await app.RunAsync();
