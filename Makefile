@@ -6,7 +6,7 @@ SOLUTION_FILE = $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator.sln
 TEST_PROJECT = $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator.sln
 CONFIGURATION = Release
 
-PACK_VERSION = 2.0.0
+PACK_VERSION := $(shell bun -e 'console.log(require("./package.json").version)')
 ARTIFACT_FOLDER = p:/sync-projects/.local-nuget/
 
 # Common variables
@@ -46,8 +46,11 @@ act:
 
 vs: ## Opens the project in Visual Studio.
 	@echo -e "Opening $(COLOUR_BLUE)$(SOLUTION_FILE)$(COLOUR_RESET) in $(COLOUR_ORANGE)Visual Studio$(COLOUR_RESET)..."
-	@start $(SOLUTION_FILE)
+	@start "$(SOLUTION_FILE)"
 
 code: ## Opens the project in Visual Studio Code.
 	@echo -e "Opening $(COLOUR_BLUE)Visual Studio Code$(COLOUR_RESET)..."
 	@code .
+
+version: ## Displays the current version of the project.
+	@echo -e "Current Version: $(COLOUR_GREEN)$(PACK_VERSION)$(COLOUR_RESET)"
