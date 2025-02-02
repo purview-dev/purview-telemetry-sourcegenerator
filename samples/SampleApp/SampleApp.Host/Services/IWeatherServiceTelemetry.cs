@@ -19,14 +19,23 @@ namespace SampleApp.Host.Services;
 [Meter]
 public interface IWeatherServiceTelemetry
 {
+	// --> Start: Activities
+
 	[Activity(ActivityKind.Client)]
-	Activity? GettingWeatherForecastFromUpstreamService([Baggage] string someRandomBaggageInfo, int requestedCount, int validatedRequestedCount);
+	Activity? GettingWeatherForecastFromUpstreamService([Baggage] string someRandomBaggageInfo, int requestedCount);
 
 	[Event]
 	void ForecastReceived(Activity? activity, int minTempInC, int maxTempInC);
 
-	[Event]
+	[Event(ActivityStatusCode.Error)]
 	void FailedToRetrieveForecast(Activity? activity, Exception ex);
+
+	[Event(ActivityStatusCode.Ok)]
+	void TemperaturesReceived(Activity? activity, TimeSpan elapsed);
+
+	// --> END: Activities
+
+	// --> START: Meters
 
 	[AutoCounter]
 	void WeatherForecastRequested();
@@ -34,15 +43,24 @@ public interface IWeatherServiceTelemetry
 	[AutoCounter]
 	void ItsTooCold(int tooColdCount);
 
+	[Histogram]
+	void HistogramOfTemperature(int temperature);
+
+	// --> END: Meters
+
+	// --> START: Logs
+
 	[Log(LogLevel.Warning)]
 	void TemperatureOutOfRange(int minTempInC);
 
-	[Warning]
-	void RequestedCountIsTooSmall(int requestCount, int validatedRequestedCount);
+	[Error]
+	void RequestedCountIsTooSmall(int requestCount);
 
 	[Info]
-	void TemperatureWithinRange();
+	void TemperaturesWithinRange();
 
-	[Error]
+	[Critical]
 	void WeatherForecastRequestFailed(Exception ex);
+
+	// --> END: Logs
 }

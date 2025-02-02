@@ -66,6 +66,8 @@ interface IEntityStoreTelemetry
 }
 ```
 
-Checkout the [.NET Aspire Sample](https://github.com/purview-dev/purview-telemetry-sourcegenerator/tree/main/samples/SampleApp) Project to see the Activities, Logging, and Metrics working with the dashaboard.
-
 For more information see the [wiki](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki).
+
+Checkout the [.NET Aspire Sample](https://github.com/purview-dev/purview-telemetry-sourcegenerator/tree/main/samples/SampleApp) Project to see the Activities, Logging, and Metrics working with the Aspire Dashboard.
+
+> This sample project has `EmitCompilerGeneratedFiles` set to `true`, so you can easily see the generated output.
