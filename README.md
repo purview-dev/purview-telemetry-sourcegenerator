@@ -2,14 +2,14 @@
 
 Generates [ActivitySource](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource), [High-performance logging](https://learn.microsoft.com/en-us/dotnet/core/extensions/high-performance-logging) and [Metrics](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics) based on methods on an interface, enabling fast iteration cycles, dependency injection and substitutes for testing.
 
-The latest version is available on [NuGet](https://www.nuget.org/packages/Purview.Telemetry.SourceGenerator/), and supports generating for the following frameworks:
+The latest version is available on [NuGet](https://www.nuget.org/packages/Purview.Telemetry.SourceGenerator/), and supports generation for the following frameworks:
 
 * .NET Framework 4.7.2
 * .NET Framework 4.8
 * .NET 8
 * .NET 9
 
-Reference in your .props or csproj file:
+Reference in your `Directory.Build.props` or `.csproj` file:
 
 ```xml
 <PackageReference Include="Purview.Telemetry.SourceGenerator" Version="2.0.0">
@@ -17,6 +17,8 @@ Reference in your .props or csproj file:
   <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 </PackageReference>
 ```
+
+Example of a multi-target telemetry interface:
 
 ```csharp
 using Purview.Telemetry.Activities;
@@ -67,6 +69,8 @@ interface IEntityStoreTelemetry
 ```
 
 For more information see the [wiki](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki).
+
+> To see the generated output for the above, sett the [`Generated Output`](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki/Generated-Output) page in the wiki.
 
 Checkout the [.NET Aspire Sample](https://github.com/purview-dev/purview-telemetry-sourcegenerator/tree/main/samples/SampleApp) Project to see the Activities, Logging, and Metrics working with the Aspire Dashboard.
 
