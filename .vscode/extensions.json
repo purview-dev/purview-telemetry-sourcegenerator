@@ -1,7 +1,12 @@
 {
-    "recommendations": [
-        "ms-dotnettools.csdevkit",
-        "github.vscode-github-actions",
-        "github.vscode-pull-request-github"
-    ]
+	"recommendations": [
+		"ms-dotnettools.csdevkit",
+		"github.vscode-github-actions",
+		"github.vscode-pull-request-github",
+		"streetsidesoftware.code-spell-checker",
+		"bierner.github-markdown-preview",
+		"davidanson.vscode-markdownlint",
+		"pkief.material-icon-theme",
+		"esbenp.prettier-vscode"
+	]
 }

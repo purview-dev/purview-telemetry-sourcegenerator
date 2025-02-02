@@ -4,15 +4,15 @@ Generates [ActivitySource](https://learn.microsoft.com/en-us/dotnet/api/system.d
 
 The latest version is available on [NuGet](https://www.nuget.org/packages/Purview.Telemetry.SourceGenerator/), and supports generation for the following frameworks:
 
-* .NET Framework 4.7.2
-* .NET Framework 4.8
-* .NET 8
-* .NET 9
+- .NET Framework 4.7.2
+- .NET Framework 4.8
+- .NET 8
+- .NET 9
 
 Reference in your `Directory.Build.props` or `.csproj` file:
 
 ```xml
-<PackageReference Include="Purview.Telemetry.SourceGenerator" Version="2.0.0">
+<PackageReference Include="Purview.Telemetry.SourceGenerator" Version="2.0.1">
   <PrivateAssets>all</PrivateAssets>
   <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 </PackageReference>
@@ -70,7 +70,9 @@ interface IEntityStoreTelemetry
 
 For more information see the [wiki](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki).
 
-> To see the generated output for the above, sett the [`Generated Output`](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki/Generated-Output) page in the wiki.
+> To see the generated output for the above, see the [`Generated Output`](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki/Generated-Output) page in the wiki.
+
+## Example Project
 
 Checkout the [.NET Aspire Sample](https://github.com/purview-dev/purview-telemetry-sourcegenerator/tree/main/samples/SampleApp) Project to see the Activities, Logging, and Metrics working with the Aspire Dashboard.
 
