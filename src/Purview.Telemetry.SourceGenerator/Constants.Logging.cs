@@ -83,7 +83,9 @@ partial class Constants
 			public static readonly TypeInfo LogLevel = TypeInfo.Create(Namespace + '.' + nameof(LogLevel));
 			public static readonly TypeInfo EventId = TypeInfo.Create(Namespace + '.' + nameof(EventId));
 
+			// Log Telemetry Gen.
 			public static readonly TypeInfo LogPropertiesAttribute = TypeInfo.Create(Namespace + '.' + nameof(LogPropertiesAttribute));
+			public static readonly TypeInfo LoggerMessageState = TypeInfo.Create(Namespace + '.' + nameof(LoggerMessageState));
 
 			public static readonly TypeInfo LogLevel_Trace = TypeInfo.Create(LogLevel.FullName + ".Trace");
 			public static readonly TypeInfo LogLevel_Debug = TypeInfo.Create(LogLevel.FullName + ".Debug");

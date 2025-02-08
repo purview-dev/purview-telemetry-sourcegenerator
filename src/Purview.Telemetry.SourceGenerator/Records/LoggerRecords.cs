@@ -80,9 +80,14 @@ record LogParameterTarget(
 	string Name,
 	string UpperCasedName,
 	string FullyQualifiedType,
-	bool IsNullable,
 
+	bool IsNullable,
 	bool IsException,
+
+	bool IsIEnumerable,
+	bool IsArray,
+
+	bool IsComplexType,
 
 	LogPropertiesAttributeRecord? LogPropertiesAttribute,
 	ExpandEnumerableAttributeRecord? ExpandEnumerableAttribute

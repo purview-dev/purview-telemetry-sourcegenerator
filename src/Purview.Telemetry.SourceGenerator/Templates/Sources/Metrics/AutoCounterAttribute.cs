@@ -2,15 +2,15 @@
 
 /// <summary>
 /// Specifies the meter type generated corresponds to a 
-/// <see cref="System.Diagnostics.Metrics.Counter{T}"/> that auto-increments when called.
+/// <see cref="global::System.Diagnostics.Metrics.Counter{T}"/> that auto-increments when called.
 /// 
 /// This is equivalent to applying the <see cref="CounterAttribute"/> with the
 /// <see cref="CounterAttribute.AutoIncrement"/> property set to true.
 /// </summary>
-[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class AutoCounterAttribute : System.Attribute
+[global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+[global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
+sealed class AutoCounterAttribute : global::System.Attribute
 {
 	/// <summary>
 	/// Creates a new instance of the <see cref="AutoCounterAttribute"/> class.

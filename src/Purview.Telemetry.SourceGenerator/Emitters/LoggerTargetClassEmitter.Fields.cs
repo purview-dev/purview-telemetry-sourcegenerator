@@ -35,13 +35,11 @@ partial class LoggerTargetClassEmitter
 				if (methodTarget.TargetGenerationState.RaiseMultiGenerationTargetsNotSupported)
 				{
 					logger?.Debug($"Identified {target.InterfaceName}.{methodTarget.MethodName} as problematic as it has another target types.");
-
 					TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.General.MultiGenerationTargetsNotSupported, methodTarget.MethodLocation);
 				}
 				else if (methodTarget.TargetGenerationState.RaiseInferenceNotSupportedWithMultiTargeting)
 				{
 					logger?.Debug($"Identified {target.InterfaceName}.{methodTarget.MethodName} as problematic as it is inferred.");
-
 					TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.General.InferenceNotSupportedWithMultiTargeting, methodTarget.MethodLocation);
 				}
 
@@ -51,7 +49,6 @@ partial class LoggerTargetClassEmitter
 			if (methodTarget.HasMultipleExceptions)
 			{
 				logger?.Diagnostic($"Method has multiple exception parameters, only a single one is permitted.");
-
 				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.MultipleExceptionsDefined, methodTarget.MethodLocation);
 
 				continue;
@@ -60,7 +57,6 @@ partial class LoggerTargetClassEmitter
 			if (methodTarget.ParameterCount > Constants.Logging.MaxNonExceptionParameters)
 			{
 				logger?.Diagnostic($"Method has more than 6 parameters.");
-
 				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.MaximumLogEntryParametersExceeded, methodTarget.MethodLocation);
 
 				continue;
@@ -69,7 +65,6 @@ partial class LoggerTargetClassEmitter
 			if (methodTarget.InferredErrorLevel)
 			{
 				logger?.Diagnostic($"Inferring error log level.");
-
 				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.InferringErrorLogLevel, methodTarget.MethodLocation);
 			}
 
@@ -153,20 +148,16 @@ partial class LoggerTargetClassEmitter
 				.Append(", ")
 			;
 
-			if (methodTarget.EventId != null)
-			{
-				builder
-					.Append("new ")
-					.Append(Constants.Logging.MicrosoftExtensions.EventId)
-					.Append('(')
-					.Append(methodTarget.EventId.Value)
-					.Append(", \"")
-					.Append(methodTarget.LogName)
-					.Append("\"), ")
-				;
-			}
-			else
-				builder.Append("default, ");
+			var eventId = methodTarget.EventId ?? SharedHelpers.GetNonRandomizedHashCode(methodTarget.MethodName);
+			builder
+				.Append("new ")
+				.Append(Constants.Logging.MicrosoftExtensions.EventId)
+				.Append('(')
+				.Append(eventId)
+				.Append(", \"")
+				.Append(methodTarget.MethodName)
+				.Append("\"), ")
+			;
 		}
 
 		builder

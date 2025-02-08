@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Purview.Telemetry.SourceGenerator.Helpers;
 
 namespace Purview.Telemetry.SourceGenerator.Templates;
 
@@ -33,6 +34,9 @@ record TypeInfo(string Name, string FullName, string Namespace) : IEquatable<str
 
 	public string MakeGeneric(params string[] types)
 		=> FullName + "<" + string.Join(", ", types) + ">";
+
+	public string WithGlobal()
+		=> FullName.WithGlobal();
 
 	public override string ToString()
 		=> FullName;

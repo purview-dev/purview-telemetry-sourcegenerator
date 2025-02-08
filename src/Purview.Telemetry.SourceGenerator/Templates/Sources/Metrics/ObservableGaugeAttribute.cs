@@ -1,12 +1,12 @@
 ﻿namespace Purview.Telemetry.Metrics;
 
 /// <summary>
-/// Specifies the meter type generated corresponds to a <see cref="System.Diagnostics.Metrics.ObservableGauge{T}"/>.
+/// Specifies the meter type generated corresponds to a <see cref="global::System.Diagnostics.Metrics.ObservableGauge{T}"/>.
 /// </summary>
-[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class ObservableGaugeAttribute : System.Attribute
+[global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+[global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
+sealed class ObservableGaugeAttribute : global::System.Attribute
 {
 	/// <summary>
 	/// Creates a new instance of the <see cref="ObservableGaugeAttribute"/> class.

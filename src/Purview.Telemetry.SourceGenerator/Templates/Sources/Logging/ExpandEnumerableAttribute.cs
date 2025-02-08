@@ -7,10 +7,10 @@
 /// individual elements. This only works when the <code>Microsoft.Extensions.Telemetry.Abstractions</code>
 /// NuGet package is included.
 /// </summary>
-[System.AttributeUsage(System.AttributeTargets.Parameter, AllowMultiple = false)]
-[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class ExpandEnumerableAttribute : System.Attribute
+[global::System.AttributeUsage(global::System.AttributeTargets.Parameter, AllowMultiple = false)]
+[global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
+sealed class ExpandEnumerableAttribute : global::System.Attribute
 {
 	/// <summary>
 	/// Creates a new instance of the <see cref="ExpandEnumerableAttribute"/>, optionally

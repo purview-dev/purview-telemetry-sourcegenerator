@@ -278,8 +278,10 @@ partial class PipelineHelpers
 				Name: parameter.Name,
 				UpperCasedName: Utilities.UppercaseFirstChar(parameter.Name),
 				FullyQualifiedType: Utilities.GetFullyQualifiedOrSystemName(parameter.Type),
+
 				IsNullable: parameter.NullableAnnotation == NullableAnnotation.Annotated,
 				IsException: Utilities.IsExceptionType(parameter.Type),
+
 				LogPropertiesAttribute: logPropertiesAttribute,
 				ExpandEnumerableAttribute: expandEnumerableAttribute
 			));

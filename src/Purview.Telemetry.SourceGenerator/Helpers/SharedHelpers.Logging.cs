@@ -131,8 +131,7 @@ partial class SharedHelpers
 		AttributeValue<bool>? skipNullProperties = null;
 		AttributeValue<bool>? transitive = null;
 
-		if (!AttributeParser(attributeData!,
-		(name, value) =>
+		if (!AttributeParser(attributeData!, (name, value) =>
 		{
 			if (name.Equals(nameof(LogPropertiesAttributeRecord.OmitReferenceName), StringComparison.OrdinalIgnoreCase))
 				omitReferenceName = new((bool)value);
@@ -184,4 +183,25 @@ partial class SharedHelpers
 
 	public static bool IsLogMethod(IMethodSymbol method, CancellationToken token)
 		=> Utilities.ContainsAttribute(method, [Constants.Logging.LogAttribute, .. Constants.Logging.SpecificLogAttributes], token);
+
+	/// <summary>
+	/// Returns a non-randomized hash code for the given string.
+	/// </summary>
+	/// <remarks>
+	/// We always return a positive value.
+	/// This code is cloned from the logging generator in dotnet/runtime in
+	/// order to retain the same event ids when upgrading to this generator.
+	/// </remarks>
+	public static int GetNonRandomizedHashCode(string methodName)
+	{
+		const int multiplier = 16_777_619;
+		uint result = 2_166_136_261u;
+		foreach (char c in methodName)
+			result = (c ^ result) * multiplier;
+
+		var ret = (int)result;
+		return ret == int.MinValue
+			? 0
+			: Math.Abs(ret); // Ensure the result is non-negative
+	}
 }

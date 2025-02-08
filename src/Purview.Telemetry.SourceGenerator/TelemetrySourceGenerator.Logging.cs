@@ -63,7 +63,10 @@ partial class TelemetrySourceGenerator
 			{
 				logger?.Debug($"Logger generation target: {target!.FullyQualifiedName}");
 
-				LoggerTargetClassEmitter.GenerateImplementation(target!, spc, logger);
+				if (target!.UseMSLoggingTelemetryBasedGeneration)
+					LoggerGenTargetClassEmitter.GenerateImplementation(target, spc, logger);
+				else
+					LoggerTargetClassEmitter.GenerateImplementation(target, spc, logger);
 			}
 		}
 		catch (Exception ex)

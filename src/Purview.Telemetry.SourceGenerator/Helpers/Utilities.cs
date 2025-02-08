@@ -7,7 +7,7 @@ using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 
-static class Utilities
+static partial class Utilities
 {
 	static readonly SymbolDisplayFormat SymbolDisplayFormat = new(
 		typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces
@@ -98,7 +98,13 @@ static class Utilities
 		);
 	}
 
-	public static string WithNull(this string value) => value + "?";
+	public static string WithNullable(this string value) => value + '?';
+
+	public static string WithComma(this string value) => value + ',';
+
+	public static string OrNullKeyword(this string? value) => value ?? Constants.System.NullKeyword;
+
+	public static string WithGlobal(this string value) => "global::" + value;
 
 	public static StringBuilder AggressiveInlining(this StringBuilder builder, int indent)
 		=> builder.Append(indent, Constants.System.AggressiveInlining);

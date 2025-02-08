@@ -50,7 +50,7 @@ record InstrumentTarget(
 	TargetGeneration TargetGenerationState
 )
 {
-	public string TagPopulateMethodName => $"Populate{MethodName}Tags";
+	public string TagPopulateMethodName { get; } = $"Populate{MethodName}Tags";
 }
 
 record InstrumentParameterTarget(
