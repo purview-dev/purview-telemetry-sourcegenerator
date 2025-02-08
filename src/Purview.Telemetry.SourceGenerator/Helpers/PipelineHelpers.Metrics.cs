@@ -26,7 +26,7 @@ partial class PipelineHelpers
 		}
 
 		var semanticModel = context.SemanticModel;
-		var meterAttribute = SharedHelpers.GetMeterAttribute(context.Attributes[0], semanticModel, logger, token);
+		var meterAttribute = SharedHelpers.GetMeterAttribute(context.TargetSymbol, semanticModel, logger, token);
 		if (meterAttribute == null)
 		{
 			logger?.Error($"Could not find {Constants.Metrics.MeterAttribute} when one was expected '{interfaceDeclaration.Flatten()}'.");
@@ -113,13 +113,9 @@ partial class PipelineHelpers
 				continue;
 			}
 
-			InstrumentAttributeRecord? instrumentAttribute = null;
-			var isInferred = !SharedHelpers.TryGetInstrumentAttribute(method, token, out var attributeData);
-			if (!isInferred)
-				instrumentAttribute = SharedHelpers.GetInstrumentAttribute(attributeData!, semanticModel, logger, token);
-
 			logger?.Debug($"Found possible instrument method {interfaceSymbol.Name}.{method.Name}.");
 
+			var instrumentAttribute = SharedHelpers.GetInstrumentAttribute(method, semanticModel, logger, token);
 			var validAutoCounter = instrumentAttribute?.InstrumentType is InstrumentTypes.Counter && instrumentAttribute.IsAutoIncrement;
 
 			var parameters = GetInstrumentParameters(method, lowercaseTagKeys, validAutoCounter, semanticModel, logger, token);

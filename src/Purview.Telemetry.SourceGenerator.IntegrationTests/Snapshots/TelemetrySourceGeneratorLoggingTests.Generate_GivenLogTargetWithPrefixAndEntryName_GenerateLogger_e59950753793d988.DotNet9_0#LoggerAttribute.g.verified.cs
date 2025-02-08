@@ -40,10 +40,12 @@ sealed class LoggerAttribute : System.Attribute
 	/// <param name="defaultLevel">The default <see cref="Microsoft.Extensions.Logging.LogLevel"/> to use
 	/// when one is not specified.</param>
 	/// <param name="customPrefix">If specified, also sets the <see cref="PrefixType"/> to <see cref="LogPrefixType.Custom"/>.</param>
-	public LoggerAttribute(Microsoft.Extensions.Logging.LogLevel defaultLevel, string? customPrefix = null)
+	/// <param name="disableMSLoggingTelemetryGeneration">Disables the generation of the new style of telemetry generation for Microsoft.Extensions.Logging.</param>
+	public LoggerAttribute(Microsoft.Extensions.Logging.LogLevel defaultLevel, string? customPrefix = null, bool disableMSLoggingTelemetryGeneration = false)
 	{
 		DefaultLevel = defaultLevel;
 		CustomPrefix = customPrefix;
+		DisableMSLoggingTelemetryGeneration = disableMSLoggingTelemetryGeneration;
 
 		if (CustomPrefix != null)
 		{
@@ -67,6 +69,13 @@ sealed class LoggerAttribute : System.Attribute
 	/// Specifies the mode used to generate or override the prefix for the log entry.
 	/// </summary>
 	public LogPrefixType PrefixType { get; set; } = LogPrefixType.Default;
+
+	/// <summary>
+	/// Disables the generation of the new style of telemetry generation for Microsoft.Extensions.Logging.
+	/// 
+	/// Defaults to false.
+	/// </summary>
+	public bool DisableMSLoggingTelemetryGeneration { get; set; }
 }
 
 #endif

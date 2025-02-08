@@ -13,8 +13,8 @@ static class Utilities
 		typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces
 	);
 
-	static readonly Lazy<ImmutableDictionary<Templates.TypeInfo, string>> _typeInfoToSystemTypeMapper = new(GenerateSystemTypeMap);
-	static readonly Lazy<ImmutableDictionary<string, string>> _fullTypeNameToSystemTypeMapper = new(() => _typeInfoToSystemTypeMapper.Value.ToImmutableDictionary(x => x.Key.FullName, x => x.Value));
+	static readonly Lazy<ImmutableDictionary<Templates.TypeInfo, string>> TypeInfoToSystemTypeMapper = new(GenerateSystemTypeMap);
+	static readonly Lazy<ImmutableDictionary<string, string>> FullTypeNameToSystemTypeMapper = new(() => TypeInfoToSystemTypeMapper.Value.ToImmutableDictionary(x => x.Key.FullName, x => x.Value));
 
 	static ImmutableDictionary<Templates.TypeInfo, string> GenerateSystemTypeMap()
 		// Putting this here ensures it's not accessed
@@ -33,10 +33,10 @@ static class Utilities
 		}.ToImmutableDictionary();
 
 	static public string Convert(this Templates.TypeInfo type)
-		=> _typeInfoToSystemTypeMapper.Value.GetValueOrDefault(type, type.FullName);
+		=> TypeInfoToSystemTypeMapper.Value.GetValueOrDefault(type, type.FullName);
 
 	static public string Convert(this string type)
-		=> _fullTypeNameToSystemTypeMapper.Value.GetValueOrDefault(type, type);
+		=> FullTypeNameToSystemTypeMapper.Value.GetValueOrDefault(type, type);
 
 	public static TargetGeneration IsValidGenerationTarget(IMethodSymbol method, GenerationType generationType, GenerationType requestedType)
 	{
@@ -437,6 +437,25 @@ static class Utilities
 	public static bool ContainsAttribute(ISymbol symbol, Templates.TemplateInfo[] templateInfo, CancellationToken token)
 		=> TryContainsAttribute(symbol, templateInfo, token, out _, out _);
 
+	public static bool TryContainsAttribute(ISymbol symbol, string typeName, CancellationToken token, out AttributeData? attributeData)
+	{
+		attributeData = null;
+
+		var attributes = symbol.GetAttributes();
+		foreach (var attribute in attributes)
+		{
+			token.ThrowIfCancellationRequested();
+
+			if (attribute.AttributeClass != null && typeName == attribute.AttributeClass?.ToString())
+			{
+				attributeData = attribute;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public static bool TryContainsAttribute(ISymbol symbol, Templates.TemplateInfo templateInfo, CancellationToken token, out AttributeData? attributeData)
 	{
 		attributeData = null;
@@ -483,7 +502,6 @@ static class Utilities
 
 		return false;
 	}
-
 
 	public static string LowercaseFirstChar(string value)
 	{

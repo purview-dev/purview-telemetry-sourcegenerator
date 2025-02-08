@@ -26,7 +26,7 @@ partial class PipelineHelpers
 		}
 
 		var semanticModel = context.SemanticModel;
-		var activitySourceAttribute = SharedHelpers.GetActivitySourceAttribute(context.Attributes[0], semanticModel, logger, token);
+		var activitySourceAttribute = SharedHelpers.GetActivitySourceAttribute(context.TargetSymbol, semanticModel, logger, token);
 		if (activitySourceAttribute == null)
 		{
 			logger?.Error($"Could not find {Constants.Activities.ActivitySourceAttribute} when one was expected '{interfaceDeclaration.Flatten()}'.");
@@ -252,33 +252,27 @@ partial class PipelineHelpers
 		out ActivityAttributeRecord? activityAttribute,
 		out EventAttributeRecord? eventAttribute)
 	{
-		activityAttribute = null;
 		eventAttribute = null;
 
 		token.ThrowIfCancellationRequested();
 
-		if (Utilities.TryContainsAttribute(method, Constants.Activities.ActivityAttribute, token, out var attributeData))
+		activityAttribute = SharedHelpers.GetActivityGenAttribute(method, semanticModel, logger, token);
+		if (activityAttribute != null)
 		{
-			activityAttribute = SharedHelpers.GetActivityGenAttribute(attributeData!, semanticModel, logger, token);
-
 			logger?.Debug($"Found explicit activity: {method.Name}.");
-
 			return (ActivityMethodType.Activity, false);
 		}
 
-		if (Utilities.TryContainsAttribute(method, Constants.Activities.EventAttribute, token, out attributeData))
+		eventAttribute = SharedHelpers.GetActivityEventAttribute(method, semanticModel, logger, token);
+		if (eventAttribute != null)
 		{
-			eventAttribute = SharedHelpers.GetActivityEventAttribute(attributeData!, semanticModel, logger, token);
-
 			logger?.Debug($"Found explicit event: {method.Name}.");
-
 			return (ActivityMethodType.Event, false);
 		}
 
 		if (Utilities.ContainsAttribute(method, Constants.Activities.ContextAttribute, token))
 		{
 			logger?.Debug($"Found explicit context: {method.Name}.");
-
 			return (ActivityMethodType.Context, false);
 		}
 
@@ -286,26 +280,22 @@ partial class PipelineHelpers
 		if (Constants.Activities.SystemDiagnostics.Activity.Equals(returnType))
 		{
 			logger?.Debug($"Inferring activity due to return type ({returnType.ToDisplayString()}): {method.Name}.");
-
 			return (ActivityMethodType.Activity, true);
 		}
 
 		if (method.Name.EndsWith("Event", StringComparison.Ordinal))
 		{
 			logger?.Debug($"Inferring event as the method name ends in 'Event': {method.Name}.");
-
 			return (ActivityMethodType.Event, true);
 		}
 
 		if (method.Name.EndsWith("Context", StringComparison.Ordinal))
 		{
 			logger?.Debug($"Inferring context as the method name ends in 'Context': {method.Name}.");
-
 			return (ActivityMethodType.Context, true);
 		}
 
 		logger?.Debug($"Defaulting to activity: {method.Name}.");
-
 		return (ActivityMethodType.Activity, true);
 	}
 

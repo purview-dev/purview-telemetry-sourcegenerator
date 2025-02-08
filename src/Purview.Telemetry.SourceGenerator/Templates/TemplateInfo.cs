@@ -10,7 +10,7 @@ record TemplateInfo(string Name, string FullName, string Namespace, string? Sour
 		=> $"{Name}.g.cs";
 
 	public bool Equals(string other)
-		=> other == Name || other == FullName;
+		=> other == FullName || other == Name;
 
 	public bool Equals(NameSyntax other)
 	{

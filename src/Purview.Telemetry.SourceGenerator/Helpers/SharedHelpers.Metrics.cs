@@ -6,38 +6,34 @@ namespace Purview.Telemetry.SourceGenerator.Helpers;
 partial class SharedHelpers
 {
 	public static MeterGenerationAttributeRecord? GetMeterGenerationAttribute(SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token)
-	{
-		token.ThrowIfCancellationRequested();
-
-		return Utilities.TryContainsAttribute(semanticModel.Compilation.Assembly, Constants.Metrics.MeterGenerationAttribute, token, out var attributeData)
-			? GetMeterGenerationAttribute(attributeData!, semanticModel, logger, token)
-			: null;
-	}
+		=> GetMeterGenerationAttribute(semanticModel.Compilation.Assembly, semanticModel, logger, token);
 
 	public static MeterAttributeRecord? GetMeterAttribute(
-		AttributeData attributeData,
+		ISymbol symbol,
 		SemanticModel semanticModel,
 		IGenerationLogger? logger,
 		CancellationToken token)
 	{
+		if (!Utilities.TryContainsAttribute(symbol, Constants.Metrics.MeterAttribute, token, out var attributeData))
+			return null;
+
 		AttributeStringValue? nameValue = null;
 		AttributeStringValue? instrumentPrefix = null;
 		AttributeValue<bool>? includeAssemblyInstrumentPrefix = null;
 		AttributeValue<bool>? lowercaseInstrumentName = null;
 		AttributeValue<bool>? lowercaseTagKeys = null;
 
-		if (!AttributeParser(attributeData,
-		(name, value) =>
+		if (!AttributeParser(attributeData!, (name, value) =>
 		{
-			if (name.Equals("Name", StringComparison.OrdinalIgnoreCase))
+			if (name.Equals(nameof(MeterAttributeRecord.Name), StringComparison.OrdinalIgnoreCase))
 				nameValue = new((string)value);
-			else if (name.Equals("InstrumentPrefix", StringComparison.OrdinalIgnoreCase))
+			else if (name.Equals(nameof(MeterAttributeRecord.InstrumentPrefix), StringComparison.OrdinalIgnoreCase))
 				instrumentPrefix = new((string)value);
-			else if (name.Equals("IncludeAssemblyInstrumentPrefix", StringComparison.OrdinalIgnoreCase))
+			else if (name.Equals(nameof(MeterAttributeRecord.IncludeAssemblyInstrumentPrefix), StringComparison.OrdinalIgnoreCase))
 				includeAssemblyInstrumentPrefix = new((bool)value);
-			else if (name.Equals("LowercaseInstrumentName", StringComparison.OrdinalIgnoreCase))
+			else if (name.Equals(nameof(MeterAttributeRecord.LowercaseInstrumentName), StringComparison.OrdinalIgnoreCase))
 				lowercaseInstrumentName = new((bool)value);
-			else if (name.Equals("LowercaseTagKeys", StringComparison.OrdinalIgnoreCase))
+			else if (name.Equals(nameof(MeterAttributeRecord.LowercaseTagKeys), StringComparison.OrdinalIgnoreCase))
 				lowercaseTagKeys = new((bool)value);
 		}, semanticModel, logger, token))
 		{
@@ -55,26 +51,28 @@ partial class SharedHelpers
 	}
 
 	public static MeterGenerationAttributeRecord? GetMeterGenerationAttribute(
-		AttributeData attributeData,
+		ISymbol symbol,
 		SemanticModel semanticModel,
 		IGenerationLogger? logger,
 		CancellationToken token)
 	{
+		if (!Utilities.TryContainsAttribute(symbol, Constants.Metrics.MeterGenerationAttribute, token, out var attributeData))
+			return null;
+
 		AttributeStringValue? instrumentPrefix = null;
 		AttributeStringValue? instrumentSeparator = null;
 		AttributeValue<bool>? lowercaseInstrumentName = null;
 		AttributeValue<bool>? lowercaseTagKeys = null;
 
-		if (!AttributeParser(attributeData,
-		(name, value) =>
+		if (!AttributeParser(attributeData!, (name, value) =>
 		{
-			if (name.Equals("InstrumentPrefix", StringComparison.OrdinalIgnoreCase))
+			if (name.Equals(nameof(MeterGenerationAttributeRecord.InstrumentPrefix), StringComparison.OrdinalIgnoreCase))
 				instrumentPrefix = new((string)value);
-			else if (name.Equals("InstrumentSeparator", StringComparison.OrdinalIgnoreCase))
+			else if (name.Equals(nameof(MeterGenerationAttributeRecord.InstrumentSeparator), StringComparison.OrdinalIgnoreCase))
 				instrumentSeparator = new((string)value);
-			else if (name.Equals("LowercaseInstrumentName", StringComparison.OrdinalIgnoreCase))
+			else if (name.Equals(nameof(MeterGenerationAttributeRecord.LowercaseInstrumentName), StringComparison.OrdinalIgnoreCase))
 				lowercaseInstrumentName = new((bool)value);
-			else if (name.Equals("LowercaseTagKeys", StringComparison.OrdinalIgnoreCase))
+			else if (name.Equals(nameof(MeterGenerationAttributeRecord.LowercaseTagKeys), StringComparison.OrdinalIgnoreCase))
 				lowercaseTagKeys = new((bool)value);
 		}, semanticModel, logger, token))
 		{
@@ -91,16 +89,20 @@ partial class SharedHelpers
 	}
 
 	public static InstrumentAttributeRecord? GetInstrumentAttribute(
-		AttributeData attributeData,
+		ISymbol symbol,
 		SemanticModel semanticModel,
 		IGenerationLogger? logger,
 		CancellationToken token)
 	{
-		if (attributeData.AttributeClass == null)
+		AttributeData? attributeData = null;
+		foreach (var instrumentAttribute in Constants.Metrics.ValidInstrumentAttributes)
 		{
-			logger?.Error($"Unable to find AttributeClass for {attributeData}.");
-			return null;
+			if (Utilities.TryContainsAttribute(symbol, instrumentAttribute, token, out attributeData))
+				break;
 		}
+
+		if (attributeData?.AttributeClass == null)
+			return null;
 
 		AttributeStringValue? nameValue = null;
 		AttributeStringValue? unit = null;
@@ -110,15 +112,15 @@ partial class SharedHelpers
 
 		if (!AttributeParser(attributeData, (name, value) =>
 		{
-			if (name.Equals("Name", StringComparison.OrdinalIgnoreCase))
+			if (name.Equals(nameof(InstrumentAttributeRecord.Name), StringComparison.OrdinalIgnoreCase))
 				nameValue = new((string)value);
-			else if (name.Equals("Unit", StringComparison.OrdinalIgnoreCase))
+			else if (name.Equals(nameof(InstrumentAttributeRecord.Unit), StringComparison.OrdinalIgnoreCase))
 				unit = new((string)value);
-			else if (name.Equals("Description", StringComparison.OrdinalIgnoreCase))
+			else if (name.Equals(nameof(InstrumentAttributeRecord.Description), StringComparison.OrdinalIgnoreCase))
 				description = new((string)value);
-			else if (name.Equals("AutoIncrement", StringComparison.OrdinalIgnoreCase))
+			else if (name.Equals(nameof(InstrumentAttributeRecord.AutoIncrement), StringComparison.OrdinalIgnoreCase))
 				autoIncrement = new((bool)value);
-			else if (name.Equals("ThrowOnAlreadyInitialized", StringComparison.OrdinalIgnoreCase))
+			else if (name.Equals(nameof(InstrumentAttributeRecord.ThrowOnAlreadyInitialized), StringComparison.OrdinalIgnoreCase))
 				throwOnAlreadyInitialized = new((bool)value);
 		}, semanticModel, logger, token))
 		{
@@ -149,7 +151,6 @@ partial class SharedHelpers
 		else
 		{
 			logger?.Error($"Unknown instrument type {attributeData.AttributeClass}.");
-
 			return null;
 		}
 
@@ -166,18 +167,6 @@ partial class SharedHelpers
 	public static bool IsValidMeasurementValueType(ITypeSymbol type) =>
 		Array.FindIndex(Constants.Metrics.ValidMeasurementKeywordTypes, m => m == type.ToDisplayString()) > -1
 		|| Array.FindIndex(Constants.Metrics.ValidMeasurementTypes, m => m.Equals(type)) > -1;
-
-	public static bool TryGetInstrumentAttribute(IMethodSymbol method, CancellationToken token, out AttributeData? attributeData)
-	{
-		attributeData = null;
-		foreach (var instrumentAttribute in Constants.Metrics.ValidInstrumentAttributes)
-		{
-			if (Utilities.TryContainsAttribute(method, instrumentAttribute, token, out attributeData))
-				return true;
-		}
-
-		return false;
-	}
 
 	public static bool IsInstrument(IMethodSymbol method, CancellationToken token)
 	{

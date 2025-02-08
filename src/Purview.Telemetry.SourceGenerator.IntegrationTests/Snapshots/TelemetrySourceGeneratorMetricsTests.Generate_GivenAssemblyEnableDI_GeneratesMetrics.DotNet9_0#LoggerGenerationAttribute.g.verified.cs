@@ -47,6 +47,13 @@ sealed class LoggerGenerationAttribute : System.Attribute
 	/// logger. Defaults to <see cref="Microsoft.Extensions.Logging.LogLevel.Information"/>.
 	/// </summary>
 	public Microsoft.Extensions.Logging.LogLevel DefaultLevel { get; set; } = Microsoft.Extensions.Logging.LogLevel.Information;
+
+	/// <summary>
+	/// Disables the generation of the new style of telemetry generation for Microsoft.Extensions.Logging.
+	/// 
+	/// Defaults to false.
+	/// </summary>
+	public bool DisableMSLoggingTelemetryGeneration { get; set; }
 }
 
 #endif

@@ -39,7 +39,7 @@ partial class PipelineHelpers
 		}
 
 		var semanticModel = context.SemanticModel;
-		var loggerAttribute = SharedHelpers.GetLoggerAttribute(context.Attributes[0], semanticModel, logger, token);
+		var loggerAttribute = SharedHelpers.GetLoggerAttribute(context.TargetSymbol, semanticModel, logger, token);
 		if (loggerAttribute == null)
 		{
 			logger?.Error($"Could not find {Constants.Logging.LoggerAttribute} when one was expected '{interfaceDeclaration.Flatten()}'.");
@@ -51,10 +51,22 @@ partial class PipelineHelpers
 			? telemetryGeneration.ClassName.Value!
 			: GenerateClassName(interfaceSymbol.Name);
 
-		var loggerGenerationAttribute = SharedHelpers.GetLoggerDefaultsAttribute(semanticModel, logger, token);
+		var loggerGenerationAttribute = SharedHelpers.GetLoggerGenerationAttribute(semanticModel, logger, token);
 		var defaultLogLevel = loggerGenerationAttribute?.DefaultLevel.IsSet == true
 			? loggerGenerationAttribute.DefaultLevel.Value!
 			: Constants.Logging.DefaultLevel;
+
+		var disableMSLoggingTelemetryGeneration = loggerAttribute.DisableMSLoggingTelemetryGeneration.Value
+			?? loggerGenerationAttribute?.DisableMSLoggingTelemetryGeneration.Value
+			?? false;
+
+		if (!disableMSLoggingTelemetryGeneration)
+		{
+			// We got to here which means we're trying to use the new generation type,
+			// so let's check if the LogPropertiesAttribute is referenced.
+			disableMSLoggingTelemetryGeneration
+				= context.SemanticModel.Compilation.GetTypeByMetadataName(Constants.Logging.MicrosoftExtensions.LogPropertiesAttribute.FullName) != null;
+		}
 
 		var generationType = SharedHelpers.GetGenerationTypes(interfaceSymbol, token);
 		var fullNamespace = Utilities.GetFullNamespace(interfaceDeclaration, true);
@@ -87,7 +99,9 @@ partial class PipelineHelpers
 			DefaultLevel: defaultLogLevel.Value,
 
 			LogMethods: logMethods,
-			DuplicateMethods: BuildDuplicateMethods(interfaceSymbol)
+			DuplicateMethods: BuildDuplicateMethods(interfaceSymbol),
+
+			UseMSLoggingTelemetryBasedGeneration: !disableMSLoggingTelemetryGeneration
 		);
 	}
 
@@ -116,7 +130,7 @@ partial class PipelineHelpers
 			logger?.Debug($"Found method {interfaceSymbol.Name}.{method.Name}.");
 
 			var isScoped = !method.ReturnsVoid;
-			var methodParameters = GetLogMethodParameters(method, logger, token);
+			var methodParameters = GetLogMethodParameters(method, semanticModel, logger, token);
 			var logAttribute = SharedHelpers.GetLogAttribute(method, semanticModel, logger, token);
 			var isKnownReturnType = method.ReturnsVoid || Constants.System.IDisposable.Equals(method.ReturnType);
 			var loggerActionFieldName = $"_{Utilities.LowercaseFirstChar(method.Name)}Action";
@@ -132,12 +146,10 @@ partial class PipelineHelpers
 
 			var inferredErrorLevel = exceptionParam != null;
 			if ((logAttribute?.Level.IsSet ?? false) == true)
-			{
 				inferredErrorLevel = false;
-			}
 
 			var level = (logAttribute?.Level.IsSet == true
-				? logAttribute.Level.Value!
+				? logAttribute.Level.Value!.Value
 				: exceptionParam == null
 					? defaultLogLevel
 					: 4 // Error
@@ -153,7 +165,7 @@ partial class PipelineHelpers
 				LogName: logName,
 				EventId: logAttribute?.EventId.Value,
 				MessageTemplate: messageTemplate,
-				MSLevel: Constants.Logging.LogLevelTypeMap[level.Value],
+				MSLevel: Constants.Logging.LogLevelTypeMap[level],
 
 				Parameters: methodParameters,
 				ParametersSansException: isScoped
@@ -250,19 +262,26 @@ partial class PipelineHelpers
 		return builder.ToString();
 	}
 
-	static ImmutableArray<LogParameterTarget> GetLogMethodParameters(IMethodSymbol method, IGenerationLogger? logger, CancellationToken token)
+	static ImmutableArray<LogParameterTarget> GetLogMethodParameters(IMethodSymbol method, SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token)
 	{
 		List<LogParameterTarget> parameters = [];
 		foreach (var parameter in method.Parameters)
 		{
 			token.ThrowIfCancellationRequested();
 
+			var logPropertiesAttribute = SharedHelpers.GetLogPropertiesAttribute(
+				parameter, semanticModel, logger, token);
+			var expandEnumerableAttribute = SharedHelpers.GetExpandEnumerableAttribute(
+				parameter, semanticModel, logger, token);
+
 			parameters.Add(new(
 				Name: parameter.Name,
 				UpperCasedName: Utilities.UppercaseFirstChar(parameter.Name),
 				FullyQualifiedType: Utilities.GetFullyQualifiedOrSystemName(parameter.Type),
 				IsNullable: parameter.NullableAnnotation == NullableAnnotation.Annotated,
-				IsException: Utilities.IsExceptionType(parameter.Type)
+				IsException: Utilities.IsExceptionType(parameter.Type),
+				LogPropertiesAttribute: logPropertiesAttribute,
+				ExpandEnumerableAttribute: expandEnumerableAttribute
 			));
 		}
 

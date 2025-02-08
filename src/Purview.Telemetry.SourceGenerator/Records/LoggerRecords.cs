@@ -20,8 +20,9 @@ record LoggerTarget(
 	int DefaultLevel,
 
 	ImmutableArray<LogTarget> LogMethods,
-	ImmutableDictionary<string, Location[]> DuplicateMethods
-)
+	ImmutableDictionary<string, Location[]> DuplicateMethods,
+
+	bool UseMSLoggingTelemetryBasedGeneration)
 {
 	public TelemetryDiagnosticDescriptor? Failure { get; init; }
 
@@ -38,7 +39,8 @@ record LoggerTarget(
 		null!,
 		0,
 		[],
-		null!)
+		null!,
+		false)
 	{
 		Failure = TelemetryDiagnostics.Logging.MSLoggingNotReferencedButAttemptedUse
 	};
@@ -80,5 +82,8 @@ record LogParameterTarget(
 	string FullyQualifiedType,
 	bool IsNullable,
 
-	bool IsException
+	bool IsException,
+
+	LogPropertiesAttributeRecord? LogPropertiesAttribute,
+	ExpandEnumerableAttributeRecord? ExpandEnumerableAttribute
 );
