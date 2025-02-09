@@ -19,7 +19,7 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 
 	System.Diagnostics.Metrics.Counter<int>? _retrievingEntityInstrument = null;
 
-	public EntityStoreTelemetryCore(Microsoft.Extensions.Logging.ILogger<IEntityStoreTelemetry> logger, System.Diagnostics.Metrics.IMeterFactory meterFactory)
+	public EntityStoreTelemetryCore(global::Microsoft.Extensions.Logging.ILogger<IEntityStoreTelemetry> logger, global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 	{
 		_logger = logger;
 		InitializeMeters(meterFactory);

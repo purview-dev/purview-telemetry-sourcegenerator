@@ -18,13 +18,13 @@ partial class LoggerGenTargetClassEmitter
 			if (!methodTarget.TargetGenerationState.IsValid)
 				continue;
 
-			EmitLogActionMethod(builder, indent, methodTarget, context, logger);
+			EmitMethod(builder, indent, methodTarget, context, logger);
 		}
 
 		return --indent;
 	}
 
-	static void EmitLogActionMethod(StringBuilder builder, int indent, LogTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger)
+	static void EmitMethod(StringBuilder builder, int indent, LogTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger)
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -47,7 +47,7 @@ partial class LoggerGenTargetClassEmitter
 			.Append('(')
 		;
 
-		//EmitParametersAsMethodArgumentList(methodTarget, builder, context);
+		EmitParametersAsMethodArgumentList(methodTarget, builder, context);
 
 		builder
 			.Append(')')
@@ -130,9 +130,7 @@ partial class LoggerGenTargetClassEmitter
 				// Log level
 				.Append(indent + 1, methodTarget.MSLevel.WithGlobal().WithComma())
 				// Event Id
-				.Append(indent + 1, "new ", withNewLine: false)
-				.Append(Constants.Logging.MicrosoftExtensions.EventId.WithGlobal())
-				.Append('(')
+				.Append(indent + 1, "new (", withNewLine: false)
 				.Append(eventId)
 				.Append(", \"")
 				.Append(methodTarget.MethodName)
@@ -154,6 +152,11 @@ partial class LoggerGenTargetClassEmitter
 				.Append(indent + 1, "}")
 				.Append(indent, ");")
 			;
+
+			builder
+				.AppendLine()
+				.Append(indent, stateVarName, withNewLine: false)
+				.AppendLine(".Clear();");
 		}
 
 		builder
@@ -164,26 +167,25 @@ partial class LoggerGenTargetClassEmitter
 
 	static void EmitStateContent(StringBuilder builder, int indent, LogTarget methodTarget, string stateVarName, SourceProductionContext context, IGenerationLogger? logger)
 	{
-		var reservationCount = methodTarget.ParameterCount;
+		var reservationCount = methodTarget.ParameterCount + 1;
 		if (methodTarget.ExceptionParameter != null)
 			reservationCount--;
 
-		foreach (var parameter in methodTarget.Parameters)
-		{
-			if (parameter.Name == methodTarget.ExceptionParameter?.Name)
-				// We need to skip over the exception parameter.
-				continue;
+		//foreach (var parameter in methodTarget.Parameters)
+		//{
+		//	if (parameter.Name == methodTarget.ExceptionParameter?.Name)
+		//		// We need to skip over the exception parameter.
+		//		continue;
 
-			reservationCount++;
-
-		}
+		//	reservationCount++;
+		//}
 
 		// Create the state variable,
 		// and reserve the required number of variables.
 		builder
 			.Append(indent, "var ", withNewLine: false)
 			.Append(stateVarName)
-			.Append(" = new ")
+			.Append(" = ")
 			.Append(Constants.Logging.MicrosoftExtensions.LoggerMessageState.WithGlobal())
 			.Append('.')
 			.AppendLine("ThreadLocalState;")
@@ -194,5 +196,67 @@ partial class LoggerGenTargetClassEmitter
 			.AppendLine()
 		;
 
+		OutputState(builder.WithIndent(indent), stateVarName, "{OriginalFormat}", methodTarget.MessageTemplate.Wrap(), 0);
+		var idx = 0;
+		foreach (var parameter in methodTarget.Parameters)
+		{
+			if (parameter.Name == methodTarget.ExceptionParameter?.Name)
+				// We need to skip over the exception parameter.
+				continue;
+
+			OutputState(builder.WithIndent(indent), stateVarName, parameter.Name, parameter.Name, ++idx);
+		}
+
+		builder.AppendLine();
+
+		static void OutputState(StringBuilder builder, string stateVarName, string propertyName, string value, int? index)
+		{
+			builder
+				.Append(stateVarName)
+				.Append('.')
+			;
+
+			if (index.HasValue)
+			{
+				builder
+					.Append("TagArray[")
+					.Append(index.Value)
+					.Append("] = new(");
+			}
+			else
+				builder.Append(".SetTag(");
+
+			builder
+				.Append(propertyName.Wrap().WithComma())
+				.Append(' ')
+				.Append(value)
+				.AppendLine(");")
+			;
+		}
 	}
+
+	static void EmitParametersAsMethodArgumentList(LogTarget methodTarget, StringBuilder builder, SourceProductionContext context)
+	{
+		for (var i = 0; i < methodTarget.TotalParameterCount; i++)
+		{
+			context.CancellationToken.ThrowIfCancellationRequested();
+
+			if (methodTarget.Parameters[i].IsComplexType
+				|| methodTarget.Parameters[i].IsIEnumerable)
+				builder.Append("global::");
+
+			builder.Append(methodTarget.Parameters[i].FullyQualifiedType);
+
+			if (methodTarget.Parameters[i].IsNullable)
+				builder.Append('?');
+
+			builder
+				.Append(' ')
+				.Append(methodTarget.Parameters[i].Name);
+
+			if (i < methodTarget.TotalParameterCount - 1)
+				builder.Append(", ");
+		}
+	}
+
 }

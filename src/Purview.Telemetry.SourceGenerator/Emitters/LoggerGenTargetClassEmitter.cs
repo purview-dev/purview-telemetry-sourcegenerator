@@ -17,6 +17,8 @@ static partial class LoggerGenTargetClassEmitter
 		var indent = EmitHelpers.EmitNamespaceStart(target.ClassNamespace, target.ParentClasses, builder, context.CancellationToken);
 		indent = EmitHelpers.EmitClassStart(target.ClassNameToGenerate, target.FullyQualifiedInterfaceName, builder, indent, context.CancellationToken);
 
+		EmitFields(target, builder, indent, context, logger);
+
 		indent = ConstructorEmitter.EmitCtor(
 			GenerationType.Logging,
 			target.GenerationType,
@@ -49,4 +51,21 @@ static partial class LoggerGenTargetClassEmitter
 			logger);
 	}
 
+	static void EmitFields(LoggerTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger)
+	{
+		context.CancellationToken.ThrowIfCancellationRequested();
+
+		builder
+			.Append(indent + 1, "readonly ", withNewLine: false)
+			.Append(Constants.Logging.MicrosoftExtensions.ILogger.WithGlobal())
+			.Append('<')
+			.Append(target.FullyQualifiedInterfaceName)
+			.Append('>')
+			.Append(' ')
+			.Append(Constants.Logging.LoggerFieldName)
+			.Append(';')
+			.AppendLine()
+			.AppendLine()
+		;
+	}
 }

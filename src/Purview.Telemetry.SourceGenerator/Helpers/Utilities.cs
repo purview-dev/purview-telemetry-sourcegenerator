@@ -115,7 +115,7 @@ static partial class Utilities
 			.AppendLine()
 			.Append("#if ")
 			.AppendLine(condition)
-			.AppendTabs(indent)
+			.WithIndent(indent)
 		;
 
 		foreach (var value in values)
@@ -129,7 +129,7 @@ static partial class Utilities
 		return builder;
 	}
 
-	public static StringBuilder AppendTabs(this StringBuilder builder, int tabs)
+	public static StringBuilder WithIndent(this StringBuilder builder, int tabs)
 	{
 		for (var i = 0; i < tabs; i++)
 			builder.Append('\t');
@@ -140,7 +140,7 @@ static partial class Utilities
 	public static StringBuilder Append(this StringBuilder builder, int tabs, char value, bool withNewLine = true)
 	{
 		builder
-			.AppendTabs(tabs)
+			.WithIndent(tabs)
 			.Append(value);
 
 		if (withNewLine)
@@ -152,7 +152,7 @@ static partial class Utilities
 	public static StringBuilder Append(this StringBuilder builder, int tabs, string value, bool withNewLine = true)
 	{
 		builder
-			.AppendTabs(tabs)
+			.WithIndent(tabs)
 			.Append(value);
 
 		if (withNewLine)
@@ -164,7 +164,7 @@ static partial class Utilities
 	public static StringBuilder Append(this StringBuilder builder, int tabs, Templates.TypeInfo typeInfo, bool withNewLine = true)
 	{
 		builder
-			.AppendTabs(tabs)
+			.WithIndent(tabs)
 			.Append(typeInfo.Convert());
 
 		if (withNewLine)
@@ -373,21 +373,32 @@ static partial class Utilities
 		if (typeSymbol.TypeKind == TypeKind.Class || typeSymbol.TypeKind == TypeKind.Struct)
 		{
 			// Exclude primitive types and special types like string
-			if (typeSymbol.SpecialType == SpecialType.None || typeSymbol.SpecialType != SpecialType.System_String)
+			if (typeSymbol.SpecialType is SpecialType.None)
 				return true;
 		}
 
 		return false;
 	}
 
-	public static bool IsArray(ITypeSymbol type)
-		=> type.TypeKind is TypeKind.Array;
+	public static bool IsArray(ITypeSymbol typeSymbol)
+	{
+		if (typeSymbol.SpecialType == SpecialType.System_String)
+			return false;
+
+		return typeSymbol.TypeKind is TypeKind.Array;
+	}
 
 	public static bool IsArray(string parameterType, string fullTypeName)
 		=> parameterType == (fullTypeName + "[]");
 
 	public static bool IsIEnumerable(ITypeSymbol typeSymbol, Compilation compilation)
 	{
+		if (typeSymbol.SpecialType == SpecialType.System_String)
+			return false;
+
+		if (IsIEnumerable(typeSymbol))
+			return true;
+
 		// Get the `IEnumerable` symbol from the compilation
 		var ienumerableSymbol = compilation.GetTypeByMetadataName(Constants.System.IEnumerable);
 
@@ -398,12 +409,30 @@ static partial class Utilities
 
 	public static bool IsGenericIEnumerable(ITypeSymbol typeSymbol, Compilation compilation)
 	{
+		if (typeSymbol.SpecialType == SpecialType.System_String)
+			return false;
+		if (IsIEnumerable(typeSymbol))
+			return true;
+
 		// Get the `IEnumerable` symbol from the compilation
 		var ienumerableSymbol = compilation.GetTypeByMetadataName(Constants.System.GenericIEnumerable + "`1");
 
 		// Check if the type implements `IEnumerable`
 		return ienumerableSymbol != null
 			&& typeSymbol.AllInterfaces.Any(i => SymbolEqualityComparer.Default.Equals(i, ienumerableSymbol));
+	}
+
+	static bool IsIEnumerable(ITypeSymbol typeSymbol)
+	{
+		if (typeSymbol.SpecialType == SpecialType.System_String)
+			return false;
+
+		return typeSymbol.SpecialType is SpecialType.System_Collections_IEnumerable
+			or SpecialType.System_Collections_Generic_ICollection_T
+			or SpecialType.System_Collections_Generic_IList_T
+			or SpecialType.System_Collections_Generic_IReadOnlyCollection_T
+			or SpecialType.System_Collections_Generic_IReadOnlyList_T
+			or SpecialType.System_Collections_Generic_IEnumerable_T;
 	}
 
 	public static bool IsEnumerable(string parameterType, string fullTypeName)

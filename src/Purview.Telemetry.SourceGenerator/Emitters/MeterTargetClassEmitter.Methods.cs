@@ -238,7 +238,7 @@ partial class MeterTargetClassEmitter
 				.AppendLine()
 				.Append(indent + 1, ", tags: ", withNewLine: false)
 				.AppendLine(tagVariableName)
-				.AppendTabs(indent)
+				.WithIndent(indent)
 			;
 		}
 

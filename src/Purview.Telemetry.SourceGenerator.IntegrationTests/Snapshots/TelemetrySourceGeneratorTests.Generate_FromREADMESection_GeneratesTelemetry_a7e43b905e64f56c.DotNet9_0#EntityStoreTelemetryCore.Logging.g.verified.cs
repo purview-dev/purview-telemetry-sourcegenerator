@@ -15,21 +15,27 @@
 
 sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 {
+	readonly global::Microsoft.Extensions.Logging.ILogger<IEntityStoreTelemetry> _logger;
+
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-	public void LogMessage()
+	public void LogMessage(int entityId, string updateState)
 	{
 		if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
 		{
 			return;
 		}
 
-		var state = new global::Microsoft.Extensions.Logging.LoggerMessageState.ThreadLocalState;
-		state.ReserveTagSpace(4);
+		var state = global::Microsoft.Extensions.Logging.LoggerMessageState.ThreadLocalState;
+		state.ReserveTagSpace(3);
+
+		state.TagArray[0] = new("{OriginalFormat}", "EntityStoreTelemetry.LogMessage: entityId: {EntityId}, updateState: {UpdateState}");
+		state.TagArray[1] = new("entityId", entityId);
+		state.TagArray[2] = new("updateState", updateState);
 
 		_logger.Log(
 			global::Microsoft.Extensions.Logging.LogLevel.Information,
-			new global::Microsoft.Extensions.Logging.EventId(1180592680, "LogMessage"),
+			new (1180592680, "LogMessage"),
 			state,
 			null,
 			// GENERATE CODEGEN ATTRIB
@@ -38,23 +44,29 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 				return string.Empty;
 			}
 		);
+
+		state.Clear();
 	}
 
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-	public void ExplicitInfoMessage()
+	public void ExplicitInfoMessage(int entityId, string updateState)
 	{
 		if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
 		{
 			return;
 		}
 
-		var state = new global::Microsoft.Extensions.Logging.LoggerMessageState.ThreadLocalState;
-		state.ReserveTagSpace(4);
+		var state = global::Microsoft.Extensions.Logging.LoggerMessageState.ThreadLocalState;
+		state.ReserveTagSpace(3);
+
+		state.TagArray[0] = new("{OriginalFormat}", "EntityStoreTelemetry.ExplicitInfoMessage: entityId: {EntityId}, updateState: {UpdateState}");
+		state.TagArray[1] = new("entityId", entityId);
+		state.TagArray[2] = new("updateState", updateState);
 
 		_logger.Log(
 			global::Microsoft.Extensions.Logging.LogLevel.Information,
-			new global::Microsoft.Extensions.Logging.EventId(1861353128, "ExplicitInfoMessage"),
+			new (1861353128, "ExplicitInfoMessage"),
 			state,
 			null,
 			// GENERATE CODEGEN ATTRIB
@@ -63,6 +75,8 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 				return string.Empty;
 			}
 		);
+
+		state.Clear();
 	}
 
 }
