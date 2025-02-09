@@ -273,7 +273,7 @@ partial class PipelineHelpers
 						// For observable instruments.
 						if (parameterType.TypeArguments[0] is INamedTypeSymbol typeArg)
 						{
-							isIEnumerableType = Constants.System.IEnumerable.Equals(typeArg.ConstructedFrom);
+							isIEnumerableType = Constants.System.GenericIEnumerable.Equals(typeArg.ConstructedFrom);
 							if (isIEnumerableType)
 							{
 								if (parameterType.TypeArguments[0] is INamedTypeSymbol enumerableType)

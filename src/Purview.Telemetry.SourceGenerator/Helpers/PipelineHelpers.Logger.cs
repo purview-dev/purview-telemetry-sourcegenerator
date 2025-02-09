@@ -63,9 +63,11 @@ partial class PipelineHelpers
 		if (!disableMSLoggingTelemetryGeneration)
 		{
 			// We got to here which means we're trying to use the new generation type,
-			// so let's check if the LogPropertiesAttribute is referenced.
+			// so let's check if the LogPropertiesAttribute is referenced. If it's not,
+			// we'll disable the new telemetry generation.
 			disableMSLoggingTelemetryGeneration
-				= context.SemanticModel.Compilation.GetTypeByMetadataName(Constants.Logging.MicrosoftExtensions.LogPropertiesAttribute.FullName) != null;
+				= context.SemanticModel.Compilation.GetTypeByMetadataName(
+					Constants.Logging.MicrosoftExtensions.LogPropertiesAttribute.FullName) == null;
 		}
 
 		var generationType = SharedHelpers.GetGenerationTypes(interfaceSymbol, token);
@@ -261,7 +263,6 @@ partial class PipelineHelpers
 
 		return builder.ToString();
 	}
-
 	static ImmutableArray<LogParameterTarget> GetLogMethodParameters(IMethodSymbol method, SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token)
 	{
 		List<LogParameterTarget> parameters = [];
@@ -281,6 +282,11 @@ partial class PipelineHelpers
 
 				IsNullable: parameter.NullableAnnotation == NullableAnnotation.Annotated,
 				IsException: Utilities.IsExceptionType(parameter.Type),
+
+				IsIEnumerable: Utilities.IsIEnumerable(parameter.Type, semanticModel.Compilation),
+				IsArray: Utilities.IsArray(parameter.Type),
+
+				IsComplexType: Utilities.IsComplexType(parameter.Type),
 
 				LogPropertiesAttribute: logPropertiesAttribute,
 				ExpandEnumerableAttribute: expandEnumerableAttribute

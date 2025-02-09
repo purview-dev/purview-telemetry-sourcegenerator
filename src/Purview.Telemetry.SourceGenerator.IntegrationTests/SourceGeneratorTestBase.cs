@@ -133,10 +133,10 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 		Func<Project, Project>? projectModifier = null,
 		bool disableDependencyInjection = true,
 		bool autoIncludeUsings = true,
-		bool includeILoggerRef = true,
+		IncludeLoggerTypes includeLoggerTypes = IncludeLoggerTypes.LoggerOnly,
 		bool debugLog = true)
 	{
-		return await GenerateAsync(Text(csharpDocument, autoIncludeUsings: autoIncludeUsings), additionalTexts, globalOptions, projectModifier, disableDependencyInjection, includeILoggerRef, debugLog);
+		return await GenerateAsync(Text(csharpDocument, autoIncludeUsings: autoIncludeUsings), additionalTexts, globalOptions, projectModifier, disableDependencyInjection, includeLoggerTypes, debugLog);
 	}
 
 	protected async Task<GenerationResult> GenerateAsync(
@@ -145,10 +145,10 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 		ImmutableDictionary<string, string>? globalOptions = null,
 		Func<Project, Project>? projectModifier = null,
 		bool disableDependencyInjection = true,
-		bool includeILoggerRef = true,
+		IncludeLoggerTypes includeLoggerTypes = IncludeLoggerTypes.LoggerOnly,
 		bool debugLog = true)
 	{
-		return await GenerateAsync([csharpDocument], additionalTexts, globalOptions, projectModifier, disableDependencyInjection, includeILoggerRef, debugLog);
+		return await GenerateAsync([csharpDocument], additionalTexts, globalOptions, projectModifier, disableDependencyInjection, includeLoggerTypes, debugLog);
 	}
 
 	protected async Task<GenerationResult> GenerateAsync(
@@ -157,11 +157,11 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 			ImmutableDictionary<string, string>? globalOptions = null,
 			Func<Project, Project>? projectModifier = null,
 			bool disableDependencyInjection = true,
-			bool includeILoggerRef = true,
+			IncludeLoggerTypes includeLoggerTypes = IncludeLoggerTypes.LoggerOnly,
 			bool debugLog = true)
 	{
 		List<string> preprocessorSymbols = [];
-		if (!includeILoggerRef)
+		if (includeLoggerTypes == IncludeLoggerTypes.None)
 			preprocessorSymbols.Add("EXCLUDE_PURVIEW_TELEMETRY_LOGGING");
 
 		CSharpParseOptions parseOptions = new(kind: SourceCodeKind.Regular, documentationMode: DocumentationMode.Parse, preprocessorSymbols: preprocessorSymbols);
@@ -198,7 +198,7 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 		}
 
 		GeneratorDriver driver = CSharpGeneratorDriver.Create([Generator], additionalTexts: additionalTexts, parseOptions: parseOptions, optionsProvider: optionsProvider);
-		(var _, var compilation) = await ObtainProjectAndCompilationAsync(projectModifier, csharpDocuments, includeILoggerRef);
+		(var _, var compilation) = await ObtainProjectAndCompilationAsync(projectModifier, csharpDocuments, includeLoggerTypes);
 
 		var result = driver.RunGeneratorsAndUpdateCompilation(compilation, out var outputCompilation, out var diagnostics);
 		if (testOutputHelper is object)
@@ -227,7 +227,10 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 
 	protected virtual bool ReferenceCore => true;
 
-	protected async Task<(Project Project, Compilation Compilation)> ObtainProjectAndCompilationAsync(Func<Project, Project>? projectModifier = null, AdditionalText[]? csharpDocuments = null, bool includeILoggerRef = true)
+	protected async Task<(Project Project, Compilation Compilation)> ObtainProjectAndCompilationAsync(
+		Func<Project, Project>? projectModifier = null,
+		AdditionalText[]? csharpDocuments = null,
+		IncludeLoggerTypes includeLoggerTypes = IncludeLoggerTypes.LoggerOnly)
 	{
 		using AdhocWorkspace workspace = new();
 		var project = workspace.AddProject(typeof(SourceGeneratorTestBase<>).Namespace, LanguageNames.CSharp);
@@ -257,8 +260,12 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 				.AddMetadataReference(MetadataReference.CreateFromFile(typeof(Microsoft.Extensions.DependencyInjection.IServiceCollection).Assembly.Location))
 			;
 
-			if (includeILoggerRef)
+			if (includeLoggerTypes >= IncludeLoggerTypes.LoggerOnly)
+			{
 				project = project.AddMetadataReference(MetadataReference.CreateFromFile(typeof(Microsoft.Extensions.Logging.LogLevel).Assembly.Location));
+				if (includeLoggerTypes == IncludeLoggerTypes.Telemetry)
+					project = project.AddMetadataReference(MetadataReference.CreateFromFile(typeof(Microsoft.Extensions.Logging.LogPropertiesAttribute).Assembly.Location));
+			}
 		}
 
 		project = projectModifier?.Invoke(project) ?? project;

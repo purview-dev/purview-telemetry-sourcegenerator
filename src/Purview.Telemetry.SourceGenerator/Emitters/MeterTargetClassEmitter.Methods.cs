@@ -103,7 +103,7 @@ partial class MeterTargetClassEmitter
 					type = Constants.Metrics.SystemDiagnostics.Measurement.MakeGeneric(type);
 
 				if (methodTarget.MeasurementParameter!.IsIEnumerable)
-					type = Constants.System.IEnumerable.MakeGeneric(type);
+					type = Constants.System.GenericIEnumerable.MakeGeneric(type);
 
 				type = Constants.System.Func.MakeGeneric(type);
 

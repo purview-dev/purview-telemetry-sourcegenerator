@@ -35,7 +35,8 @@ partial class Constants
 		public static readonly TypeInfo Decimal = TypeInfo.Create<decimal>();
 		public static readonly TypeInfo DateTimeOffset = TypeInfo.Create<DateTimeOffset>();
 
-		public static readonly TypeInfo IEnumerable = TypeInfo.Create("System.Collections.Generic.IEnumerable"); // <>
+		public static readonly TypeInfo IEnumerable = TypeInfo.Create("System.Collections.IEnumerable");
+		public static readonly TypeInfo GenericIEnumerable = TypeInfo.Create("System.Collections.Generic.IEnumerable"); // <>
 		public static readonly TypeInfo List = TypeInfo.Create("System.Collections.Generic.List"); // <>
 		public static readonly TypeInfo Dictionary = TypeInfo.Create("System.Collections.Generic.Dictionary"); // <>
 		public static readonly TypeInfo ConcurrentDictionary = TypeInfo.Create("System.Collections.Concurrent.ConcurrentDictionary"); // <>

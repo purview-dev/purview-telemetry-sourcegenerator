@@ -21,6 +21,7 @@
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
 		<PackageReference Include="Microsoft.Extensions.Logging" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+		<PackageReference Include="Microsoft.Extensions.Telemetry.Abstractions" />
 		<PackageReference Include="Verify.SourceGenerators" />
 		<PackageReference Include="Verify.Xunitv3" />
 	</ItemGroup>

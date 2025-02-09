@@ -18,9 +18,9 @@ sealed partial class LoggingTelemetryCore : ILoggingTelemetry
 	readonly Microsoft.Extensions.Logging.ILogger<ILoggingTelemetry> _logger;
 
 	static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.Guid, System.IDisposable?> _processingWorkItemAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.Guid>("LoggingTelemetry.ProcessingWorkItem: id: {Id}");
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, ItemTypes, System.Exception?> _processingItemTypeAction = Microsoft.Extensions.Logging.LoggerMessage.Define<ItemTypes>(Microsoft.Extensions.Logging.LogLevel.Trace, default, "LoggingTelemetry.ProcessingItemType: itemType: {ItemType}");
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.Exception?> _failedToProcessWorkItemAction = Microsoft.Extensions.Logging.LoggerMessage.Define(Microsoft.Extensions.Logging.LogLevel.Error, default, "LoggingTelemetry.FailedToProcessWorkItem");
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, bool, System.TimeSpan, System.Exception?> _processingCompleteAction = Microsoft.Extensions.Logging.LoggerMessage.Define<bool, System.TimeSpan>(Microsoft.Extensions.Logging.LogLevel.Information, default, "LoggingTelemetry.ProcessingComplete: success: {Success}, duration: {Duration}");
+	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, ItemTypes, System.Exception?> _processingItemTypeAction = Microsoft.Extensions.Logging.LoggerMessage.Define<ItemTypes>(Microsoft.Extensions.Logging.LogLevel.Trace, new Microsoft.Extensions.Logging.EventId(1819684787, "ProcessingItemType"), "LoggingTelemetry.ProcessingItemType: itemType: {ItemType}");
+	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.Exception?> _failedToProcessWorkItemAction = Microsoft.Extensions.Logging.LoggerMessage.Define(Microsoft.Extensions.Logging.LogLevel.Error, new Microsoft.Extensions.Logging.EventId(1082978768, "FailedToProcessWorkItem"), "LoggingTelemetry.FailedToProcessWorkItem");
+	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, bool, System.TimeSpan, System.Exception?> _processingCompleteAction = Microsoft.Extensions.Logging.LoggerMessage.Define<bool, System.TimeSpan>(Microsoft.Extensions.Logging.LogLevel.Information, new Microsoft.Extensions.Logging.EventId(1684975581, "ProcessingComplete"), "LoggingTelemetry.ProcessingComplete: success: {Success}, duration: {Duration}");
 
 	public LoggingTelemetryCore(Microsoft.Extensions.Logging.ILogger<ILoggingTelemetry> logger)
 	{

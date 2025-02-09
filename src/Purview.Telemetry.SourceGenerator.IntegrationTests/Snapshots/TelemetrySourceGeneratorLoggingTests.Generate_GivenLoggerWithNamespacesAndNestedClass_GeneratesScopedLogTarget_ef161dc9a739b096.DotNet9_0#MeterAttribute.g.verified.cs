@@ -18,10 +18,10 @@ namespace Purview.Telemetry.Metrics;
 /// <summary>
 /// Marker attribute, used to indicating a meter, or group of instruments.
 /// </summary>
-[System.AttributeUsage(System.AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
-[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class MeterAttribute : System.Attribute
+[global::System.AttributeUsage(global::System.AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
+[global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
+sealed class MeterAttribute : global::System.Attribute
 {
 	/// <summary>
 	/// Creates a new <see cref="MeterAttribute" />.
@@ -65,7 +65,7 @@ sealed class MeterAttribute : System.Attribute
 	public bool LowercaseInstrumentName { get; set; } = true;
 
 	/// <summary>
-	/// Determines if the <see cref="Purview.Telemetry.TagAttribute.Name"/> (including
+	/// Determines if the <see cref="global::Purview.Telemetry.TagAttribute.Name"/> (including
 	/// any prefixes) are lowercased.
 	/// </summary>
 	public bool LowercaseTagKeys { get; set; } = true;

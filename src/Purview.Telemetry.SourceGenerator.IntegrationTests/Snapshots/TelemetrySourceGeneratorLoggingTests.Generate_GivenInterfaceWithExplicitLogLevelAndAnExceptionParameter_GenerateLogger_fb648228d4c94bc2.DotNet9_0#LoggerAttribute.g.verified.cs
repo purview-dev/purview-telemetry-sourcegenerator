@@ -20,10 +20,10 @@ namespace Purview.Telemetry.Logging;
 /// <summary>
 /// Marker attribute required for Log generation.
 /// </summary>
-[System.AttributeUsage(System.AttributeTargets.Interface, AllowMultiple = false)]
-[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class LoggerAttribute : System.Attribute
+[global::System.AttributeUsage(global::System.AttributeTargets.Interface, AllowMultiple = false)]
+[global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
+sealed class LoggerAttribute : global::System.Attribute
 {
 	/// <summary>
 	/// Creates a new instance of the <see cref="LoggerAttribute"/> class.
@@ -37,11 +37,11 @@ sealed class LoggerAttribute : System.Attribute
 	/// Creates a new instance of the <see cref="LoggerAttribute"/>, specifying the <see cref="DefaultLevel"/>
 	/// and optionally the <see cref="CustomPrefix"/>.
 	/// </summary>
-	/// <param name="defaultLevel">The default <see cref="Microsoft.Extensions.Logging.LogLevel"/> to use
+	/// <param name="defaultLevel">The default <see cref="global::Microsoft.Extensions.Logging.LogLevel"/> to use
 	/// when one is not specified.</param>
 	/// <param name="customPrefix">If specified, also sets the <see cref="PrefixType"/> to <see cref="LogPrefixType.Custom"/>.</param>
 	/// <param name="disableMSLoggingTelemetryGeneration">Disables the generation of the new style of telemetry generation for Microsoft.Extensions.Logging.</param>
-	public LoggerAttribute(Microsoft.Extensions.Logging.LogLevel defaultLevel, string? customPrefix = null, bool disableMSLoggingTelemetryGeneration = false)
+	public LoggerAttribute(global::Microsoft.Extensions.Logging.LogLevel defaultLevel, string? customPrefix = null, bool disableMSLoggingTelemetryGeneration = false)
 	{
 		DefaultLevel = defaultLevel;
 		CustomPrefix = customPrefix;
@@ -54,11 +54,11 @@ sealed class LoggerAttribute : System.Attribute
 	}
 
 	/// <summary>
-	/// Optional. Gets the <see cref="Microsoft.Extensions.Logging.LogLevel">level</see> of the
-	/// log entry. Defaults to <see cref="Microsoft.Extensions.Logging.LogLevel.Information"/>, unless there is
+	/// Optional. Gets the <see cref="global::Microsoft.Extensions.Logging.LogLevel">level</see> of the
+	/// log entry. Defaults to <see cref="global::Microsoft.Extensions.Logging.LogLevel.Information"/>, unless there is
 	/// an <see cref="Exception"/> parameter and no-other override is defined.
 	/// </summary>
-	public Microsoft.Extensions.Logging.LogLevel DefaultLevel { get; set; } = Microsoft.Extensions.Logging.LogLevel.Information;
+	public global::Microsoft.Extensions.Logging.LogLevel DefaultLevel { get; set; } = global::Microsoft.Extensions.Logging.LogLevel.Information;
 
 	/// <summary>
 	/// Optional. The prefix used to when generating the log entry name.

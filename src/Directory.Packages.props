@@ -4,6 +4,7 @@
     <MSCodeAnalysisCSharpVersion>4.12.0</MSCodeAnalysisCSharpVersion>
   </PropertyGroup>
   <ItemGroup Label="NuGet Package References">
+    <PackageVersion Include="Microsoft.Extensions.Telemetry.Abstractions" Version="9.1.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup Label=".NET Packages">

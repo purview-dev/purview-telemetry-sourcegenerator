@@ -367,12 +367,48 @@ static partial class Utilities
 	//	=> IsArray(parameterType, fullTypeName)
 	//		|| IsEnumerable(parameterType, fullTypeName);
 
+	public static bool IsComplexType(ITypeSymbol typeSymbol)
+	{
+		// Check for class, struct, or record types
+		if (typeSymbol.TypeKind == TypeKind.Class || typeSymbol.TypeKind == TypeKind.Struct)
+		{
+			// Exclude primitive types and special types like string
+			if (typeSymbol.SpecialType == SpecialType.None || typeSymbol.SpecialType != SpecialType.System_String)
+				return true;
+		}
+
+		return false;
+	}
+
+	public static bool IsArray(ITypeSymbol type)
+		=> type.TypeKind is TypeKind.Array;
+
 	public static bool IsArray(string parameterType, string fullTypeName)
 		=> parameterType == (fullTypeName + "[]");
 
+	public static bool IsIEnumerable(ITypeSymbol typeSymbol, Compilation compilation)
+	{
+		// Get the `IEnumerable` symbol from the compilation
+		var ienumerableSymbol = compilation.GetTypeByMetadataName(Constants.System.IEnumerable);
+
+		// Check if the type implements `IEnumerable`
+		return ienumerableSymbol != null
+			&& typeSymbol.AllInterfaces.Any(i => SymbolEqualityComparer.Default.Equals(i, ienumerableSymbol));
+	}
+
+	public static bool IsGenericIEnumerable(ITypeSymbol typeSymbol, Compilation compilation)
+	{
+		// Get the `IEnumerable` symbol from the compilation
+		var ienumerableSymbol = compilation.GetTypeByMetadataName(Constants.System.GenericIEnumerable + "`1");
+
+		// Check if the type implements `IEnumerable`
+		return ienumerableSymbol != null
+			&& typeSymbol.AllInterfaces.Any(i => SymbolEqualityComparer.Default.Equals(i, ienumerableSymbol));
+	}
+
 	public static bool IsEnumerable(string parameterType, string fullTypeName)
-		=> parameterType == (Constants.System.IEnumerable.FullName + "<" + fullTypeName + ">")
-		|| parameterType.StartsWith(Constants.System.IEnumerable.FullName + "<" + fullTypeName, StringComparison.Ordinal);
+		=> parameterType == (Constants.System.GenericIEnumerable.FullName + "<" + fullTypeName + ">")
+		|| parameterType.StartsWith(Constants.System.GenericIEnumerable.FullName + "<" + fullTypeName, StringComparison.Ordinal);
 
 	public static bool IsBoolean(ITypeSymbol type)
 		=> Constants.System.Boolean.Equals(type);

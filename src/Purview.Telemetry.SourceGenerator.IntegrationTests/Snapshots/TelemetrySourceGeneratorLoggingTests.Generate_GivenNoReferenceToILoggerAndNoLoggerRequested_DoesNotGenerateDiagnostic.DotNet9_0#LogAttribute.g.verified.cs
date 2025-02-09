@@ -19,12 +19,12 @@ namespace Purview.Telemetry.Logging;
 
 /// <summary>
 /// Marker attribute required for log entry generation, based on
-/// high-performance <see cref="Microsoft.Extensions.Logging.LoggerMessage"/>.
+/// high-performance <see cref="global::Microsoft.Extensions.Logging.LoggerMessage"/>.
 /// </summary>
-[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
-[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class LogAttribute : System.Attribute
+[global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false)]
+[global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
+sealed class LogAttribute : global::System.Attribute
 {
 	/// <summary>
 	/// Creates a new instance of the <see cref="LogAttribute"/> class.
@@ -58,7 +58,7 @@ sealed class LogAttribute : System.Attribute
 	/// <param name="level">Specifies the <see cref="Level"/>.</param>
 	/// <param name="messageTemplate">Optionally specifies the <see cref="MessageTemplate"/>.</param>
 	/// <param name="name">Optionally specifies the <see cref="Name"/>.</param>
-	public LogAttribute(Microsoft.Extensions.Logging.LogLevel level, string? messageTemplate = null, string? name = null)
+	public LogAttribute(global::Microsoft.Extensions.Logging.LogLevel level, string? messageTemplate = null, string? name = null)
 	{
 		Level = level;
 		MessageTemplate = messageTemplate;
@@ -73,7 +73,7 @@ sealed class LogAttribute : System.Attribute
 	/// <param name="level">Specifies the <see cref="Level"/>.</param>
 	/// <param name="messageTemplate">Optionally specifies the <see cref="MessageTemplate"/>.</param>
 	/// <param name="name">Optionally specifies the <see cref="Name"/>.</param>
-	public LogAttribute(int eventId, Microsoft.Extensions.Logging.LogLevel level, string? messageTemplate = null, string? name = null)
+	public LogAttribute(int eventId, global::Microsoft.Extensions.Logging.LogLevel level, string? messageTemplate = null, string? name = null)
 	{
 		Level = level;
 		MessageTemplate = messageTemplate;
@@ -82,11 +82,11 @@ sealed class LogAttribute : System.Attribute
 	}
 
 	/// <summary>
-	/// Optional. Gets/ sets the <see cref="Microsoft.Extensions.Logging.LogLevel">level</see> of the
-	/// log entry. Defaults to <see cref="Microsoft.Extensions.Logging.LogLevel.Information"/>, unless there is
+	/// Optional. Gets/ sets the <see cref="global::Microsoft.Extensions.Logging.LogLevel">level</see> of the
+	/// log entry. Defaults to <see cref="global::Microsoft.Extensions.Logging.LogLevel.Information"/>, unless there is
 	/// an <see cref="Exception"/> parameter and no-other override is defined.
 	/// </summary>
-	public Microsoft.Extensions.Logging.LogLevel Level { get; set; } = Microsoft.Extensions.Logging.LogLevel.Information;
+	public global::Microsoft.Extensions.Logging.LogLevel Level { get; set; } = global::Microsoft.Extensions.Logging.LogLevel.Information;
 
 	/// <summary>
 	/// Optional. The message template used for the log entry, otherwise one is
