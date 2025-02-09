@@ -2,8 +2,10 @@
 
 partial class TelemetrySourceGeneratorTests
 {
-	[Fact]
-	public async Task Generate_FromREADMESection_GeneratesTelemetry()
+	[Theory]
+	[InlineData(IncludeLoggerTypes.LoggerOnly)]
+	[InlineData(IncludeLoggerTypes.Telemetry)]
+	public async Task Generate_FromREADMESection_GeneratesTelemetry(IncludeLoggerTypes loggerTypes)
 	{
 		// Arrange
 		const string basicTelemetry = @"
@@ -56,7 +58,10 @@ interface IEntityStoreTelemetry
 ";
 
 		// Act
-		var generationResult = await GenerateAsync(basicTelemetry, disableDependencyInjection: false);
+		var generationResult = await GenerateAsync(
+			basicTelemetry,
+			disableDependencyInjection: false,
+			includeLoggerTypes: loggerTypes);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);

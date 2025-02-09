@@ -74,13 +74,10 @@ partial class LoggerGenTargetClassEmitter
 
 		var hasState = true;
 
-		EmitStateContent(builder, indent, methodTarget, stateVarName, context, logger);
-
-		// If there is a message format, it needs to go in the state...
-		// if there is one.
-
 		if (methodTarget.IsScoped)
 		{
+			EmitStateContent(builder, indent, methodTarget, stateVarName, context, logger);
+
 			// return _logger.BeginScope(state);
 			// or
 			// return _logger.BeginScope("MessageFormat", arg1, arg2, arg3, ...);
@@ -121,6 +118,9 @@ partial class LoggerGenTargetClassEmitter
 				.Append(indent, '}')
 				.AppendLine()
 			;
+
+			// Output the state here...
+			EmitStateContent(builder, indent, methodTarget, stateVarName, context, logger);
 
 			// Call the .Log method.
 			var eventId = methodTarget.EventId ?? SharedHelpers.GetNonRandomizedHashCode(methodTarget.MethodName);
@@ -188,10 +188,11 @@ partial class LoggerGenTargetClassEmitter
 			.Append('.')
 			.AppendLine("ThreadLocalState;")
 			.Append(indent, stateVarName, withNewLine: false)
-			.AppendLine(".ReserveTagSpace(")
+			.Append(".ReserveTagSpace(")
 			.Append(reservationCount)
 			.AppendLine(");")
 			.AppendLine()
 		;
+
 	}
 }
