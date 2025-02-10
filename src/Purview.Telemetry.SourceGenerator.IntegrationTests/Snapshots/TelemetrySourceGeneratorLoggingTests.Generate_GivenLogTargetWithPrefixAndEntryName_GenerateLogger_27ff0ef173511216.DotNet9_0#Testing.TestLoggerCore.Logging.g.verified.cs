@@ -19,9 +19,9 @@ namespace Testing
 	{
 		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
 
-		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, string, int, bool, System.Exception?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.Define<string, int, bool>(Microsoft.Extensions.Logging.LogLevel.Information, new Microsoft.Extensions.Logging.EventId(1579320335, "Log"), "ITestLogger.123: stringParam: {StringParam}, intParam: {IntParam}, boolParam: {BoolParam}");
+		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, string, int, bool, System.Exception?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.Define<string, int, bool>(Microsoft.Extensions.Logging.LogLevel.Information, new Microsoft.Extensions.Logging.EventId(1579320335, "ITestLogger.123"), "ITestLogger.123: stringParam: {StringParam}, intParam: {IntParam}, boolParam: {BoolParam}");
 
-		public TestLoggerCore(Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
+		public TestLoggerCore(global::Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
 		{
 			_logger = logger;
 		}

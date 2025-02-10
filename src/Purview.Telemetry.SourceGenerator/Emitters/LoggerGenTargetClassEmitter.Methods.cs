@@ -72,40 +72,14 @@ partial class LoggerGenTargetClassEmitter
 			i++;
 		}
 
-		var hasState = true;
-
-		if (methodTarget.IsScoped)
-		{
-			EmitStateContent(builder, indent, methodTarget, stateVarName, context, logger);
-
-			// return _logger.BeginScope(state);
-			// or
-			// return _logger.BeginScope("MessageFormat", arg1, arg2, arg3, ...);
-
-			// TODO: state.
-			builder
-				.Append(indent, "return ", withNewLine: false)
-				.Append(Constants.Logging.LoggerFieldName)
-				.Append(".BeginScope(")
-			;
-
-			if (hasState)
-			{
-				builder.Append(stateVarName);
-			}
-			else
-			{
-				// MESSAGE FORMAT
-				builder.Append("TODO: MESSAGE TEMPLATE".Wrap());
-			}
-
-			builder.AppendLine(");");
-		}
-		else
+		// Should always be state, because we'll use the messageFormat. And we'll generate one if
+		// one doesn't exist...
+		if (!methodTarget.IsScoped)
 		{
 			// First check if the the Log Level is enabled.
 			// if (!_logger.IsEnabled(LogLevel.Information)))
 			// { return; };
+			// ...but only if it's not been scoped.
 			builder
 				.Append(indent, "if (!", withNewLine: false)
 				.Append(Constants.Logging.LoggerFieldName)
@@ -118,10 +92,31 @@ partial class LoggerGenTargetClassEmitter
 				.Append(indent, '}')
 				.AppendLine()
 			;
+		}
 
-			// Output the state here...
-			EmitStateContent(builder, indent, methodTarget, stateVarName, context, logger);
+		// Output the state here...
+		EmitStateContent(builder, indent, methodTarget, stateVarName, context, logger);
 
+		if (methodTarget.IsScoped)
+		{
+			// When it's messageFormat, args[] then
+			// the extension method expands them to their name and value
+			// based on the messageFormat. It also adds the {OriginalFormat}~
+			// to the end of the array.
+			// So in this instance, it might be an ordered
+			// list...
+
+			// return _logger.BeginScope(state);
+			builder
+				.Append(indent, "return ", withNewLine: false)
+				.Append(Constants.Logging.LoggerFieldName)
+				.Append(".BeginScope(")
+				.Append(stateVarName)
+				.AppendLine(");")
+			;
+		}
+		else
+		{
 			// Call the .Log method.
 			var eventId = methodTarget.EventId ?? SharedHelpers.GetNonRandomizedHashCode(methodTarget.MethodName);
 			builder
@@ -133,7 +128,7 @@ partial class LoggerGenTargetClassEmitter
 				.Append(indent + 1, "new (", withNewLine: false)
 				.Append(eventId)
 				.Append(", \"")
-				.Append(methodTarget.MethodName)
+				.Append(methodTarget.LogName)
 				.AppendLine("\"),")
 				// State
 				.Append(indent + 1, stateVarName.WithComma())
@@ -141,13 +136,10 @@ partial class LoggerGenTargetClassEmitter
 				.Append(indent + 1, methodTarget.ExceptionParameter.OrNullKeyword().WithComma())
 				// Message Template
 				.Append(indent + 1, "// GENERATE CODEGEN ATTRIB")
-				.Append(indent + 1, "static string (", withNewLine: false)
-				.Append(Constants.Logging.MicrosoftExtensions.LoggerMessageState.WithGlobal())
-				.Append(" s, ")
-				.Append(Constants.System.Exception.WithGlobal().WithNullable())
-				.AppendLine(" e) => ")
+				.Append(indent + 1, "static string (s, e) =>")
 				.Append(indent + 1, "{")
 				// TODO
+				.Append(indent + 1, "// TODO!!")
 				.Append(indent + 2, "return string.Empty;")
 				.Append(indent + 1, "}")
 				.Append(indent, ");")
@@ -186,7 +178,7 @@ partial class LoggerGenTargetClassEmitter
 			.Append(indent, "var ", withNewLine: false)
 			.Append(stateVarName)
 			.Append(" = ")
-			.Append(Constants.Logging.MicrosoftExtensions.LoggerMessageState.WithGlobal())
+			.Append(Constants.Logging.MicrosoftExtensions.LoggerMessageHelper.WithGlobal())
 			.Append('.')
 			.AppendLine("ThreadLocalState;")
 			.Append(indent, stateVarName, withNewLine: false)
@@ -196,7 +188,9 @@ partial class LoggerGenTargetClassEmitter
 			.AppendLine()
 		;
 
+		// Original format is always at 0.
 		OutputState(builder.WithIndent(indent), stateVarName, "{OriginalFormat}", methodTarget.MessageTemplate.Wrap(), 0);
+
 		var idx = 0;
 		foreach (var parameter in methodTarget.Parameters)
 		{

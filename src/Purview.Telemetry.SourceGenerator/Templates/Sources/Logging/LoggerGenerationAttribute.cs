@@ -39,6 +39,15 @@ sealed class LoggerGenerationAttribute : global::System.Attribute
 	/// Defaults to false.
 	/// </summary>
 	public bool DisableMSLoggingTelemetryGeneration { get; set; }
+
+	/// <summary>
+	/// Specifies the default mode used to generate or override the prefix for the log entry.
+	/// 
+	/// Default when the <see cref="global::Purview.Telemetry.Logging.LoggerAttribute.PrefixType"/> is not set.
+	/// 
+	/// Defaults to <see cref="global::Purview.Telemetry.Logging.LogPrefixType.Default"/>.
+	/// </summary>
+	public global::Purview.Telemetry.Logging.LogPrefixType DefaultPrefixType { get; set; }
 }
 
 #endif

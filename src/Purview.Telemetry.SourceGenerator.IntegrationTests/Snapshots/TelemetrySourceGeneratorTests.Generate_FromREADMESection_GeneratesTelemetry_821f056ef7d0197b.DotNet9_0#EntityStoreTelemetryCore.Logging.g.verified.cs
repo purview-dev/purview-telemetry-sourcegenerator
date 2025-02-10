@@ -17,8 +17,8 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 {
 	readonly Microsoft.Extensions.Logging.ILogger<IEntityStoreTelemetry> _logger;
 
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, string, System.Exception?> _logMessageAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int, string>(Microsoft.Extensions.Logging.LogLevel.Information, new Microsoft.Extensions.Logging.EventId(1180592680, "LogMessage"), "EntityStoreTelemetry.LogMessage: entityId: {EntityId}, updateState: {UpdateState}");
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, string, System.Exception?> _explicitInfoMessageAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int, string>(Microsoft.Extensions.Logging.LogLevel.Information, new Microsoft.Extensions.Logging.EventId(1861353128, "ExplicitInfoMessage"), "EntityStoreTelemetry.ExplicitInfoMessage: entityId: {EntityId}, updateState: {UpdateState}");
+	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, string, System.Exception?> _logMessageAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int, string>(Microsoft.Extensions.Logging.LogLevel.Information, new Microsoft.Extensions.Logging.EventId(1180592680, "EntityStoreTelemetry.LogMessage"), "EntityStoreTelemetry.LogMessage: entityId: {EntityId}, updateState: {UpdateState}");
+	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, string, System.Exception?> _explicitInfoMessageAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int, string>(Microsoft.Extensions.Logging.LogLevel.Information, new Microsoft.Extensions.Logging.EventId(1861353128, "EntityStoreTelemetry.ExplicitInfoMessage"), "EntityStoreTelemetry.ExplicitInfoMessage: entityId: {EntityId}, updateState: {UpdateState}");
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void LogMessage(int entityId, string updateState)

@@ -152,7 +152,6 @@ using Purview.Telemetry;
 		bool validationCompilation = true,
 		bool autoVerifyTemplates = true)
 	{
-
 		var verifierTask = Verifier
 			.Verify(generationResult.Result)
 			.UseDirectory("Snapshots")

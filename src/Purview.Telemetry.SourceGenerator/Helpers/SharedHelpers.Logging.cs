@@ -98,6 +98,7 @@ partial class SharedHelpers
 
 		AttributeValue<int>? defaultLevel = null;
 		AttributeValue<bool>? disableMSLoggingTelemetryGeneration = null;
+		AttributeValue<int>? prefixType = null;
 
 		if (!AttributeParser(attributeData!,
 		(name, value) =>
@@ -106,6 +107,8 @@ partial class SharedHelpers
 				defaultLevel = new((int)value);
 			else if (name.Equals(nameof(LoggerGenerationAttributeRecord.DisableMSLoggingTelemetryGeneration), StringComparison.OrdinalIgnoreCase))
 				disableMSLoggingTelemetryGeneration = new((bool)value);
+			else if (name.Equals(nameof(LoggerGenerationAttributeRecord.DefaultPrefixType), StringComparison.OrdinalIgnoreCase))
+				prefixType = new((int)value);
 		}, semanticModel, logger, token))
 		{
 			// Failed to parse correctly, so null it out.
@@ -114,7 +117,8 @@ partial class SharedHelpers
 
 		return new(
 			DefaultLevel: defaultLevel ?? new(),
-			DisableMSLoggingTelemetryGeneration: disableMSLoggingTelemetryGeneration ?? new()
+			DisableMSLoggingTelemetryGeneration: disableMSLoggingTelemetryGeneration ?? new(),
+			DefaultPrefixType: prefixType ?? new()
 		);
 	}
 

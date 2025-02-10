@@ -26,7 +26,7 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 			return;
 		}
 
-		var state = global::Microsoft.Extensions.Logging.LoggerMessageState.ThreadLocalState;
+		var state = global::Microsoft.Extensions.Logging.LoggerMessageHelper.ThreadLocalState;
 		state.ReserveTagSpace(3);
 
 		state.TagArray[0] = new("{OriginalFormat}", "EntityStoreTelemetry.LogMessage: entityId: {EntityId}, updateState: {UpdateState}");
@@ -35,12 +35,13 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 
 		_logger.Log(
 			global::Microsoft.Extensions.Logging.LogLevel.Information,
-			new (1180592680, "LogMessage"),
+			new (1180592680, "EntityStoreTelemetry.LogMessage"),
 			state,
 			null,
 			// GENERATE CODEGEN ATTRIB
-			static string (global::Microsoft.Extensions.Logging.LoggerMessageState s, global::System.Exception? e) => 
+			static string (s, e) =>
 			{
+			// TODO!!
 				return string.Empty;
 			}
 		);
@@ -57,7 +58,7 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 			return;
 		}
 
-		var state = global::Microsoft.Extensions.Logging.LoggerMessageState.ThreadLocalState;
+		var state = global::Microsoft.Extensions.Logging.LoggerMessageHelper.ThreadLocalState;
 		state.ReserveTagSpace(3);
 
 		state.TagArray[0] = new("{OriginalFormat}", "EntityStoreTelemetry.ExplicitInfoMessage: entityId: {EntityId}, updateState: {UpdateState}");
@@ -66,12 +67,13 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 
 		_logger.Log(
 			global::Microsoft.Extensions.Logging.LogLevel.Information,
-			new (1861353128, "ExplicitInfoMessage"),
+			new (1861353128, "EntityStoreTelemetry.ExplicitInfoMessage"),
 			state,
 			null,
 			// GENERATE CODEGEN ATTRIB
-			static string (global::Microsoft.Extensions.Logging.LoggerMessageState s, global::System.Exception? e) => 
+			static string (s, e) =>
 			{
+			// TODO!!
 				return string.Empty;
 			}
 		);

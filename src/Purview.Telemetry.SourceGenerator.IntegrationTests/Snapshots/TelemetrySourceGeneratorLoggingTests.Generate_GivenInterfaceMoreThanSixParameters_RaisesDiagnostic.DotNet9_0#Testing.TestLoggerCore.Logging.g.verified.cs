@@ -20,7 +20,7 @@ namespace Testing
 		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
 
 
-		public TestLoggerCore(Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
+		public TestLoggerCore(global::Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
 		{
 			_logger = logger;
 		}

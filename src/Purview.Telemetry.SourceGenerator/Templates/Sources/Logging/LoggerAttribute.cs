@@ -24,7 +24,7 @@ sealed class LoggerAttribute : global::System.Attribute
 	/// </summary>
 	/// <param name="defaultLevel">The default <see cref="global::Microsoft.Extensions.Logging.LogLevel"/> to use
 	/// when one is not specified.</param>
-	/// <param name="customPrefix">If specified, also sets the <see cref="PrefixType"/> to <see cref="LogPrefixType.Custom"/>.</param>
+	/// <param name="customPrefix">If specified, also sets the <see cref="PrefixType"/> to <see cref="global::Purview.Telemetry.Logging.LogPrefixType.Custom"/>.</param>
 	/// <param name="disableMSLoggingTelemetryGeneration">Disables the generation of the new style of telemetry generation for Microsoft.Extensions.Logging.</param>
 	public LoggerAttribute(global::Microsoft.Extensions.Logging.LogLevel defaultLevel, string? customPrefix = null, bool disableMSLoggingTelemetryGeneration = false)
 	{
@@ -32,16 +32,16 @@ sealed class LoggerAttribute : global::System.Attribute
 		CustomPrefix = customPrefix;
 		DisableMSLoggingTelemetryGeneration = disableMSLoggingTelemetryGeneration;
 
-		if (CustomPrefix != null)
+		if (!string.IsNullOrWhiteSpace(CustomPrefix))
 		{
-			PrefixType = LogPrefixType.Custom;
+			PrefixType = global::Purview.Telemetry.Logging.LogPrefixType.Custom;
 		}
 	}
 
 	/// <summary>
 	/// Optional. Gets the <see cref="global::Microsoft.Extensions.Logging.LogLevel">level</see> of the
 	/// log entry. Defaults to <see cref="global::Microsoft.Extensions.Logging.LogLevel.Information"/>, unless there is
-	/// an <see cref="Exception"/> parameter and no-other override is defined.
+	/// an <see cref="global::System.Exception"/> parameter and no-other override is defined.
 	/// </summary>
 	public global::Microsoft.Extensions.Logging.LogLevel DefaultLevel { get; set; } = global::Microsoft.Extensions.Logging.LogLevel.Information;
 
@@ -53,7 +53,7 @@ sealed class LoggerAttribute : global::System.Attribute
 	/// <summary>
 	/// Specifies the mode used to generate or override the prefix for the log entry.
 	/// </summary>
-	public LogPrefixType PrefixType { get; set; } = LogPrefixType.Default;
+	public global::Purview.Telemetry.Logging.LogPrefixType PrefixType { get; set; }
 
 	/// <summary>
 	/// Disables the generation of the new style of telemetry generation for Microsoft.Extensions.Logging.

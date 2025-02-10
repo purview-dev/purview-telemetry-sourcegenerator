@@ -19,9 +19,9 @@ namespace Testing
 	{
 		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
 
-		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.Collections.Generic.IEnumerable<string>, System.Exception?> _logEntryWithGenericTypeParamAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.Collections.Generic.IEnumerable<string>>(Microsoft.Extensions.Logging.LogLevel.Information, new Microsoft.Extensions.Logging.EventId(842060863, "LogEntryWithGenericTypeParam"), "Test.LogEntryWithGenericTypeParam: paramName: {ParamName}");
+		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.Collections.Generic.IEnumerable<string>, System.Exception?> _logEntryWithGenericTypeParamAction = Microsoft.Extensions.Logging.LoggerMessage.Define<System.Collections.Generic.IEnumerable<string>>(Microsoft.Extensions.Logging.LogLevel.Information, new Microsoft.Extensions.Logging.EventId(842060863, "Test.LogEntryWithGenericTypeParam"), "Test.LogEntryWithGenericTypeParam: paramName: {ParamName}");
 
-		public TestLoggerCore(Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
+		public TestLoggerCore(global::Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
 		{
 			_logger = logger;
 		}

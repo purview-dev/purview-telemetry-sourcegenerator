@@ -53,12 +53,14 @@ partial class PipelineHelpers
 
 		var loggerGenerationAttribute = SharedHelpers.GetLoggerGenerationAttribute(semanticModel, logger, token);
 		var defaultLogLevel = loggerGenerationAttribute?.DefaultLevel.IsSet == true
-			? loggerGenerationAttribute.DefaultLevel.Value!
+			? loggerGenerationAttribute.DefaultLevel.Value!.Value
 			: Constants.Logging.DefaultLevel;
-
 		var disableMSLoggingTelemetryGeneration = loggerAttribute.DisableMSLoggingTelemetryGeneration.Value
 			?? loggerGenerationAttribute?.DisableMSLoggingTelemetryGeneration.Value
 			?? false;
+		var defaultPrefixType = loggerGenerationAttribute?.DefaultPrefixType.IsSet == true
+			? loggerGenerationAttribute.DefaultPrefixType.Value!.Value
+			: 0;
 
 		if (!disableMSLoggingTelemetryGeneration)
 		{
@@ -75,7 +77,8 @@ partial class PipelineHelpers
 		var logMethods = BuildLogMethods(
 			generationType,
 			className,
-			defaultLogLevel.Value,
+			defaultLogLevel,
+			defaultPrefixType,
 			loggerAttribute,
 			context,
 			semanticModel,
@@ -98,7 +101,7 @@ partial class PipelineHelpers
 			FullyQualifiedInterfaceName: fullNamespace + interfaceSymbol.Name,
 
 			LoggerAttribute: loggerAttribute,
-			DefaultLevel: defaultLogLevel.Value,
+			DefaultLevel: defaultLogLevel,
 
 			LogMethods: logMethods,
 			DuplicateMethods: BuildDuplicateMethods(interfaceSymbol),
@@ -111,6 +114,7 @@ partial class PipelineHelpers
 		GenerationType generationType,
 		string className,
 		int defaultLogLevel,
+		int defaultPrefixType,
 		LoggerAttributeRecord loggerTarget,
 		GeneratorAttributeSyntaxContext _,
 		SemanticModel semanticModel,
@@ -137,7 +141,7 @@ partial class PipelineHelpers
 			var isKnownReturnType = method.ReturnsVoid || Constants.System.IDisposable.Equals(method.ReturnType);
 			var loggerActionFieldName = $"_{Utilities.LowercaseFirstChar(method.Name)}Action";
 
-			var logName = GetLogName(interfaceSymbol.Name, className, loggerTarget, logAttribute, method.Name);
+			var logName = GetLogName(interfaceSymbol.Name, className, loggerTarget, logAttribute, method.Name, defaultPrefixType);
 			var messageTemplate = logAttribute?.MessageTemplate.Value ?? GenerateTemplateMessage(logName, isScoped, methodParameters);
 			var hasMultipleExceptions = !isScoped && methodParameters.Count(m => m.IsException) > 1;
 			LogParameterTarget? exceptionParam = hasMultipleExceptions
@@ -187,14 +191,14 @@ partial class PipelineHelpers
 		return [.. methodTargets];
 	}
 
-	static string GetLogName(string interfaceName, string className, LoggerAttributeRecord loggerAttribute, LogAttributeRecord? logAttribute, string methodName)
+	static string GetLogName(string interfaceName, string className, LoggerAttributeRecord loggerAttribute, LogAttributeRecord? logAttribute, string methodName, int defaultPrefixType)
 	{
 		if (logAttribute?.Name.IsSet == true)
 			methodName = logAttribute!.Name.Value!;
 
 		var prefixType = loggerAttribute.PrefixType.IsSet
 			? loggerAttribute.PrefixType.Value
-			: 0; // Default
+			: defaultPrefixType; // Default as LoggerGeneration level, or Default (0)
 
 		if (prefixType == 0)
 		{

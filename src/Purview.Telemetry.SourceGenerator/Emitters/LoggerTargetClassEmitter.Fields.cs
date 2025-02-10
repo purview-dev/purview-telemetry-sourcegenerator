@@ -155,7 +155,7 @@ partial class LoggerTargetClassEmitter
 				.Append('(')
 				.Append(eventId)
 				.Append(", \"")
-				.Append(methodTarget.MethodName)
+				.Append(methodTarget.LogName)
 				.Append("\"), ")
 			;
 		}

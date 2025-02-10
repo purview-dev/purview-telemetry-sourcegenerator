@@ -12,7 +12,8 @@ record LoggerAttributeRecord(
 record LoggerGenerationAttributeRecord(
 	AttributeValue<int> DefaultLevel,
 
-	AttributeValue<bool> DisableMSLoggingTelemetryGeneration
+	AttributeValue<bool> DisableMSLoggingTelemetryGeneration,
+	AttributeValue<int> DefaultPrefixType
 );
 
 record LogAttributeRecord(
