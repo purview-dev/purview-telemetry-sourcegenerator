@@ -20,7 +20,7 @@ namespace Testing
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
 
-		public TestTelemetryCore(Microsoft.Extensions.Logging.ILogger<Testing.ITestTelemetry> logger, System.Diagnostics.Metrics.IMeterFactory meterFactory)
+		public TestTelemetryCore(global::Microsoft.Extensions.Logging.ILogger<Testing.ITestTelemetry> logger, global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			_logger = logger;
 			InitializeMeters(meterFactory);

@@ -28,7 +28,7 @@ namespace Testing
 		System.Diagnostics.Metrics.ObservableGauge<int>? _observableGaugeInstrument = null;
 		System.Diagnostics.Metrics.ObservableUpDownCounter<int>? _observableUpDownCounterInstrument = null;
 
-		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
+		public TestMetricsCore(global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			InitializeMeters(meterFactory);
 		}

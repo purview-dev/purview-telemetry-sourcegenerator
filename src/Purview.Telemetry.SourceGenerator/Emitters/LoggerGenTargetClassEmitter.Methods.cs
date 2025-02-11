@@ -64,13 +64,7 @@ partial class LoggerGenTargetClassEmitter
 		// exception and output it as the exception parameter in
 		// the Log method.
 
-		var stateVarName = "state";
-		var i = 0;
-		while (methodTarget.Parameters.Any(m => m.Name == stateVarName))
-		{
-			stateVarName = "state_" + i;
-			i++;
-		}
+		var stateVarName = FindUniqueName("state", methodTarget.Parameters.Select(m => m.Name));
 
 		// Should always be state, because we'll use the messageFormat. And we'll generate one if
 		// one doesn't exist...
@@ -117,13 +111,16 @@ partial class LoggerGenTargetClassEmitter
 		}
 		else
 		{
+			var expressionStateVarName = FindUniqueName("s", methodTarget.Parameters.Select(m => m.Name));
+			var expressionExceptionVarName = FindUniqueName("e", methodTarget.Parameters.Select(m => m.Name));
+
 			// Call the .Log method.
 			var eventId = methodTarget.EventId ?? SharedHelpers.GetNonRandomizedHashCode(methodTarget.MethodName);
 			builder
 				.Append(indent, Constants.Logging.LoggerFieldName, withNewLine: false)
 				.AppendLine(".Log(")
 				// Log level
-				.Append(indent + 1, methodTarget.MSLevel.WithGlobal().WithComma())
+				.Append(indent + 1, methodTarget.MSLevel.WithGlobal().WithComma(andSpace: false))
 				// Event Id
 				.Append(indent + 1, "new (", withNewLine: false)
 				.Append(eventId)
@@ -131,14 +128,22 @@ partial class LoggerGenTargetClassEmitter
 				.Append(methodTarget.LogName)
 				.AppendLine("\"),")
 				// State
-				.Append(indent + 1, stateVarName.WithComma())
+				.Append(indent + 1, stateVarName.WithComma(andSpace: false))
 				// Exception
-				.Append(indent + 1, methodTarget.ExceptionParameter.OrNullKeyword().WithComma())
+				.Append(indent + 1, methodTarget.ExceptionParameter.OrNullKeyword().WithComma(andSpace: false))
 				// Message Template
 				.Append(indent + 1, "// GENERATE CODEGEN ATTRIB")
-				.Append(indent + 1, "static string (s, e) =>")
+				.Append(indent + 1, "static string (", withNewLine: false)
+				.Append(expressionStateVarName)
+				.Append(", ")
+				.Append(expressionExceptionVarName)
+				.AppendLine(") =>")
 				.Append(indent + 1, "{")
-				// TODO
+			;
+
+			// TODO!!!
+
+			builder
 				.Append(indent + 1, "// TODO!!")
 				.Append(indent + 2, "return string.Empty;")
 				.Append(indent + 1, "}")
@@ -148,7 +153,8 @@ partial class LoggerGenTargetClassEmitter
 			builder
 				.AppendLine()
 				.Append(indent, stateVarName, withNewLine: false)
-				.AppendLine(".Clear();");
+				.AppendLine(".Clear();")
+			;
 		}
 
 		builder
@@ -192,13 +198,70 @@ partial class LoggerGenTargetClassEmitter
 		OutputState(builder.WithIndent(indent), stateVarName, "{OriginalFormat}", methodTarget.MessageTemplate.Wrap(), 0);
 
 		var idx = 0;
+		List<string>? nullableLogProperties = null;
 		foreach (var parameter in methodTarget.Parameters)
 		{
+			context.CancellationToken.ThrowIfCancellationRequested();
+
 			if (parameter.Name == methodTarget.ExceptionParameter?.Name)
 				// We need to skip over the exception parameter.
 				continue;
 
+			// Need to match the name against the value.
 			OutputState(builder.WithIndent(indent), stateVarName, parameter.Name, parameter.Name, ++idx);
+
+			if (parameter.LogProperties != null)
+			{
+				StringBuilder logPropertiesBuilder = new();
+				foreach (var logProperty in parameter.LogProperties.Value)
+				{
+					context.CancellationToken.ThrowIfCancellationRequested();
+
+					var logPropertyValue = $"{parameter.Name}?.{logProperty.PropertyName}";
+					var logPropertyName = logProperty.PropertyName;
+					if (!parameter.LogPropertiesAttribute!.OmitReferenceName.Value.GetValueOrDefault(false))
+						logPropertyName = $"{parameter.Name}.{logPropertyName}";
+
+					var shouldSkipNull = parameter.LogPropertiesAttribute.SkipNullProperties.Value.GetValueOrDefault(false) && logProperty.IsNullable;
+					if (shouldSkipNull)
+					{
+						logPropertiesBuilder
+							.Append(indent, '{')
+							.Append(indent + 1, "var tmp = ", withNewLine: false)
+							.Append(logPropertyValue)
+							.AppendLine(";")
+							.Append(indent + 1, "if (tmp != null)")
+							.Append(indent + 1, '{')
+						;
+
+						logPropertyValue = "tmp";
+
+						indent += 2;
+					}
+
+					OutputState(logPropertiesBuilder.WithIndent(indent), stateVarName, logPropertyName, logPropertyValue, null);
+
+					if (shouldSkipNull)
+					{
+						indent -= 2;
+						logPropertiesBuilder
+							.Append(indent + 1, '}')
+							.Append(indent, '}')
+						;
+					}
+
+					nullableLogProperties ??= [];
+					nullableLogProperties.Add(logPropertiesBuilder.ToString());
+
+					logPropertiesBuilder.Clear();
+				}
+			}
+		}
+
+		if (nullableLogProperties != null)
+		{
+			foreach (var nullableLogProperty in nullableLogProperties)
+				builder.Append(nullableLogProperty);
 		}
 
 		builder.AppendLine();
@@ -218,11 +281,10 @@ partial class LoggerGenTargetClassEmitter
 					.Append("] = new(");
 			}
 			else
-				builder.Append(".SetTag(");
+				builder.Append("AddTag(");
 
 			builder
 				.Append(propertyName.Wrap().WithComma())
-				.Append(' ')
 				.Append(value)
 				.AppendLine(");")
 			;
@@ -253,4 +315,16 @@ partial class LoggerGenTargetClassEmitter
 		}
 	}
 
+	static string FindUniqueName(string name, IEnumerable<string> existingValues)
+	{
+		var i = 0;
+		var originalName = name;
+		while (existingValues.Contains(name))
+		{
+			name = $"{originalName}_{i}";
+			i++;
+		}
+
+		return name;
+	}
 }

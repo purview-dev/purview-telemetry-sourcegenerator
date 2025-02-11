@@ -27,7 +27,7 @@ namespace Testing
 		System.Diagnostics.Metrics.Counter<float>? _counter6Instrument = null;
 		System.Diagnostics.Metrics.Counter<decimal>? _counter7Instrument = null;
 
-		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
+		public TestMetricsCore(global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			InitializeMeters(meterFactory);
 		}

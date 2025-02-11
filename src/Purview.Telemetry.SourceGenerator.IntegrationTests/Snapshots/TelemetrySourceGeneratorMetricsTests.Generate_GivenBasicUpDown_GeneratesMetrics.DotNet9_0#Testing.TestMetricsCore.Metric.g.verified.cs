@@ -22,7 +22,7 @@ namespace Testing
 		System.Diagnostics.Metrics.UpDownCounter<int>? _upDownInstrument = null;
 		System.Diagnostics.Metrics.UpDownCounter<int>? _upDown2Instrument = null;
 
-		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
+		public TestMetricsCore(global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			InitializeMeters(meterFactory);
 		}

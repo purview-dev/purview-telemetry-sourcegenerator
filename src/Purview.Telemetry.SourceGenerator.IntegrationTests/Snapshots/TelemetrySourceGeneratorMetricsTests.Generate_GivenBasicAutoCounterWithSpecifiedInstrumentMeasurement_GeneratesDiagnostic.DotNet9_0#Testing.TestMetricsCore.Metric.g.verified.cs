@@ -20,7 +20,7 @@ namespace Testing
 		System.Diagnostics.Metrics.Meter _meter = default!;
 
 
-		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
+		public TestMetricsCore(global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			InitializeMeters(meterFactory);
 		}

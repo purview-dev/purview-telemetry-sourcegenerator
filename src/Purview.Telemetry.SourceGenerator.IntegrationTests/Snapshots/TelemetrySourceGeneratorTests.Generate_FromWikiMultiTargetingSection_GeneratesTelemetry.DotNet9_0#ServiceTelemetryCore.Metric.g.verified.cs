@@ -19,7 +19,7 @@ sealed partial class ServiceTelemetryCore : IServiceTelemetry
 
 	System.Diagnostics.Metrics.Counter<int>? _anAutoIncrementInstrument = null;
 
-	public ServiceTelemetryCore(Microsoft.Extensions.Logging.ILogger<IServiceTelemetry> logger, System.Diagnostics.Metrics.IMeterFactory meterFactory)
+	public ServiceTelemetryCore(global::Microsoft.Extensions.Logging.ILogger<IServiceTelemetry> logger, global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 	{
 		_logger = logger;
 		InitializeMeters(meterFactory);

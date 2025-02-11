@@ -100,7 +100,8 @@ static partial class Utilities
 
 	public static string WithNullable(this string value) => value + '?';
 
-	public static string WithComma(this string value) => value + ',';
+	public static string WithComma(this string value, bool andSpace = true)
+		=> value + ',' + (andSpace ? ' ' : null);
 
 	public static string OrNullKeyword(this string? value) => value ?? Constants.System.NullKeyword;
 
@@ -501,6 +502,9 @@ static partial class Utilities
 
 	//	return false;
 	//}
+
+	public static bool ContainsAttribute(ISymbol symbol, string typeName, CancellationToken token)
+		=> TryContainsAttribute(symbol, typeName, token, out _);
 
 	public static bool ContainsAttribute(ISymbol symbol, Templates.TemplateInfo templateInfo, CancellationToken token)
 		=> TryContainsAttribute(symbol, templateInfo, token, out _);

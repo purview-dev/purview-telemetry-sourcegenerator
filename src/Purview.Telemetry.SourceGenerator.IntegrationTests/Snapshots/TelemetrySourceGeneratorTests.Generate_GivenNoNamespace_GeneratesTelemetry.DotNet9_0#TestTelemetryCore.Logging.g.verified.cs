@@ -17,8 +17,8 @@ sealed partial class TestTelemetryCore : ITestTelemetry
 {
 	readonly Microsoft.Extensions.Logging.ILogger<ITestTelemetry> _logger;
 
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, bool, System.Exception?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int, bool>(Microsoft.Extensions.Logging.LogLevel.Information, new Microsoft.Extensions.Logging.EventId(1579320335, "Log"), "TestTelemetry.Log: intParam: {IntParam}, boolParam: {BoolParam}");
-	static readonly System.Func<Microsoft.Extensions.Logging.ILogger, int, bool, System.IDisposable?> _logScopeAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<int, bool>("TestTelemetry.LogScope: intParam: {IntParam}, boolParam: {BoolParam}");
+	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, bool, System.Exception?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int, bool>(Microsoft.Extensions.Logging.LogLevel.Information, new Microsoft.Extensions.Logging.EventId(1579320335, "Log"), "Log: IntParam = {IntParam}, BoolParam = {BoolParam}");
+	static readonly System.Func<Microsoft.Extensions.Logging.ILogger, int, bool, System.IDisposable?> _logScopeAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<int, bool>("LogScope: IntParam = {IntParam}, BoolParam = {BoolParam}");
 
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void Log(int intParam, bool boolParam)

@@ -17,7 +17,6 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 {
 	readonly global::Microsoft.Extensions.Logging.ILogger<IEntityStoreTelemetry> _logger;
 
-
 	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void LogMessage(int entityId, string updateState)
 	{
@@ -29,13 +28,13 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 		var state = global::Microsoft.Extensions.Logging.LoggerMessageHelper.ThreadLocalState;
 		state.ReserveTagSpace(3);
 
-		state.TagArray[0] = new("{OriginalFormat}", "EntityStoreTelemetry.LogMessage: entityId: {EntityId}, updateState: {UpdateState}");
+		state.TagArray[0] = new("{OriginalFormat}", "LogMessage: EntityId = {EntityId}, UpdateState = {UpdateState}");
 		state.TagArray[1] = new("entityId", entityId);
 		state.TagArray[2] = new("updateState", updateState);
 
 		_logger.Log(
 			global::Microsoft.Extensions.Logging.LogLevel.Information,
-			new (1180592680, "EntityStoreTelemetry.LogMessage"),
+			new (1180592680, "LogMessage"),
 			state,
 			null,
 			// GENERATE CODEGEN ATTRIB
@@ -61,13 +60,13 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 		var state = global::Microsoft.Extensions.Logging.LoggerMessageHelper.ThreadLocalState;
 		state.ReserveTagSpace(3);
 
-		state.TagArray[0] = new("{OriginalFormat}", "EntityStoreTelemetry.ExplicitInfoMessage: entityId: {EntityId}, updateState: {UpdateState}");
+		state.TagArray[0] = new("{OriginalFormat}", "ExplicitInfoMessage: EntityId = {EntityId}, UpdateState = {UpdateState}");
 		state.TagArray[1] = new("entityId", entityId);
 		state.TagArray[2] = new("updateState", updateState);
 
 		_logger.Log(
 			global::Microsoft.Extensions.Logging.LogLevel.Information,
-			new (1861353128, "EntityStoreTelemetry.ExplicitInfoMessage"),
+			new (1861353128, "ExplicitInfoMessage"),
 			state,
 			null,
 			// GENERATE CODEGEN ATTRIB

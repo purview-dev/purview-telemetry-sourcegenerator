@@ -65,7 +65,6 @@ static partial class LoggerGenTargetClassEmitter
 			.Append(Constants.Logging.LoggerFieldName)
 			.Append(';')
 			.AppendLine()
-			.AppendLine()
 		;
 	}
 }

@@ -10,7 +10,8 @@ partial class PipelineHelpers
 {
 	static readonly string[] SuffixesToRemove = [
 		"Logs",
-		"Logger"
+		"Logger",
+		"Telemetry"
 	];
 
 	public static bool HasLoggerTargetAttribute(SyntaxNode _, CancellationToken __) => true;
@@ -168,7 +169,7 @@ partial class PipelineHelpers
 
 				UnknownReturnType: !isKnownReturnType,
 
-				LogName: logName,
+				LogName: logName, // This includes any prefix information
 				EventId: logAttribute?.EventId.Value,
 				MessageTemplate: messageTemplate,
 				MSLevel: Constants.Logging.LogLevelTypeMap[level],
@@ -200,9 +201,21 @@ partial class PipelineHelpers
 			? loggerAttribute.PrefixType.Value
 			: defaultPrefixType; // Default as LoggerGeneration level, or Default (0)
 
-		if (prefixType == 0)
+		if (prefixType == 1)
+			// Interface
+			return $"{interfaceName}.{methodName}";
+		else if (prefixType == 2)
+			// Class
+			return $"{className}.{methodName}";
+		else if (prefixType == 3)
 		{
-			// Default
+			// Custom
+			if (!string.IsNullOrWhiteSpace(loggerAttribute.CustomPrefix.Value))
+				return $"{loggerAttribute.CustomPrefix.Value}.{methodName}";
+		}
+		else if (prefixType == 4)
+		{
+			// TrimmedClassName
 			if (interfaceName[0] == 'I')
 				interfaceName = interfaceName.Substring(1);
 
@@ -217,20 +230,9 @@ partial class PipelineHelpers
 
 			return $"{interfaceName}.{methodName}";
 		}
-		else if (prefixType == 1)
-			// Interface
-			return $"{interfaceName}.{methodName}";
-		else if (prefixType == 2)
-			// Class
-			return $"{className}.{methodName}";
-		else if (prefixType == 3)
-		{
-			// Custom
-			if (!string.IsNullOrWhiteSpace(loggerAttribute.CustomPrefix.Value))
-				return $"{loggerAttribute.CustomPrefix.Value}.{methodName}";
-		}
 
-		// This is the NoSuffix case or if it's Custom and the CustomPrefix is null, empty or whitespace.
+		// This is the Default case or if it's Custom
+		// and the CustomPrefix is null, empty or whitespace.
 		return methodName;
 	}
 
@@ -251,8 +253,8 @@ partial class PipelineHelpers
 				continue;
 
 			builder
-				.Append(parameter.Name)
-				.Append(": ")
+				.Append(parameter.UpperCasedName)
+				.Append(" = ")
 				.Append('{')
 				.Append(parameter.UpperCasedName)
 				.Append("}, ")
@@ -279,6 +281,33 @@ partial class PipelineHelpers
 			var expandEnumerableAttribute = SharedHelpers.GetExpandEnumerableAttribute(
 				parameter, semanticModel, logger, token);
 
+			List<LogPropertiesParameterDetails>? logProperties = null;
+			if (logPropertiesAttribute != null)
+			{
+				// At this point, we know the caller wants to expand the properties for the given type.
+				// So we can find the names of all the properties and their types.
+
+				var type = parameter.Type;
+				foreach (var property in type.GetMembers().OfType<IPropertySymbol>())
+				{
+					var propertyName = property.Name;
+					if (Utilities.ContainsAttribute(property, Constants.Logging.MicrosoftExtensions.LogPropertyIgnoreAttribute, token))
+					{
+						logger?.Debug($"Skipping property {propertyName} on {parameter.Name} as it is marked with {Constants.Logging.MicrosoftExtensions.LogPropertyIgnoreAttribute}.");
+						continue;
+					}
+
+					var isNullable = property.Type.IsReferenceType || property.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
+
+					logProperties ??= [];
+
+					logProperties.Add(new(
+						PropertyName: propertyName,
+						IsNullable: isNullable
+					));
+				}
+			}
+
 			parameters.Add(new(
 				Name: parameter.Name,
 				UpperCasedName: Utilities.UppercaseFirstChar(parameter.Name),
@@ -293,6 +322,8 @@ partial class PipelineHelpers
 				IsComplexType: Utilities.IsComplexType(parameter.Type),
 
 				LogPropertiesAttribute: logPropertiesAttribute,
+				LogProperties: logProperties?.ToImmutableArray(),
+
 				ExpandEnumerableAttribute: expandEnumerableAttribute
 			));
 		}

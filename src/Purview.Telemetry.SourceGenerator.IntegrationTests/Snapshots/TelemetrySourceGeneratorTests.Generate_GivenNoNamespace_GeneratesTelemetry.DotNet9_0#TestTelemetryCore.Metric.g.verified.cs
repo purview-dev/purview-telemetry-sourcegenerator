@@ -19,7 +19,7 @@ sealed partial class TestTelemetryCore : ITestTelemetry
 
 	System.Diagnostics.Metrics.Counter<int>? _counterInstrument = null;
 
-	public TestTelemetryCore(Microsoft.Extensions.Logging.ILogger<ITestTelemetry> logger, System.Diagnostics.Metrics.IMeterFactory meterFactory)
+	public TestTelemetryCore(global::Microsoft.Extensions.Logging.ILogger<ITestTelemetry> logger, global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 	{
 		_logger = logger;
 		InitializeMeters(meterFactory);

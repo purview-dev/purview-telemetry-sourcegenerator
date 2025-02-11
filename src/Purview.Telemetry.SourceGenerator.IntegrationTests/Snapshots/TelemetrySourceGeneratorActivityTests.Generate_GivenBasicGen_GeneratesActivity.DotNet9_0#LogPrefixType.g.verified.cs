@@ -23,31 +23,33 @@ namespace Purview.Telemetry.Logging;
 enum LogPrefixType
 {
 	/// <summary>
-	/// The name of the interface without the "I" prefix or "Log", "Logger" or "Telemetry" suffixes.
-	/// </summary>
-	Default,
-
-	/// <summary>
-	/// The name of the interface.
-	/// </summary>
-	Interface,
-
-	/// <summary>
-	/// The name of the class either specified or generated.
-	/// </summary>
-	Class,
-
-	/// <summary>
-	/// Uses the custom name specified by <see cref="LoggerAttribute.CustomPrefix"/>. This is used when
-	/// the <see cref="LoggerAttribute.CustomPrefix"/> is set
-	/// regardless of <see cref="LoggerAttribute.PrefixType"/>.
-	/// </summary>
-	Custom,
-
-	/// <summary>
 	/// No suffix is added to the name.
 	/// </summary>
-	NoSuffix
+	Default = 0,
+
+	/// <summary>
+	/// The name of the interface used as the source for generation.
+	/// </summary>
+	Interface = 1,
+
+	/// <summary>
+	/// The name of the class, either specified or generated.
+	/// </summary>
+	Class = 2,
+
+	/// <summary>
+	/// Uses the custom name specified by <see cref="global::Purview.Telemetry.Logging.LoggerAttribute.CustomPrefix"/>. This is used when
+	/// the <see cref="global::Purview.Telemetry.Logging.LoggerAttribute.CustomPrefix"/> is set
+	/// regardless of <see cref="global::Purview.Telemetry.Logging.LoggerAttribute.PrefixType"/>.
+	/// </summary>
+	Custom = 3,
+
+	/// <summary>
+	/// The name of the interface without the "I" prefix or "Log", "Logger" or "Telemetry" suffixes if they exist.
+	/// 
+	/// For example, IRepositoryLog, IRepositoryLogger, or IRepositoryTelemetry would all be "Repository". 
+	/// </summary>
+	TrimmedClassName = 4
 }
 
 #endif

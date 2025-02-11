@@ -26,7 +26,7 @@ sealed partial class MeterTelemetryCore : IMeterTelemetry
 	System.Diagnostics.Metrics.ObservableUpDownCounter<byte>? _observableUpDownCounterInstrument = null;
 	System.Diagnostics.Metrics.UpDownCounter<decimal>? _upDownCounterMeterInstrument = null;
 
-	public MeterTelemetryCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
+	public MeterTelemetryCore(global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 	{
 		InitializeMeters(meterFactory);
 	}

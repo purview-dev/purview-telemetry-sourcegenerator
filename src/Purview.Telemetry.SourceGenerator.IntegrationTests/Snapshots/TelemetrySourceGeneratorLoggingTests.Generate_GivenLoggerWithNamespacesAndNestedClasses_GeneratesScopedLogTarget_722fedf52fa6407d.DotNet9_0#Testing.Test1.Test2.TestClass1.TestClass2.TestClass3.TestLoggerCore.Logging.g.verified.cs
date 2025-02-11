@@ -25,7 +25,7 @@ namespace Testing.Test1.Test2
 				{
 					readonly Microsoft.Extensions.Logging.ILogger<Testing.Test1.Test2.TestClass1.TestClass2.TestClass3.ITestLogger> _logger;
 
-					static readonly System.Func<Microsoft.Extensions.Logging.ILogger, string, int, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<string, int>("Test.Log: stringParam: {StringParam}, intParam: {IntParam}");
+					static readonly System.Func<Microsoft.Extensions.Logging.ILogger, string, int, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<string, int>("Log: StringParam = {StringParam}, IntParam = {IntParam}");
 
 					public TestLoggerCore(global::Microsoft.Extensions.Logging.ILogger<Testing.Test1.Test2.TestClass1.TestClass2.TestClass3.ITestLogger> logger)
 					{

@@ -60,7 +60,7 @@ public interface ITestLogger {{
 	{
 		TheoryData<string, string> data = [];
 
-		string[] prefixes = ["Default", "Custom", "Interface", "Class", "NoSuffix"];
+		string[] prefixes = ["Default", "Custom", "Interface", "Class", "TrimmedClassName"];
 
 		foreach (var type in prefixes)
 		{

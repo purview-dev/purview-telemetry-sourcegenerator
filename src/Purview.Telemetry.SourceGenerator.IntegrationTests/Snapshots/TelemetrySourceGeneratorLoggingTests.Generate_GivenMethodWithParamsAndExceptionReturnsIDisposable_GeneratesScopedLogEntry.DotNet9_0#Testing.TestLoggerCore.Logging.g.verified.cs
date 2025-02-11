@@ -19,7 +19,7 @@ namespace Testing
 	{
 		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
 
-		static readonly System.Func<Microsoft.Extensions.Logging.ILogger, string, int, System.Exception, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<string, int, System.Exception>("Test.Log: stringParam: {StringParam}, intParam: {IntParam}, exception: {Exception}");
+		static readonly System.Func<Microsoft.Extensions.Logging.ILogger, string, int, System.Exception, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<string, int, System.Exception>("Log: StringParam = {StringParam}, IntParam = {IntParam}, Exception = {Exception}");
 
 		public TestLoggerCore(global::Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
 		{

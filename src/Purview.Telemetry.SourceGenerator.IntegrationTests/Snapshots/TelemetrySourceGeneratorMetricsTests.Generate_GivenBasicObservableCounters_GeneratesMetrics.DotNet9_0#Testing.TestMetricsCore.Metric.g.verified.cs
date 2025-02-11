@@ -23,7 +23,7 @@ namespace Testing
 		System.Diagnostics.Metrics.ObservableCounter<int>? _observableCounter2Instrument = null;
 		System.Diagnostics.Metrics.ObservableCounter<int>? _observableCounter3Instrument = null;
 
-		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
+		public TestMetricsCore(global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			InitializeMeters(meterFactory);
 		}

@@ -90,5 +90,12 @@ record LogParameterTarget(
 	bool IsComplexType,
 
 	LogPropertiesAttributeRecord? LogPropertiesAttribute,
+	ImmutableArray<LogPropertiesParameterDetails>? LogProperties,
+
 	ExpandEnumerableAttributeRecord? ExpandEnumerableAttribute
+);
+
+record LogPropertiesParameterDetails(
+	string PropertyName,
+	bool IsNullable
 );

@@ -21,7 +21,7 @@ namespace Testing
 
 		System.Diagnostics.Metrics.ObservableGauge<byte>? _metricInstrument = null;
 
-		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
+		public TestMetricsCore(global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			InitializeMeters(meterFactory);
 		}

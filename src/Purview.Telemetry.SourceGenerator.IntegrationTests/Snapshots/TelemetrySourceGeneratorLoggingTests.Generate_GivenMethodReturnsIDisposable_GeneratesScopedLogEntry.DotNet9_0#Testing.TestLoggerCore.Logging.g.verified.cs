@@ -19,7 +19,7 @@ namespace Testing
 	{
 		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
 
-		static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope("Test.Log");
+		static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope("Log");
 
 		public TestLoggerCore(global::Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
 		{
