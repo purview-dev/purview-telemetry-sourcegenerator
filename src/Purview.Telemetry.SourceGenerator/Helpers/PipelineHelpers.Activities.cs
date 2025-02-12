@@ -25,6 +25,12 @@ partial class PipelineHelpers
 			return null;
 		}
 
+		if (interfaceSymbol.Arity > 0)
+		{
+			logger?.Diagnostic($"Cannot generate a Activity target for a generic interface '{interfaceDeclaration.Flatten()}'.");
+			return ActivitySourceTarget.Failed(TelemetryDiagnostics.General.GenericInterfacesNotSupported);
+		}
+
 		var semanticModel = context.SemanticModel;
 		var activitySourceAttribute = SharedHelpers.GetActivitySourceAttribute(context.TargetSymbol, semanticModel, logger, token);
 		if (activitySourceAttribute == null)
@@ -63,8 +69,12 @@ partial class PipelineHelpers
 			semanticModel,
 			interfaceSymbol,
 			logger,
-			token
+			token,
+			out var methodDiagnostic
 		);
+
+		if (methodDiagnostic != null)
+			return ActivitySourceTarget.Failed(methodDiagnostic);
 
 		return new(
 			TelemetryGeneration: telemetryGeneration,
@@ -98,9 +108,12 @@ partial class PipelineHelpers
 		SemanticModel semanticModel,
 		INamedTypeSymbol interfaceSymbol,
 		IGenerationLogger? logger,
-		CancellationToken token)
+		CancellationToken token,
+		out TelemetryDiagnosticDescriptor? methodDiagnostic)
 	{
 		token.ThrowIfCancellationRequested();
+
+		methodDiagnostic = null;
 
 		var prefix = GeneratePrefix(activitySourceGenerationAttribute, activitySourceAttribute, token);
 		var defaultToTags = activitySourceGenerationAttribute?.DefaultToTags.IsSet == true
@@ -112,6 +125,12 @@ partial class PipelineHelpers
 		foreach (var method in interfaceSymbol.GetMembers().OfType<IMethodSymbol>())
 		{
 			token.ThrowIfCancellationRequested();
+
+			if (method.Arity > 0)
+			{
+				methodDiagnostic = TelemetryDiagnostics.General.GenericMethodsNotSupported;
+				break;
+			}
 
 			if (Utilities.ContainsAttribute(method, Constants.Shared.ExcludeAttribute, token))
 			{

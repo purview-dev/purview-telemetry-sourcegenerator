@@ -25,7 +25,31 @@ record ActivitySourceTarget(
 	ActivitySourceAttributeRecord ActivityTargetAttributeRecord,
 	Location? InterfaceLocation,
 	ImmutableDictionary<string, Location[]> DuplicateMethods
-);
+)
+{
+	public TelemetryDiagnosticDescriptor? Failure { get; init; }
+
+	public static ActivitySourceTarget Failed(TelemetryDiagnosticDescriptor diag)
+		=> new(
+		null!,
+		GenerationType.None,
+		null!,
+		null,
+		null!,
+		null,
+		null!,
+		null!,
+		null!,
+		null,
+		null,
+		[],
+		null!,
+		null,
+		null!)
+		{
+			Failure = diag
+		};
+}
 
 record ActivityBasedGenerationTarget(
 	string MethodName,

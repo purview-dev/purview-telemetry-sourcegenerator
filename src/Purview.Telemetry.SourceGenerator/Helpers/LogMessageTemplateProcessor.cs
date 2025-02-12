@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 
-static class TemplateProcessor
+static class LogMessageTemplateProcessor
 {
 	const int WrongBraceFound = -2;
 	const int NoBracesFound = -1;
@@ -97,9 +97,11 @@ static class TemplateProcessor
 			var templateName = message.Substring(openBraceIndex + 1, formatDelimiterIndex - openBraceIndex - 1).Trim();
 			var mapped = mapTemplate(templateName);
 
-			_ = sb.Append(message, scanIndex, openBraceIndex - scanIndex + 1);
-			_ = sb.Append(mapped);
-			_ = sb.Append(message, formatDelimiterIndex, closeBraceIndex - formatDelimiterIndex + 1);
+			sb
+				.Append(message, scanIndex, openBraceIndex - scanIndex + 1)
+				.Append(mapped)
+				.Append(message, formatDelimiterIndex, closeBraceIndex - formatDelimiterIndex + 1)
+			;
 
 			scanIndex = closeBraceIndex + 1;
 		}

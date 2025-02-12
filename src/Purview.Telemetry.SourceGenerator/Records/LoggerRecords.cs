@@ -26,7 +26,8 @@ record LoggerTarget(
 {
 	public TelemetryDiagnosticDescriptor? Failure { get; init; }
 
-	public static LoggerTarget MSLoggingNotReferenced = new(
+	public static LoggerTarget Failed(TelemetryDiagnosticDescriptor diag)
+		=> new(
 		null!,
 		GenerationType.None,
 		null!,
@@ -41,9 +42,9 @@ record LoggerTarget(
 		[],
 		null!,
 		false)
-	{
-		Failure = TelemetryDiagnostics.Logging.MSLoggingNotReferencedButAttemptedUse
-	};
+		{
+			Failure = diag
+		};
 }
 
 record LogTarget(

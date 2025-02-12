@@ -23,7 +23,28 @@ record MeterTarget(
 
 	ImmutableArray<InstrumentTarget> InstrumentationMethods,
 	ImmutableDictionary<string, Location[]> DuplicateMethods
-);
+)
+{
+	public TelemetryDiagnosticDescriptor? Failure { get; init; }
+
+	public static MeterTarget Failed(TelemetryDiagnosticDescriptor diag)
+		=> new(
+		null!,
+		GenerationType.None,
+		null!,
+		null,
+		null!,
+		null,
+		null,
+		null!,
+		null!,
+		null,
+		null, [],
+		null!)
+		{
+			Failure = diag
+		};
+}
 
 record InstrumentTarget(
 	string MethodName,

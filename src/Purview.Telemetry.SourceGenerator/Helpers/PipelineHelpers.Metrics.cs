@@ -25,6 +25,12 @@ partial class PipelineHelpers
 			return null;
 		}
 
+		if (interfaceSymbol.Arity > 0)
+		{
+			logger?.Diagnostic($"Cannot generate a Meter target for a generic interface '{interfaceDeclaration.Flatten()}'.");
+			return MeterTarget.Failed(TelemetryDiagnostics.General.GenericInterfacesNotSupported);
+		}
+
 		var semanticModel = context.SemanticModel;
 		var meterAttribute = SharedHelpers.GetMeterAttribute(context.TargetSymbol, semanticModel, logger, token);
 		if (meterAttribute == null)
@@ -48,8 +54,12 @@ partial class PipelineHelpers
 			semanticModel,
 			interfaceSymbol,
 			logger,
-			token
+			token,
+			out TelemetryDiagnosticDescriptor? methodDiagnostic
 		);
+
+		if (methodDiagnostic != null)
+			return MeterTarget.Failed(methodDiagnostic);
 
 		var meterName = meterAttribute.Name.Value;
 		if (string.IsNullOrWhiteSpace(meterName))
@@ -89,9 +99,12 @@ partial class PipelineHelpers
 		SemanticModel semanticModel,
 		INamedTypeSymbol interfaceSymbol,
 		IGenerationLogger? logger,
-		CancellationToken token)
+		CancellationToken token,
+		out TelemetryDiagnosticDescriptor? methodDiagnostic)
 	{
 		token.ThrowIfCancellationRequested();
+
+		methodDiagnostic = null;
 
 		var lowercaseInstrumentName = meterAttribute.LowercaseInstrumentName.IsSet
 			? meterAttribute.LowercaseInstrumentName.Value!.Value
@@ -111,6 +124,12 @@ partial class PipelineHelpers
 			{
 				logger?.Debug($"Skipping {interfaceSymbol.Name}.{method.Name}, explicitly excluded.");
 				continue;
+			}
+
+			if (method.Arity > 0)
+			{
+				methodDiagnostic = TelemetryDiagnostics.General.GenericMethodsNotSupported;
+				break;
 			}
 
 			logger?.Debug($"Found possible instrument method {interfaceSymbol.Name}.{method.Name}.");

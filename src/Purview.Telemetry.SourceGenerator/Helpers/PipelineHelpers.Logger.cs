@@ -24,7 +24,7 @@ partial class PipelineHelpers
 		if (iLoggerTypeSymbol is null)
 		{
 			logger?.Diagnostic($"Requested a Logger target to be generated, but could not find the ILogger symbol referenced '{context.TargetNode.Flatten()}'.");
-			return LoggerTarget.MSLoggingNotReferenced;
+			return LoggerTarget.Failed(TelemetryDiagnostics.Logging.MSLoggingNotReferenced);
 		}
 
 		if (context.TargetNode is not InterfaceDeclarationSyntax interfaceDeclaration)
@@ -37,6 +37,12 @@ partial class PipelineHelpers
 		{
 			logger?.Error($"Could not find interface symbol '{interfaceDeclaration.Flatten()}'.");
 			return null;
+		}
+
+		if (interfaceSymbol.Arity > 0)
+		{
+			logger?.Diagnostic($"Cannot generate a Logger target for a generic interface '{interfaceDeclaration.Flatten()}'.");
+			return LoggerTarget.Failed(TelemetryDiagnostics.General.GenericInterfacesNotSupported);
 		}
 
 		var semanticModel = context.SemanticModel;
@@ -85,8 +91,12 @@ partial class PipelineHelpers
 			semanticModel,
 			interfaceSymbol,
 			logger,
-			token
+			token,
+			out var methodDiagnostic
 		);
+
+		if (methodDiagnostic != null)
+			return LoggerTarget.Failed(methodDiagnostic);
 
 		return new(
 			TelemetryGeneration: telemetryGeneration,
@@ -121,9 +131,12 @@ partial class PipelineHelpers
 		SemanticModel semanticModel,
 		INamedTypeSymbol interfaceSymbol,
 		IGenerationLogger? logger,
-		CancellationToken token)
+		CancellationToken token,
+		out TelemetryDiagnosticDescriptor? telemetryDiagnostic)
 	{
 		token.ThrowIfCancellationRequested();
+
+		telemetryDiagnostic = null;
 
 		List<LogTarget> methodTargets = [];
 		foreach (var method in interfaceSymbol.GetMembers().OfType<IMethodSymbol>())
@@ -132,6 +145,12 @@ partial class PipelineHelpers
 			{
 				logger?.Debug($"Skipping {interfaceSymbol.Name}.{method.Name}, explicitly excluded.");
 				continue;
+			}
+
+			if (method.Arity > 0)
+			{
+				telemetryDiagnostic = TelemetryDiagnostics.General.GenericMethodsNotSupported;
+				break;
 			}
 
 			logger?.Debug($"Found method {interfaceSymbol.Name}.{method.Name}.");
