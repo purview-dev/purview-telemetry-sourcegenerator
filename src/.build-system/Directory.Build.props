@@ -89,6 +89,7 @@
 	<!-- Test Projects. -->
 	<PropertyGroup Label="Testing Project Properties" Condition="'$(IsTestProject)' == 'true'">
 		<OutputType>Exe</OutputType>
+		<UseAppHost>true</UseAppHost>
 
 		<UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
 		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
