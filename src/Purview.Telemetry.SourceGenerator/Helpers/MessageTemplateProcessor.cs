@@ -1,14 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-// This has been lifted, with thanks!, from the https://github.com/dotnet/extensions repo.
+// This has been lifted and modified, with thanks!, from the https://github.com/dotnet/extensions repo.
 
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 
-static class LogMessageTemplateProcessor
+/// <summary>
+/// The Message Template format consists of a string with 'holes' in it.
+/// Each hole is a named property, with optional formatting.
+/// </summary>
+static class MessageTemplateProcessor
 {
 	const int WrongBraceFound = -2;
 	const int NoBracesFound = -1;
@@ -16,9 +21,11 @@ static class LogMessageTemplateProcessor
 	static readonly char[] FormatDelimiters = [',', ':'];
 
 	/// <summary>
-	/// Finds the template arguments contained in the message string.
+	/// Finds the property arguments contained in the message template.
+	/// 
+	/// Template contain holes, holes contain properties and formatting information.
 	/// </summary>
-	public static bool ExtractTemplates(string? message, List<string> templates)
+	public static bool ExtractProperties(string? message, out ImmutableArray<string> properties)
 	{
 		if (string.IsNullOrEmpty(message))
 			return true;
@@ -26,6 +33,7 @@ static class LogMessageTemplateProcessor
 		var scanIndex = 0;
 		var endIndex = message!.Length;
 
+		List<string>? messageProperties = null;
 		var success = true;
 		while (scanIndex < endIndex)
 		{
@@ -47,39 +55,43 @@ static class LogMessageTemplateProcessor
 				break;
 			}
 
-			// Format item syntax : { index[,alignment][ :formatString] }.
+			// Format hole syntax : { index[,alignment][ :formatString] }.
 			var formatDelimiterIndex = FindIndexOfAny(message, FormatDelimiters, openBraceIndex, closeBraceIndex);
-			var templateName = message.Substring(openBraceIndex + 1, formatDelimiterIndex - openBraceIndex - 1).Trim();
+			var propertyName = message.Substring(openBraceIndex + 1, formatDelimiterIndex - openBraceIndex - 1).Trim();
 
-			if (string.IsNullOrWhiteSpace(templateName))
+			if (string.IsNullOrWhiteSpace(propertyName))
 			{
 				// braces with no named argument, such as "{}" and "{ }"
 				success = false;
 				break;
 			}
 
-			templates.Add(templateName);
+			messageProperties ??= [];
+			messageProperties.Add(propertyName);
 
 			scanIndex = closeBraceIndex + 1;
 		}
+
+		if (messageProperties != null)
+			properties = [.. messageProperties];
 
 		return success;
 	}
 
 	/// <summary>
-	/// Allows replacing individual template arguments with different strings.
+	/// Allows replacing individual properties with different strings.
 	/// </summary>
-	public static string? MapTemplates(string? message, Func<string, string> mapTemplate)
+	public static string? MapProperties(string? template, Func<string, string> mapProperty)
 	{
-		if (string.IsNullOrEmpty(message))
-			return message;
+		if (string.IsNullOrEmpty(template))
+			return template;
 
 		StringBuilder sb = new();
 		var scanIndex = 0;
-		var endIndex = message!.Length;
+		var endIndex = template!.Length;
 		while (scanIndex < endIndex)
 		{
-			var openBraceIndex = FindBraceIndex(message, '{', scanIndex, endIndex);
+			var openBraceIndex = FindBraceIndex(template, '{', scanIndex, endIndex);
 
 			if (openBraceIndex == WrongBraceFound)
 				// found '}' instead of '{'
@@ -88,41 +100,41 @@ static class LogMessageTemplateProcessor
 				// scanned the string and didn't find any remaining '{' or '}'
 				break;
 
-			var closeBraceIndex = FindBraceIndex(message, '}', openBraceIndex + 1, endIndex);
+			var closeBraceIndex = FindBraceIndex(template, '}', openBraceIndex + 1, endIndex);
 			if (closeBraceIndex < 0)
 				break;
 
-			// Format item syntax : { index[,alignment][ :formatString] }.
-			var formatDelimiterIndex = FindIndexOfAny(message, FormatDelimiters, openBraceIndex, closeBraceIndex);
-			var templateName = message.Substring(openBraceIndex + 1, formatDelimiterIndex - openBraceIndex - 1).Trim();
-			var mapped = mapTemplate(templateName);
+			// Format hole syntax : { index[,alignment][ :formatString] }.
+			var formatDelimiterIndex = FindIndexOfAny(template, FormatDelimiters, openBraceIndex, closeBraceIndex);
+			var property = template.Substring(openBraceIndex + 1, formatDelimiterIndex - openBraceIndex - 1).Trim();
+			var remappedProperty = mapProperty(property);
 
 			sb
-				.Append(message, scanIndex, openBraceIndex - scanIndex + 1)
-				.Append(mapped)
-				.Append(message, formatDelimiterIndex, closeBraceIndex - formatDelimiterIndex + 1)
+				.Append(template, scanIndex, openBraceIndex - scanIndex + 1)
+				.Append(remappedProperty)
+				.Append(template, formatDelimiterIndex, closeBraceIndex - formatDelimiterIndex + 1)
 			;
 
 			scanIndex = closeBraceIndex + 1;
 		}
 
-		_ = sb.Append(message, scanIndex, message.Length - scanIndex);
+		_ = sb.Append(template, scanIndex, template.Length - scanIndex);
 		return sb.ToString();
 	}
 
-	static int FindIndexOfAny(string message, char[] chars, int startIndex, int endIndex)
+	static int FindIndexOfAny(string template, char[] chars, int startIndex, int endIndex)
 	{
-		var findIndex = message.IndexOfAny(chars, startIndex, endIndex - startIndex);
+		var findIndex = template.IndexOfAny(chars, startIndex, endIndex - startIndex);
 		return findIndex == -1 ? endIndex : findIndex;
 	}
 
 	/// <summary>
-	/// Searches for the next brace index in the message.
+	/// Searches for the next brace index in the template.
 	/// </summary>
-	/// <remarks> The search skips any sequences of {{ or }}.</remarks>
+	/// <remarks>The search skips any sequences of {{ or }}.</remarks>
 	/// <example>{{prefix{{{Argument}}}suffix}}.</example>
 	/// <returns>The zero-based index position of the first occurrence of the searched brace; -1 if the searched brace was not found; -2 if the wrong brace was found.</returns>
-	static int FindBraceIndex(string message, char searchedBrace, int startIndex, int endIndex)
+	static int FindBraceIndex(string template, char searchedBrace, int startIndex, int endIndex)
 	{
 		Debug.Assert(searchedBrace is '{' or '}', "Searched brace must be { or }");
 
@@ -131,7 +143,7 @@ static class LogMessageTemplateProcessor
 
 		while (scanIndex < endIndex)
 		{
-			var current = message[scanIndex];
+			var current = template[scanIndex];
 
 			if (current is '{' or '}')
 			{
@@ -139,7 +151,7 @@ static class LogMessageTemplateProcessor
 
 				var scanIndexBeforeSkip = scanIndex;
 				while (current == currentBrace && ++scanIndex < endIndex)
-					current = message[scanIndex];
+					current = template[scanIndex];
 
 				var bracesCount = scanIndex - scanIndexBeforeSkip;
 

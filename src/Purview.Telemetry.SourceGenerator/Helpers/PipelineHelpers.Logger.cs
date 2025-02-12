@@ -74,8 +74,7 @@ partial class PipelineHelpers
 			// We got to here which means we're trying to use the new generation type,
 			// so let's check if the LogPropertiesAttribute is referenced. If it's not,
 			// we'll disable the new telemetry generation.
-			disableMSLoggingTelemetryGeneration
-				= context.SemanticModel.Compilation.GetTypeByMetadataName(
+			disableMSLoggingTelemetryGeneration = context.SemanticModel.Compilation.GetTypeByMetadataName(
 					Constants.Logging.MicrosoftExtensions.LogPropertiesAttribute.FullName) == null;
 		}
 
@@ -121,7 +120,7 @@ partial class PipelineHelpers
 		);
 	}
 
-	static ImmutableArray<LogTarget> BuildLogMethods(
+	static ImmutableArray<LogMethodTarget> BuildLogMethods(
 		GenerationType generationType,
 		string className,
 		int defaultLogLevel,
@@ -138,7 +137,7 @@ partial class PipelineHelpers
 
 		telemetryDiagnostic = null;
 
-		List<LogTarget> methodTargets = [];
+		List<LogMethodTarget> methodTargets = [];
 		foreach (var method in interfaceSymbol.GetMembers().OfType<IMethodSymbol>())
 		{
 			if (Utilities.ContainsAttribute(method, Constants.Shared.ExcludeAttribute, token))
@@ -162,7 +161,7 @@ partial class PipelineHelpers
 			var loggerActionFieldName = $"_{Utilities.LowercaseFirstChar(method.Name)}Action";
 
 			var logName = GetLogName(interfaceSymbol.Name, className, loggerTarget, logAttribute, method.Name, defaultPrefixType);
-			var messageTemplate = logAttribute?.MessageTemplate.Value ?? GenerateTemplateMessage(logName, isScoped, methodParameters);
+			var messageProperties = logAttribute?.MessageTemplate.Value ?? GenerateTemplateMessage(logName, isScoped, methodParameters);
 			var hasMultipleExceptions = !isScoped && methodParameters.Count(m => m.IsException) > 1;
 			LogParameterTarget? exceptionParam = hasMultipleExceptions
 				? null
@@ -181,6 +180,15 @@ partial class PipelineHelpers
 					: 4 // Error
 				)!;
 
+			if (!MessageTemplateProcessor.ExtractProperties(messageProperties, out var templatedProperties))
+			{
+				telemetryDiagnostic = TelemetryDiagnostics.Logging.MalformedMessageTemplate;
+				break;
+			}
+
+			foreach (var param in methodParameters)
+				param.UsedInTemplate = templatedProperties.Contains(param.Name, StringComparer.OrdinalIgnoreCase);
+
 			methodTargets.Add(new(
 				MethodName: method.Name,
 				IsScoped: isScoped,
@@ -190,7 +198,10 @@ partial class PipelineHelpers
 
 				LogName: logName, // This includes any prefix information
 				EventId: logAttribute?.EventId.Value,
-				MessageTemplate: messageTemplate,
+
+				MessageTemplate: messageProperties,
+				TemplateProperties: templatedProperties,
+
 				MSLevel: Constants.Logging.LogLevelTypeMap[level],
 
 				Parameters: methodParameters,

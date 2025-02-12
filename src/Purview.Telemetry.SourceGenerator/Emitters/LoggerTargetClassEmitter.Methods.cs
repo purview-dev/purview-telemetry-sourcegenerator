@@ -30,7 +30,7 @@ partial class LoggerTargetClassEmitter
 		return --indent;
 	}
 
-	static void EmitLogActionMethod(StringBuilder builder, int indent, LogTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger)
+	static void EmitLogActionMethod(StringBuilder builder, int indent, LogMethodTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger)
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -124,7 +124,7 @@ partial class LoggerTargetClassEmitter
 		;
 	}
 
-	static void EmitParametersAsMethodArgumentList(LogTarget methodTarget, StringBuilder builder, SourceProductionContext context)
+	static void EmitParametersAsMethodArgumentList(LogMethodTarget methodTarget, StringBuilder builder, SourceProductionContext context)
 	{
 		for (var i = 0; i < methodTarget.TotalParameterCount; i++)
 		{

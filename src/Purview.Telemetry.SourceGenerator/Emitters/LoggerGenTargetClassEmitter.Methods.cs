@@ -24,7 +24,7 @@ partial class LoggerGenTargetClassEmitter
 		return --indent;
 	}
 
-	static void EmitMethod(StringBuilder builder, int indent, LogTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger)
+	static void EmitMethod(StringBuilder builder, int indent, LogMethodTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger)
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -64,7 +64,10 @@ partial class LoggerGenTargetClassEmitter
 		// exception and output it as the exception parameter in
 		// the Log method.
 
-		var stateVarName = FindUniqueName("state", methodTarget.Parameters.Select(m => m.Name));
+		List<string> existingParamNames = [.. methodTarget.Parameters.Select(m => m.Name)];
+		var stateVarName = FindUniqueName("state", existingParamNames);
+
+		existingParamNames.Add(stateVarName);
 
 		// Should always be state, because we'll use the messageFormat. And we'll generate one if
 		// one doesn't exist...
@@ -112,7 +115,11 @@ partial class LoggerGenTargetClassEmitter
 		else
 		{
 			var expressionStateVarName = FindUniqueName("s", methodTarget.Parameters.Select(m => m.Name));
-			var expressionExceptionVarName = FindUniqueName("e", methodTarget.Parameters.Select(m => m.Name));
+			var expressionExceptionVarName = methodTarget.ExceptionParameter?.UsedInTemplate == true
+				? FindUniqueName("e", methodTarget.Parameters.Select(m => m.Name))
+				: "_";
+
+			existingParamNames.AddRange([expressionStateVarName, expressionExceptionVarName]);
 
 			// Call the .Log method.
 			var eventId = methodTarget.EventId ?? SharedHelpers.GetNonRandomizedHashCode(methodTarget.MethodName);
@@ -141,7 +148,26 @@ partial class LoggerGenTargetClassEmitter
 				.Append(indent + 1, "{")
 			;
 
-			// TODO!!!
+			var idx = -1;
+			foreach (var param in methodTarget.Parameters)
+			{
+				idx++;
+				if (!param.UsedInTemplate)
+					continue;
+
+				var tmpVarName = FindUniqueName($"tmp{idx}", existingParamNames);
+				existingParamNames.Add(tmpVarName);
+
+				builder
+					.Append(indent + 2, "var ", withNewLine: false)
+					.Append(tmpVarName)
+					.Append(" = ")
+					.Append(expressionStateVarName)
+					.Append(".TagValue[")
+					.Append(idx)
+					.AppendLine("].Value ?? \"(null)\";")
+				;
+			}
 
 			builder
 				.Append(indent + 1, "// TODO!!")
@@ -163,7 +189,7 @@ partial class LoggerGenTargetClassEmitter
 		;
 	}
 
-	static void EmitStateContent(StringBuilder builder, int indent, LogTarget methodTarget, string stateVarName, SourceProductionContext context, IGenerationLogger? logger)
+	static void EmitStateContent(StringBuilder builder, int indent, LogMethodTarget methodTarget, string stateVarName, SourceProductionContext context, IGenerationLogger? logger)
 	{
 		var reservationCount = methodTarget.ParameterCount + 1;
 		if (methodTarget.ExceptionParameter != null)
@@ -291,7 +317,7 @@ partial class LoggerGenTargetClassEmitter
 		}
 	}
 
-	static void EmitParametersAsMethodArgumentList(LogTarget methodTarget, StringBuilder builder, SourceProductionContext context)
+	static void EmitParametersAsMethodArgumentList(LogMethodTarget methodTarget, StringBuilder builder, SourceProductionContext context)
 	{
 		for (var i = 0; i < methodTarget.TotalParameterCount; i++)
 		{

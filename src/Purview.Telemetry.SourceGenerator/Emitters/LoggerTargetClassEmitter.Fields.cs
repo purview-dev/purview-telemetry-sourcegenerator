@@ -74,7 +74,7 @@ partial class LoggerTargetClassEmitter
 		return --indent;
 	}
 
-	static void EmitLogActionField(StringBuilder builder, int indent, LogTarget methodTarget)
+	static void EmitLogActionField(StringBuilder builder, int indent, LogMethodTarget methodTarget)
 	{
 		builder
 			.Append(indent, "static readonly ", withNewLine: false)

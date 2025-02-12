@@ -19,7 +19,7 @@ record LoggerTarget(
 	LoggerAttributeRecord LoggerAttribute,
 	int DefaultLevel,
 
-	ImmutableArray<LogTarget> LogMethods,
+	ImmutableArray<LogMethodTarget> LogMethods,
 	ImmutableDictionary<string, Location[]> DuplicateMethods,
 
 	bool UseMSLoggingTelemetryBasedGeneration)
@@ -47,7 +47,7 @@ record LoggerTarget(
 		};
 }
 
-record LogTarget(
+record LogMethodTarget(
 	string MethodName,
 	bool IsScoped,
 	string LoggerActionFieldName,
@@ -57,6 +57,7 @@ record LogTarget(
 	string LogName,
 	int? EventId,
 	string MessageTemplate,
+	ImmutableArray<string> TemplateProperties,
 	string MSLevel,
 
 	ImmutableArray<LogParameterTarget> Parameters,
@@ -94,7 +95,10 @@ record LogParameterTarget(
 	ImmutableArray<LogPropertiesParameterDetails>? LogProperties,
 
 	ExpandEnumerableAttributeRecord? ExpandEnumerableAttribute
-);
+)
+{
+	public bool UsedInTemplate { get; set; }
+}
 
 record LogPropertiesParameterDetails(
 	string PropertyName,
