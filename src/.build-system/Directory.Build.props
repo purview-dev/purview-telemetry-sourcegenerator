@@ -112,7 +112,7 @@
 		<Using Include="Xunit" />
 		<Using Include="NSubstitute" />
 
-		<Content Include="$(MSBuildThisFileDirectory)xunit/xunit.runner.json" Link="Properties/shared-xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+		<Content Include="$(MSBuildThisFileDirectory)xunit/xunit.runner.json" Link="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
 
 		<AssemblyAttribute Include="Xunit.Trait">
 			<_Parameter1>Category</_Parameter1>
