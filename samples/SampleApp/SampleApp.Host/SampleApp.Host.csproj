@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
 		<Nullable>enable</Nullable>
@@ -19,5 +18,4 @@
 	<ItemGroup>
 		<ProjectReference Include="..\SampleApp.ServiceDefaults\SampleApp.ServiceDefaults.csproj" />
 	</ItemGroup>
-
 </Project>

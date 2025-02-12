@@ -1,5 +1,1 @@
-{
-    "sdk": {
-        "allowPrerelease": false
-    }
-}
+../../global.json

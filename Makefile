@@ -6,6 +6,8 @@ SOLUTION_FILE = $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator.slnx
 TEST_PROJECT = $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator.slnx
 CONFIGURATION = Release
 
+SAMPLE_SOLUTION_FILE = ./samples/SampleApp/SampleApp.slnx
+
 PACK_VERSION := $(shell bun -e 'console.log(require("./package.json").version)')
 ARTIFACT_FOLDER = p:/sync-projects/.local-nuget/
 
@@ -51,6 +53,10 @@ vs: ## Opens the project in Visual Studio.
 code: ## Opens the project in Visual Studio Code.
 	@echo -e "Opening $(COLOUR_BLUE)Visual Studio Code$(COLOUR_RESET)..."
 	@code .
+
+vs: ## Opens the sample project in Visual Studio.
+	@echo -e "Opening $(COLOUR_BLUE)$(SAMPLE_SOLUTION_FILE)$(COLOUR_RESET) in $(COLOUR_ORANGE)Visual Studio$(COLOUR_RESET)..."
+	@start "$(SAMPLE_SOLUTION_FILE)"
 
 version: ## Displays the current version of the project.
 	@echo -e "Current Version: $(COLOUR_GREEN)$(PACK_VERSION)$(COLOUR_RESET)"
