@@ -1,6 +1,7 @@
 ﻿{
 	"$schema": "https://xunit.net/schema/current/xunit.runner.schema.json",
 	"longRunningTestSeconds": 15,
+	"failWarns": true,
 	"methodDisplay": "method",
 	"methodDisplayOptions": "all",
 	"diagnosticMessages": false,
