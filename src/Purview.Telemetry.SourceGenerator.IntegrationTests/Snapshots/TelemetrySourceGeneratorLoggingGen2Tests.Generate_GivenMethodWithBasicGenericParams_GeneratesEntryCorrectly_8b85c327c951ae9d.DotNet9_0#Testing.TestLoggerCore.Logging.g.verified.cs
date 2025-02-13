@@ -44,8 +44,9 @@ namespace Testing
 				state,
 				null,
 				// GENERATE CODEGEN ATTRIB
-				static string (s, e) =>
+				static string (s, _) =>
 				{
+					var tmp0 = s.TagValue[0].Value ?? "(null)";
 				// TODO!!
 					return string.Empty;
 				}

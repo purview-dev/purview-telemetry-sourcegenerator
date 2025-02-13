@@ -38,8 +38,10 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 			state,
 			null,
 			// GENERATE CODEGEN ATTRIB
-			static string (s, e) =>
+			static string (s, _) =>
 			{
+				var tmp0 = s.TagValue[0].Value ?? "(null)";
+				var tmp1 = s.TagValue[1].Value ?? "(null)";
 			// TODO!!
 				return string.Empty;
 			}
@@ -70,8 +72,10 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 			state,
 			null,
 			// GENERATE CODEGEN ATTRIB
-			static string (s, e) =>
+			static string (s, _) =>
 			{
+				var tmp0 = s.TagValue[0].Value ?? "(null)";
+				var tmp1 = s.TagValue[1].Value ?? "(null)";
 			// TODO!!
 				return string.Empty;
 			}

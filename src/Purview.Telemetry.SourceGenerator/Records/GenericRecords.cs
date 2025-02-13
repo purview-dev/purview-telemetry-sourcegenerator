@@ -73,3 +73,10 @@ record AttributeStringValue
 	public static implicit operator string?(AttributeStringValue value)
 		=> value.Value;
 }
+
+readonly record struct MessageTemplateHole(
+	string Name,
+	string? Alignment,
+	string? Format,
+	bool IsPositional
+);

@@ -9,6 +9,12 @@ using System.Text;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 
+// properties:
+// - Name - property name or ordinal.
+// - Alignment? - padding alignment.
+// - Format? - format string.
+// - IsPositional - true if the property is positional, false if it is named.
+
 /// <summary>
 /// The Message Template format consists of a string with 'holes' in it.
 /// Each hole is a named property, with optional formatting.
@@ -118,14 +124,16 @@ static class MessageTemplateProcessor
 			scanIndex = closeBraceIndex + 1;
 		}
 
-		_ = sb.Append(template, scanIndex, template.Length - scanIndex);
+		sb.Append(template, scanIndex, template.Length - scanIndex);
 		return sb.ToString();
 	}
 
 	static int FindIndexOfAny(string template, char[] chars, int startIndex, int endIndex)
 	{
 		var findIndex = template.IndexOfAny(chars, startIndex, endIndex - startIndex);
-		return findIndex == -1 ? endIndex : findIndex;
+		return findIndex == -1
+			? endIndex
+			: findIndex;
 	}
 
 	/// <summary>
@@ -144,21 +152,17 @@ static class MessageTemplateProcessor
 		while (scanIndex < endIndex)
 		{
 			var current = template[scanIndex];
-
 			if (current is '{' or '}')
 			{
 				var currentBrace = current;
-
 				var scanIndexBeforeSkip = scanIndex;
 				while (current == currentBrace && ++scanIndex < endIndex)
 					current = template[scanIndex];
 
 				var bracesCount = scanIndex - scanIndexBeforeSkip;
 
-#pragma warning disable S109 // Magic numbers should not be used
 				// if it is an even number of braces, just skip them, otherwise, we found an unescaped brace
 				if (bracesCount % 2 != 0)
-#pragma warning restore S109 // Magic numbers should not be used
 				{
 					if (currentBrace == searchedBrace)
 						if (currentBrace == '{')

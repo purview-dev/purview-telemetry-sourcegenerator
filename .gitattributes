@@ -1,5 +1,5 @@
 ###############################################################################
-# Set default behavior to automatically normalize line endings.
+# Set default behaviour to automatically normalize line endings.
 ###############################################################################
 * text=auto
 
@@ -22,7 +22,7 @@
 *.verified.json text eol=lf working-tree-encoding=UTF-8
 
 ###############################################################################
-# Set default behavior for command prompt diff.
+# Set default behaviour for command prompt diff.
 #
 # This is need for earlier builds of msysgit that does not have it on by
 # default for csharp files.
@@ -54,7 +54,7 @@
 #*.wwaproj   merge=binary
 
 ###############################################################################
-# behavior for image files
+# behaviour for image files
 #
 # image files are treated as binary by default.
 ###############################################################################
@@ -63,7 +63,7 @@
 #*.gif   binary
 
 ###############################################################################
-# diff behavior for common document formats
+# diff behaviour for common document formats
 # 
 # Convert binary document formats to text before diffing them. This feature
 # is only available from the command line. Turn it on by uncommenting the 
