@@ -84,4 +84,36 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 		state.Clear();
 	}
 
+
+	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	public void ExplicitErrorMessage(int entityId, global::System.Exception exception)
+	{
+		if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Error))
+		{
+			return;
+		}
+
+		var state = global::Microsoft.Extensions.Logging.LoggerMessageHelper.ThreadLocalState;
+		state.ReserveTagSpace(1);
+
+		state.TagArray[0] = new("{OriginalFormat}", "An explicit error message. The entity Id is {EntityId}, and the error is {Exception}.");
+		state.TagArray[1] = new("entityId", entityId);
+
+		_logger.Log(
+			global::Microsoft.Extensions.Logging.LogLevel.Error,
+			new (1928434156, "ExplicitErrorMessage"),
+			state,
+			exception,
+			// GENERATE CODEGEN ATTRIB
+			static string (s, e) =>
+			{
+				var tmp0 = s.TagArray[0].Value ?? "(null)";
+			// TODO!!
+				return string.Empty;
+			}
+		);
+
+		state.Clear();
+	}
+
 }

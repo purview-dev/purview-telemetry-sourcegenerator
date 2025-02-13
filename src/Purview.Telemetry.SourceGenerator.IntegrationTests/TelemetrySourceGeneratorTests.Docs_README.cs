@@ -50,6 +50,12 @@ interface IEntityStoreTelemetry
     void ExplicitInfoMessage(int entityId, string updateState);
 
     /// <summary>
+    /// Generates a structured log message using an ILogger, specifically defined as Error.
+    /// </summary>
+    [Error(""An explicit error message. The entity Id is {EntityId}, and the error is {Exception}."")]
+    void ExplicitErrorMessage(int entityId, Exception exception);
+
+    /// <summary>
     /// Adds 1 to a Counter<T> with the entityId as a Tag.
     /// </summary>
     [AutoCounter]

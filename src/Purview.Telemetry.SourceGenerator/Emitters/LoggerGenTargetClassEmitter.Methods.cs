@@ -115,6 +115,7 @@ partial class LoggerGenTargetClassEmitter
 		else
 		{
 			var expressionStateVarName = FindUniqueName("s", methodTarget.Parameters.Select(m => m.Name));
+			var usingExceptionInTemplate = methodTarget.ExceptionParameter?.UsedInTemplate == true; ;
 			var expressionExceptionVarName = methodTarget.ExceptionParameter?.UsedInTemplate == true
 				? FindUniqueName("e", methodTarget.Parameters.Select(m => m.Name))
 				: "_";
@@ -153,7 +154,7 @@ partial class LoggerGenTargetClassEmitter
 			foreach (var param in methodTarget.Parameters)
 			{
 				idx++;
-				if (!param.UsedInTemplate)
+				if (!param.UsedInTemplate || (methodTarget.ExceptionParameter == param && usingExceptionInTemplate))
 					continue;
 
 				var tmpVarName = FindUniqueName($"tmp{idx}", existingParamNames);
@@ -169,6 +170,8 @@ partial class LoggerGenTargetClassEmitter
 					.AppendLine("].Value ?? \"(null)\";")
 				;
 			}
+
+			// Convert/ use the message template based on the parameters.
 
 			builder
 				.Append(indent + 1, "// TODO!!")
