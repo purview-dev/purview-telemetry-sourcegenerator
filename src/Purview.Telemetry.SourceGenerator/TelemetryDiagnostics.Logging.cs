@@ -48,11 +48,26 @@ partial class TelemetryDiagnostics
 			Severity: DiagnosticSeverity.Info
 		);
 
-
 		public static readonly TelemetryDiagnosticDescriptor MalformedMessageTemplate = new(
 			Id: "TSG2005",
 			Title: "Log message template is malformed",
 			Description: "The log method '{0}' message template contains malformed formatting strings.",
+			Category: Constants.Diagnostics.Logging.Usage,
+			Severity: DiagnosticSeverity.Error
+		);
+
+		public static readonly TelemetryDiagnosticDescriptor MixedOrdinalAndNamedProperties = new(
+			Id: "TSG2006",
+			Title: "Cannot mix ordinal and named properties",
+			Description: "The message template for log method '{0}' mixes ordinal and named properties which is not supported.",
+			Category: Constants.Diagnostics.Logging.Usage,
+			Severity: DiagnosticSeverity.Error
+		);
+
+		public static readonly TelemetryDiagnosticDescriptor OrdinalsExceedParameters = new(
+			Id: "TSG2007",
+			Title: "Ordinal values exceed parameter count",
+			Description: "The maximum ordinal value for log method '{0}' exceeds the number of provided parameters",
 			Category: Constants.Diagnostics.Logging.Usage,
 			Severity: DiagnosticSeverity.Error
 		);

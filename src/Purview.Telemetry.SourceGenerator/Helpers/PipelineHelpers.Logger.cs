@@ -161,7 +161,7 @@ partial class PipelineHelpers
 			var loggerActionFieldName = $"_{Utilities.LowercaseFirstChar(method.Name)}Action";
 
 			var logName = GetLogName(interfaceSymbol.Name, className, loggerTarget, logAttribute, method.Name, defaultPrefixType);
-			var messageProperties = logAttribute?.MessageTemplate.Value ?? GenerateTemplateMessage(logName, isScoped, methodParameters);
+			var messageTemplate = logAttribute?.MessageTemplate.Value ?? GenerateTemplateMessage(logName, isScoped, methodParameters);
 			var hasMultipleExceptions = !isScoped && methodParameters.Count(m => m.IsException) > 1;
 			LogParameterTarget? exceptionParam = hasMultipleExceptions
 				? null
@@ -180,14 +180,50 @@ partial class PipelineHelpers
 					: 4 // Error
 				)!;
 
-			if (!MessageTemplateProcessor.ExtractProperties(messageProperties, out var templatedProperties))
-			{
-				telemetryDiagnostic = TelemetryDiagnostics.Logging.MalformedMessageTemplate;
-				break;
-			}
+			var messageTemplateMatches = MessageTemplateHole.FromMatches(
+				Constants.MessageTemplateMatcher.Matches(messageTemplate)
+			);
 
-			foreach (var param in methodParameters)
-				param.UsedInTemplate = templatedProperties.Contains(param.Name, StringComparer.OrdinalIgnoreCase);
+			var templateIsOrdinalBased = false;
+			var templateIsNamedBased = false;
+			if (!messageTemplateMatches.IsEmpty)
+			{
+				// Validate ordinal positions (not greater than number of params)
+				// of the template properties and named properties exist.
+				// ... we don't support both at the same time.
+				templateIsOrdinalBased = messageTemplateMatches.Any(m => m.Ordinal.HasValue);
+				templateIsNamedBased = messageTemplateMatches.Any(m => m.Name != null);
+				if (templateIsOrdinalBased && templateIsNamedBased)
+				{
+					telemetryDiagnostic = TelemetryDiagnostics.Logging.MixedOrdinalAndNamedProperties;
+					break;
+				}
+
+				var maxOrdinalValue = messageTemplateMatches
+					.Where(m => m.IsPositional)
+					.Max(m => m.Ordinal!.Value);
+				if (maxOrdinalValue > methodParameters.Length)
+				{
+					telemetryDiagnostic = TelemetryDiagnostics.Logging.OrdinalsExceedParameters;
+					break;
+				}
+
+				for (var i = 0; i < methodParameters.Length; i++)
+				{
+					var param = methodParameters[i];
+					// Is it used in the template?
+					// ... as an ordinal, or as a named property?
+					// Remember, it may match more than one hole..
+
+					var templates = messageTemplateMatches.Where(m =>
+						(m.IsPositional && m.Ordinal == i) ||
+						(m.Name != null && m.Name.Equals(param.Name, StringComparison.OrdinalIgnoreCase))
+					).ToArray();
+
+					if (templates.Length > 0)
+						param.ReferencedInTemplates.AddRange(templates);
+				}
+			}
 
 			methodTargets.Add(new(
 				MethodName: method.Name,
@@ -199,8 +235,10 @@ partial class PipelineHelpers
 				LogName: logName, // This includes any prefix information
 				EventId: logAttribute?.EventId.Value,
 
-				MessageTemplate: messageProperties,
-				TemplateProperties: templatedProperties,
+				MessageTemplate: messageTemplate,
+				TemplateProperties: messageTemplateMatches,
+				TemplateIsOrdinalBased: templateIsOrdinalBased,
+				TemplateIsNamedBased: templateIsNamedBased,
 
 				MSLevel: Constants.Logging.LogLevelTypeMap[level],
 

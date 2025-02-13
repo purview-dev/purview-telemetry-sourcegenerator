@@ -42,6 +42,11 @@ public partial class RegexValidationTests
 	public void Match_GivenAMixOfParameters_Matches(string template, [NotNull] TestMessageTemplateHole[] holes)
 		=> Match(template, holes);
 
+	[Theory]
+	[MemberData(nameof(DoubleCurlyBraces))]
+	public void Match_GivenDoubleCurlyBraces_Matches(string template, [NotNull] TestMessageTemplateHole[] holes)
+		=> Match(template, holes);
+
 	static void Match(string template, TestMessageTemplateHole[] holes)
 	{
 		// Arrange/ Act
@@ -382,6 +387,61 @@ public partial class RegexValidationTests
 		}
 	}
 
+	public static TheoryData<string, TestMessageTemplateHole[]> DoubleCurlyBraces
+	{
+		get
+		{
+			TheoryData<string, TestMessageTemplateHole[]> data = new()
+			{
+				{ "Customer with ID {{CustomerId:ff}}", [ TestMessageTemplateHole.Create("CustomerId", format: "ff")] },
+				{ "Customer with ID {{CustomerId,0101:-10}} is named {{$CustomerName:pies}}",
+					[
+						TestMessageTemplateHole.Create("CustomerId", alignment: "0101", format: "-10"),
+						TestMessageTemplateHole.Create("CustomerName", format: "pies", stringify: true)
+					]
+				},
+				{ "Customer with ID {{@CustomerId}} is named {{$CustomerName:ice-cream}}, and {{$Banana,100:110}}. and {{@Apple:p000p}}",
+					[
+						TestMessageTemplateHole.Create("CustomerId", destructure: true),
+						TestMessageTemplateHole.Create("CustomerName", format: "ice-cream", stringify: true),
+						TestMessageTemplateHole.Create("Banana", alignment: "100", format: "110", stringify: true),
+						TestMessageTemplateHole.Create("Apple", format: "p000p", destructure: true)
+				]},
+				{ "Customer with ID {{$CustomerId}} is named {{@CustomerName,100:pies}}, and {{@Banana,1010101:-111}}. and {{Apple}}",
+					[
+						TestMessageTemplateHole.Create("CustomerId", stringify: true),
+						TestMessageTemplateHole.Create("CustomerName", alignment: "100", format: "pies", destructure : true),
+						TestMessageTemplateHole.Create("Banana", alignment: "1010101", format: "-111", destructure: true),
+						TestMessageTemplateHole.Create("Apple")
+				]},
+				{ "Customer with ID {{0:ff}", [ TestMessageTemplateHole.Create(0, format: "ff")] },
+				{ "Customer with ID {{0,0101:-10}} is named {{$1:pies}}",
+					[
+						TestMessageTemplateHole.Create(0, alignment: "0101", format: "-10"),
+						TestMessageTemplateHole.Create(1, format: "pies", stringify: true)
+					]
+				},
+				{ "Customer with ID {{@0}} is named {{$1:ice-cream}}, and {{$2,100:110}}. and {{@3:p000p}}",
+					[
+						TestMessageTemplateHole.Create(0, destructure: true),
+						TestMessageTemplateHole.Create(1, format: "ice-cream", stringify: true),
+						TestMessageTemplateHole.Create(2, alignment: "100", format: "110", stringify: true),
+						TestMessageTemplateHole.Create(3, format: "p000p", destructure: true)
+				]},
+				{ "Customer with ID {{$0}} is named {{@1,100:pies}}, and {{@2,1010101:-111}}. and {{3}}",
+					[
+						TestMessageTemplateHole.Create(0, stringify: true),
+						TestMessageTemplateHole.Create(1, alignment: "100", format: "pies", destructure : true),
+						TestMessageTemplateHole.Create(2, alignment: "1010101", format: "-111", destructure: true),
+						TestMessageTemplateHole.Create(3)
+				]},
+			};
+
+			return data;
+		}
+	}
+
+	[SuppressMessage("Design", "CA1034:Nested types should not be visible")]
 	public record struct TestMessageTemplateHole : IXunitSerializable
 	{
 		public TestMessageTemplateHole(

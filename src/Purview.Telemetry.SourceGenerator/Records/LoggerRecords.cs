@@ -26,7 +26,7 @@ record LoggerTarget(
 {
 	public TelemetryDiagnosticDescriptor? Failure { get; init; }
 
-	public static LoggerTarget Failed(TelemetryDiagnosticDescriptor diag)
+	public static LoggerTarget Failed(TelemetryDiagnosticDescriptor diagnostic)
 		=> new(
 		null!,
 		GenerationType.None,
@@ -43,7 +43,7 @@ record LoggerTarget(
 		null!,
 		false)
 		{
-			Failure = diag
+			Failure = diagnostic
 		};
 }
 
@@ -56,8 +56,12 @@ record LogMethodTarget(
 
 	string LogName,
 	int? EventId,
+
 	string MessageTemplate,
-	ImmutableArray<string> TemplateProperties,
+	ImmutableArray<MessageTemplateHole> TemplateProperties,
+	bool TemplateIsOrdinalBased,
+	bool TemplateIsNamedBased,
+
 	string MSLevel,
 
 	ImmutableArray<LogParameterTarget> Parameters,
@@ -66,8 +70,8 @@ record LogMethodTarget(
 	LogParameterTarget? ExceptionParameter,
 	bool HasMultipleExceptions,
 
-	Location? MethodLocation
-,
+	Location? MethodLocation,
+
 	bool InferredErrorLevel,
 
 	TargetGeneration TargetGenerationState
@@ -97,7 +101,9 @@ record LogParameterTarget(
 	ExpandEnumerableAttributeRecord? ExpandEnumerableAttribute
 )
 {
-	public bool UsedInTemplate { get; set; }
+	public bool UsedInTemplate => ReferencedInTemplates.Count > 0;
+
+	public List<MessageTemplateHole> ReferencedInTemplates { get; } = [];
 }
 
 record LogPropertiesParameterDetails(
