@@ -54,7 +54,7 @@ code: ## Opens the project in Visual Studio Code.
 	@echo -e "Opening $(COLOUR_BLUE)Visual Studio Code$(COLOUR_RESET)..."
 	@code .
 
-vs: ## Opens the sample project in Visual Studio.
+vs-s: ## Opens the sample project in Visual Studio.
 	@echo -e "Opening $(COLOUR_BLUE)$(SAMPLE_SOLUTION_FILE)$(COLOUR_RESET) in $(COLOUR_ORANGE)Visual Studio$(COLOUR_RESET)..."
 	@start "$(SAMPLE_SOLUTION_FILE)"
 
