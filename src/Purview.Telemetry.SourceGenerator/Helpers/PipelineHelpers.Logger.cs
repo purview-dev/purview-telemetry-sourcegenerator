@@ -163,7 +163,7 @@ partial class PipelineHelpers
 			var logName = GetLogName(interfaceSymbol.Name, className, loggerTarget, logAttribute, method.Name, defaultPrefixType);
 			var messageTemplate = logAttribute?.MessageTemplate.Value ?? GenerateTemplateMessage(logName, isScoped, methodParameters);
 			var hasMultipleExceptions = !isScoped && methodParameters.Count(m => m.IsException) > 1;
-			LogParameterTarget? exceptionParam = hasMultipleExceptions
+			var exceptionParam = hasMultipleExceptions
 				? null
 				: isScoped
 					? null
@@ -199,9 +199,11 @@ partial class PipelineHelpers
 					break;
 				}
 
-				var maxOrdinalValue = messageTemplateMatches
-					.Where(m => m.IsPositional)
-					.Max(m => m.Ordinal!.Value);
+				var maxOrdinalValue = messageTemplateMatches.Any(m => m.IsPositional)
+					? messageTemplateMatches
+						.Where(m => m.IsPositional)
+						.Max(m => m.Ordinal!.Value)
+					: 0;
 				if (maxOrdinalValue > methodParameters.Length)
 				{
 					telemetryDiagnostic = TelemetryDiagnostics.Logging.OrdinalsExceedParameters;
@@ -365,7 +367,8 @@ partial class PipelineHelpers
 						continue;
 					}
 
-					var isNullable = property.Type.IsReferenceType || property.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
+					var isNullable = property.Type.IsReferenceType
+						|| property.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
 
 					logProperties ??= [];
 

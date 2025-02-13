@@ -148,6 +148,7 @@ partial class LoggerGenTargetClassEmitter
 				.Append(indent + 1, "{")
 			;
 
+			// During build, we need to generate the placement.
 			var idx = -1;
 			foreach (var param in methodTarget.Parameters)
 			{
@@ -163,7 +164,7 @@ partial class LoggerGenTargetClassEmitter
 					.Append(tmpVarName)
 					.Append(" = ")
 					.Append(expressionStateVarName)
-					.Append(".TagValue[")
+					.Append(".TagArray[")
 					.Append(idx)
 					.AppendLine("].Value ?? \"(null)\";")
 				;
@@ -230,7 +231,8 @@ partial class LoggerGenTargetClassEmitter
 			context.CancellationToken.ThrowIfCancellationRequested();
 
 			if (parameter.Name == methodTarget.ExceptionParameter?.Name)
-				// We need to skip over the exception parameter.
+				// We need to skip over the exception parameter as
+				// its passed directly to the .Log method.
 				continue;
 
 			// Need to match the name against the value.
