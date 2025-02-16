@@ -15,63 +15,71 @@
 
 namespace Testing
 {
-	sealed partial class TestMetricsCore : Testing.ITestMetrics
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	sealed partial class TestMetricsCore : global::Testing.ITestMetrics
 	{
-		System.Diagnostics.Metrics.Meter _meter = default!;
+		global::System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.Counter<int>? _counter1Instrument = null;
-		System.Diagnostics.Metrics.Counter<int>? _counter2Instrument = null;
-		System.Diagnostics.Metrics.Counter<int>? _counter3Instrument = null;
+		global::System.Diagnostics.Metrics.Counter<int>? _counter1Instrument = null;
+		global::System.Diagnostics.Metrics.Counter<int>? _counter2Instrument = null;
+		global::System.Diagnostics.Metrics.Counter<int>? _counter3Instrument = null;
 
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
 		public TestMetricsCore(global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			InitializeMeters(meterFactory);
 		}
 
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		void InitializeMeters(global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
 			{
-				throw new System.Exception("The meters have already been initialized.");
+				throw new global::System.Exception("The meters have already been initialized.");
 			}
 
-			System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
+			global::System.Collections.Generic.Dictionary<string, object?> meterTags = new();
 
 			PopulateMeterTags(meterTags);
 
-			_meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
+			_meter = meterFactory.Create(new global::System.Diagnostics.Metrics.MeterOptions("testing-meter")
 			{
 				Version = null,
 				Tags = meterTags
 			});
 
-			System.Collections.Generic.Dictionary<string, object?> counter1Tags = new System.Collections.Generic.Dictionary<string, object?>();
+			global::System.Collections.Generic.Dictionary<string, object?> counter1Tags = new();
 
 			PopulateCounter1Tags(counter1Tags);
 
 			_counter1Instrument = _meter.CreateCounter<int>(name: "counter1", unit: null, description: null, tags: counter1Tags);
-			System.Collections.Generic.Dictionary<string, object?> counter2Tags = new System.Collections.Generic.Dictionary<string, object?>();
+			global::System.Collections.Generic.Dictionary<string, object?> counter2Tags = new();
 
 			PopulateCounter2Tags(counter2Tags);
 
 			_counter2Instrument = _meter.CreateCounter<int>(name: "counter2", unit: null, description: null, tags: counter2Tags);
-			System.Collections.Generic.Dictionary<string, object?> counter3Tags = new System.Collections.Generic.Dictionary<string, object?>();
+			global::System.Collections.Generic.Dictionary<string, object?> counter3Tags = new();
 
 			PopulateCounter3Tags(counter3Tags);
 
 			_counter3Instrument = _meter.CreateCounter<int>(name: "counter3", unit: null, description: null, tags: counter3Tags);
 		}
 
-		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		partial void PopulateMeterTags(global::System.Collections.Generic.Dictionary<string, object?> meterTags);
 
-		partial void PopulateCounter1Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		partial void PopulateCounter1Tags(global::System.Collections.Generic.Dictionary<string, object?> instrumentTags);
 
-		partial void PopulateCounter2Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		partial void PopulateCounter2Tags(global::System.Collections.Generic.Dictionary<string, object?> instrumentTags);
 
-		partial void PopulateCounter3Tags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		partial void PopulateCounter3Tags(global::System.Collections.Generic.Dictionary<string, object?> instrumentTags);
 
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter1(int intParam, bool boolParam)
 		{
 			if (_counter1Instrument == null)
@@ -79,14 +87,15 @@ namespace Testing
 				return;
 			}
 
-			System.Diagnostics.TagList counter1TagList = new System.Diagnostics.TagList();
+			global::System.Diagnostics.TagList counter1TagList = new();
 
 			counter1TagList.Add("intparam", intParam);
 			counter1TagList.Add("boolparam", boolParam);
 
 			_counter1Instrument.Add(1, tagList: counter1TagList);
 		}
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter2(int intParam, bool boolParam)
 		{
 			if (_counter2Instrument == null)
@@ -94,14 +103,15 @@ namespace Testing
 				return;
 			}
 
-			System.Diagnostics.TagList counter2TagList = new System.Diagnostics.TagList();
+			global::System.Diagnostics.TagList counter2TagList = new();
 
 			counter2TagList.Add("intparam", intParam);
 			counter2TagList.Add("boolparam", boolParam);
 
 			_counter2Instrument.Add(1, tagList: counter2TagList);
 		}
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter3(int intParam, bool boolParam)
 		{
 			if (_counter3Instrument == null)
@@ -109,7 +119,7 @@ namespace Testing
 				return;
 			}
 
-			System.Diagnostics.TagList counter3TagList = new System.Diagnostics.TagList();
+			global::System.Diagnostics.TagList counter3TagList = new();
 
 			counter3TagList.Add("intparam", intParam);
 			counter3TagList.Add("boolparam", boolParam);

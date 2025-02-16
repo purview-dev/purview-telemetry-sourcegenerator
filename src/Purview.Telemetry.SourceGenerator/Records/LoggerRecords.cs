@@ -89,6 +89,7 @@ record LogParameterTarget(
 
 	bool IsNullable,
 	bool IsException,
+	bool IsFirstException,
 
 	bool IsIEnumerable,
 	bool IsArray,
@@ -98,12 +99,11 @@ record LogParameterTarget(
 	LogPropertiesAttributeRecord? LogPropertiesAttribute,
 	ImmutableArray<LogPropertiesParameterDetails>? LogProperties,
 
-	ExpandEnumerableAttributeRecord? ExpandEnumerableAttribute
-)
+	ExpandEnumerableAttributeRecord? ExpandEnumerableAttribute)
 {
-	public bool UsedInTemplate => ReferencedInTemplates.Count > 0;
+	public bool UsedInTemplate => ReferencedHoles.Count > 0;
 
-	public List<MessageTemplateHole> ReferencedInTemplates { get; } = [];
+	public List<MessageTemplateHole> ReferencedHoles { get; } = [];
 }
 
 record LogPropertiesParameterDetails(

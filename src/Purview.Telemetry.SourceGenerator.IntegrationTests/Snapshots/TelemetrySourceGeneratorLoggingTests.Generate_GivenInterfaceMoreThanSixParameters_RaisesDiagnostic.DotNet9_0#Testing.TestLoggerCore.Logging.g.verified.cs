@@ -15,12 +15,14 @@
 
 namespace Testing
 {
-	sealed partial class TestLoggerCore : Testing.ITestLogger
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	sealed partial class TestLoggerCore : global::Testing.ITestLogger
 	{
-		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
+		readonly global::Microsoft.Extensions.Logging.ILogger<global::Testing.ITestLogger> _logger;
 
 
-		public TestLoggerCore(global::Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		public TestLoggerCore(global::Microsoft.Extensions.Logging.ILogger<global::Testing.ITestLogger> logger)
 		{
 			_logger = logger;
 		}

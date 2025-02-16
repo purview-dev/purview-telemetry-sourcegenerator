@@ -110,6 +110,12 @@ static partial class Utilities
 	public static StringBuilder AggressiveInlining(this StringBuilder builder, int indent)
 		=> builder.Append(indent, Constants.System.AggressiveInlining);
 
+	public static StringBuilder CodeGen(this StringBuilder builder, int indent)
+		=> builder.Append(indent, Constants.System.GeneratedCode.Value);
+
+	public static StringBuilder IfDefines(this StringBuilder builder, string condition, params string[] values)
+		=> builder.IfDefines(condition, 0, values);
+
 	public static StringBuilder IfDefines(this StringBuilder builder, string condition, int indent, params string[] values)
 	{
 		builder

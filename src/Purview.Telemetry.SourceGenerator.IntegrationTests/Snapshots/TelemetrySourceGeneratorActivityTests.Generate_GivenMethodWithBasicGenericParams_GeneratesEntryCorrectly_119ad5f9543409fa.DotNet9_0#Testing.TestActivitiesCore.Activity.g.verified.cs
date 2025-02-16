@@ -15,30 +15,32 @@
 
 namespace Testing
 {
-	sealed partial class TestActivitiesCore : Testing.ITestActivities
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	sealed partial class TestActivitiesCore : global::Testing.ITestActivities
 	{
-		readonly static System.Diagnostics.ActivitySource _activitySource = new System.Diagnostics.ActivitySource("purview.telemetry.sourcegenerator");
+		readonly static global::System.Diagnostics.ActivitySource _activitySource = new("purview.telemetry.sourcegenerator");
 
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		static void RecordExceptionInternal(System.Diagnostics.Activity? activity, System.Exception? exception, bool escape)
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		static void RecordExceptionInternal(global::System.Diagnostics.Activity? activity, global::System.Exception? exception, bool escape)
 		{
 			if (activity == null || exception == null)
 			{
 				return;
 			}
 
-			System.Diagnostics.ActivityTagsCollection tagsCollection = new System.Diagnostics.ActivityTagsCollection();
-			tagsCollection.Add("exception.escaped", escape);
+			global::System.Diagnostics.ActivityTagsCollection tagsCollection = new();			tagsCollection.Add("exception.escaped", escape);
 			tagsCollection.Add("exception.message", exception.Message);
 			tagsCollection.Add("exception.type", exception.GetType().FullName);
 			tagsCollection.Add("exception.stacktrace", exception.StackTrace);
 
-			System.Diagnostics.ActivityEvent recordExceptionEvent = new System.Diagnostics.ActivityEvent(name: "exception", timestamp: default, tags: tagsCollection);
+			global::System.Diagnostics.ActivityEvent recordExceptionEvent = new(name: "exception", timestamp: default, tags: tagsCollection);
 
 			activity.AddEvent(recordExceptionEvent);
 		}
 
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public System.Diagnostics.Activity? Activity(System.Collections.Generic.List<string> paramName)
 		{
 			if (!_activitySource.HasListeners())
@@ -46,7 +48,7 @@ namespace Testing
 				return null;
 			}
 
-			System.Diagnostics.Activity? activityActivity = _activitySource.StartActivity(name: "Activity", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
+			global::System.Diagnostics.Activity? activityActivity = _activitySource.StartActivity(name: "Activity", kind: global::System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
 
 			if (activityActivity != null)
 			{
@@ -56,7 +58,8 @@ namespace Testing
 			return activityActivity;
 		}
 
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Event(System.Diagnostics.Activity? activity, System.Collections.Generic.List<string> paramName)
 		{
 			if (!_activitySource.HasListeners())
@@ -66,16 +69,17 @@ namespace Testing
 
 			if (activity != null)
 			{
-				System.Diagnostics.ActivityTagsCollection tagsCollectionEvent = new System.Diagnostics.ActivityTagsCollection();
+				global::System.Diagnostics.ActivityTagsCollection tagsCollectionEvent = new();
 				tagsCollectionEvent.Add("paramname", paramName);
 
-				System.Diagnostics.ActivityEvent activityEventEvent = new System.Diagnostics.ActivityEvent(name: "Event", timestamp: default, tags: tagsCollectionEvent);
+				global::System.Diagnostics.ActivityEvent activityEventEvent = new(name: "Event", timestamp: default, tags: tagsCollectionEvent);
 
 				activity.AddEvent(activityEventEvent);
 			}
 		}
 
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Context(System.Diagnostics.Activity? activity, System.Collections.Generic.List<string> paramName)
 		{
 			if (!_activitySource.HasListeners())

@@ -57,15 +57,25 @@ static class EmitHelpers
 			builder.Append('}');
 	}
 
-	public static int EmitClassStart(string className, string fullyQualifiedInterface, StringBuilder builder, int indent, CancellationToken token)
+	public static int EmitClassStart(
+		GenerationType requestingType,
+		GenerationType generationType,
+		string className,
+		string fullyQualifiedInterface,
+		StringBuilder builder,
+		int indent,
+		CancellationToken token)
 	{
 		token.ThrowIfCancellationRequested();
+
+		if (SharedHelpers.ShouldEmit(requestingType, generationType))
+			builder.CodeGen(indent);
 
 		builder
 			.Append(indent, "sealed partial class ", withNewLine: false)
 			.Append(className)
 			.Append(" : ")
-			.Append(fullyQualifiedInterface)
+			.Append(fullyQualifiedInterface.WithGlobal())
 			.AppendLine()
 			.Append(indent, '{')
 		;

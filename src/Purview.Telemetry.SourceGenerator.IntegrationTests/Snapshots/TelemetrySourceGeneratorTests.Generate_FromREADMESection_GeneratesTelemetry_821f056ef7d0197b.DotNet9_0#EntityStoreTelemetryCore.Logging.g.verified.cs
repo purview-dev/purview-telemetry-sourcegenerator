@@ -13,17 +13,19 @@
 
 #nullable enable
 
-sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
+sealed partial class EntityStoreTelemetryCore : global::IEntityStoreTelemetry
 {
-	readonly Microsoft.Extensions.Logging.ILogger<IEntityStoreTelemetry> _logger;
+	readonly global::Microsoft.Extensions.Logging.ILogger<global::IEntityStoreTelemetry> _logger;
 
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, string, System.Exception?> _logMessageAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int, string>(Microsoft.Extensions.Logging.LogLevel.Information, new Microsoft.Extensions.Logging.EventId(1180592680, "LogMessage"), "LogMessage: EntityId = {EntityId}, UpdateState = {UpdateState}");
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, string, System.Exception?> _explicitInfoMessageAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int, string>(Microsoft.Extensions.Logging.LogLevel.Information, new Microsoft.Extensions.Logging.EventId(1861353128, "ExplicitInfoMessage"), "ExplicitInfoMessage: EntityId = {EntityId}, UpdateState = {UpdateState}");
+	static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, int, string, global::System.Exception?> _logMessageAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<int, string>(global::Microsoft.Extensions.Logging.LogLevel.Information, new global::Microsoft.Extensions.Logging.EventId(1180592680, "LogMessage"), "LogMessage: EntityId = {EntityId}, UpdateState = {UpdateState}");
+	static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, int, string, global::System.Exception?> _explicitInfoMessageAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<int, string>(global::Microsoft.Extensions.Logging.LogLevel.Information, new global::Microsoft.Extensions.Logging.EventId(1861353128, "ExplicitInfoMessage"), "ExplicitInfoMessage: EntityId = {EntityId}, UpdateState = {UpdateState}");
+	static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, int, global::System.Exception?> _explicitErrorMessageAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<int>(global::Microsoft.Extensions.Logging.LogLevel.Error, new global::Microsoft.Extensions.Logging.EventId(1928434156, "ExplicitErrorMessage"), "An explicit error message. The entity Id is {EntityId}, and the error is {Exception}.");
 
-	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void LogMessage(int entityId, string updateState)
 	{
-		if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
+		if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
 		{
 			return;
 		}
@@ -32,15 +34,29 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 	}
 
 
-	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void ExplicitInfoMessage(int entityId, string updateState)
 	{
-		if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
+		if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
 		{
 			return;
 		}
 
 		_explicitInfoMessageAction(_logger, entityId, updateState, null);
+	}
+
+
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	public void ExplicitErrorMessage(int entityId, System.Exception exception)
+	{
+		if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Error))
+		{
+			return;
+		}
+
+		_explicitErrorMessageAction(_logger, entityId, exception);
 	}
 
 }

@@ -17,11 +17,12 @@ partial class MeterTargetClassEmitter
 
 		builder
 			.AppendLine()
+			.CodeGen(indent)
 			.AggressiveInlining(indent)
 			.Append(indent, "void ", withNewLine: false)
 			.Append(Constants.Metrics.MeterInitializationMethod)
 			.Append('(')
-			.Append(Constants.Metrics.SystemDiagnostics.IMeterFactory)
+			.Append(Constants.Metrics.SystemDiagnostics.IMeterFactory.WithGlobal())
 			.Append(' ')
 			.Append(Constants.Metrics.MeterFactoryParameterName)
 			.AppendLine(')')
@@ -36,7 +37,7 @@ partial class MeterTargetClassEmitter
 			.AppendLine(" != null)")
 			.Append(indent, '{')
 			.Append(indent + 1, "throw new ", withNewLine: false)
-			.Append(Constants.System.Exception)
+			.Append(Constants.System.Exception.WithGlobal())
 			.AppendLine("(\"The meters have already been initialized.\");")
 			.Append(indent, '}')
 			.AppendLine()
@@ -46,9 +47,7 @@ partial class MeterTargetClassEmitter
 			.Append(indent, DictionaryStringObject, withNewLine: false)
 			.Append(' ')
 			.Append(meterTagsVariableName)
-			.Append(" = new ")
-			.Append(DictionaryStringObject)
-			.AppendLine("();")
+			.AppendLine(" = new();")
 			.AppendLine()
 		;
 
@@ -65,7 +64,7 @@ partial class MeterTargetClassEmitter
 			.Append(" = ")
 			.Append(Constants.Metrics.MeterFactoryParameterName)
 			.Append(".Create(new ")
-			.Append(Constants.Metrics.SystemDiagnostics.MeterOptions)
+			.Append(Constants.Metrics.SystemDiagnostics.MeterOptions.WithGlobal())
 			.Append('(')
 			.Append(target.MeterName!.Wrap())
 			.AppendLine(')')
@@ -102,15 +101,15 @@ partial class MeterTargetClassEmitter
 			var unit = method.InstrumentAttribute?.Unit?.Value?.Wrap() ?? Constants.System.NullKeyword;
 			var description = method.InstrumentAttribute?.Description?.Value?.Wrap() ?? Constants.System.NullKeyword;
 			var tagVariableType = Constants.System.Dictionary
-					.MakeGeneric(Constants.System.StringKeyword, Constants.System.ObjectKeyword + "?");
+					.MakeGeneric(Constants.System.StringKeyword, Constants.System.ObjectKeyword + "?")
+					.WithGlobal();
 			var tagVariableName = Utilities.LowercaseFirstChar(method.MethodName) + "Tags";
 
 			builder
 				.Append(indent, tagVariableType, withNewLine: false)
 				.Append(' ')
 				.Append(tagVariableName)
-				.Append(" = new ")
-				.Append(tagVariableType)
+				.Append(" = new")
 				.AppendLine("();")
 				.AppendLine()
 				.Append(indent, method.TagPopulateMethodName, withNewLine: false)

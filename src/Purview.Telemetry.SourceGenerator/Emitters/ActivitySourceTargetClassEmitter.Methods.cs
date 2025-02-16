@@ -40,13 +40,14 @@ partial class ActivitySourceTargetClassEmitter
 		logger?.Debug($"Generating {Constants.Activities.RecordExceptionMethodName}.");
 
 		builder
+			.CodeGen(indent)
 			.AggressiveInlining(indent)
 			.Append(indent, "static void ", withNewLine: false)
 			.Append(Constants.Activities.RecordExceptionMethodName)
 			.Append('(')
-			.Append(Constants.Activities.SystemDiagnostics.Activity)
+			.Append(Constants.Activities.SystemDiagnostics.Activity.WithGlobal())
 			.Append("? activity, ")
-			.Append(Constants.System.Exception)
+			.Append(Constants.System.Exception.WithGlobal())
 			.Append("? exception, ")
 			.Append(Constants.System.BoolKeyword)
 			.AppendLine(" escape)")
@@ -65,12 +66,10 @@ partial class ActivitySourceTargetClassEmitter
 
 		const string tagsListVariableName = "tagsCollection";
 		builder
-			.Append(indent, Constants.Activities.SystemDiagnostics.ActivityTagsCollection, withNewLine: false)
+			.Append(indent, Constants.Activities.SystemDiagnostics.ActivityTagsCollection.WithGlobal(), withNewLine: false)
 			.Append(' ')
 			.Append(tagsListVariableName)
-			.Append(" = new ")
-			.Append(Constants.Activities.SystemDiagnostics.ActivityTagsCollection)
-			.AppendLine("();")
+			.Append(" = new();")
 		;
 
 		EmitExceptionParam(builder, indent, tagsListVariableName, "escape", "exception");
@@ -79,11 +78,10 @@ partial class ActivitySourceTargetClassEmitter
 
 		builder
 			.AppendLine()
-			.Append(indent, Constants.Activities.SystemDiagnostics.ActivityEvent, withNewLine: false)
+			.Append(indent, Constants.Activities.SystemDiagnostics.ActivityEvent.WithGlobal(), withNewLine: false)
 			.Append(' ')
 			.Append(eventVariableName)
-			.Append(" = new ")
-			.Append(Constants.Activities.SystemDiagnostics.ActivityEvent)
+			.Append(" = new")
 			// name:
 			.Append("(name: ")
 			.Append(Constants.Activities.Tag_ExceptionEventName.Wrap())
@@ -159,6 +157,7 @@ partial class ActivitySourceTargetClassEmitter
 			return;
 
 		builder
+			.CodeGen(indent)
 			.AggressiveInlining(indent)
 			.Append(indent, "public ", withNewLine: false)
 			.Append(methodTarget.ReturnType)

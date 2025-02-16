@@ -32,6 +32,7 @@ static class ConstructorEmitter
 
 		builder
 			.AppendLine()
+			.CodeGen(indent)
 			.Append(indent, "public ", withNewLine: false)
 			.Append(classNameToGenerate)
 			.Append('(')
@@ -58,7 +59,7 @@ static class ConstructorEmitter
 			builder
 				.Append(Constants.Logging.MicrosoftExtensions.ILogger.WithGlobal())
 				.Append('<')
-				.Append(loggerFullyQualifiedInterfaceName)
+				.Append(loggerFullyQualifiedInterfaceName!.WithGlobal())
 				.Append("> ")
 				.Append(LoggerParameterName)
 			;

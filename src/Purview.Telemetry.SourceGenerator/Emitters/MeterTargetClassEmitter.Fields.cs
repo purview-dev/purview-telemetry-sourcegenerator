@@ -14,7 +14,7 @@ partial class MeterTargetClassEmitter
 		indent++;
 
 		builder
-			.Append(indent, Constants.Metrics.SystemDiagnostics.Meter, withNewLine: false)
+			.Append(indent, Constants.Metrics.SystemDiagnostics.Meter.WithGlobal(), withNewLine: false)
 			.Append(' ')
 			.Append(MeterFieldName)
 			.AppendLine(" = default!;")
@@ -45,7 +45,8 @@ partial class MeterTargetClassEmitter
 				continue;
 
 			var type = Constants.Metrics.InstrumentTypeMap[method.InstrumentAttribute.InstrumentType]
-					.MakeGeneric(method.InstrumentMeasurementType);
+					.MakeGeneric(method.InstrumentMeasurementType)
+					.WithGlobal();
 
 			builder
 				.Append(indent, type, withNewLine: false)

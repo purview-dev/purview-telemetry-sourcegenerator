@@ -15,16 +15,19 @@
 
 namespace Testing
 {
-	sealed partial class TestLoggerCore : Testing.ITestLogger
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	sealed partial class TestLoggerCore : global::Testing.ITestLogger
 	{
-		readonly global::Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
+		readonly global::Microsoft.Extensions.Logging.ILogger<global::Testing.ITestLogger> _logger;
 
-		public TestLoggerCore(global::Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		public TestLoggerCore(global::Microsoft.Extensions.Logging.ILogger<global::Testing.ITestLogger> logger)
 		{
 			_logger = logger;
 		}
 
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void LogEntryWithGenericTypeParam(global::System.Collections.Generic.IEnumerable<string> paramName)
 		{
 			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
@@ -43,12 +46,16 @@ namespace Testing
 				new (842060863, "LogEntryWithGenericTypeParam"),
 				state,
 				null,
-				// GENERATE CODEGEN ATTRIB
+				[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
 				static string (s, _) =>
 				{
-					var tmp0 = s.TagArray[0].Value ?? "(null)";
-				// TODO!!
-					return string.Empty;
+					var v0 = s.TagArray[1].Value ?? "(null)";
+
+#if NET
+					return string.Create(global::System.Globalization.CultureInfo.InvariantCulture, $"LogEntryWithGenericTypeParam: ParamName = {v0}");
+#else
+					return global::System.FormattableString.Invariant($"LogEntryWithGenericTypeParam: ParamName = {v0}");
+#endif
 				}
 			);
 

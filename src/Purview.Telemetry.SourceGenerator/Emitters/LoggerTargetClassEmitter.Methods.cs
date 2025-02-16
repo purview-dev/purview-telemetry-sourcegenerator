@@ -38,6 +38,7 @@ partial class LoggerTargetClassEmitter
 
 		builder
 			.AppendLine()
+			.CodeGen(indent)
 			.AggressiveInlining(indent)
 			.Append(indent, "public ", withNewLine: false)
 		;
@@ -45,7 +46,7 @@ partial class LoggerTargetClassEmitter
 		if (methodTarget.IsScoped)
 		{
 			builder
-				.Append(Constants.System.IDisposable)
+				.Append(Constants.System.IDisposable.WithGlobal())
 				.Append('?')
 			;
 		}
@@ -81,7 +82,7 @@ partial class LoggerTargetClassEmitter
 				.Append(indent + 1, "if (!", withNewLine: false)
 				.Append(Constants.Logging.LoggerFieldName)
 				.Append(".IsEnabled(")
-				.Append(methodTarget.MSLevel)
+				.Append(methodTarget.MSLevel.WithGlobal())
 				.Append("))")
 				.AppendLine()
 				.Append(indent + 1, '{')

@@ -223,7 +223,7 @@ partial class PipelineHelpers
 					).ToArray();
 
 					if (templates.Length > 0)
-						param.ReferencedInTemplates.AddRange(templates);
+						param.ReferencedHoles.AddRange(templates);
 				}
 			}
 
@@ -342,6 +342,7 @@ partial class PipelineHelpers
 	static ImmutableArray<LogParameterTarget> GetLogMethodParameters(IMethodSymbol method, SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token)
 	{
 		List<LogParameterTarget> parameters = [];
+		var isFirstException = true;
 		foreach (var parameter in method.Parameters)
 		{
 			token.ThrowIfCancellationRequested();
@@ -379,13 +380,15 @@ partial class PipelineHelpers
 				}
 			}
 
+			var isException = Utilities.IsExceptionType(parameter.Type);
 			parameters.Add(new(
 				Name: parameter.Name,
 				UpperCasedName: Utilities.UppercaseFirstChar(parameter.Name),
 				FullyQualifiedType: Utilities.GetFullyQualifiedOrSystemName(parameter.Type),
 
 				IsNullable: parameter.NullableAnnotation == NullableAnnotation.Annotated,
-				IsException: Utilities.IsExceptionType(parameter.Type),
+				IsException: isException,
+				IsFirstException: isException && isFirstException,
 
 				IsIEnumerable: Utilities.IsIEnumerable(parameter.Type, semanticModel.Compilation),
 				IsArray: Utilities.IsArray(parameter.Type),
@@ -397,6 +400,9 @@ partial class PipelineHelpers
 
 				ExpandEnumerableAttribute: expandEnumerableAttribute
 			));
+
+			if (isException)
+				isFirstException = false;
 		}
 
 		logger?.Debug($"Found {parameters.Count} parameter(s) for {method.Name}.");

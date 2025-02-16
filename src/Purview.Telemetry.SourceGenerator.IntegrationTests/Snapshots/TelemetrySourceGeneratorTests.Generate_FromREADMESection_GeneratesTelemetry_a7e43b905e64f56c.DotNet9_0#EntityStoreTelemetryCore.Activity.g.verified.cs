@@ -13,30 +13,31 @@
 
 #nullable enable
 
-sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
+sealed partial class EntityStoreTelemetryCore : global::IEntityStoreTelemetry
 {
-	readonly static System.Diagnostics.ActivitySource _activitySource = new System.Diagnostics.ActivitySource("purview.telemetry.sourcegenerator");
+	readonly static global::System.Diagnostics.ActivitySource _activitySource = new("purview.telemetry.sourcegenerator");
 
-	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-	static void RecordExceptionInternal(System.Diagnostics.Activity? activity, System.Exception? exception, bool escape)
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	static void RecordExceptionInternal(global::System.Diagnostics.Activity? activity, global::System.Exception? exception, bool escape)
 	{
 		if (activity == null || exception == null)
 		{
 			return;
 		}
 
-		System.Diagnostics.ActivityTagsCollection tagsCollection = new System.Diagnostics.ActivityTagsCollection();
-		tagsCollection.Add("exception.escaped", escape);
+		global::System.Diagnostics.ActivityTagsCollection tagsCollection = new();		tagsCollection.Add("exception.escaped", escape);
 		tagsCollection.Add("exception.message", exception.Message);
 		tagsCollection.Add("exception.type", exception.GetType().FullName);
 		tagsCollection.Add("exception.stacktrace", exception.StackTrace);
 
-		System.Diagnostics.ActivityEvent recordExceptionEvent = new System.Diagnostics.ActivityEvent(name: "exception", timestamp: default, tags: tagsCollection);
+		global::System.Diagnostics.ActivityEvent recordExceptionEvent = new(name: "exception", timestamp: default, tags: tagsCollection);
 
 		activity.AddEvent(recordExceptionEvent);
 	}
 
-	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public System.Diagnostics.Activity? GettingEntityFromStore(int entityId, string serviceUrl)
 	{
 		if (!_activitySource.HasListeners())
@@ -44,7 +45,7 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 			return null;
 		}
 
-		System.Diagnostics.Activity? activityGettingEntityFromStore = _activitySource.StartActivity(name: "GettingEntityFromStore", kind: System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
+		global::System.Diagnostics.Activity? activityGettingEntityFromStore = _activitySource.StartActivity(name: "GettingEntityFromStore", kind: global::System.Diagnostics.ActivityKind.Internal, parentId: default, tags: default, links: default, startTime: default);
 
 		if (activityGettingEntityFromStore != null)
 		{
@@ -59,7 +60,8 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 		return activityGettingEntityFromStore;
 	}
 
-	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void GetDuration(System.Diagnostics.Activity? activity, int durationInMS)
 	{
 		if (!_activitySource.HasListeners())
@@ -69,16 +71,17 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 
 		if (activity != null)
 		{
-			System.Diagnostics.ActivityTagsCollection tagsCollectionGetDuration = new System.Diagnostics.ActivityTagsCollection();
+			global::System.Diagnostics.ActivityTagsCollection tagsCollectionGetDuration = new();
 			tagsCollectionGetDuration.Add("durationinms", durationInMS);
 
-			System.Diagnostics.ActivityEvent activityEventGetDuration = new System.Diagnostics.ActivityEvent(name: "GetDuration", timestamp: default, tags: tagsCollectionGetDuration);
+			global::System.Diagnostics.ActivityEvent activityEventGetDuration = new(name: "GetDuration", timestamp: default, tags: tagsCollectionGetDuration);
 
 			activity.AddEvent(activityEventGetDuration);
 		}
 	}
 
-	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void RetrievedEntity(System.Diagnostics.Activity? activity, float totalValue, int lastUpdatedByUserId)
 	{
 		if (!_activitySource.HasListeners())

@@ -32,6 +32,7 @@ partial class LoggerGenTargetClassEmitter
 
 		builder
 			.AppendLine()
+			.CodeGen(indent)
 			.AggressiveInlining(indent)
 			.Append(indent, "public ", withNewLine: false)
 		;
@@ -115,12 +116,11 @@ partial class LoggerGenTargetClassEmitter
 		else
 		{
 			var expressionStateVarName = FindUniqueName("s", methodTarget.Parameters.Select(m => m.Name));
-			var usingExceptionInTemplate = methodTarget.ExceptionParameter?.UsedInTemplate == true; ;
 			var expressionExceptionVarName = methodTarget.ExceptionParameter?.UsedInTemplate == true
 				? FindUniqueName("e", methodTarget.Parameters.Select(m => m.Name))
-				: "_";
+				: null;
 
-			existingParamNames.AddRange([expressionStateVarName, expressionExceptionVarName]);
+			var t = GenerateInterpolatedFunction(methodTarget.MessageTemplate, expressionStateVarName, expressionExceptionVarName, [.. methodTarget.Parameters]);
 
 			// Call the .Log method.
 			var eventId = methodTarget.EventId ?? SharedHelpers.GetNonRandomizedHashCode(methodTarget.MethodName);
@@ -140,43 +140,34 @@ partial class LoggerGenTargetClassEmitter
 				// Exception
 				.Append(indent + 1, methodTarget.ExceptionParameter.OrNullKeyword().WithComma(andSpace: false))
 				// Message Template
-				.Append(indent + 1, "// GENERATE CODEGEN ATTRIB")
+				.CodeGen(indent + 1)
 				.Append(indent + 1, "static string (", withNewLine: false)
 				.Append(expressionStateVarName)
 				.Append(", ")
-				.Append(expressionExceptionVarName)
+				.Append(expressionExceptionVarName ?? "_")
 				.AppendLine(") =>")
 				.Append(indent + 1, "{")
 			;
 
-			// During build, we need to generate the placement.
-			var idx = -1;
-			foreach (var param in methodTarget.Parameters)
+			if (t.Variables.Length > 0)
 			{
-				idx++;
-				if (!param.UsedInTemplate || (methodTarget.ExceptionParameter == param && usingExceptionInTemplate))
-					continue;
+				foreach (var variableDefinition in t.Variables)
+					builder.Append(indent + 2, variableDefinition);
 
-				var tmpVarName = FindUniqueName($"tmp{idx}", existingParamNames);
-				existingParamNames.Add(tmpVarName);
-
-				builder
-					.Append(indent + 2, "var ", withNewLine: false)
-					.Append(tmpVarName)
-					.Append(" = ")
-					.Append(expressionStateVarName)
-					.Append(".TagArray[")
-					.Append(idx)
-					.AppendLine("].Value ?? \"(null)\";")
-				;
+				builder.AppendLine();
 			}
 
-			// Convert/ use the message template based on the parameters.
-
 			builder
-				.Append(indent + 1, "// TODO!!")
-				.Append(indent + 2, "return string.Empty;")
-				.Append(indent + 1, "}")
+				.AppendLine("#if NET")
+				.Append(indent + 2, "return string.Create(global::System.Globalization.CultureInfo.InvariantCulture, $", withNewLine: false)
+				.Append(t.InteropolatedMessage.Wrap())
+				.AppendLine(");")
+				.AppendLine("#else")
+				.Append(indent + 2, "return global::System.FormattableString.Invariant($", withNewLine: false)
+				.Append(t.InteropolatedMessage.Wrap())
+				.AppendLine(");")
+				.AppendLine("#endif")
+				.Append(indent + 1, '}')
 				.Append(indent, ");")
 			;
 
@@ -198,15 +189,6 @@ partial class LoggerGenTargetClassEmitter
 		var reservationCount = methodTarget.ParameterCount + 1;
 		if (methodTarget.ExceptionParameter != null)
 			reservationCount--;
-
-		//foreach (var parameter in methodTarget.Parameters)
-		//{
-		//	if (parameter.Name == methodTarget.ExceptionParameter?.Name)
-		//		// We need to skip over the exception parameter.
-		//		continue;
-
-		//	reservationCount++;
-		//}
 
 		// Create the state variable,
 		// and reserve the required number of variables.
@@ -358,4 +340,68 @@ partial class LoggerGenTargetClassEmitter
 
 		return name;
 	}
+
+	static (string InteropolatedMessage, string[] Variables) GenerateInterpolatedFunction(
+		string messageTemplate,
+		string expressionStateVarName,
+		string? expressionExceptionVarName,
+		LogParameterTarget[] parameters)
+	{
+		if (parameters.Length == 0)
+			return (messageTemplate, Array.Empty<string>());
+
+		List<string> variableDefinitions = [];
+		Dictionary<string, string> replacements = [];
+		Dictionary<MessageTemplateHole, int> holeIndexMap = [];
+		var currentIndex = 0;
+
+		foreach (var param in parameters)
+		{
+			foreach (var hole in param.ReferencedHoles)
+				holeIndexMap[hole] = currentIndex++;
+		}
+
+		var escapedTemplate = messageTemplate
+			.Replace("{{", "\u0001")
+			.Replace("}}", "\u0002");
+
+		var existingParamNames = new List<string>(parameters.Select(p => p.Name));
+		if (expressionExceptionVarName != null)
+			existingParamNames.Add(expressionExceptionVarName);
+
+		var exceptionParameter = parameters?.FirstOrDefault(p => p.IsFirstException);
+		var exceptionUsedInTemplate = exceptionParameter?.UsedInTemplate == true;
+		foreach (var hole in holeIndexMap.Keys)
+		{
+			var index = hole.IsPositional ? hole.Ordinal!.Value : holeIndexMap[hole];
+			string varName;
+
+			var isUsingExpressionException = exceptionParameter != null && exceptionParameter.ReferencedHoles.Contains(hole);
+			if (isUsingExpressionException)
+				varName = expressionExceptionVarName!;
+			else
+			{
+				varName = FindUniqueName($"v{index}", existingParamNames);
+				existingParamNames.Add(varName);
+
+				// Define variable for every placeholder and ensure null safety
+				var varAssignment = $"var {varName} = {expressionStateVarName}.TagArray[{index + 1}].Value ?? \"(null)\";";
+				variableDefinitions.Add(varAssignment);
+			}
+
+			// If this hole belongs to the Exception parameter, use it directly
+			string replacement = $"{{{varName}" +
+				  $"{(hole.Alignment.HasValue ? $",{hole.Alignment}" : "")}" +
+				  $"{(hole.Format != null ? $":{hole.Format}" : "")}}}";
+
+			// Replace all occurrences of this hole’s placeholders
+			string placeholder = hole.IsPositional ? $"{{{hole.Ordinal}}}" : $"{{{hole.Name}}}";
+			escapedTemplate = escapedTemplate.Replace(placeholder, replacement);
+		}
+
+		escapedTemplate = escapedTemplate.Replace("\u0001", "{{").Replace("\u0002", "}}");
+
+		return (escapedTemplate, [.. variableDefinitions]);
+	}
 }
+

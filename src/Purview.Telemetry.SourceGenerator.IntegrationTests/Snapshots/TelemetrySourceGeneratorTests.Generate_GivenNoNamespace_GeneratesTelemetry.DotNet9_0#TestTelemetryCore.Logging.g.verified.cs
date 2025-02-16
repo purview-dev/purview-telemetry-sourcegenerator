@@ -13,17 +13,18 @@
 
 #nullable enable
 
-sealed partial class TestTelemetryCore : ITestTelemetry
+sealed partial class TestTelemetryCore : global::ITestTelemetry
 {
-	readonly Microsoft.Extensions.Logging.ILogger<ITestTelemetry> _logger;
+	readonly global::Microsoft.Extensions.Logging.ILogger<global::ITestTelemetry> _logger;
 
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, int, bool, System.Exception?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.Define<int, bool>(Microsoft.Extensions.Logging.LogLevel.Information, new Microsoft.Extensions.Logging.EventId(1579320335, "Log"), "Log: IntParam = {IntParam}, BoolParam = {BoolParam}");
-	static readonly System.Func<Microsoft.Extensions.Logging.ILogger, int, bool, System.IDisposable?> _logScopeAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<int, bool>("LogScope: IntParam = {IntParam}, BoolParam = {BoolParam}");
+	static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, int, bool, global::System.Exception?> _logAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<int, bool>(global::Microsoft.Extensions.Logging.LogLevel.Information, new global::Microsoft.Extensions.Logging.EventId(1579320335, "Log"), "Log: IntParam = {IntParam}, BoolParam = {BoolParam}");
+	static readonly global::System.Func<global::Microsoft.Extensions.Logging.ILogger, int, bool, global::System.IDisposable?> _logScopeAction = global::Microsoft.Extensions.Logging.LoggerMessage.DefineScope<int, bool>("LogScope: IntParam = {IntParam}, BoolParam = {BoolParam}");
 
-	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void Log(int intParam, bool boolParam)
 	{
-		if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
+		if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
 		{
 			return;
 		}
@@ -32,8 +33,9 @@ sealed partial class TestTelemetryCore : ITestTelemetry
 	}
 
 
-	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-	public System.IDisposable? LogScope(int intParam, bool boolParam)
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	public global::System.IDisposable? LogScope(int intParam, bool boolParam)
 	{
 		return _logScopeAction(_logger, intParam, boolParam);
 	}

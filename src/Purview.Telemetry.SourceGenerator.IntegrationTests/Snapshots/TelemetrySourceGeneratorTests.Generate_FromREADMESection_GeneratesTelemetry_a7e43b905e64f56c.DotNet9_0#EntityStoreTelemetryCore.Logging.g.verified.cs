@@ -13,11 +13,12 @@
 
 #nullable enable
 
-sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
+sealed partial class EntityStoreTelemetryCore : global::IEntityStoreTelemetry
 {
-	readonly global::Microsoft.Extensions.Logging.ILogger<IEntityStoreTelemetry> _logger;
+	readonly global::Microsoft.Extensions.Logging.ILogger<global::IEntityStoreTelemetry> _logger;
 
-	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void LogMessage(int entityId, string updateState)
 	{
 		if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
@@ -37,13 +38,17 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 			new (1180592680, "LogMessage"),
 			state,
 			null,
-			// GENERATE CODEGEN ATTRIB
+			[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
 			static string (s, _) =>
 			{
-				var tmp0 = s.TagArray[0].Value ?? "(null)";
-				var tmp1 = s.TagArray[1].Value ?? "(null)";
-			// TODO!!
-				return string.Empty;
+				var v0 = s.TagArray[1].Value ?? "(null)";
+				var v1 = s.TagArray[2].Value ?? "(null)";
+
+#if NET
+				return string.Create(global::System.Globalization.CultureInfo.InvariantCulture, $"LogMessage: EntityId = {v0}, UpdateState = {v1}");
+#else
+				return global::System.FormattableString.Invariant($"LogMessage: EntityId = {v0}, UpdateState = {v1}");
+#endif
 			}
 		);
 
@@ -51,7 +56,8 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 	}
 
 
-	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void ExplicitInfoMessage(int entityId, string updateState)
 	{
 		if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
@@ -71,13 +77,17 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 			new (1861353128, "ExplicitInfoMessage"),
 			state,
 			null,
-			// GENERATE CODEGEN ATTRIB
+			[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
 			static string (s, _) =>
 			{
-				var tmp0 = s.TagArray[0].Value ?? "(null)";
-				var tmp1 = s.TagArray[1].Value ?? "(null)";
-			// TODO!!
-				return string.Empty;
+				var v0 = s.TagArray[1].Value ?? "(null)";
+				var v1 = s.TagArray[2].Value ?? "(null)";
+
+#if NET
+				return string.Create(global::System.Globalization.CultureInfo.InvariantCulture, $"ExplicitInfoMessage: EntityId = {v0}, UpdateState = {v1}");
+#else
+				return global::System.FormattableString.Invariant($"ExplicitInfoMessage: EntityId = {v0}, UpdateState = {v1}");
+#endif
 			}
 		);
 
@@ -85,7 +95,8 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 	}
 
 
-	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void ExplicitErrorMessage(int entityId, global::System.Exception exception)
 	{
 		if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Error))
@@ -104,12 +115,16 @@ sealed partial class EntityStoreTelemetryCore : IEntityStoreTelemetry
 			new (1928434156, "ExplicitErrorMessage"),
 			state,
 			exception,
-			// GENERATE CODEGEN ATTRIB
+			[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
 			static string (s, e) =>
 			{
-				var tmp0 = s.TagArray[0].Value ?? "(null)";
-			// TODO!!
-				return string.Empty;
+				var v0 = s.TagArray[1].Value ?? "(null)";
+
+#if NET
+				return string.Create(global::System.Globalization.CultureInfo.InvariantCulture, $"An explicit error message. The entity Id is {v0}, and the error is {e}.");
+#else
+				return global::System.FormattableString.Invariant($"An explicit error message. The entity Id is {v0}, and the error is {e}.");
+#endif
 			}
 		);
 

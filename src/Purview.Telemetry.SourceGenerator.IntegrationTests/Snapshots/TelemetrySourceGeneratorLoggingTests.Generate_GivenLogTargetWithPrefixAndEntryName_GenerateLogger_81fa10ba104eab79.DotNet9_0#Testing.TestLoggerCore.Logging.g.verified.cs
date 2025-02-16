@@ -15,21 +15,24 @@
 
 namespace Testing
 {
-	sealed partial class TestLoggerCore : Testing.ITestLogger
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	sealed partial class TestLoggerCore : global::Testing.ITestLogger
 	{
-		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
+		readonly global::Microsoft.Extensions.Logging.ILogger<global::Testing.ITestLogger> _logger;
 
-		static readonly System.Action<Microsoft.Extensions.Logging.ILogger, string, int, bool, System.Exception?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.Define<string, int, bool>(Microsoft.Extensions.Logging.LogLevel.Information, new Microsoft.Extensions.Logging.EventId(1579320335, "TestLoggerCore.LogNameSetViaLogTargetAttribute"), "TestLoggerCore.LogNameSetViaLogTargetAttribute: StringParam = {StringParam}, IntParam = {IntParam}, BoolParam = {BoolParam}");
+		static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, string, int, bool, global::System.Exception?> _logAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<string, int, bool>(global::Microsoft.Extensions.Logging.LogLevel.Information, new global::Microsoft.Extensions.Logging.EventId(1579320335, "TestLoggerCore.LogNameSetViaLogTargetAttribute"), "TestLoggerCore.LogNameSetViaLogTargetAttribute: StringParam = {StringParam}, IntParam = {IntParam}, BoolParam = {BoolParam}");
 
-		public TestLoggerCore(global::Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		public TestLoggerCore(global::Microsoft.Extensions.Logging.ILogger<global::Testing.ITestLogger> logger)
 		{
 			_logger = logger;
 		}
 
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Log(string stringParam, int intParam, bool boolParam)
 		{
-			if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
+			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
 			{
 				return;
 			}

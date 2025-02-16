@@ -1,8 +1,12 @@
-﻿using Purview.Telemetry.SourceGenerator.Templates;
+﻿using System.Globalization;
+using Purview.Telemetry.SourceGenerator.Templates;
 
 namespace Purview.Telemetry;
+
 partial class Constants
 {
+	public static Lazy<Version> Version = new(() => typeof(Constants).Assembly.GetName().Version!);
+
 	public static class System
 	{
 		public const string VoidKeyword = "void";
@@ -46,6 +50,14 @@ partial class Constants
 
 		public static readonly TypeInfo TagList = TypeInfo.Create(SystemDiagnosticsNamespace + ".TagList");
 
-		public const string AggressiveInlining = "[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]";
+		public const string AggressiveInlining = "[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]";
+
+		const string GeneratedCodeConstant = "[global::System.CodeDom.Compiler.GeneratedCodeAttribute(\"{0}\", \"{1}\")]";
+
+		public static readonly Lazy<string> GeneratedCode
+			= new(() => string.Format(CultureInfo.InvariantCulture,
+				GeneratedCodeConstant,
+				"Purview.Telemetry.SourceGenerator",
+				Version.Value));
 	}
 }

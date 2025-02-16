@@ -15,7 +15,15 @@ static partial class LoggerGenTargetClassEmitter
 		logger?.Debug($"Generating MS Gen-based logging class for: {target.FullyQualifiedName}");
 
 		var indent = EmitHelpers.EmitNamespaceStart(target.ClassNamespace, target.ParentClasses, builder, context.CancellationToken);
-		indent = EmitHelpers.EmitClassStart(target.ClassNameToGenerate, target.FullyQualifiedInterfaceName, builder, indent, context.CancellationToken);
+		indent = EmitHelpers.EmitClassStart(
+			GenerationType.Logging,
+			target.GenerationType,
+			target.ClassNameToGenerate,
+			target.FullyQualifiedInterfaceName,
+			builder,
+			indent,
+			context.CancellationToken
+		);
 
 		EmitFields(target, builder, indent, context, logger);
 
@@ -59,7 +67,7 @@ static partial class LoggerGenTargetClassEmitter
 			.Append(indent + 1, "readonly ", withNewLine: false)
 			.Append(Constants.Logging.MicrosoftExtensions.ILogger.WithGlobal())
 			.Append('<')
-			.Append(target.FullyQualifiedInterfaceName)
+			.Append(target.FullyQualifiedInterfaceName.WithGlobal())
 			.Append('>')
 			.Append(' ')
 			.Append(Constants.Logging.LoggerFieldName)

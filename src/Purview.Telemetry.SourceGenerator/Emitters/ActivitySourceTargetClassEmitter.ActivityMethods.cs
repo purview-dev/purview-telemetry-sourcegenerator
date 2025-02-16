@@ -55,7 +55,7 @@ partial class ActivitySourceTargetClassEmitter
 		var activityVariableName = "activity" + methodTarget.MethodName;
 
 		builder
-			.Append(indent, Constants.Activities.SystemDiagnostics.Activity, withNewLine: false)
+			.Append(indent, Constants.Activities.SystemDiagnostics.Activity.WithGlobal(), withNewLine: false)
 			.Append("? ")
 			.Append(activityVariableName)
 			.Append(" = ")
@@ -94,7 +94,7 @@ partial class ActivitySourceTargetClassEmitter
 			.Append(methodTarget.ActivityOrEventName.Wrap())
 			// kind:
 			.Append(", kind: ")
-			.Append(Constants.Activities.ActivityTypeMap[kind])
+			.Append(Constants.Activities.ActivityTypeMap[kind].WithGlobal())
 			// parentContext/ parentId:
 			.Append(", ")
 			.Append(parentContextParameterName)

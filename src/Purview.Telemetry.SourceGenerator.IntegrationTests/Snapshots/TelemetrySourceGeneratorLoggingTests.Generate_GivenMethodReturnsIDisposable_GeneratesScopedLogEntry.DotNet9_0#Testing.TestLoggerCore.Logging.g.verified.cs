@@ -15,19 +15,22 @@
 
 namespace Testing
 {
-	sealed partial class TestLoggerCore : Testing.ITestLogger
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	sealed partial class TestLoggerCore : global::Testing.ITestLogger
 	{
-		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
+		readonly global::Microsoft.Extensions.Logging.ILogger<global::Testing.ITestLogger> _logger;
 
-		static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope("Log");
+		static readonly global::System.Func<global::Microsoft.Extensions.Logging.ILogger, global::System.IDisposable?> _logAction = global::Microsoft.Extensions.Logging.LoggerMessage.DefineScope("Log");
 
-		public TestLoggerCore(global::Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		public TestLoggerCore(global::Microsoft.Extensions.Logging.ILogger<global::Testing.ITestLogger> logger)
 		{
 			_logger = logger;
 		}
 
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public System.IDisposable? Log()
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		public global::System.IDisposable? Log()
 		{
 			return _logAction(_logger);
 		}

@@ -52,7 +52,8 @@ static class DependencyInjectionClassEmitter
 		;
 
 		builder
-			.Append(1, "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]")
+			.CodeGen(1)
+			.Append(1, "[global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]")
 			.Append(1, "static class ", withNewLine: false)
 			.Append(classNameToGenerate)
 			.AppendLine()
@@ -94,21 +95,22 @@ static class DependencyInjectionClassEmitter
 		methodName = $" Add{methodName}";
 
 		builder
+			.CodeGen(indent)
 			.AggressiveInlining(indent)
-			.Append(indent, "static public ", withNewLine: false)
-			.Append(Constants.DependencyInjection.IServiceCollection)
+			.Append(indent, "public static ", withNewLine: false)
+			.Append(Constants.DependencyInjection.IServiceCollection.WithGlobal())
 			.Append(methodName)
 			.Append("(this ")
-			.Append(Constants.DependencyInjection.IServiceCollection)
+			.Append(Constants.DependencyInjection.IServiceCollection.WithGlobal())
 			.AppendLine(" services)")
 			.Append(indent, '{')
 			.Append(indent + 1, "return services.AddSingleton<", withNewLine: false)
 			// serviceType...
-			.Append(fullyQualifiedNamespace)
+			.Append(fullyQualifiedNamespace!.WithGlobal())
 			.Append(interfaceName)
 			.Append(", ")
 			// implementationType
-			.Append(fullyQualifiedNamespace)
+			.Append(fullyQualifiedNamespace!.WithGlobal())
 			.Append(className)
 			.AppendLine(">();")
 			.Append(indent, '}')

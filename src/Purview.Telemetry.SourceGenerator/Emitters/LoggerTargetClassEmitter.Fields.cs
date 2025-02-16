@@ -15,9 +15,9 @@ partial class LoggerTargetClassEmitter
 
 		builder
 			.Append(indent, "readonly ", withNewLine: false)
-			.Append(Constants.Logging.MicrosoftExtensions.ILogger)
+			.Append(Constants.Logging.MicrosoftExtensions.ILogger.WithGlobal())
 			.Append('<')
-			.Append(target.FullyQualifiedInterfaceName)
+			.Append(target.FullyQualifiedInterfaceName.WithGlobal())
 			.Append('>')
 			.Append(' ')
 			.Append(Constants.Logging.LoggerFieldName)
@@ -78,9 +78,9 @@ partial class LoggerTargetClassEmitter
 	{
 		builder
 			.Append(indent, "static readonly ", withNewLine: false)
-			.Append(methodTarget.IsScoped ? Constants.System.Func : Constants.System.Action)
+			.Append(methodTarget.IsScoped ? Constants.System.Func.WithGlobal() : Constants.System.Action.WithGlobal())
 			.Append('<')
-			.Append(Constants.Logging.MicrosoftExtensions.ILogger)
+			.Append(Constants.Logging.MicrosoftExtensions.ILogger.WithGlobal())
 			.Append(", ")
 		;
 
@@ -96,14 +96,14 @@ partial class LoggerTargetClassEmitter
 		if (methodTarget.IsScoped)
 		{
 			builder
-				.Append(Constants.System.IDisposable)
+				.Append(Constants.System.IDisposable.WithGlobal())
 				.Append("?> ")
 			;
 		}
 		else
 		{
 			builder
-				.Append(Constants.System.Exception)
+				.Append(Constants.System.Exception.WithGlobal())
 				.Append("?> ")
 			;
 		}
@@ -111,7 +111,7 @@ partial class LoggerTargetClassEmitter
 		builder
 			.Append(methodTarget.LoggerActionFieldName)
 			.Append(" = ")
-			.Append(Constants.Logging.MicrosoftExtensions.LoggerMessage)
+			.Append(Constants.Logging.MicrosoftExtensions.LoggerMessage.WithGlobal())
 			.Append(".Define")
 		;
 
@@ -144,14 +144,14 @@ partial class LoggerTargetClassEmitter
 		if (!methodTarget.IsScoped)
 		{
 			builder
-				.Append(methodTarget.MSLevel)
+				.Append(methodTarget.MSLevel.WithGlobal())
 				.Append(", ")
 			;
 
 			var eventId = methodTarget.EventId ?? SharedHelpers.GetNonRandomizedHashCode(methodTarget.MethodName);
 			builder
 				.Append("new ")
-				.Append(Constants.Logging.MicrosoftExtensions.EventId)
+				.Append(Constants.Logging.MicrosoftExtensions.EventId.WithGlobal())
 				.Append('(')
 				.Append(eventId)
 				.Append(", \"")
