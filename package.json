@@ -1,6 +1,6 @@
 {
 	"name": "purview-telemetry-sourcegenerator",
-	"version": "2.0.1",
+	"version": "3.0.0-prerelease.1",
 	"description": "Generates [ActivitySource](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource), [High-performance logging](https://learn.microsoft.com/en-us/dotnet/core/extensions/high-performance-logging) and [Metrics](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics) based on methods on an interface, enabling fast iteration cycles, dependency injection and substitutes for testing.",
 	"main": "index.js",
 	"scripts": {
