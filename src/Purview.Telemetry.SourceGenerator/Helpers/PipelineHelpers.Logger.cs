@@ -155,7 +155,13 @@ partial class PipelineHelpers
 			logger?.Debug($"Found method {interfaceSymbol.Name}.{method.Name}.");
 
 			var isScoped = !method.ReturnsVoid;
-			var methodParameters = GetLogMethodParameters(method, semanticModel, logger, token);
+			var methodParameters = GetLogMethodParameters(method, semanticModel, logger, token, out var parameterDiagnostic);
+			if (parameterDiagnostic != null)
+			{
+				telemetryDiagnostic = parameterDiagnostic;
+				break;
+			}
+
 			var logAttribute = SharedHelpers.GetLogAttribute(method, semanticModel, logger, token);
 			var isKnownReturnType = method.ReturnsVoid || Constants.System.IDisposable.Equals(method.ReturnType);
 			var loggerActionFieldName = $"_{Utilities.LowercaseFirstChar(method.Name)}Action";
@@ -339,8 +345,15 @@ partial class PipelineHelpers
 
 		return builder.ToString();
 	}
-	static ImmutableArray<LogParameterTarget> GetLogMethodParameters(IMethodSymbol method, SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token)
+	static ImmutableArray<LogParameterTarget> GetLogMethodParameters(
+		IMethodSymbol method,
+		SemanticModel semanticModel,
+		IGenerationLogger? logger,
+		CancellationToken token,
+		out TelemetryDiagnosticDescriptor? parameterDiagnostic)
 	{
+		parameterDiagnostic = null;
+
 		List<LogParameterTarget> parameters = [];
 		var isFirstException = true;
 		foreach (var parameter in method.Parameters)
@@ -351,6 +364,12 @@ partial class PipelineHelpers
 				parameter, semanticModel, logger, token);
 			var expandEnumerableAttribute = SharedHelpers.GetExpandEnumerableAttribute(
 				parameter, semanticModel, logger, token);
+
+			if (logPropertiesAttribute != null && expandEnumerableAttribute != null)
+			{
+				parameterDiagnostic = TelemetryDiagnostics.Logging.ExpandEnumerableAndLogPropertiesNotSupport;
+				break;
+			}
 
 			List<LogPropertiesParameterDetails>? logProperties = null;
 			if (logPropertiesAttribute != null)

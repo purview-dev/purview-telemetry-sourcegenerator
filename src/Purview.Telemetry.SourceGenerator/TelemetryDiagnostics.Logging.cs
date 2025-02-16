@@ -67,7 +67,15 @@ partial class TelemetryDiagnostics
 		public static readonly TelemetryDiagnosticDescriptor OrdinalsExceedParameters = new(
 			Id: "TSG2007",
 			Title: "Ordinal values exceed parameter count",
-			Description: "The maximum ordinal value for log method '{0}' exceeds the number of provided parameters",
+			Description: "The maximum ordinal value for log method '{0}' exceeds the number of provided parameters.",
+			Category: Constants.Diagnostics.Logging.Usage,
+			Severity: DiagnosticSeverity.Error
+		);
+
+		public static readonly TelemetryDiagnosticDescriptor ExpandEnumerableAndLogPropertiesNotSupport = new(
+			Id: "TSG2008",
+			Title: "A parameter may not expand an array/ IEnumerable and properties",
+			Description: "Expanding an array, and the properties of the items in the array are not supported.",
 			Category: Constants.Diagnostics.Logging.Usage,
 			Severity: DiagnosticSeverity.Error
 		);

@@ -33,7 +33,7 @@ sealed class ExpandEnumerableAttribute : global::System.Attribute
 	/// number of elements to include.
 	/// </summary>
 	/// <param name="maximumValueCount">Specifies the <see cref="MaximumValueCount"/>, defaults to 5.</param>
-	public ExpandEnumerableAttribute(int? maximumValueCount = 5)
+	public ExpandEnumerableAttribute(int maximumValueCount = 5)
 	{
 		MaximumValueCount = maximumValueCount;
 	}
@@ -43,7 +43,7 @@ sealed class ExpandEnumerableAttribute : global::System.Attribute
 	/// properties. If the value is <code>null</code>, then there is no limit to the
 	/// number of elements to include. However, this is NOT recommended.
 	/// </summary>
-	public int? MaximumValueCount { get; set; } = 5;
+	public int? MaximumValueCount { get; set; }
 }
 
 #endif

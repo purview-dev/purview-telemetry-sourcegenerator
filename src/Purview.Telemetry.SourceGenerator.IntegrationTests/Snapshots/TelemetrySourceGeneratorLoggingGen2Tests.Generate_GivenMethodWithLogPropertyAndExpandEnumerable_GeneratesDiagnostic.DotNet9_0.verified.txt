@@ -1,0 +1,16 @@
+﻿{
+  Diagnostics: [
+    {
+      Message: Expanding an array, and the properties of the items in the array are not supported.,
+      Severity: Error,
+      Descriptor: {
+        Id: TSG2008,
+        Title: A parameter may not expand an array/ IEnumerable and properties,
+        MessageFormat: Expanding an array, and the properties of the items in the array are not supported.,
+        Category: Logging.Usage,
+        DefaultSeverity: Error,
+        IsEnabledByDefault: true
+      }
+    }
+  ]
+}

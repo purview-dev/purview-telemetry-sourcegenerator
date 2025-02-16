@@ -34,6 +34,37 @@ public class WeatherForecast
 	}
 
 	[Fact]
+	public async Task Generate_GivenMethodWithLogPropertyAndExpandEnumerable_GeneratesDiagnostic()
+	{
+		// Arrange
+		var basicLogger = @$"
+using Purview.Telemetry.Logging;
+using Microsoft.Extensions.Logging;
+
+namespace Testing;
+
+[Logger]
+public interface ITestLogger
+{{
+	void LogWeather([LogProperties][ExpandEnumerable]WeatherForecast[] weather);
+}}
+
+public class WeatherForecast
+{{
+	public DateTime Date {{ get; set; }}
+	public int TemperatureC {{ get; set; }}
+	public string Summary {{ get; set; }}
+}}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicLogger, includeLoggerTypes: IncludeLoggerTypes.Telemetry);
+
+		// Assert
+		await TestHelpers.Verify(generationResult, validateNonEmptyDiagnostics: true);
+	}
+
+	[Fact]
 	public async Task Generate_GivenMethodWithExceptionUsedInTemplate_UsesPassInException()
 	{
 		// Arrange
