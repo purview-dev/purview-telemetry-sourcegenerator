@@ -75,7 +75,7 @@ record AttributeStringValue
 public record struct MessageTemplateHole(
 	string? Name,
 	int? Ordinal,
-	string? Alignment,
+	int? Alignment,
 	string? Format,
 	bool Destructure,
 	bool Stringify)
@@ -137,7 +137,9 @@ public record struct MessageTemplateHole(
 			ordinal == null
 				? null
 				: int.Parse(ordinal, CultureInfo.InvariantCulture),
-			alignment,
+			alignment == null
+				? null
+				: int.Parse(alignment, CultureInfo.InvariantCulture),
 			format,
 			destructure,
 			stringify
