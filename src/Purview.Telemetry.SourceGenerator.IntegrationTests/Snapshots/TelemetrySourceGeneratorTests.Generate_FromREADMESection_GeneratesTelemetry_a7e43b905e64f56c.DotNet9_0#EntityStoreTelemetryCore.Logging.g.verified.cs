@@ -35,7 +35,7 @@ sealed partial class EntityStoreTelemetryCore : global::IEntityStoreTelemetry
 
 		_logger.Log(
 			global::Microsoft.Extensions.Logging.LogLevel.Information,
-			new (1180592680, "LogMessage"),
+			new (1180592680, nameof(LogMessage)),
 			state,
 			null,
 			[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
@@ -74,7 +74,7 @@ sealed partial class EntityStoreTelemetryCore : global::IEntityStoreTelemetry
 
 		_logger.Log(
 			global::Microsoft.Extensions.Logging.LogLevel.Information,
-			new (1861353128, "ExplicitInfoMessage"),
+			new (1861353128, nameof(ExplicitInfoMessage)),
 			state,
 			null,
 			[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
@@ -105,14 +105,14 @@ sealed partial class EntityStoreTelemetryCore : global::IEntityStoreTelemetry
 		}
 
 		var state = global::Microsoft.Extensions.Logging.LoggerMessageHelper.ThreadLocalState;
-		state.ReserveTagSpace(1);
+		state.ReserveTagSpace(2);
 
 		state.TagArray[0] = new("{OriginalFormat}", "An explicit error message. The entity Id is {EntityId}, and the error is {Exception}.");
 		state.TagArray[1] = new("entityId", entityId);
 
 		_logger.Log(
 			global::Microsoft.Extensions.Logging.LogLevel.Error,
-			new (1928434156, "ExplicitErrorMessage"),
+			new (1928434156, nameof(ExplicitErrorMessage)),
 			state,
 			exception,
 			[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]

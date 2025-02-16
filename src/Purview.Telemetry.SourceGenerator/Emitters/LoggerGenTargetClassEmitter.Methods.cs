@@ -130,9 +130,9 @@ partial class LoggerGenTargetClassEmitter
 				// Event Id
 				.Append(indent + 1, "new (", withNewLine: false)
 				.Append(eventId)
-				.Append(", \"")
+				.Append(", nameof(")
 				.Append(methodTarget.LogName)
-				.AppendLine("\"),")
+				.AppendLine(")),")
 				// State
 				.Append(indent + 1, stateVarName.WithComma(andSpace: false))
 				// Exception
@@ -190,7 +190,8 @@ partial class LoggerGenTargetClassEmitter
 		SourceProductionContext context,
 		IGenerationLogger? logger)
 	{
-		var reservationCount = methodTarget.ParameterCount + 1;
+		// +1 for the OriginalFormat entry.
+		var reservationCount = methodTarget.TotalParameterCount + 1;
 		if (methodTarget.ExceptionParameter != null)
 			reservationCount--;
 
@@ -252,7 +253,12 @@ partial class LoggerGenTargetClassEmitter
 
 		builder.AppendLine();
 
-		static void OutputLogPropertyDetails(int indent, string stateVarName, SourceProductionContext context, ref List<string>? nullableLogProperties, LogParameterTarget parameter, List<string> existingParamNames)
+		static void OutputLogPropertyDetails(int indent,
+			string stateVarName,
+			SourceProductionContext context,
+			ref List<string>? postPropertyDefinitions,
+			LogParameterTarget parameter,
+			List<string> existingParamNames)
 		{
 			StringBuilder logPropertiesBuilder = new();
 			foreach (var logProperty in parameter.LogProperties!.Value)
@@ -297,8 +303,8 @@ partial class LoggerGenTargetClassEmitter
 					;
 				}
 
-				nullableLogProperties ??= [];
-				nullableLogProperties.Add(logPropertiesBuilder.ToString());
+				postPropertyDefinitions ??= [];
+				postPropertyDefinitions.Add(logPropertiesBuilder.ToString());
 
 				logPropertiesBuilder.Clear();
 			}

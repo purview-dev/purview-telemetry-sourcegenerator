@@ -54,7 +54,7 @@ partial class LoggerTargetClassEmitter
 				continue;
 			}
 
-			if (methodTarget.ParameterCount > Constants.Logging.MaxNonExceptionParameters)
+			if (methodTarget.ParameterCountSansException > Constants.Logging.MaxNonExceptionParameters)
 			{
 				logger?.Diagnostic($"Method has more than 6 parameters.");
 				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.MaximumLogEntryParametersExceeded, methodTarget.MethodLocation);
@@ -118,7 +118,7 @@ partial class LoggerTargetClassEmitter
 		if (methodTarget.IsScoped)
 			builder.Append("Scope");
 
-		if (methodTarget.ParameterCount > 0)
+		if (methodTarget.ParameterCountSansException > 0)
 		{
 			builder.Append('<');
 
@@ -130,7 +130,7 @@ partial class LoggerTargetClassEmitter
 				if (parameter.IsNullable)
 					builder.Append('?');
 
-				if (i < methodTarget.ParameterCount - 1)
+				if (i < methodTarget.ParameterCountSansException - 1)
 					builder.Append(", ");
 
 				i++;

@@ -58,7 +58,7 @@ namespace Testing
 
 			_logger.Log(
 				global::Microsoft.Extensions.Logging.LogLevel.Information,
-				new (1579320335, "Log"),
+				new (1579320335, nameof(Log)),
 				state,
 				null,
 				[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]

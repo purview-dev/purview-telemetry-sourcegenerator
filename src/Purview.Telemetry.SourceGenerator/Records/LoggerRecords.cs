@@ -79,7 +79,7 @@ record LogMethodTarget(
 {
 	public int TotalParameterCount => Parameters.Length;
 
-	public int ParameterCount => ParametersSansException.Length;
+	public int ParameterCountSansException => ParametersSansException.Length;
 }
 
 record LogParameterTarget(

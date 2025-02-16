@@ -36,14 +36,14 @@ namespace Testing
 			}
 
 			var state = global::Microsoft.Extensions.Logging.LoggerMessageHelper.ThreadLocalState;
-			state.ReserveTagSpace(1);
+			state.ReserveTagSpace(2);
 
 			state.TagArray[0] = new("{OriginalFormat}", "v = {v} Exception = {ex}");
 			state.TagArray[1] = new("v", v);
 
 			_logger.Log(
 				global::Microsoft.Extensions.Logging.LogLevel.Information,
-				new (1579320335, "Log"),
+				new (1579320335, nameof(Log)),
 				state,
 				ex,
 				[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]

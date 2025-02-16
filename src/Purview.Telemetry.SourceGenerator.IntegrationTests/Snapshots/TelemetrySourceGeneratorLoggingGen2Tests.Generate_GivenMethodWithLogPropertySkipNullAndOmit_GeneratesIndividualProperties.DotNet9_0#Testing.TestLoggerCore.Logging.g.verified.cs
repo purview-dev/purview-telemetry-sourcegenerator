@@ -53,7 +53,7 @@ namespace Testing
 
 			_logger.Log(
 				global::Microsoft.Extensions.Logging.LogLevel.Information,
-				new (1268453319, "LogWeather"),
+				new (1268453319, nameof(LogWeather)),
 				state,
 				null,
 				[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]

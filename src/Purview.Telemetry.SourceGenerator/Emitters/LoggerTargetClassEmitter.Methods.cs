@@ -21,7 +21,7 @@ partial class LoggerTargetClassEmitter
 			if (methodTarget.HasMultipleExceptions)
 				continue;
 
-			if (methodTarget.ParameterCount > Constants.Logging.MaxNonExceptionParameters)
+			if (methodTarget.ParameterCountSansException > Constants.Logging.MaxNonExceptionParameters)
 				continue;
 
 			EmitLogActionMethod(builder, indent, methodTarget, context, logger);
