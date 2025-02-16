@@ -1,1 +1,7 @@
-../../global.json
+{
+	"sdk": {
+		"version": "9.0.200",
+		"rollForward": "latestPatch",
+		"allowPrerelease": false
+	}
+}
