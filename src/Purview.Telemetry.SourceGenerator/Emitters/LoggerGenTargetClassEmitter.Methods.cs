@@ -68,8 +68,6 @@ partial class LoggerGenTargetClassEmitter
 		List<string> existingParamNames = [.. methodTarget.Parameters.Select(m => m.Name)];
 		var stateVarName = FindUniqueName("state", existingParamNames);
 
-		existingParamNames.Add(stateVarName);
-
 		// Should always be state, because we'll use the messageFormat. And we'll generate one if
 		// one doesn't exist...
 		if (!methodTarget.IsScoped)
@@ -93,7 +91,7 @@ partial class LoggerGenTargetClassEmitter
 		}
 
 		// Output the state here...
-		EmitStateContent(builder, indent, methodTarget, stateVarName, context, logger);
+		EmitStateContent(builder, indent, methodTarget, stateVarName, existingParamNames, context, logger);
 
 		if (methodTarget.IsScoped)
 		{
@@ -115,12 +113,12 @@ partial class LoggerGenTargetClassEmitter
 		}
 		else
 		{
-			var expressionStateVarName = FindUniqueName("s", methodTarget.Parameters.Select(m => m.Name));
+			var expressionStateVarName = FindUniqueName("s", existingParamNames);
 			var expressionExceptionVarName = methodTarget.ExceptionParameter?.UsedInTemplate == true
-				? FindUniqueName("e", methodTarget.Parameters.Select(m => m.Name))
+				? FindUniqueName("e", existingParamNames)
 				: null;
 
-			var t = GenerateInterpolatedFunction(methodTarget.MessageTemplate, expressionStateVarName, expressionExceptionVarName, [.. methodTarget.Parameters]);
+			var (InteropolatedMessage, Variables) = GenerateInterpolatedFunction(methodTarget.MessageTemplate, expressionStateVarName, expressionExceptionVarName, [.. methodTarget.Parameters], existingParamNames);
 
 			// Call the .Log method.
 			var eventId = methodTarget.EventId ?? SharedHelpers.GetNonRandomizedHashCode(methodTarget.MethodName);
@@ -149,9 +147,9 @@ partial class LoggerGenTargetClassEmitter
 				.Append(indent + 1, "{")
 			;
 
-			if (t.Variables.Length > 0)
+			if (Variables.Length > 0)
 			{
-				foreach (var variableDefinition in t.Variables)
+				foreach (var variableDefinition in Variables)
 					builder.Append(indent + 2, variableDefinition);
 
 				builder.AppendLine();
@@ -160,11 +158,11 @@ partial class LoggerGenTargetClassEmitter
 			builder
 				.AppendLine("#if NET")
 				.Append(indent + 2, "return string.Create(global::System.Globalization.CultureInfo.InvariantCulture, $", withNewLine: false)
-				.Append(t.InteropolatedMessage.Wrap())
+				.Append(InteropolatedMessage.Wrap())
 				.AppendLine(");")
 				.AppendLine("#else")
 				.Append(indent + 2, "return global::System.FormattableString.Invariant($", withNewLine: false)
-				.Append(t.InteropolatedMessage.Wrap())
+				.Append(InteropolatedMessage.Wrap())
 				.AppendLine(");")
 				.AppendLine("#endif")
 				.Append(indent + 1, '}')
@@ -184,7 +182,13 @@ partial class LoggerGenTargetClassEmitter
 		;
 	}
 
-	static void EmitStateContent(StringBuilder builder, int indent, LogMethodTarget methodTarget, string stateVarName, SourceProductionContext context, IGenerationLogger? logger)
+	static void EmitStateContent(StringBuilder builder,
+		int indent,
+		LogMethodTarget methodTarget,
+		string stateVarName,
+		List<string> existingParamNames,
+		SourceProductionContext context,
+		IGenerationLogger? logger)
 	{
 		var reservationCount = methodTarget.ParameterCount + 1;
 		if (methodTarget.ExceptionParameter != null)
@@ -207,10 +211,10 @@ partial class LoggerGenTargetClassEmitter
 		;
 
 		// Original format is always at 0.
-		OutputState(builder.WithIndent(indent), stateVarName, "{OriginalFormat}", methodTarget.MessageTemplate.Wrap(), 0);
+		OutputState(builder.WithIndent(indent), stateVarName, "{OriginalFormat}".Wrap(), methodTarget.MessageTemplate.Wrap(), 0);
 
 		var idx = 0;
-		List<string>? nullableLogProperties = null;
+		List<string>? postSetProperties = null;
 		foreach (var parameter in methodTarget.Parameters)
 		{
 			context.CancellationToken.ThrowIfCancellationRequested();
@@ -220,88 +224,175 @@ partial class LoggerGenTargetClassEmitter
 				// its passed directly to the .Log method.
 				continue;
 
+			var isEnumerable = parameter.IsArray || parameter.IsIEnumerable;
 			// Need to match the name against the value.
-			OutputState(builder.WithIndent(indent), stateVarName, parameter.Name, parameter.Name, ++idx);
+			OutputState(builder.WithIndent(indent), stateVarName, parameter.Name.Wrap(), parameter.Name, ++idx,
+				isEnumerable: isEnumerable
+			);
 
-			if (parameter.LogProperties != null)
+			if (isEnumerable)
 			{
-				StringBuilder logPropertiesBuilder = new();
-				foreach (var logProperty in parameter.LogProperties.Value)
+				if (parameter.ExpandEnumerableAttribute != null)
 				{
-					context.CancellationToken.ThrowIfCancellationRequested();
-
-					var logPropertyValue = $"{parameter.Name}?.{logProperty.PropertyName}";
-					var logPropertyName = logProperty.PropertyName;
-					if (!parameter.LogPropertiesAttribute!.OmitReferenceName.Value.GetValueOrDefault(false))
-						logPropertyName = $"{parameter.Name}.{logPropertyName}";
-
-					var shouldSkipNull = parameter.LogPropertiesAttribute.SkipNullProperties.Value.GetValueOrDefault(false) && logProperty.IsNullable;
-					if (shouldSkipNull)
-					{
-						logPropertiesBuilder
-							.Append(indent, '{')
-							.Append(indent + 1, "var tmp = ", withNewLine: false)
-							.Append(logPropertyValue)
-							.AppendLine(";")
-							.Append(indent + 1, "if (tmp != null)")
-							.Append(indent + 1, '{')
-						;
-
-						logPropertyValue = "tmp";
-
-						indent += 2;
-					}
-
-					OutputState(logPropertiesBuilder.WithIndent(indent), stateVarName, logPropertyName, logPropertyValue, null);
-
-					if (shouldSkipNull)
-					{
-						indent -= 2;
-						logPropertiesBuilder
-							.Append(indent + 1, '}')
-							.Append(indent, '}')
-						;
-					}
-
-					nullableLogProperties ??= [];
-					nullableLogProperties.Add(logPropertiesBuilder.ToString());
-
-					logPropertiesBuilder.Clear();
+					postSetProperties ??= [];
+					postSetProperties.Add(OutputExpandedEnumerable(indent, stateVarName, parameter, context, existingParamNames));
 				}
 			}
+			else if (parameter.LogProperties != null)
+				OutputLogPropertyDetails(indent, stateVarName, context, ref postSetProperties, parameter, existingParamNames);
 		}
 
-		if (nullableLogProperties != null)
+		if (postSetProperties != null)
 		{
-			foreach (var nullableLogProperty in nullableLogProperties)
+			builder.AppendLine();
+
+			foreach (var nullableLogProperty in postSetProperties)
 				builder.Append(nullableLogProperty);
 		}
 
 		builder.AppendLine();
 
-		static void OutputState(StringBuilder builder, string stateVarName, string propertyName, string value, int? index)
+		static void OutputLogPropertyDetails(int indent, string stateVarName, SourceProductionContext context, ref List<string>? nullableLogProperties, LogParameterTarget parameter, List<string> existingParamNames)
+		{
+			StringBuilder logPropertiesBuilder = new();
+			foreach (var logProperty in parameter.LogProperties!.Value)
+			{
+				context.CancellationToken.ThrowIfCancellationRequested();
+
+				var logPropertyValue = $"{parameter.Name}?.{logProperty.PropertyName}";
+				var logPropertyName = logProperty.PropertyName;
+				if (!parameter.LogPropertiesAttribute!.OmitReferenceName.Value.GetValueOrDefault(false))
+					logPropertyName = $"{parameter.Name}.{logPropertyName}";
+
+				var shouldSkipNull = parameter.LogPropertiesAttribute.SkipNullProperties.Value.GetValueOrDefault(false) && logProperty.IsNullable;
+				if (shouldSkipNull)
+				{
+					var tmpVarName = FindUniqueName("tmp", existingParamNames);
+					logPropertiesBuilder
+						.Append(indent, '{')
+						.Append(indent + 1, "var ", withNewLine: false)
+						.Append(tmpVarName)
+						.Append(" = ")
+						.Append(logPropertyValue)
+						.AppendLine(";")
+						.Append(indent + 1, "if (", withNewLine: false)
+						.Append(tmpVarName)
+						.AppendLine(" != null)")
+						.Append(indent + 1, '{')
+					;
+
+					logPropertyValue = tmpVarName;
+
+					indent += 2;
+				}
+
+				OutputState(logPropertiesBuilder.WithIndent(indent), stateVarName, logPropertyName.Wrap(), logPropertyValue, null);
+
+				if (shouldSkipNull)
+				{
+					indent -= 2;
+					logPropertiesBuilder
+						.Append(indent + 1, '}')
+						.Append(indent, '}')
+					;
+				}
+
+				nullableLogProperties ??= [];
+				nullableLogProperties.Add(logPropertiesBuilder.ToString());
+
+				logPropertiesBuilder.Clear();
+			}
+		}
+	}
+
+	static void OutputState(StringBuilder builder, string stateVarName, string propertyName, string value, int? index, bool isEnumerable = false)
+	{
+		builder
+			.Append(stateVarName)
+			.Append('.')
+		;
+
+		if (index.HasValue)
 		{
 			builder
-				.Append(stateVarName)
-				.Append('.')
-			;
+				.Append("TagArray[")
+				.Append(index.Value)
+				.Append("] = new(");
+		}
+		else
+			builder.Append("AddTag(");
 
-			if (index.HasValue)
-			{
-				builder
-					.Append("TagArray[")
-					.Append(index.Value)
-					.Append("] = new(");
-			}
-			else
-				builder.Append("AddTag(");
+		builder.Append(propertyName.WithComma());
 
+		if (isEnumerable)
+		{
 			builder
-				.Append(propertyName.Wrap().WithComma())
 				.Append(value)
-				.AppendLine(");")
+				.Append(" == null ? null : ")
+				.Append(Constants.Logging.MicrosoftExtensions.LoggerMessageHelper.WithGlobal())
+				.Append(".Stringify(")
+				.Append(value)
+				.Append(')')
 			;
 		}
+		else
+			builder.Append(value);
+
+		builder.AppendLine(");");
+
+	}
+
+	static string OutputExpandedEnumerable(int indent, string stateVarName, LogParameterTarget parameter, SourceProductionContext context, List<string> existingParamNames)
+	{
+		StringBuilder builder = new();
+		var iteratorVarName = FindUniqueName("tmp_i", existingParamNames);
+		var iteratorItemVarName = FindUniqueName("item", existingParamNames);
+		builder
+			.Append(indent, "if (", withNewLine: false)
+			.Append(parameter.Name)
+			.AppendLine(" != null)")
+			.Append(indent, '{')
+			.Append(++indent, "var ", withNewLine: false)
+			.Append(iteratorVarName)
+			.AppendLine(" = 0;")
+		;
+
+		var maxCount = parameter.ExpandEnumerableAttribute!.MaximumValueCount.Value;
+		if (maxCount == null || maxCount < 1)
+			maxCount = 5;
+
+		builder
+			.Append(indent, "foreach (var ", withNewLine: false)
+			.Append(iteratorItemVarName)
+			.Append(" in ")
+			.Append(parameter.Name)
+			.AppendLine(")")
+			.Append(indent, '{')
+			.Append(++indent, "if (", withNewLine: false)
+			.Append(iteratorVarName)
+			.Append(" == ")
+			.Append(maxCount)
+			.AppendLine(")")
+			.Append(indent, '{')
+			.Append(indent + 1, "break;")
+			.Append(indent, "}")
+			.AppendLine()
+		;
+
+		OutputState(builder.WithIndent(indent),
+			stateVarName,
+			$"$\"{parameter.Name}[{{{iteratorVarName}}}]\"",
+			iteratorItemVarName,
+			null);
+
+		builder
+			.Append(indent, iteratorVarName, withNewLine: false)
+			.AppendLine("++;")
+			.Append(--indent, '}')
+			.Append(--indent, '}')
+		;
+
+		return builder.ToString();
 	}
 
 	static void EmitParametersAsMethodArgumentList(LogMethodTarget methodTarget, StringBuilder builder, SourceProductionContext context)
@@ -328,7 +419,7 @@ partial class LoggerGenTargetClassEmitter
 		}
 	}
 
-	static string FindUniqueName(string name, IEnumerable<string> existingValues)
+	static string FindUniqueName(string name, List<string> existingValues)
 	{
 		var i = 0;
 		var originalName = name;
@@ -338,6 +429,8 @@ partial class LoggerGenTargetClassEmitter
 			i++;
 		}
 
+		existingValues.Add(name);
+
 		return name;
 	}
 
@@ -345,7 +438,8 @@ partial class LoggerGenTargetClassEmitter
 		string messageTemplate,
 		string expressionStateVarName,
 		string? expressionExceptionVarName,
-		LogParameterTarget[] parameters)
+		LogParameterTarget[] parameters,
+		List<string> existingParamNames)
 	{
 		if (parameters.Length == 0)
 			return (messageTemplate, Array.Empty<string>());
@@ -364,10 +458,6 @@ partial class LoggerGenTargetClassEmitter
 		var escapedTemplate = messageTemplate
 			.Replace("{{", "\u0001")
 			.Replace("}}", "\u0002");
-
-		var existingParamNames = new List<string>(parameters.Select(p => p.Name));
-		if (expressionExceptionVarName != null)
-			existingParamNames.Add(expressionExceptionVarName);
 
 		var exceptionParameter = parameters?.FirstOrDefault(p => p.IsFirstException);
 		var exceptionUsedInTemplate = exceptionParameter?.UsedInTemplate == true;

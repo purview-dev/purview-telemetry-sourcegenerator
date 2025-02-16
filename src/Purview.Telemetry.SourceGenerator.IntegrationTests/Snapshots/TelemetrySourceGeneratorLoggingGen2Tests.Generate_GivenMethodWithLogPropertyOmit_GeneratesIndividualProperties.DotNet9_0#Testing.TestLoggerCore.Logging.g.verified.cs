@@ -40,6 +40,7 @@ namespace Testing
 
 			state.TagArray[0] = new("{OriginalFormat}", "LogWeatherWithOmit: Weather = {Weather}");
 			state.TagArray[1] = new("weather", weather);
+
 			state.AddTag("Date", weather?.Date);
 			state.AddTag("TemperatureC", weather?.TemperatureC);
 			state.AddTag("Summary", weather?.Summary);
