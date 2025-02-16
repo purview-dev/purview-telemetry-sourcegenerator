@@ -34,7 +34,9 @@ test: ## Runs the tests for the project.
 	@echo -e "Running tests for $(COLOUR_BLUE)$(TEST_PROJECT)$(COLOUR_RESET) with $(COLOUR_ORANGE)$(CONFIGURATION)$(COLOUR_RESET)..."
 	@dotnet test $(TEST_PROJECT) --configuration $(CONFIGURATION)
 
-pack: ## Packs the project into a nuget package using PACK_VERSION argument.
+pack: build-pack update-version ## Packs the project into a nuget package using PACK_VERSION argument.
+	
+build-pack:
 	@echo -e "Packing $(COLOUR_BLUE)Source Generator$(COLOUR_RESET) with $(COLOUR_ORANGE)$(PACK_VERSION)$(COLOUR_RESET)..."
 	@dotnet pack -c $(CONFIGURATION) -o $(ARTIFACT_FOLDER) $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator/Purview.Telemetry.SourceGenerator.csproj --property:Version=$(PACK_VERSION) --include-symbols
 
@@ -60,3 +62,7 @@ vs-s: ## Opens the sample project in Visual Studio.
 
 version: ## Displays the current version of the project.
 	@echo -e "Current Version: $(COLOUR_GREEN)$(PACK_VERSION)$(COLOUR_RESET)"
+	
+update-version: ## Update related samples and docs to new version.
+	@echo -e "Update related samples and docs to new version: $(COLOUR_GREEN)$(PACK_VERSION)$(COLOUR_RESET)"
+	@bun .build/update-version.js
