@@ -20,6 +20,7 @@
 	"devDependencies": {
 		"@commitlint/cli": "^19.7.1",
 		"@commitlint/config-conventional": "^19.7.1",
+		"@types/node": "^22.13.4",
 		"commit-and-tag-version": "^12.5.0",
 		"commitlint": "^19.7.1",
 		"husky": "^9.1.7"
