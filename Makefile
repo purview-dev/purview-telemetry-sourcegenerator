@@ -34,7 +34,7 @@ test: ## Runs the tests for the project.
 	@echo -e "Running tests for $(COLOUR_BLUE)$(TEST_PROJECT)$(COLOUR_RESET) with $(COLOUR_ORANGE)$(CONFIGURATION)$(COLOUR_RESET)..."
 	@dotnet test $(TEST_PROJECT) --configuration $(CONFIGURATION)
 
-pack: build-pack update-version ## Packs the project into a nuget package using PACK_VERSION argument.
+pack: update-version build-pack ## Packs the project into a nuget package using PACK_VERSION argument.
 	
 build-pack:
 	@echo -e "Packing $(COLOUR_BLUE)Source Generator$(COLOUR_RESET) with $(COLOUR_ORANGE)$(PACK_VERSION)$(COLOUR_RESET)..."
