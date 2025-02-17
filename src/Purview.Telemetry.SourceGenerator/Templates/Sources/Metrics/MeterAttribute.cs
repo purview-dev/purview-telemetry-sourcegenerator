@@ -3,6 +3,7 @@
 /// <summary>
 /// Marker attribute, used to indicating a meter, or group of instruments.
 /// </summary>
+{CodeGen}
 [global::System.AttributeUsage(global::System.AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
 [global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]

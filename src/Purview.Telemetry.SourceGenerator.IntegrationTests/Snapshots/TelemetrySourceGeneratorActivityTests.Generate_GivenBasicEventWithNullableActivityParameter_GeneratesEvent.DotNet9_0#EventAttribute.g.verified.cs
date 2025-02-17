@@ -17,17 +17,18 @@ namespace Purview.Telemetry.Activities;
 
 /// <summary>
 /// Marker attribute used to control the generation
-/// of <see cref="System.Diagnostics.ActivityEvent">events</see>.
+/// of <see cref="global::System.Diagnostics.ActivityEvent">events</see>.
 /// </summary>
-[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
-[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class EventAttribute : System.Attribute
+[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+[global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false)]
+[global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
+sealed class EventAttribute : global::System.Attribute
 {
     /// <summary>
     /// Generates a new <see cref="EventAttribute"/>.
     /// </summary>
-    public EventAttribute(System.Diagnostics.ActivityStatusCode statusCode = System.Diagnostics.ActivityStatusCode.Unset)
+    public EventAttribute(global::System.Diagnostics.ActivityStatusCode statusCode = global::System.Diagnostics.ActivityStatusCode.Unset)
     {
         StatusCode = statusCode;
     }
@@ -36,7 +37,7 @@ sealed class EventAttribute : System.Attribute
     /// Generates a new <see cref="EventAttribute"/>, specifying the <see cref="Name"/> and optionally
     /// the <see cref="UseRecordExceptionRules"/> property and/ or <see cref="RecordExceptionAsEscaped"/>.
     /// </summary>
-    public EventAttribute(string name, bool useRecordExceptionRules = true, bool recordExceptionAsEscaped = true, System.Diagnostics.ActivityStatusCode statusCode = System.Diagnostics.ActivityStatusCode.Unset)
+    public EventAttribute(string name, bool useRecordExceptionRules = true, bool recordExceptionAsEscaped = true, global::System.Diagnostics.ActivityStatusCode statusCode = global::System.Diagnostics.ActivityStatusCode.Unset)
         : this(statusCode)
     {
         Name = name;
@@ -63,23 +64,23 @@ sealed class EventAttribute : System.Attribute
     /// </summary>
     public bool RecordExceptionAsEscaped { get; set; } = true;
 
-    /// <summary>
-    /// Optional. Gets/ sets the status code of the event. If status code is <see cref="System.Diagnostics.ActivityStatusCode.Error"/>
-    /// the status description is determined using following values in order of precedence: 
+	/// <summary>
+	/// Optional. Gets/ sets the status code of the event. If status code is <see cref="global::System.Diagnostics.ActivityStatusCode.Error"/>
+	/// the status description is determined using following values in order of precedence: 
 	///	<list type="number">
 	///		<item>A string parameter with the <see cref="StatusDescriptionAttribute"/> defined.</item>
 	///		<item>The <see cref="StatusDescription"/> property.</item>
-	///		<item>If none of the above are found the first parameter that is of type <see cref="System.Exception"/>, it's <see cref="System.Exception.Message"/> property.</item>
+	///		<item>If none of the above are found the first parameter that is of type <see cref="global::System.Exception"/>, it's <see cref="global::System.Exception.Message"/> property.</item>
 	///		<item>Null, or no value is specified.</item>
 	/// </list>
-    /// 
-    /// Defaults to <see cref="System.Diagnostics.ActivityStatusCode.Unset"/>."
-    /// </summary>
-    public System.Diagnostics.ActivityStatusCode StatusCode { get; set; }
+	/// 
+	/// Defaults to <see cref="global::System.Diagnostics.ActivityStatusCode.Unset"/>."
+	/// </summary>
+	public global::System.Diagnostics.ActivityStatusCode StatusCode { get; set; }
 
-    /// <summary>
-    /// Optionally provides a description for the <see cref="StatusCode"/> when 
-	/// set to <see cref="System.Diagnostics.ActivityStatusCode.Error"/>.
-    /// </summary>
-    public string? StatusDescription { get; set; }
+	/// <summary>
+	/// Optionally provides a description for the <see cref="StatusCode"/> when 
+	/// set to <see cref="global::System.Diagnostics.ActivityStatusCode.Error"/>.
+	/// </summary>
+	public string? StatusDescription { get; set; }
 }

@@ -7,6 +7,7 @@
 /// This is equivalent to applying the <see cref="CounterAttribute"/> with the
 /// <see cref="CounterAttribute.AutoIncrement"/> property set to true.
 /// </summary>
+{CodeGen}
 [global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 [global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]

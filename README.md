@@ -12,7 +12,7 @@ The latest version is available on [NuGet](https://www.nuget.org/packages/Purvie
 Reference in your `Directory.Build.props` or `.csproj` file:
 
 ```xml
-<PackageReference Include="Purview.Telemetry.SourceGenerator" Version="3.0.0-prerelease.3">
+<PackageReference Include="Purview.Telemetry.SourceGenerator" Version="3.0.0-prerelease.4">
   <PrivateAssets>all</PrivateAssets>
   <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 </PackageReference>

@@ -3,9 +3,10 @@
 #if !EXCLUDE_PURVIEW_TELEMETRY_LOGGING
 
 /// <summary>
-/// Marker attribute used as an alternative to <see cref="LogAttribute"/>, where the <see cref="LogAttribute.Level"/>
+/// Marker attribute used as an alternative to <see cref="global::Purview.Telemetry.Logging.LogAttribute"/>, where the <see cref="global::Purview.Telemetry.Logging.LogAttribute.Level"/>
 /// is set to <see cref="global::Microsoft.Extensions.Logging.LogLevel.Critical"/>.
 /// </summary>
+{CodeGen}
 [global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false)]
 [global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]

@@ -18,6 +18,7 @@ namespace Purview.Telemetry.Metrics;
 /// <summary>
 /// Specifies the meter type generated corresponds to a <see cref="global::System.Diagnostics.Metrics.UpDownCounter{T}"/>.
 /// </summary>
+[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
 [global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 [global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]

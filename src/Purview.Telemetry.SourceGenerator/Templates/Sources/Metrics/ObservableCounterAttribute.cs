@@ -3,6 +3,7 @@
 /// <summary>
 /// Specifies the meter type generated corresponds to a <see cref="global::System.Diagnostics.Metrics.ObservableCounter{T}"/>.
 /// </summary>
+{CodeGen}
 [global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 [global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
