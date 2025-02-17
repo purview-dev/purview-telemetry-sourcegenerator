@@ -13,9 +13,9 @@
 
 #nullable enable
 
-namespace Purview.Telemetry.Logging;
-
 #if !EXCLUDE_PURVIEW_TELEMETRY_LOGGING
+
+namespace Purview.Telemetry.Logging;
 
 /// <summary>
 /// The types of prefixes that can be used for the log entry name generation.

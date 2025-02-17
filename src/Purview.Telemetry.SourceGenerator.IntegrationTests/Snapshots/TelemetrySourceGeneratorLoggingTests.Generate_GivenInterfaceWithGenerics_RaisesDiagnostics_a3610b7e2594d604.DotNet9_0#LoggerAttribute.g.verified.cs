@@ -13,9 +13,9 @@
 
 #nullable enable
 
-namespace Purview.Telemetry.Logging;
-
 #if !EXCLUDE_PURVIEW_TELEMETRY_LOGGING
+
+namespace Purview.Telemetry.Logging;
 
 /// <summary>
 /// Marker attribute required for Log generation.

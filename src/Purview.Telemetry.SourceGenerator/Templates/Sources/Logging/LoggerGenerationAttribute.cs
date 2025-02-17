@@ -1,6 +1,6 @@
-﻿namespace Purview.Telemetry.Logging;
+﻿#if !EXCLUDE_PURVIEW_TELEMETRY_LOGGING
 
-#if !EXCLUDE_PURVIEW_TELEMETRY_LOGGING
+namespace Purview.Telemetry.Logging;
 
 /// <summary>
 /// Sets defaults for the generation of loggers and log entries.

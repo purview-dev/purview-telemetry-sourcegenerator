@@ -1,4 +1,5 @@
 ﻿namespace Purview.Telemetry.SourceGenerator.Logging;
+
 partial class TelemetrySourceGeneratorLoggingGen2Tests
 {
 	[Theory]
@@ -8,7 +9,6 @@ partial class TelemetrySourceGeneratorLoggingGen2Tests
 		// Arrange
 		var basicLogger = @$"
 using Purview.Telemetry.Logging;
-using Microsoft.Extensions.Logging;
 
 namespace Testing;
 
@@ -23,7 +23,34 @@ public interface ITestLogger
 		var generationResult = await GenerateAsync(basicLogger, includeLoggerTypes: IncludeLoggerTypes.Telemetry);
 
 		// Assert
-		await TestHelpers.Verify(generationResult);
+		await TestHelpers.Verify(generationResult, c => c.UseParameters(parameter));
+	}
+
+	[Theory]
+	[MemberData(nameof(ExpandableMaxCount))]
+	public async Task Generate_GivenMethodWithExpandableAndHighMaxCount_GeneratesDiagnostic(int maxCount)
+	{
+		// Arrange
+		var basicLogger = @$"
+using Purview.Telemetry.Logging;
+
+namespace Testing;
+
+[Logger]
+public interface ITestLogger
+{{
+	void Log([ExpandEnumerable(maximumValueCount: {maxCount})]string[] paramValue);
+}}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicLogger, includeLoggerTypes: IncludeLoggerTypes.Telemetry);
+
+		// Assert
+		await TestHelpers.Verify(generationResult, c => c
+			.UseParameters(maxCount)
+			.ScrubInlineGuids()
+		, validateNonEmptyDiagnostics: true);
 	}
 
 	public static TheoryData<string> ExpandableArrays
@@ -33,9 +60,26 @@ public interface ITestLogger
 			TheoryData<string> data = [];
 
 			data.Add("[ExpandEnumerable]string[] paramValue");
+			data.Add("[ExpandEnumerable]System.String[] paramValue");
+			data.Add("[ExpandEnumerable]System.Collections.Generic.IEnumerable<System.String> paramValue");
 			data.Add("[ExpandEnumerable]System.Collections.Generic.IEnumerable<string> paramValue");
 			data.Add("[ExpandEnumerable]System.Collections.Generic.ICollection<string> paramValue");
 			data.Add("[ExpandEnumerable]System.Collections.Generic.IDictionary<string, int> paramValue");
+
+			return data;
+		}
+	}
+
+	public static TheoryData<int> ExpandableMaxCount
+	{
+		get
+		{
+			TheoryData<int> data = [];
+
+			data.Add(6);
+			data.Add(12);
+			data.Add(100);
+			data.Add(10_000);
 
 			return data;
 		}

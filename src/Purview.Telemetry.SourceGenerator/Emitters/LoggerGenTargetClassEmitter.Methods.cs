@@ -260,7 +260,7 @@ partial class LoggerGenTargetClassEmitter
 				if (parameter.ExpandEnumerableAttribute != null)
 				{
 					postSetProperties ??= [];
-					postSetProperties.Add(OutputExpandedEnumerable(indent, stateVarName, parameter, context, existingParamNames));
+					postSetProperties.Add(OutputExpandedEnumerable(indent, stateVarName, parameter, context, existingParamNames, logger));
 				}
 			}
 			else if (parameter.LogProperties != null)
@@ -375,7 +375,7 @@ partial class LoggerGenTargetClassEmitter
 
 	}
 
-	static string OutputExpandedEnumerable(int indent, string stateVarName, LogParameterTarget parameter, SourceProductionContext context, List<string> existingParamNames)
+	static string OutputExpandedEnumerable(int indent, string stateVarName, LogParameterTarget parameter, SourceProductionContext context, List<string> existingParamNames, IGenerationLogger? logger)
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -394,7 +394,13 @@ partial class LoggerGenTargetClassEmitter
 
 		var maxCount = parameter.ExpandEnumerableAttribute!.MaximumValueCount.Value;
 		if (maxCount == null || maxCount < 1)
-			maxCount = 5;
+			maxCount = Constants.Logging.UnboundedIEnumerableMaxCountBeforeDiagnostic;
+
+		if (maxCount > Constants.Logging.UnboundedIEnumerableMaxCountBeforeDiagnostic)
+		{
+			logger?.Diagnostic($"Identified {parameter.Name} that has a large unbounded ienumerable max.");
+			TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.UnboundedIEnumerableMaxCount, parameter.Locations);
+		}
 
 		builder
 			.Append(indent, "foreach (var ", withNewLine: false)

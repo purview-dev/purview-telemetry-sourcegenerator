@@ -28,7 +28,7 @@ partial class PipelineHelpers
 		if (interfaceSymbol.Arity > 0)
 		{
 			logger?.Diagnostic($"Cannot generate a Activity target for a generic interface '{interfaceDeclaration.Flatten()}'.");
-			return ActivitySourceTarget.Failed(TelemetryDiagnostics.General.GenericInterfacesNotSupported);
+			return ActivitySourceTarget.Failed(TelemetryDiagnostics.General.GenericInterfacesNotSupported, interfaceSymbol.Locations);
 		}
 
 		var semanticModel = context.SemanticModel;
@@ -70,14 +70,8 @@ partial class PipelineHelpers
 			interfaceSymbol,
 			logger,
 			token,
-			out var methodDiagnostic
+			out var methodDiagnostics
 		);
-
-		if (methodDiagnostic != null)
-		{
-			logger?.Diagnostic($"Failed to generate Activity methods for '{interfaceDeclaration.Flatten()}'.");
-			return ActivitySourceTarget.Failed(methodDiagnostic);
-		}
 
 		return new(
 			TelemetryGeneration: telemetryGeneration,
@@ -100,7 +94,9 @@ partial class PipelineHelpers
 
 			ActivityMethods: activityMethods,
 			InterfaceLocation: interfaceDeclaration.GetLocation(),
-			DuplicateMethods: BuildDuplicateMethods(interfaceSymbol)
+			DuplicateMethods: BuildDuplicateMethods(interfaceSymbol),
+
+			Failures: methodDiagnostics?.ToImmutableArray()
 		);
 	}
 
@@ -112,11 +108,9 @@ partial class PipelineHelpers
 		INamedTypeSymbol interfaceSymbol,
 		IGenerationLogger? logger,
 		CancellationToken token,
-		out TelemetryDiagnosticDescriptor? methodDiagnostic)
+		out (TelemetryDiagnosticDescriptor, ImmutableArray<Location>)[]? methodDiagnostics)
 	{
 		token.ThrowIfCancellationRequested();
-
-		methodDiagnostic = null;
 
 		var prefix = GeneratePrefix(activitySourceGenerationAttribute, activitySourceAttribute, token);
 		var defaultToTags = activitySourceGenerationAttribute?.DefaultToTags.IsSet == true
@@ -124,6 +118,7 @@ partial class PipelineHelpers
 			: activitySourceAttribute.DefaultToTags.Value!.Value;
 		var lowercaseBaggageAndTagKeys = activitySourceAttribute.LowercaseBaggageAndTagKeys!.Value!.Value;
 
+		List<(TelemetryDiagnosticDescriptor, ImmutableArray<Location>)>? methodDiagnosticsList = null;
 		List<ActivityBasedGenerationTarget> methodTargets = [];
 		foreach (var method in interfaceSymbol.GetMembers().OfType<IMethodSymbol>())
 		{
@@ -131,8 +126,9 @@ partial class PipelineHelpers
 
 			if (method.Arity > 0)
 			{
-				methodDiagnostic = TelemetryDiagnostics.General.GenericMethodsNotSupported;
-				break;
+				methodDiagnosticsList ??= [];
+				methodDiagnosticsList.Add((TelemetryDiagnostics.General.GenericMethodsNotSupported, method.Locations));
+				continue;
 			}
 
 			if (Utilities.ContainsAttribute(method, Constants.Shared.ExcludeAttribute, token))
@@ -169,7 +165,7 @@ partial class PipelineHelpers
 				ActivityOrEventName: activityOrEventName!,
 				HasActivityParameter: parameters.Any(m => Constants.Activities.SystemDiagnostics.Activity.Equals(m.ParameterType)),
 
-				MethodLocation: method.Locations.FirstOrDefault(),
+				Locations: method.Locations,
 
 				ActivityAttribute: activityAttribute,
 				EventAttribute: eventAttribute,
@@ -183,6 +179,8 @@ partial class PipelineHelpers
 				TargetGenerationState: Utilities.IsValidGenerationTarget(method, generationType, GenerationType.Activities)
 			));
 		}
+
+		methodDiagnostics = methodDiagnosticsList?.ToArray();
 
 		return [.. methodTargets];
 	}
@@ -259,7 +257,7 @@ partial class PipelineHelpers
 				GeneratedName: generatedName,
 				ParamDestination: destination,
 				SkipOnNullOrEmpty: GetSkipOnNullOrEmptyValue(tagOrBaggageAttribute),
-				Location: parameter.Locations.FirstOrDefault()
+				Locations: parameter.Locations
 			));
 		}
 

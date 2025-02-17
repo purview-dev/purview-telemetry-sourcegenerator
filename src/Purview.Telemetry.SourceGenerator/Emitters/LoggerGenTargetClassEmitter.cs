@@ -14,6 +14,12 @@ static partial class LoggerGenTargetClassEmitter
 
 		logger?.Debug($"Generating MS Gen-based logging class for: {target.FullyQualifiedName}");
 
+		if (EmitHelpers.GenerateDuplicateMethodDiagnostics(GenerationType.Logging, target.GenerationType, target.DuplicateMethods, context, logger))
+		{
+			logger?.Debug("Found duplicate methods while generating logger, exiting.");
+			return;
+		}
+
 		var indent = EmitHelpers.EmitNamespaceStart(target.ClassNamespace, target.ParentClasses, builder, context.CancellationToken);
 		indent = EmitHelpers.EmitClassStart(
 			GenerationType.Logging,

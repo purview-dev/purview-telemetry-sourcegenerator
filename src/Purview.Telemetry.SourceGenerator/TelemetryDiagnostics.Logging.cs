@@ -72,7 +72,7 @@ partial class TelemetryDiagnostics
 			Severity: DiagnosticSeverity.Error
 		);
 
-		public static readonly TelemetryDiagnosticDescriptor ExpandEnumerableAndLogPropertiesNotSupport = new(
+		public static readonly TelemetryDiagnosticDescriptor ExpandEnumerableAndLogPropertiesNotSupported = new(
 			Id: "TSG2008",
 			Title: "A parameter may not expand an array/ IEnumerable and properties",
 			Description: "Expanding an array, and the properties of the items in the array are not supported.",
@@ -82,10 +82,18 @@ partial class TelemetryDiagnostics
 
 		public static readonly TelemetryDiagnosticDescriptor ScopedMethodCannotHaveLevel = new(
 			Id: "TSG2009",
-			Title: "A scoped log cannot have a Log Level set.",
+			Title: "A scoped log cannot have a Log Level set",
 			Description: "Scoped log entries do not support having a log level set.",
 			Category: Constants.Diagnostics.Logging.Usage,
 			Severity: DiagnosticSeverity.Error
+		);
+
+		public static readonly TelemetryDiagnosticDescriptor UnboundedIEnumerableMaxCount = new(
+			Id: "TSG2010",
+			Title: "Unbounded enumeration possible",
+			Description: $"The limit on unbounded enumeration is higher than the recommended default ({Constants.Logging.UnboundedIEnumerableMaxCountBeforeDiagnostic}). This may cause performance issues, make sure you understand the consequences and test thoroughly.",
+			Category: Constants.Diagnostics.Logging.Performance,
+			Severity: DiagnosticSeverity.Warning
 		);
 	}
 }

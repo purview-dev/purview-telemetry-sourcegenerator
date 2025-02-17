@@ -17,8 +17,7 @@ partial class MeterTargetClassEmitter
 		{
 			context.CancellationToken.ThrowIfCancellationRequested();
 
-			if (!methodTarget.TargetGenerationState.IsValid
-				|| methodTarget.ErrorDiagnostics.Any(m => m.Severity == DiagnosticSeverity.Error))
+			if (!methodTarget.TargetGenerationState.IsValid)
 				continue;
 
 			EmitMethod(builder, indent, methodTarget, context, logger);

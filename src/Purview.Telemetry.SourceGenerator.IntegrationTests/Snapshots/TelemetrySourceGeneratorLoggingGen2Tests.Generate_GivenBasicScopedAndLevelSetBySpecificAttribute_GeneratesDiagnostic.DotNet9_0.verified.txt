@@ -5,7 +5,7 @@
       Severity: Error,
       Descriptor: {
         Id: TSG2009,
-        Title: A scoped log cannot have a Log Level set.,
+        Title: A scoped log cannot have a Log Level set,
         MessageFormat: Scoped log entries do not support having a log level set.,
         Category: Logging.Usage,
         DefaultSeverity: Error,

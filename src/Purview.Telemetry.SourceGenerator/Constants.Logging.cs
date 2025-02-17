@@ -8,6 +8,8 @@ partial class Constants
 {
 	public static class Logging
 	{
+		public const int UnboundedIEnumerableMaxCountBeforeDiagnostic = 5;
+
 		public const int MaxNonExceptionParameters = 6;
 		public const string DefaultLogLevelConstantName = "DEFAULT_LOGLEVEL";
 

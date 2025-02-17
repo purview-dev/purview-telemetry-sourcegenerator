@@ -22,11 +22,12 @@ record LoggerTarget(
 	ImmutableArray<LogMethodTarget> LogMethods,
 	ImmutableDictionary<string, Location[]> DuplicateMethods,
 
-	bool UseMSLoggingTelemetryBasedGeneration)
-{
-	public TelemetryDiagnosticDescriptor? Failure { get; init; }
+	bool UseMSLoggingTelemetryBasedGeneration,
 
-	public static LoggerTarget Failed(TelemetryDiagnosticDescriptor diagnostic)
+	ImmutableArray<(TelemetryDiagnosticDescriptor, ImmutableArray<Location>)>? Failures
+)
+{
+	public static LoggerTarget Failed(TelemetryDiagnosticDescriptor diagnostic, ImmutableArray<Location> locations)
 		=> new(
 		null!,
 		GenerationType.None,
@@ -41,10 +42,8 @@ record LoggerTarget(
 		0,
 		[],
 		null!,
-		false)
-		{
-			Failure = diagnostic
-		};
+		false,
+		[(diagnostic, locations)]);
 }
 
 record LogMethodTarget(
@@ -95,6 +94,8 @@ record LogParameterTarget(
 	bool IsArray,
 
 	bool IsComplexType,
+
+	ImmutableArray<Location> Locations,
 
 	LogPropertiesAttributeRecord? LogPropertiesAttribute,
 	ImmutableArray<LogPropertiesParameterDetails>? LogProperties,

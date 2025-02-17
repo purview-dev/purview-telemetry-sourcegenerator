@@ -73,6 +73,7 @@ static partial class Constants
 		public static class Logging
 		{
 			public const string Usage = nameof(Logging) + "." + nameof(Usage);
+			public const string Performance = nameof(Logging) + "." + nameof(Performance);
 		}
 
 		public static class Metrics

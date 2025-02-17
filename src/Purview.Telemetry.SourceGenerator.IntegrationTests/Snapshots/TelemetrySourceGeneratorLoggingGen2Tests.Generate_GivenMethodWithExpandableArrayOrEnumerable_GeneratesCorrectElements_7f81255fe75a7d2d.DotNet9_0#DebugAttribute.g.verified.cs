@@ -13,9 +13,9 @@
 
 #nullable enable
 
-namespace Purview.Telemetry.Logging;
-
 #if !EXCLUDE_PURVIEW_TELEMETRY_LOGGING
+
+namespace Purview.Telemetry.Logging;
 
 /// <summary>
 /// Marker attribute used as an alternative to <see cref="global::Purview.Telemetry.Logging.LogAttribute"/>, where the <see cref="global::Purview.Telemetry.Logging.LogAttribute.Level"/>

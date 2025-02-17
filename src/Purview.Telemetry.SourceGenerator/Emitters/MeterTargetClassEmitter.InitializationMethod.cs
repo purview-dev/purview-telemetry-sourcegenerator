@@ -89,10 +89,6 @@ partial class MeterTargetClassEmitter
 
 	static void EmitInitialiseInstrumentVariable(InstrumentTarget method, StringBuilder builder, int indent)
 	{
-		if (method.ErrorDiagnostics.Length > 0)
-			// Already raised diagnostic.
-			return;
-
 		if (!method.TargetGenerationState.IsValid)
 			return;
 

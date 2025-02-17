@@ -47,22 +47,26 @@ partial class TelemetrySourceGenerator
 		if (targets.Length == 0)
 			return;
 
-		if (targets.Any(m => m!.Failure != null))
+		if (targets.Any(m => m!.Failures?.Length > 0))
 		{
-			var target = targets.First(m => m!.Failure != null)!;
-
-			TelemetryDiagnostics.Report(spc.ReportDiagnostic, target.Failure!);
-
-			return;
+			foreach (var failure in targets.SelectMany(m => m!.Failures!.Value))
+				TelemetryDiagnostics.Report(spc.ReportDiagnostic, failure.Item1, failure.Item1);
 		}
 
 		try
 		{
 			foreach (var target in targets)
 			{
-				logger?.Debug($"Activity generation target: {target!.FullyQualifiedName}");
+				if (target!.Failures?.Length > 0 && target.Failures.Value.Any(m => m.Item1.Severity == DiagnosticSeverity.Error))
+				{
+					logger?.Debug($"Skipping activity generation target due to error diagnostic: {target.FullyQualifiedName}");
 
-				ActivitySourceTargetClassEmitter.GenerateImplementation(target!, spc, logger);
+					continue;
+				}
+
+				logger?.Debug($"Activity generation target: {target.FullyQualifiedName}");
+
+				ActivitySourceTargetClassEmitter.GenerateImplementation(target, spc, logger);
 			}
 		}
 		catch (Exception ex)

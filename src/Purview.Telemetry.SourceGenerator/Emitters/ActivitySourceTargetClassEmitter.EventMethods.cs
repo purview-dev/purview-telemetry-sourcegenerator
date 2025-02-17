@@ -31,7 +31,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.ParentContextOrIdParameterNotAllowed,
-				parentContextOrId.Location,
+				parentContextOrId.Locations,
 				parentContextOrId.ParameterName
 			);
 
@@ -44,7 +44,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.LinksParameterNotAllowed,
-				linksParam.Location,
+				linksParam.Locations,
 				linksParam.ParameterName
 			);
 
@@ -57,7 +57,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.StartTimeParameterNotAllowed,
-				startTimeParam.Location,
+				startTimeParam.Locations,
 				startTimeParam.ParameterName
 			);
 
