@@ -35,8 +35,5 @@ namespace Testing;
 		}
 	}
 
-	public static TheoryData<int> GetGenericTypeDefCount
-	{
-		get => [1, 2, 5];
-	}
+	public static TheoryData<int> GetGenericTypeDefCount => [1, 2, 5];
 }

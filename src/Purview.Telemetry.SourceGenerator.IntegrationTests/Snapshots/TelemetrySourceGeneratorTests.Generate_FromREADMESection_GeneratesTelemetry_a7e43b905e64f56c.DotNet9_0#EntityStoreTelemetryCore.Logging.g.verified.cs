@@ -19,6 +19,32 @@ sealed partial class EntityStoreTelemetryCore : global::IEntityStoreTelemetry
 
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
 	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	public global::System.IDisposable? AScopedLogEntry(int parentEntityId)
+	{
+		var state = global::Microsoft.Extensions.Logging.LoggerMessageHelper.ThreadLocalState;
+		state.ReserveTagSpace(2);
+
+		state.TagArray[0] = new("{OriginalFormat}", "AScopedLogEntry: ParentEntityId = {ParentEntityId}");
+		state.TagArray[1] = new("parentEntityId", parentEntityId);
+
+		var v0 = state.TagArray[1].Value ?? "(null)";
+
+		var formattedMessage = 
+#if NET
+			string.Create(global::System.Globalization.CultureInfo.InvariantCulture, $"AScopedLogEntry: ParentEntityId = {v0}");
+#else
+			global::System.FormattableString.Invariant($"AScopedLogEntry: ParentEntityId = {v0}");
+#endif
+		;
+
+		state.AddTag("FormattedMessage", formattedMessage);
+
+		return _logger.BeginScope(state);
+	}
+
+
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void LogMessage(int entityId, string updateState)
 	{
 		if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))

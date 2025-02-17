@@ -38,6 +38,12 @@ interface IEntityStoreTelemetry
     void RetrievedEntity(Activity? activity, float totalValue, int lastUpdatedByUserId);
 
     /// <summary>
+    /// A scoped logging method.
+    /// </summary>
+    [Log]
+    IDisposable AScopedLogEntry(int parentEntityId);
+
+    /// <summary>
     /// Generates a structured log message using an ILogger - defaults to Informational.
     /// </summary>
     [Log]
@@ -67,10 +73,11 @@ interface IEntityStoreTelemetry
 		var generationResult = await GenerateAsync(
 			basicTelemetry,
 			disableDependencyInjection: false,
-			includeLoggerTypes: loggerTypes);
+			includeLoggerTypes: loggerTypes
+		);
 
 		// Assert
-		await TestHelpers.Verify(generationResult);
+		await TestHelpers.Verify(generationResult, c => c.UseParameters(loggerTypes));
 	}
 
 	[Fact]

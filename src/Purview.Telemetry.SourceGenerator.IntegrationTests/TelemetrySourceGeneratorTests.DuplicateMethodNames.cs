@@ -55,8 +55,10 @@ public interface ITestTelemetry
 		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(), validateNonEmptyDiagnostics: true);
 	}
 
-	[Fact]
-	public async Task Generate_GivenDuplicateLoggingMethodNames_GeneratesDiagnostic()
+	[Theory]
+	[InlineData(IncludeLoggerTypes.LoggerOnly)]
+	[InlineData(IncludeLoggerTypes.Telemetry)]
+	public async Task Generate_GivenDuplicateLoggingMethodNames_GeneratesDiagnostic(IncludeLoggerTypes includeLoggerTypes)
 	{
 		// Arrange
 		const string basicTelemetry = @"
@@ -74,10 +76,13 @@ public interface ITestTelemetry
 ";
 
 		// Act
-		var generationResult = await GenerateAsync(basicTelemetry);
+		var generationResult = await GenerateAsync(basicTelemetry, includeLoggerTypes: includeLoggerTypes);
 
 		// Assert
-		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(), validateNonEmptyDiagnostics: true);
+		await TestHelpers.Verify(generationResult,
+			c => c.ScrubInlineGuids().UseParameters(includeLoggerTypes),
+			validateNonEmptyDiagnostics: true
+		);
 	}
 
 	[Fact]
@@ -105,8 +110,10 @@ public interface ITestTelemetry
 		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(), validateNonEmptyDiagnostics: true);
 	}
 
-	[Fact]
-	public async Task Generate_GivenDuplicateMultiTargetMethodNames_GeneratesDiagnostic()
+	[Theory]
+	[InlineData(IncludeLoggerTypes.LoggerOnly)]
+	[InlineData(IncludeLoggerTypes.Telemetry)]
+	public async Task Generate_GivenDuplicateMultiTargetMethodNames_GeneratesDiagnostic(IncludeLoggerTypes includeLoggerType)
 	{
 		// Arrange
 		const string basicTelemetry = @"
@@ -143,9 +150,14 @@ public interface ITestTelemetry
 ";
 
 		// Act
-		var generationResult = await GenerateAsync(basicTelemetry);
+		var generationResult = await GenerateAsync(basicTelemetry, includeLoggerTypes: includeLoggerType);
 
 		// Assert
-		await TestHelpers.Verify(generationResult, c => c.ScrubInlineGuids(), validateNonEmptyDiagnostics: true);
+		await TestHelpers.Verify(generationResult,
+			c => c
+				.ScrubInlineGuids()
+				.UseParameters(includeLoggerType),
+			validateNonEmptyDiagnostics: true
+		);
 	}
 }
