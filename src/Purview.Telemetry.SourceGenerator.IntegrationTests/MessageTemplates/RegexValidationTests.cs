@@ -471,7 +471,7 @@ public partial class RegexValidationTests
 		{
 		}
 
-		public bool IsPositional => Name is null;
+		public readonly bool IsPositional => Name is null;
 
 		public string? Name { get; private set; }
 
@@ -534,7 +534,7 @@ public partial class RegexValidationTests
 			Stringify = info.GetValue<bool>("Stringify");
 		}
 
-		public void Serialize(IXunitSerializationInfo info)
+		public readonly void Serialize(IXunitSerializationInfo info)
 		{
 			info.AddValue("Name", Name);
 			info.AddValue("Ordinal", Ordinal);

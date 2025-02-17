@@ -38,7 +38,7 @@ static class ConstructorEmitter
 			.Append('(')
 		;
 
-		EmitParameters(generationType, fullyQualifiedInterfaceName, builder, indent);
+		EmitParameters(generationType, fullyQualifiedInterfaceName, builder);
 
 		builder
 			.AppendLine(')')
@@ -52,7 +52,7 @@ static class ConstructorEmitter
 		return --indent;
 	}
 
-	static void EmitParameters(GenerationType generationType, string? loggerFullyQualifiedInterfaceName, StringBuilder builder, int indent)
+	static void EmitParameters(GenerationType generationType, string? loggerFullyQualifiedInterfaceName, StringBuilder builder)
 	{
 		if (generationType.HasFlag(GenerationType.Logging))
 		{

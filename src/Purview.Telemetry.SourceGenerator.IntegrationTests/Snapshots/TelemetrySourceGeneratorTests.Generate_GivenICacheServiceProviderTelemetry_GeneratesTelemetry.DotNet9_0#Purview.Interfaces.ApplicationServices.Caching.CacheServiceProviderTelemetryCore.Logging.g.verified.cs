@@ -20,12 +20,12 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 	{
 		readonly global::Microsoft.Extensions.Logging.ILogger<global::Purview.Interfaces.ApplicationServices.Caching.ICacheServiceProviderTelemetry> _logger;
 
-		static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, int, global::System.Exception?> _failedToDeserializePayloadAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<int>(global::Microsoft.Extensions.Logging.LogLevel.Information, new global::Microsoft.Extensions.Logging.EventId(1974069882, "FailedToDeserializePayload"), "FailedToDeserializePayload: DataLength = {DataLength}");
-		static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, string, global::System.Exception?> _failedToGetFromCacheAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<string>(global::Microsoft.Extensions.Logging.LogLevel.Information, new global::Microsoft.Extensions.Logging.EventId(747016249, "FailedToGetFromCache"), "FailedToGetFromCache: Key = {Key}");
-		static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, string, global::System.Exception?> _failedToRefreshAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<string>(global::Microsoft.Extensions.Logging.LogLevel.Information, new global::Microsoft.Extensions.Logging.EventId(1433994932, "FailedToRefresh"), "FailedToRefresh: CacheKey = {CacheKey}");
-		static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, string, global::System.Exception?> _failedToRemoveAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<string>(global::Microsoft.Extensions.Logging.LogLevel.Information, new global::Microsoft.Extensions.Logging.EventId(2020798325, "FailedToRemove"), "FailedToRemove: Key = {Key}");
-		static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, string?, global::System.Exception?> _failedToSerializePayloadAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<string?>(global::Microsoft.Extensions.Logging.LogLevel.Information, new global::Microsoft.Extensions.Logging.EventId(1661509127, "FailedToSerializePayload"), "FailedToSerializePayload: FullName = {FullName}");
-		static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, string, global::System.Exception?> _failedToSetValueInCacheAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<string>(global::Microsoft.Extensions.Logging.LogLevel.Information, new global::Microsoft.Extensions.Logging.EventId(1198289509, "FailedToSetValueInCache"), "FailedToSetValueInCache: Key = {Key}");
+		static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, int, global::System.Exception?> _failedToDeserializePayloadAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<int>(global::Microsoft.Extensions.Logging.LogLevel.Error, new global::Microsoft.Extensions.Logging.EventId(1974069882, "FailedToDeserializePayload"), "FailedToDeserializePayload: DataLength = {DataLength}");
+		static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, string, global::System.Exception?> _failedToGetFromCacheAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<string>(global::Microsoft.Extensions.Logging.LogLevel.Error, new global::Microsoft.Extensions.Logging.EventId(747016249, "FailedToGetFromCache"), "FailedToGetFromCache: Key = {Key}");
+		static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, string, global::System.Exception?> _failedToRefreshAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<string>(global::Microsoft.Extensions.Logging.LogLevel.Error, new global::Microsoft.Extensions.Logging.EventId(1433994932, "FailedToRefresh"), "FailedToRefresh: CacheKey = {CacheKey}");
+		static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, string, global::System.Exception?> _failedToRemoveAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<string>(global::Microsoft.Extensions.Logging.LogLevel.Error, new global::Microsoft.Extensions.Logging.EventId(2020798325, "FailedToRemove"), "FailedToRemove: Key = {Key}");
+		static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, string?, global::System.Exception?> _failedToSerializePayloadAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<string?>(global::Microsoft.Extensions.Logging.LogLevel.Error, new global::Microsoft.Extensions.Logging.EventId(1661509127, "FailedToSerializePayload"), "FailedToSerializePayload: FullName = {FullName}");
+		static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, string, global::System.Exception?> _failedToSetValueInCacheAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<string>(global::Microsoft.Extensions.Logging.LogLevel.Error, new global::Microsoft.Extensions.Logging.EventId(1198289509, "FailedToSetValueInCache"), "FailedToSetValueInCache: Key = {Key}");
 		static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, string?, bool, global::System.Exception?> _usingDistributedCacheAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<string?, bool>(global::Microsoft.Extensions.Logging.LogLevel.Information, new global::Microsoft.Extensions.Logging.EventId(1000100306, "UsingDistributedCache"), "UsingDistributedCache: FullName = {FullName}, IsNullCache = {IsNullCache}");
 
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
@@ -38,7 +38,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void FailedToDeserializePayload(int dataLength, System.Exception ex)
 		{
-			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
+			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Error))
 			{
 				return;
 			}
@@ -51,7 +51,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void FailedToGetFromCache(string key, System.Exception ex)
 		{
-			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
+			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Error))
 			{
 				return;
 			}
@@ -64,7 +64,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void FailedToRefresh(string cacheKey, System.Exception ex)
 		{
-			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
+			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Error))
 			{
 				return;
 			}
@@ -77,7 +77,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void FailedToRemove(string key, System.Exception ex)
 		{
-			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
+			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Error))
 			{
 				return;
 			}
@@ -90,7 +90,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void FailedToSerializePayload(string? fullName, System.Exception ex)
 		{
-			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
+			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Error))
 			{
 				return;
 			}
@@ -103,7 +103,7 @@ namespace Purview.Interfaces.ApplicationServices.Caching
 		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void FailedToSetValueInCache(string key, System.Exception ex)
 		{
-			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
+			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Error))
 			{
 				return;
 			}

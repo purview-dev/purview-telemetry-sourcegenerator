@@ -155,6 +155,7 @@ partial class PipelineHelpers
 			logger?.Debug($"Found method {interfaceSymbol.Name}.{method.Name}.");
 
 			var isScoped = !method.ReturnsVoid;
+
 			var methodParameters = GetLogMethodParameters(method, semanticModel, logger, token, out var parameterDiagnostic);
 			if (parameterDiagnostic != null)
 			{
@@ -163,6 +164,12 @@ partial class PipelineHelpers
 			}
 
 			var logAttribute = SharedHelpers.GetLogAttribute(method, semanticModel, logger, token);
+			if (isScoped && logAttribute?.Level.IsSet == true)
+			{
+				telemetryDiagnostic = TelemetryDiagnostics.Logging.ScopedMethodCannotHaveLevel;
+				break;
+			}
+
 			var isKnownReturnType = method.ReturnsVoid || Constants.System.IDisposable.Equals(method.ReturnType);
 			var loggerActionFieldName = $"_{Utilities.LowercaseFirstChar(method.Name)}Action";
 

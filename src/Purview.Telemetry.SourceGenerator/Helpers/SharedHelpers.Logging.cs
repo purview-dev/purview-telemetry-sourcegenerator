@@ -41,7 +41,7 @@ partial class SharedHelpers
 		}
 
 		return new(
-			Level: level ?? new(Constants.Logging.DefaultLevel),
+			Level: level ?? new(),
 			MessageTemplate: messageTemplate ?? new(),
 			EventId: eventId ?? new(),
 			Name: nameValue ?? new()

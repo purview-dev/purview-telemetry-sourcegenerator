@@ -388,12 +388,7 @@ static partial class Utilities
 	}
 
 	public static bool IsArray(ITypeSymbol typeSymbol)
-	{
-		if (typeSymbol.SpecialType == SpecialType.System_String)
-			return false;
-
-		return typeSymbol.TypeKind is TypeKind.Array;
-	}
+		=> typeSymbol.SpecialType != SpecialType.System_String && typeSymbol.TypeKind is TypeKind.Array;
 
 	public static bool IsArray(string parameterType, string fullTypeName)
 		=> parameterType == (fullTypeName + "[]");
@@ -431,8 +426,10 @@ static partial class Utilities
 
 	static bool IsIEnumerable(ITypeSymbol typeSymbol)
 	{
+#pragma warning disable IDE0046 // Convert to conditional expression
 		if (typeSymbol.SpecialType == SpecialType.System_String)
 			return false;
+#pragma warning restore IDE0046 // Convert to conditional expression
 
 		return typeSymbol.SpecialType is SpecialType.System_Collections_IEnumerable
 			or SpecialType.System_Collections_Generic_ICollection_T

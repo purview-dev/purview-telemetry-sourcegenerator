@@ -30,7 +30,7 @@ namespace Testing
 		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Log(string v, global::System.Exception ex)
 		{
-			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
+			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Error))
 			{
 				return;
 			}
@@ -42,7 +42,7 @@ namespace Testing
 			state.TagArray[1] = new("v", v);
 
 			_logger.Log(
-				global::Microsoft.Extensions.Logging.LogLevel.Information,
+				global::Microsoft.Extensions.Logging.LogLevel.Error,
 				new (1579320335, nameof(Log)),
 				state,
 				ex,

@@ -47,7 +47,7 @@ public interface ITestLogger<{genericTypeDef}> {{
 ";
 
 		// Act
-		var generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger, includeLoggerTypes: IncludeLoggerTypes.Telemetry);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c
@@ -75,7 +75,7 @@ public interface ITestLogger<{genericTypeDef}> {{
 ";
 
 		// Act
-		var generationResult = await GenerateAsync(basicLogger);
+		var generationResult = await GenerateAsync(basicLogger, includeLoggerTypes: IncludeLoggerTypes.Telemetry);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, c => c
@@ -83,5 +83,27 @@ public interface ITestLogger<{genericTypeDef}> {{
 			.UseParameters(genericTypeCount),
 			validateNonEmptyDiagnostics: true
 		);
+	}
+
+	[Fact]
+	public async Task Generate_GivenMethodWithMoreThanSixParameters_GeneratesEntry()
+	{
+		// Arrange
+		var basicLogger = @$"
+using Purview.Telemetry.Logging;
+
+namespace Testing;
+
+[Logger]
+public interface ITestLogger {{
+	void LogEntryWithMoreThanSixParams(int one, int two, int three, int four, int five, int six, int seven, int eight, int nine, int ten, int eleven);
+}}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicLogger, includeLoggerTypes: IncludeLoggerTypes.Telemetry);
+
+		// Assert
+		await TestHelpers.Verify(generationResult);
 	}
 }

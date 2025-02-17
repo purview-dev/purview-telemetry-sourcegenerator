@@ -95,15 +95,37 @@ partial class LoggerGenTargetClassEmitter
 
 		if (methodTarget.IsScoped)
 		{
-			// When it's messageFormat, args[] then
-			// the extension method expands them to their name and value
-			// based on the messageFormat. It also adds the {OriginalFormat}~
-			// to the end of the array.
-			// So in this instance, it might be an ordered
-			// list...
+			var (interpolatedMessage, variables) = GenerateInterpolatedFunction(methodTarget.MessageTemplate, stateVarName, methodTarget.ExceptionParameter?.Name, [.. methodTarget.Parameters], existingParamNames);
 
-			// return _logger.BeginScope(state);
+			if (variables.Length > 0)
+			{
+				foreach (var variableDefinition in variables)
+					builder.Append(indent, variableDefinition);
+
+				builder.AppendLine();
+			}
+
+			var formattedMessageVarName = FindUniqueName("formattedMessage", existingParamNames);
 			builder
+				.Append(indent, "var ", withNewLine: false)
+				.AppendLine("formattedMessage = ")
+				.AppendLine("#if NET")
+				.Append(indent + 1, "string.Create(global::System.Globalization.CultureInfo.InvariantCulture, $", withNewLine: false)
+				.Append(interpolatedMessage.Wrap())
+				.AppendLine(");")
+				.AppendLine("#else")
+				.Append(indent + 1, "global::System.FormattableString.Invariant($", withNewLine: false)
+				.Append(interpolatedMessage.Wrap())
+				.AppendLine(");")
+				.AppendLine("#endif")
+				.Append(indent, ';')
+				.AppendLine()
+			;
+
+			OutputState(builder.WithIndent(indent), stateVarName, Utilities.UppercaseFirstChar(formattedMessageVarName).Wrap(), formattedMessageVarName, index: null);
+
+			builder
+				.AppendLine()
 				.Append(indent, "return ", withNewLine: false)
 				.Append(Constants.Logging.LoggerFieldName)
 				.Append(".BeginScope(")
@@ -117,8 +139,8 @@ partial class LoggerGenTargetClassEmitter
 			var expressionExceptionVarName = methodTarget.ExceptionParameter?.UsedInTemplate == true
 				? FindUniqueName("e", existingParamNames)
 				: null;
+			var (interpolatedMessage, variables) = GenerateInterpolatedFunction(methodTarget.MessageTemplate, expressionStateVarName, expressionExceptionVarName, [.. methodTarget.Parameters], existingParamNames);
 
-			var (InteropolatedMessage, Variables) = GenerateInterpolatedFunction(methodTarget.MessageTemplate, expressionStateVarName, expressionExceptionVarName, [.. methodTarget.Parameters], existingParamNames);
 
 			// Call the .Log method.
 			var eventId = methodTarget.EventId ?? SharedHelpers.GetNonRandomizedHashCode(methodTarget.MethodName);
@@ -147,9 +169,9 @@ partial class LoggerGenTargetClassEmitter
 				.Append(indent + 1, "{")
 			;
 
-			if (Variables.Length > 0)
+			if (variables.Length > 0)
 			{
-				foreach (var variableDefinition in Variables)
+				foreach (var variableDefinition in variables)
 					builder.Append(indent + 2, variableDefinition);
 
 				builder.AppendLine();
@@ -158,11 +180,11 @@ partial class LoggerGenTargetClassEmitter
 			builder
 				.AppendLine("#if NET")
 				.Append(indent + 2, "return string.Create(global::System.Globalization.CultureInfo.InvariantCulture, $", withNewLine: false)
-				.Append(InteropolatedMessage.Wrap())
+				.Append(interpolatedMessage.Wrap())
 				.AppendLine(");")
 				.AppendLine("#else")
 				.Append(indent + 2, "return global::System.FormattableString.Invariant($", withNewLine: false)
-				.Append(InteropolatedMessage.Wrap())
+				.Append(interpolatedMessage.Wrap())
 				.AppendLine(");")
 				.AppendLine("#endif")
 				.Append(indent + 1, '}')
@@ -190,6 +212,8 @@ partial class LoggerGenTargetClassEmitter
 		SourceProductionContext context,
 		IGenerationLogger? logger)
 	{
+		logger?.Debug("Emitting state content");
+
 		// +1 for the OriginalFormat entry.
 		var reservationCount = methodTarget.TotalParameterCount + 1;
 		if (methodTarget.ExceptionParameter != null)
@@ -248,7 +272,10 @@ partial class LoggerGenTargetClassEmitter
 			builder.AppendLine();
 
 			foreach (var nullableLogProperty in postSetProperties)
+			{
+				context.CancellationToken.ThrowIfCancellationRequested();
 				builder.Append(nullableLogProperty);
+			}
 		}
 
 		builder.AppendLine();
@@ -350,6 +377,8 @@ partial class LoggerGenTargetClassEmitter
 
 	static string OutputExpandedEnumerable(int indent, string stateVarName, LogParameterTarget parameter, SourceProductionContext context, List<string> existingParamNames)
 	{
+		context.CancellationToken.ThrowIfCancellationRequested();
+
 		StringBuilder builder = new();
 		var iteratorVarName = FindUniqueName("tmp_i", existingParamNames);
 		var iteratorItemVarName = FindUniqueName("item", existingParamNames);
@@ -500,4 +529,3 @@ partial class LoggerGenTargetClassEmitter
 		return (escapedTemplate, [.. variableDefinitions]);
 	}
 }
-

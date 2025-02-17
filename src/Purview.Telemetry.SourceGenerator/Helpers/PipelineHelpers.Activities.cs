@@ -74,7 +74,10 @@ partial class PipelineHelpers
 		);
 
 		if (methodDiagnostic != null)
+		{
+			logger?.Diagnostic($"Failed to generate Activity methods for '{interfaceDeclaration.Flatten()}'.");
 			return ActivitySourceTarget.Failed(methodDiagnostic);
+		}
 
 		return new(
 			TelemetryGeneration: telemetryGeneration,

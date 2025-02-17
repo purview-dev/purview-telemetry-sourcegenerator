@@ -64,7 +64,7 @@ sealed class WeatherService(IWeatherServiceTelemetry telemetry) : IWeatherServic
 			telemetry.ItsTooCold(results.Count(wf => wf.TemperatureC < TooColdTempInC));
 		}
 		else
-			telemetry.TemperaturesWithinRange();
+			telemetry.TemperaturesWithinRange([.. results.Select(m => m.TemperatureC)]);
 
 		sw.Stop();
 

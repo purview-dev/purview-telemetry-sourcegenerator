@@ -27,6 +27,6 @@
     <PackageVersion Include="xunit.analyzers" Version="1.20.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.2" />
     <PackageVersion Include="Verify.SourceGenerators" Version="2.5.0" />
-    <PackageVersion Include="Verify.Xunitv3" Version="28.10.1" />
+    <PackageVersion Include="Verify.Xunitv3" Version="28.11.0" />
   </ItemGroup>
 </Project>

@@ -79,5 +79,13 @@ partial class TelemetryDiagnostics
 			Category: Constants.Diagnostics.Logging.Usage,
 			Severity: DiagnosticSeverity.Error
 		);
+
+		public static readonly TelemetryDiagnosticDescriptor ScopedMethodCannotHaveLevel = new(
+			Id: "TSG2009",
+			Title: "A scoped log cannot have a Log Level set.",
+			Description: "Scoped log entries do not support having a log level set.",
+			Category: Constants.Diagnostics.Logging.Usage,
+			Severity: DiagnosticSeverity.Error
+		);
 	}
 }

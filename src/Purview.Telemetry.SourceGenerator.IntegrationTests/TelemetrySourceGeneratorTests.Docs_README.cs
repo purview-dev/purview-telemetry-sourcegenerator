@@ -119,7 +119,7 @@ using Microsoft.Extensions.Logging;
 [Logger]
 interface ILoggingTelemetry
 {
-    [Log(LogLevel.Information)]
+    [Log]
     IDisposable? ProcessingWorkItem(Guid id);
 
     [Log(LogLevel.Trace)]

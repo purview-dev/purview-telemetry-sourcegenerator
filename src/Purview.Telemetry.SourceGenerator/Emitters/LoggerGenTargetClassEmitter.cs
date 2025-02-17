@@ -25,7 +25,7 @@ static partial class LoggerGenTargetClassEmitter
 			context.CancellationToken
 		);
 
-		EmitFields(target, builder, indent, context, logger);
+		EmitFields(target, builder, indent, context);
 
 		indent = ConstructorEmitter.EmitCtor(
 			GenerationType.Logging,
@@ -59,7 +59,7 @@ static partial class LoggerGenTargetClassEmitter
 			logger);
 	}
 
-	static void EmitFields(LoggerTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger)
+	static void EmitFields(LoggerTarget target, StringBuilder builder, int indent, SourceProductionContext context)
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 

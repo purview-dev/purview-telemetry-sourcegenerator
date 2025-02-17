@@ -108,9 +108,8 @@ partial class PipelineHelpers
 
 		var lowercaseInstrumentName = meterAttribute.LowercaseInstrumentName.IsSet
 			? meterAttribute.LowercaseInstrumentName.Value!.Value
-			: meterGenerationAttribute?.LowercaseInstrumentName?.IsSet == true
-				? meterGenerationAttribute.LowercaseInstrumentName.Value!.Value
-				: true;
+			: (meterGenerationAttribute?.LowercaseInstrumentName?.IsSet) != true
+				|| meterGenerationAttribute.LowercaseInstrumentName.Value!.Value;
 
 		var prefix = GeneratePrefix(meterGenerationAttribute, meterAttribute, token);
 		var lowercaseTagKeys = meterAttribute.LowercaseTagKeys!.Value!.Value;
