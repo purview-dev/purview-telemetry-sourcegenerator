@@ -32,40 +32,24 @@ partial class TelemetryDiagnostics
 			Severity: DiagnosticSeverity.Info
 		);
 
-		public static readonly TelemetryDiagnosticDescriptor MSLoggingNotReferencedButAttemptedUse = new(
-			Id: "TSG2003",
-			Title: "Could not find a reference to Microsoft.Extensions.Logging.ILogger, but a generation was attempted",
-			Description: "No reference was found for the ILogger type, no log generation is possible. Add a reference to the appropriate NuGet package, such as Microsoft.Extensions.Logging.",
-			Category: Constants.Diagnostics.Logging.Usage,
-			Severity: DiagnosticSeverity.Error
-		);
-
 		public static readonly TelemetryDiagnosticDescriptor MSLoggingNotReferenced = new(
-			Id: "TSG2004",
-			Title: "Could not find a reference to Microsoft.Extensions.Logging.ILogger, skipping log attributes",
+			Id: "TSG2003",
+			Title: "Could not find a reference to Microsoft.Extensions.Logging.ILogger, skipping log generation",
 			Description: "No reference was found for the ILogger type, no log generation is possible so no logging attributes will be added. Add a reference to the appropriate NuGet package, such as Microsoft.Extensions.Logging.",
 			Category: Constants.Diagnostics.Logging.Usage,
-			Severity: DiagnosticSeverity.Info
-		);
-
-		public static readonly TelemetryDiagnosticDescriptor MalformedMessageTemplate = new(
-			Id: "TSG2005",
-			Title: "Log message template is malformed",
-			Description: "The log method '{0}' message template contains malformed formatting strings.",
-			Category: Constants.Diagnostics.Logging.Usage,
-			Severity: DiagnosticSeverity.Error
+			Severity: DiagnosticSeverity.Warning
 		);
 
 		public static readonly TelemetryDiagnosticDescriptor MixedOrdinalAndNamedProperties = new(
-			Id: "TSG2006",
-			Title: "Cannot mix ordinal and named properties",
-			Description: "The message template for log method '{0}' mixes ordinal and named properties which is not supported.",
+			Id: "TSG2004",
+			Title: "Cannot mix ordinal and named property placeholders",
+			Description: "The message template for log method '{0}' mixes ordinal and named property placeholders which is not supported.",
 			Category: Constants.Diagnostics.Logging.Usage,
 			Severity: DiagnosticSeverity.Error
 		);
 
 		public static readonly TelemetryDiagnosticDescriptor OrdinalsExceedParameters = new(
-			Id: "TSG2007",
+			Id: "TSG2005",
 			Title: "Ordinal values exceed parameter count",
 			Description: "The maximum ordinal value for log method '{0}' exceeds the number of provided parameters.",
 			Category: Constants.Diagnostics.Logging.Usage,
@@ -73,23 +57,23 @@ partial class TelemetryDiagnostics
 		);
 
 		public static readonly TelemetryDiagnosticDescriptor ExpandEnumerableAndLogPropertiesNotSupported = new(
-			Id: "TSG2008",
-			Title: "A parameter may not expand an array/ IEnumerable and properties",
-			Description: "Expanding an array, and the properties of the items in the array are not supported.",
+			Id: "TSG2006",
+			Title: "Using LogPropertiesAttribute and ExpandEnumerableAttribute on the same parameter is not supported",
+			Description: "Expanding an array/ IEnumerable, and the expanding the complex type of the items in the array are not supported.",
 			Category: Constants.Diagnostics.Logging.Usage,
 			Severity: DiagnosticSeverity.Error
 		);
 
-		public static readonly TelemetryDiagnosticDescriptor ScopedMethodCannotHaveLevel = new(
-			Id: "TSG2009",
-			Title: "A scoped log cannot have a Log Level set",
+		public static readonly TelemetryDiagnosticDescriptor ScopedMethodShouldNotHaveLevel = new(
+			Id: "TSG2007",
+			Title: "A scoped log shouldn't have a LogLevel, this will be ignored.",
 			Description: "Scoped log entries do not support having a log level set.",
 			Category: Constants.Diagnostics.Logging.Usage,
-			Severity: DiagnosticSeverity.Error
+			Severity: DiagnosticSeverity.Warning
 		);
 
 		public static readonly TelemetryDiagnosticDescriptor UnboundedIEnumerableMaxCount = new(
-			Id: "TSG2010",
+			Id: "TSG2008",
 			Title: "Unbounded enumeration possible",
 			Description: $"The limit on unbounded enumeration is higher than the recommended default ({Constants.Logging.UnboundedIEnumerableMaxCountBeforeDiagnostic}). This may cause performance issues, make sure you understand the consequences and test thoroughly.",
 			Category: Constants.Diagnostics.Logging.Performance,

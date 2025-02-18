@@ -392,9 +392,11 @@ partial class LoggerGenTargetClassEmitter
 			.AppendLine(" = 0;")
 		;
 
-		var maxCount = parameter.ExpandEnumerableAttribute!.MaximumValueCount.Value;
-		if (maxCount == null || maxCount < 1)
-			maxCount = Constants.Logging.UnboundedIEnumerableMaxCountBeforeDiagnostic;
+		var maxCount = parameter.ExpandEnumerableAttribute!.MaximumValueCount.Value
+			?? Constants.Logging.UnboundedIEnumerableMaxCountBeforeDiagnostic;
+
+		if (maxCount < 1)
+			maxCount = 1;
 
 		if (maxCount > Constants.Logging.UnboundedIEnumerableMaxCountBeforeDiagnostic)
 		{

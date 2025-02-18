@@ -154,21 +154,26 @@ partial class PipelineHelpers
 			logger?.Debug($"Found method {interfaceSymbol.Name}.{method.Name}.");
 
 			var isScoped = !method.ReturnsVoid;
-
-			var methodParameters = GetLogMethodParameters(method, semanticModel, logger, token, out var parameterDiagnostic);
+			var methodParameters = GetLogMethodParameters(
+				method,
+				semanticModel,
+				logger,
+				token,
+				out var parameterDiagnostic);
 			if (parameterDiagnostic != null)
 			{
 				telemetryDiagnosticsList ??= [];
 				telemetryDiagnosticsList.Add(parameterDiagnostic.Value);
-				continue;
+				if (parameterDiagnostic.Value.Item1.Severity == DiagnosticSeverity.Error)
+					continue;
 			}
 
 			var logAttribute = SharedHelpers.GetLogAttribute(method, semanticModel, logger, token);
 			if (isScoped && logAttribute?.Level.IsSet == true)
 			{
+				// This is a warning, so we can continue.
 				telemetryDiagnosticsList ??= [];
-				telemetryDiagnosticsList.Add((TelemetryDiagnostics.Logging.ScopedMethodCannotHaveLevel, method.Locations));
-				continue;
+				telemetryDiagnosticsList.Add((TelemetryDiagnostics.Logging.ScopedMethodShouldNotHaveLevel, method.Locations));
 			}
 
 			var isKnownReturnType = method.ReturnsVoid || Constants.System.IDisposable.Equals(method.ReturnType);

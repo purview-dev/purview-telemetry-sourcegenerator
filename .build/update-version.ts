@@ -13,7 +13,7 @@ const regexPatterns: { pattern: RegExp; replacement: string }[] = [
     },
     {
         // Match "Purview.Telemetry.SourceGenerator", "3.0.0"
-        pattern: /"Purview\.Telemetry\.SourceGenerator", "([\d]+\.[\d]+\.[\d]+(?:-[a-zA-Z0-9.]+)?(?:\+[a-zA-Z0-9.]+)?)"/g,
+        pattern: /"Purview\.Telemetry\.SourceGenerator", "([\d]+\.[\d]+\.[\d]+(\.[\d])?(?:-[a-zA-Z0-9.]+)?(?:\+[a-zA-Z0-9.]+)?)"/g,
         replacement: `"Purview.Telemetry.SourceGenerator", "${version}"`
     }
 ];

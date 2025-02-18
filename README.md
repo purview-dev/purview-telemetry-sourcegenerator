@@ -1,13 +1,11 @@
 # Purview Telemetry Source Generator
 
-Generates [ActivitySource](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource), [High-performance logging](https://learn.microsoft.com/en-us/dotnet/core/extensions/high-performance-logging) and [Metrics](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics) based on methods on an interface, enabling fast iteration cycles, dependency injection and substitutes for testing.
+Generates [ActivitySource](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource), [ILogger](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.ilogger) and [Metrics](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics) based on methods on an interface, this enables faster iteration cycles and the ability to easily substitute in unit tests.
 
-The latest version is available on [NuGet](https://www.nuget.org/packages/Purview.Telemetry.SourceGenerator/), and supports generation for the following frameworks:
+Use the latest version available on [NuGet](https://www.nuget.org/packages/Purview.Telemetry.SourceGenerator/), which supports the following frameworks:
 
-- .NET Framework 4.7.2
-- .NET Framework 4.8
-- .NET 8
-- .NET 9
+- .NET Framework 4.7.2, or higher
+- .NET 8 or higher
 
 Reference in your `Directory.Build.props` or `.csproj` file:
 
@@ -76,4 +74,4 @@ For more information see the [wiki](https://github.com/purview-dev/purview-telem
 
 Checkout the [.NET Aspire Sample](https://github.com/purview-dev/purview-telemetry-sourcegenerator/tree/main/samples/SampleApp) Project to see the Activities, Logging, and Metrics working with the Aspire Dashboard.
 
-> This sample project has `EmitCompilerGeneratedFiles` set to `true`, so you can easily see the generated output.
+> This sample project has [`EmitCompilerGeneratedFiles`](https://learn.microsoft.com/en-us/dotnet/core/extensions/configuration-generator#enable-the-configuration-source-generator) set to `true`, so you can easily see the generated output.

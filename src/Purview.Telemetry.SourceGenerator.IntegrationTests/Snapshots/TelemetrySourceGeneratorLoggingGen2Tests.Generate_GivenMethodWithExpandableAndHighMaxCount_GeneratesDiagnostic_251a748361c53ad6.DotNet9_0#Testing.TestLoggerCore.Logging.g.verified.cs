@@ -77,5 +77,57 @@ namespace Testing
 			state.Clear();
 		}
 
+
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		public void Log2(global::System.String[] paramValue2)
+		{
+			if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
+			{
+				return;
+			}
+
+			var state = global::Microsoft.Extensions.Logging.LoggerMessageHelper.ThreadLocalState;
+			state.ReserveTagSpace(2);
+
+			state.TagArray[0] = new("{OriginalFormat}", "Log2: ParamValue2 = {ParamValue2}");
+			state.TagArray[1] = new("paramValue2", paramValue2 == null ? null : global::Microsoft.Extensions.Logging.LoggerMessageHelper.Stringify(paramValue2));
+
+			if (paramValue2 != null)
+			{
+				var tmp_i = 0;
+				foreach (var item in paramValue2)
+				{
+					if (tmp_i == 10000)
+					{
+						break;
+					}
+
+					state.AddTag($"paramValue2[{tmp_i}]", item);
+					tmp_i++;
+				}
+			}
+
+			_logger.Log(
+				global::Microsoft.Extensions.Logging.LogLevel.Information,
+				new (1834363911, nameof(Log2)),
+				state,
+				null,
+				[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+				static string (s, _) =>
+				{
+					var v0 = s.TagArray[1].Value ?? "(null)";
+
+#if NET
+					return string.Create(global::System.Globalization.CultureInfo.InvariantCulture, $"Log2: ParamValue2 = {v0}");
+#else
+					return global::System.FormattableString.Invariant($"Log2: ParamValue2 = {v0}");
+#endif
+				}
+			);
+
+			state.Clear();
+		}
+
 	}
 }

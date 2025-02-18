@@ -39,7 +39,9 @@ namespace Testing;
 [Logger]
 public interface ITestLogger
 {{
-	void Log([ExpandEnumerable(maximumValueCount: {maxCount})]string[] paramValue);
+		void Log([ExpandEnumerable(maximumValueCount: {maxCount})]string[] paramValue);
+
+		void Log2([ExpandEnumerable(MaximumValueCount = {maxCount})]string[] paramValue2);
 }}
 ";
 
@@ -80,6 +82,7 @@ public interface ITestLogger
 			data.Add(12);
 			data.Add(100);
 			data.Add(10_000);
+			data.Add(int.MaxValue);
 
 			return data;
 		}
