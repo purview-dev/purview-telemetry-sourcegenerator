@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http.HttpResults;
+using SampleApp.Host.Services;
 
 namespace SampleApp.Host.APIs;
 

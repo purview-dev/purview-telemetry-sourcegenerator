@@ -3,6 +3,10 @@ using Purview.Telemetry.Activities;
 using Purview.Telemetry.Logging;
 using Purview.Telemetry.Metrics;
 
+// ************************************************
+// This is the sample from the README.md file.
+// ************************************************
+
 namespace SampleApp.Host.Services;
 
 [ActivitySource]

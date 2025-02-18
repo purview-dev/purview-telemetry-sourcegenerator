@@ -59,7 +59,9 @@ public interface IWeatherServiceTelemetry
 	// maximumValueCount is optional, and defaults to 5.
 	// But recommended to NOT use it for performance reasons.
 	[Info]
+#pragma warning disable TSG2008 // Unbounded enumeration possible
 	void TemperaturesWithinRange([ExpandEnumerable(maximumValueCount: 100)] int[] temperaturesInC);
+#pragma warning restore TSG2008 // Unbounded enumeration possible
 
 	[Critical]
 	void WeatherForecastRequestFailed(Exception ex);

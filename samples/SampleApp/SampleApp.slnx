@@ -6,4 +6,5 @@
   <Project Path="SampleApp.AppHost/SampleApp.AppHost.csproj" />
   <Project Path="SampleApp.Host/SampleApp.Host.csproj" />
   <Project Path="SampleApp.ServiceDefaults/SampleApp.ServiceDefaults.csproj" />
+  <Project Path="SampleApp.UnitTests/SampleApp.UnitTests.csproj" Id="5319a647-e3a7-410c-8d71-06adc179e663" />
 </Solution>
