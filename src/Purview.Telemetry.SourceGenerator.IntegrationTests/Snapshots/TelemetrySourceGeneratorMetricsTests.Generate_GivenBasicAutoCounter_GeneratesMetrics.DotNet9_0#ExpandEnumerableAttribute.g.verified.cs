@@ -22,6 +22,7 @@ namespace Purview.Telemetry.Logging;
 /// individual elements. This only works when the <code>Microsoft.Extensions.Telemetry.Abstractions</code>
 /// NuGet package is included.
 /// </summary>
+[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
 [global::System.AttributeUsage(global::System.AttributeTargets.Parameter, AllowMultiple = false)]
 [global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]

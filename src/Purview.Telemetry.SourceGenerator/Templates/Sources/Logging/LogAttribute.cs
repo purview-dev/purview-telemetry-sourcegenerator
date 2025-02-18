@@ -6,6 +6,7 @@ namespace Purview.Telemetry.Logging;
 /// Marker attribute required for log entry generation, based on
 /// high-performance <see cref="global::Microsoft.Extensions.Logging.LoggerMessage"/>.
 /// </summary>
+{CodeGen}
 [global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false)]
 [global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]

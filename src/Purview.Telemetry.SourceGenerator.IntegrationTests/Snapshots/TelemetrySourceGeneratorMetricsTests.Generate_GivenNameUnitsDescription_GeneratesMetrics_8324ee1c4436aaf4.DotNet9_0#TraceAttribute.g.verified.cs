@@ -21,6 +21,7 @@ namespace Purview.Telemetry.Logging;
 /// Marker attribute used as an alternative to <see cref="global::Purview.Telemetry.Logging.LogAttribute"/>, where the <see cref="global::Purview.Telemetry.Logging.LogAttribute.Level"/>
 /// is set to <see cref="global::Microsoft.Extensions.Logging.LogLevel.Trace"/>.
 /// </summary>
+[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
 [global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false)]
 [global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
 [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]

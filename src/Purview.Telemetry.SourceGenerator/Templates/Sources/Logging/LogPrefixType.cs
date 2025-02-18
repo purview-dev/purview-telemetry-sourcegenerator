@@ -5,6 +5,7 @@ namespace Purview.Telemetry.Logging;
 /// <summary>
 /// The types of prefixes that can be used for the log entry name generation.
 /// </summary>
+{CodeGen}
 enum LogPrefixType
 {
 	/// <summary>
