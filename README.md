@@ -10,7 +10,7 @@ Use the latest version available on [NuGet](https://www.nuget.org/packages/Purvi
 Reference in your `Directory.Build.props` or `.csproj` file:
 
 ```xml
-<PackageReference Include="Purview.Telemetry.SourceGenerator" Version="3.0.0-prerelease.6">
+<PackageReference Include="Purview.Telemetry.SourceGenerator" Version="3.0.0-prerelease.7">
   <PrivateAssets>all</PrivateAssets>
   <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 </PackageReference>
@@ -75,3 +75,7 @@ For more information see the [wiki](https://github.com/purview-dev/purview-telem
 Checkout the [.NET Aspire Sample](https://github.com/purview-dev/purview-telemetry-sourcegenerator/tree/main/samples/SampleApp) Project to see the Activities, Logging, and Metrics working with the Aspire Dashboard.
 
 > This sample project has [`EmitCompilerGeneratedFiles`](https://learn.microsoft.com/en-us/dotnet/core/extensions/configuration-generator#enable-the-configuration-source-generator) set to `true`, so you can easily see the generated output.
+
+## Notes on Logging Generation
+
+There are two different types of logging generation, based on either the Microsoft Logging Extensions NuGet packages that are referenced in your project, or configuration via attributes. See the [Logging](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki/Logging) page in the wiki for more details.
