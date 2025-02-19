@@ -1,5 +1,4 @@
 <Project>
-
 	<!-- Project defaults for all projects, Configuration Label -->
 	<PropertyGroup Label="C# Project Configuration" Condition="'$(IsCSharpProject)' == 'true'">
 
@@ -29,5 +28,4 @@
 		<None Remove="TestResults/**" />
 
 	</ItemGroup>
-
 </Project>

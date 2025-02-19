@@ -12,7 +12,7 @@
 		
 		<PackageId>Purview.Telemetry.SourceGenerator</PackageId>
 		<Title>Purview Telemetry Source Generator</Title>
-		<Description>.NET Source Generator for interface-based telemetry building activities, activity events, logs and metrics.</Description>
+		<Description>.NET Source Generator for interface-based telemetry generting activities, activity events, logs, and metrics.</Description>
 		<PackageIcon>purview-logo.png</PackageIcon>
 		<DevelopmentDependency>true</DevelopmentDependency>
 		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>

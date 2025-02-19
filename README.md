@@ -1,6 +1,12 @@
 # Purview Telemetry Source Generator
 
-Generates [ActivitySource](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource), [ILogger](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.ilogger) and [Metrics](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics) based on methods on an interface, this enables faster iteration cycles and the ability to easily substitute in unit tests.
+Generates [`ActivitySource`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource), [`ILogger`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.ilogger), and [`Metrics`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics) based on interface methods.
+
+This approach allows for:
+
+- Faster iteration cycles - simply create the method on the interface
+- Easy substitution for testing testing - for an example, check the [sample project](https://github.com/purview-dev/purview-telemetry-sourcegenerator/tree/main/samples/SampleApp)
+- Built-in dependency injection helper generation
 
 Use the latest version available on [NuGet](https://www.nuget.org/packages/Purview.Telemetry.SourceGenerator/), which supports the following frameworks:
 
@@ -16,13 +22,23 @@ Reference in your `Directory.Build.props` or `.csproj` file:
 </PackageReference>
 ```
 
-Example of a multi-target telemetry interface:
+For more information see the [wiki](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki).
+
+## Example Interface
+
+This is called a **multi-target interface** because it generates more than one output type: **Activities, Logging, and Metrics**.
+
+When generating a single target, the generator will automatically infer the necessary attributes. More information about multi-targeting can be found in [here](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki/Multi-Targeting).
 
 ```csharp
 using Purview.Telemetry.Activities;
 using Purview.Telemetry.Logging;
 using Purview.Telemetry.Metrics;
 
+/// <summary>
+/// Generates an implementation of the methods for each generation type (Activity, Logging, or Metrics)
+/// and an extension method to enable easy registration with the IServiceCollection.
+/// </summary>
 [ActivitySource]
 [Logger]
 [Meter]
@@ -66,18 +82,21 @@ interface IEntityStoreTelemetry
 }
 ```
 
-For more information see the [wiki](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki).
-
-> To see the generated output for the above, see the [`Generated Output`](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki/Generated-Output) page in the wiki.
+To see the code generated for the `IEntityStoreTelemetry` interface, see the [`Generated Output`](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki/Generated-Output) page in the wiki.
 
 ## Example Project
 
-Checkout the [.NET Aspire Sample](https://github.com/purview-dev/purview-telemetry-sourcegenerator/tree/main/samples/SampleApp) Project to see the Activities, Logging, and Metrics working with the Aspire Dashboard.
+The [.NET Aspire Sample](https://github.com/purview-dev/purview-telemetry-sourcegenerator/tree/main/samples/SampleApp) demos the Activities, Logs, and Metrics generation working together with the Aspire Dashboard.
 
-Some documentation is available in the [wiki](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki/Sample-Application).
+Check the page in the the [wiki](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki/Sample-Application) for information.
 
 > This sample project has [`EmitCompilerGeneratedFiles`](https://learn.microsoft.com/en-us/dotnet/core/extensions/configuration-generator#enable-the-configuration-source-generator) set to `true`, so you can easily see the generated output.
 
 ## Notes on Logging Generation
 
-There are two different types of logging generation, based on either the Microsoft Logging Extensions NuGet packages that are referenced in your project, or configuration via attributes. See the [Logging](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki/Logging) page in the wiki for more details.
+There are two types of logging generation based on:
+
+1. **Microsoft Logging Extension Packages** – Determined by the NuGet packages referenced in your project.
+2. **Attribute-based Configuration** – Controlled using attributes in your code.
+
+For more details, see the [Logging](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki/Logging) page in the wiki.  
