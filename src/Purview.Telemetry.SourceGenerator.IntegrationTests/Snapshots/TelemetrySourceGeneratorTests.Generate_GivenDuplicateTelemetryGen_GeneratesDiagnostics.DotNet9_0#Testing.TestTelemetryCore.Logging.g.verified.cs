@@ -15,9 +15,9 @@
 
 namespace Testing
 {
-	sealed partial class TestTelemetryCore : Testing.ITestTelemetry
+	sealed partial class TestTelemetryCore : global::Testing.ITestTelemetry
 	{
-		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestTelemetry> _logger;
+		readonly global::Microsoft.Extensions.Logging.ILogger<global::Testing.ITestTelemetry> _logger;
 
 	}
 }

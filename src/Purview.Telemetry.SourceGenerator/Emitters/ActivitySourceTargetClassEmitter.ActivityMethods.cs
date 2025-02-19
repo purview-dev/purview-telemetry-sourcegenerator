@@ -30,7 +30,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.ActivityParameterNotAllowed,
-				activityParam.Location,
+				activityParam.Locations,
 				activityParam.ParameterName
 			);
 
@@ -43,7 +43,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.TimestampParameterNotAllowed,
-				timestampParam.Location,
+				timestampParam.Locations,
 				timestampParam.ParameterName
 			);
 
@@ -55,7 +55,7 @@ partial class ActivitySourceTargetClassEmitter
 		var activityVariableName = "activity" + methodTarget.MethodName;
 
 		builder
-			.Append(indent, Constants.Activities.SystemDiagnostics.Activity, withNewLine: false)
+			.Append(indent, Constants.Activities.SystemDiagnostics.Activity.WithGlobal(), withNewLine: false)
 			.Append("? ")
 			.Append(activityVariableName)
 			.Append(" = ")
@@ -77,7 +77,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.StartTimeParameterNotAllowed,
-				startTimeParam.Location,
+				startTimeParam.Locations,
 				startTimeParam.ParameterName
 			);
 
@@ -94,7 +94,7 @@ partial class ActivitySourceTargetClassEmitter
 			.Append(methodTarget.ActivityOrEventName.Wrap())
 			// kind:
 			.Append(", kind: ")
-			.Append(Constants.Activities.ActivityTypeMap[kind])
+			.Append(Constants.Activities.ActivityTypeMap[kind].WithGlobal())
 			// parentContext/ parentId:
 			.Append(", ")
 			.Append(parentContextParameterName)

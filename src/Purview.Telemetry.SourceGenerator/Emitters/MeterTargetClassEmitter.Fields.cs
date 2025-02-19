@@ -14,7 +14,7 @@ partial class MeterTargetClassEmitter
 		indent++;
 
 		builder
-			.Append(indent, Constants.Metrics.SystemDiagnostics.Meter, withNewLine: false)
+			.Append(indent, Constants.Metrics.SystemDiagnostics.Meter.WithGlobal(), withNewLine: false)
 			.Append(' ')
 			.Append(MeterFieldName)
 			.AppendLine(" = default!;")
@@ -23,29 +23,13 @@ partial class MeterTargetClassEmitter
 
 		foreach (var method in target.InstrumentationMethods)
 		{
-			if (method.ErrorDiagnostics.Length > 0)
-			{
-				var isError = false;
-				foreach (var diagnostic in method.ErrorDiagnostics)
-				{
-					logger?.Diagnostic($"{diagnostic.Id}: {diagnostic.Description}");
-
-					TelemetryDiagnostics.Report(context.ReportDiagnostic, diagnostic, method.MethodLocation);
-
-					if (diagnostic.Severity == DiagnosticSeverity.Error)
-						isError = true;
-				}
-
-				if (isError)
-					continue;
-			}
-
 			if (method.InstrumentAttribute == null)
 				// We've already 'reported' this error, so we can skip it.
 				continue;
 
 			var type = Constants.Metrics.InstrumentTypeMap[method.InstrumentAttribute.InstrumentType]
-					.MakeGeneric(method.InstrumentMeasurementType);
+					.MakeGeneric(method.InstrumentMeasurementType)
+					.WithGlobal();
 
 			builder
 				.Append(indent, type, withNewLine: false)

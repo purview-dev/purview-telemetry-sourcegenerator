@@ -19,13 +19,16 @@ record LoggerTarget(
 	LoggerAttributeRecord LoggerAttribute,
 	int DefaultLevel,
 
-	ImmutableArray<LogTarget> LogMethods,
-	ImmutableDictionary<string, Location[]> DuplicateMethods
+	ImmutableArray<LogMethodTarget> LogMethods,
+	ImmutableDictionary<string, Location[]> DuplicateMethods,
+
+	bool UseMSLoggingTelemetryBasedGeneration,
+
+	ImmutableArray<(TelemetryDiagnosticDescriptor, ImmutableArray<Location>)>? Failures
 )
 {
-	public TelemetryDiagnosticDescriptor? Failure { get; init; }
-
-	public static LoggerTarget MSLoggingNotReferenced = new(
+	public static LoggerTarget Failed(TelemetryDiagnosticDescriptor diagnostic, ImmutableArray<Location> locations)
+		=> new(
 		null!,
 		GenerationType.None,
 		null!,
@@ -38,13 +41,12 @@ record LoggerTarget(
 		null!,
 		0,
 		[],
-		null!)
-	{
-		Failure = TelemetryDiagnostics.Logging.MSLoggingNotReferencedButAttemptedUse
-	};
+		null!,
+		false,
+		[(diagnostic, locations)]);
 }
 
-record LogTarget(
+record LogMethodTarget(
 	string MethodName,
 	bool IsScoped,
 	string LoggerActionFieldName,
@@ -53,7 +55,12 @@ record LogTarget(
 
 	string LogName,
 	int? EventId,
+
 	string MessageTemplate,
+	ImmutableArray<MessageTemplateHole> TemplateProperties,
+	bool TemplateIsOrdinalBased,
+	bool TemplateIsNamedBased,
+
 	string MSLevel,
 
 	ImmutableArray<LogParameterTarget> Parameters,
@@ -62,8 +69,8 @@ record LogTarget(
 	LogParameterTarget? ExceptionParameter,
 	bool HasMultipleExceptions,
 
-	Location? MethodLocation
-,
+	Location? MethodLocation,
+
 	bool InferredErrorLevel,
 
 	TargetGeneration TargetGenerationState
@@ -71,14 +78,36 @@ record LogTarget(
 {
 	public int TotalParameterCount => Parameters.Length;
 
-	public int ParameterCount => ParametersSansException.Length;
+	public int ParameterCountSansException => ParametersSansException.Length;
 }
 
 record LogParameterTarget(
 	string Name,
 	string UpperCasedName,
 	string FullyQualifiedType,
-	bool IsNullable,
 
-	bool IsException
+	bool IsNullable,
+	bool IsException,
+	bool IsFirstException,
+
+	bool IsIEnumerable,
+	bool IsArray,
+
+	bool IsComplexType,
+
+	ImmutableArray<Location> Locations,
+
+	LogPropertiesAttributeRecord? LogPropertiesAttribute,
+	ImmutableArray<LogPropertiesParameterDetails>? LogProperties,
+
+	ExpandEnumerableAttributeRecord? ExpandEnumerableAttribute)
+{
+	public bool UsedInTemplate => ReferencedHoles.Count > 0;
+
+	public List<MessageTemplateHole> ReferencedHoles { get; } = [];
+}
+
+record LogPropertiesParameterDetails(
+	string PropertyName,
+	bool IsNullable
 );

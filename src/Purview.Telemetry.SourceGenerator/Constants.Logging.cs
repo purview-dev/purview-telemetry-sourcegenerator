@@ -8,6 +8,8 @@ partial class Constants
 {
 	public static class Logging
 	{
+		public const int UnboundedIEnumerableMaxCountBeforeDiagnostic = 5;
+
 		public const int MaxNonExceptionParameters = 6;
 		public const string DefaultLogLevelConstantName = "DEFAULT_LOGLEVEL";
 
@@ -19,6 +21,8 @@ partial class Constants
 		public static readonly TemplateInfo LoggerAttribute = TemplateInfo.Create("Purview.Telemetry.Logging.LoggerAttribute");
 		public static readonly TemplateInfo LogAttribute = TemplateInfo.Create("Purview.Telemetry.Logging.LogAttribute");
 		public static readonly TemplateInfo LogPrefixType = TemplateInfo.Create("Purview.Telemetry.Logging.LogPrefixType");
+
+		public static readonly TemplateInfo ExpandEnumerableAttribute = TemplateInfo.Create("Purview.Telemetry.Logging.ExpandEnumerableAttribute");
 
 		public static readonly TemplateInfo TraceAttribute = TemplateInfo.Create("Purview.Telemetry.Logging.TraceAttribute");
 		public static readonly TemplateInfo DebugAttribute = TemplateInfo.Create("Purview.Telemetry.Logging.DebugAttribute");
@@ -62,6 +66,8 @@ partial class Constants
 			LogAttribute,
 			LogPrefixType,
 
+			ExpandEnumerableAttribute,
+
 			TraceAttribute,
 			DebugAttribute,
 			InfoAttribute,
@@ -74,10 +80,15 @@ partial class Constants
 		{
 			public const string Namespace = "Microsoft.Extensions.Logging";
 
-			public static readonly TypeInfo ILogger = TypeInfo.Create(Namespace + ".ILogger");
-			public static readonly TypeInfo LoggerMessage = TypeInfo.Create(Namespace + ".LoggerMessage");
-			public static readonly TypeInfo LogLevel = TypeInfo.Create(Namespace + ".LogLevel");
-			public static readonly TypeInfo EventId = TypeInfo.Create(Namespace + ".EventId");
+			public static readonly TypeInfo ILogger = TypeInfo.Create(Namespace + '.' + nameof(ILogger));
+			public static readonly TypeInfo LoggerMessage = TypeInfo.Create(Namespace + '.' + nameof(LoggerMessage));
+			public static readonly TypeInfo LogLevel = TypeInfo.Create(Namespace + '.' + nameof(LogLevel));
+			public static readonly TypeInfo EventId = TypeInfo.Create(Namespace + '.' + nameof(EventId));
+
+			// Log Telemetry Gen.
+			public static readonly TypeInfo LoggerMessageHelper = TypeInfo.Create(Namespace + '.' + nameof(LoggerMessageHelper));
+			public static readonly TypeInfo LogPropertiesAttribute = TypeInfo.Create(Namespace + '.' + nameof(LogPropertiesAttribute));
+			public static readonly TypeInfo LogPropertyIgnoreAttribute = TypeInfo.Create(Namespace + '.' + nameof(LogPropertyIgnoreAttribute));
 
 			public static readonly TypeInfo LogLevel_Trace = TypeInfo.Create(LogLevel.FullName + ".Trace");
 			public static readonly TypeInfo LogLevel_Debug = TypeInfo.Create(LogLevel.FullName + ".Debug");

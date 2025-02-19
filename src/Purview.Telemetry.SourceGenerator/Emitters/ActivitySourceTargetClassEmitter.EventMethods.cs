@@ -31,7 +31,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.ParentContextOrIdParameterNotAllowed,
-				parentContextOrId.Location,
+				parentContextOrId.Locations,
 				parentContextOrId.ParameterName
 			);
 
@@ -44,7 +44,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.LinksParameterNotAllowed,
-				linksParam.Location,
+				linksParam.Locations,
 				linksParam.ParameterName
 			);
 
@@ -57,7 +57,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.StartTimeParameterNotAllowed,
-				startTimeParam.Location,
+				startTimeParam.Locations,
 				startTimeParam.ParameterName
 			);
 
@@ -83,12 +83,10 @@ partial class ActivitySourceTargetClassEmitter
 		{
 			var tagsListVariableName = "tagsCollection" + methodTarget.MethodName;
 			builder
-				.Append(indent, Constants.Activities.SystemDiagnostics.ActivityTagsCollection, withNewLine: false)
+				.Append(indent, Constants.Activities.SystemDiagnostics.ActivityTagsCollection.WithGlobal(), withNewLine: false)
 				.Append(' ')
 				.Append(tagsListVariableName)
-				.Append(" = new ")
-				.Append(Constants.Activities.SystemDiagnostics.ActivityTagsCollection)
-				.Append('(')
+				.Append(" = new(")
 			;
 
 			if (tagsParam != null)
@@ -187,11 +185,10 @@ partial class ActivitySourceTargetClassEmitter
 
 		builder
 			.AppendLine()
-			.Append(indent, Constants.Activities.SystemDiagnostics.ActivityEvent, withNewLine: false)
+			.Append(indent, Constants.Activities.SystemDiagnostics.ActivityEvent.WithGlobal(), withNewLine: false)
 			.Append(' ')
 			.Append(eventVariableName)
-			.Append(" = new ")
-			.Append(Constants.Activities.SystemDiagnostics.ActivityEvent)
+			.Append(" = new")
 			// name:
 			.Append("(name: ")
 			.Append(methodTarget.ActivityOrEventName.Wrap())
@@ -226,7 +223,7 @@ partial class ActivitySourceTargetClassEmitter
 					.AppendLine()
 					.Append(indent, activityVariableName, withNewLine: false)
 					.Append(".SetStatus(")
-					.Append(Constants.Activities.ActivityStatusCodeMap[statusCode])
+					.Append(Constants.Activities.ActivityStatusCodeMap[statusCode].WithGlobal())
 				;
 
 			// Error

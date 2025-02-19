@@ -16,11 +16,12 @@
 namespace Purview.Telemetry.Metrics;
 
 /// <summary>
-/// Specifies the meter type generated corresponds to a <see cref="System.Diagnostics.Metrics.UpDownCounter{T}"/>.
+/// Specifies the meter type generated corresponds to a <see cref="global::System.Diagnostics.Metrics.UpDownCounter{T}"/>.
 /// </summary>
-[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
+[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+[global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+[global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 sealed class UpDownCounterAttribute : System.Attribute
 {
 	/// <summary>
@@ -48,7 +49,6 @@ sealed class UpDownCounterAttribute : System.Attribute
 	/// Optionally specifies the name of the meter. If one is not specified, the name
 	/// of the method is used.
 	/// </summary>
-
 	public string? Name { get; set; }
 
 	/// <summary>

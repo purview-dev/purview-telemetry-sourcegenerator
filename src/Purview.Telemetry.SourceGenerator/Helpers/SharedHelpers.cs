@@ -242,11 +242,11 @@ static partial class SharedHelpers
 		return AttributeParser(attributeData,
 				(name, value) =>
 				{
-					if (name.Equals("GenerateDependencyExtension", StringComparison.OrdinalIgnoreCase))
+					if (name.Equals(nameof(TelemetryGenerationAttributeRecord.GenerateDependencyExtension), StringComparison.OrdinalIgnoreCase))
 						generateDependencyExtension = new((bool)value);
-					else if (name.Equals("ClassName", StringComparison.OrdinalIgnoreCase))
+					else if (name.Equals(nameof(TelemetryGenerationAttributeRecord.ClassName), StringComparison.OrdinalIgnoreCase))
 						className = new((string)value);
-					else if (name.Equals("DependencyInjectionClassName", StringComparison.OrdinalIgnoreCase))
+					else if (name.Equals(nameof(TelemetryGenerationAttributeRecord.DependencyInjectionClassName), StringComparison.OrdinalIgnoreCase))
 						dependencyInjectionClassName = new((string)value);
 				}, semanticModel, logger, token)
 			? new(

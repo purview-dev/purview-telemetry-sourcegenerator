@@ -6,7 +6,7 @@
 		"streetsidesoftware.code-spell-checker",
 		"bierner.github-markdown-preview",
 		"davidanson.vscode-markdownlint",
-		"pkief.material-icon-theme",
-		"esbenp.prettier-vscode"
+		"esbenp.prettier-vscode",
+		"hnw.vscode-auto-open-markdown-preview"
 	]
 }

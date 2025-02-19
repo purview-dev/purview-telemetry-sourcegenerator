@@ -24,8 +24,30 @@ record ActivitySourceTarget(
 ,
 	ActivitySourceAttributeRecord ActivityTargetAttributeRecord,
 	Location? InterfaceLocation,
-	ImmutableDictionary<string, Location[]> DuplicateMethods
-);
+	ImmutableDictionary<string, Location[]> DuplicateMethods,
+
+	ImmutableArray<(TelemetryDiagnosticDescriptor, ImmutableArray<Location>)>? Failures
+)
+{
+	public static ActivitySourceTarget Failed(TelemetryDiagnosticDescriptor diagnostic, ImmutableArray<Location> locations)
+		=> new(
+		null!,
+		GenerationType.None,
+		null!,
+		null,
+		null!,
+		null,
+		null!,
+		null!,
+		null!,
+		null,
+		null,
+		[],
+		null!,
+		null,
+		null!,
+		[(diagnostic, locations)]);
+}
 
 record ActivityBasedGenerationTarget(
 	string MethodName,
@@ -35,7 +57,7 @@ record ActivityBasedGenerationTarget(
 
 	bool HasActivityParameter,
 
-	Location? MethodLocation,
+	ImmutableArray<Location> Locations,
 
 	ActivityAttributeRecord? ActivityAttribute,
 	EventAttributeRecord? EventAttribute,
@@ -57,7 +79,7 @@ record ActivityBasedParameterTarget(
 	ActivityParameterDestination ParamDestination,
 	bool SkipOnNullOrEmpty,
 	bool IsException,
-	Location? Location
+	ImmutableArray<Location> Locations
 );
 
 enum ActivityParameterDestination
@@ -74,9 +96,4 @@ enum ActivityParameterDestination
 	StatusDescription
 }
 
-enum ActivityMethodType
-{
-	Activity,
-	Event,
-	Context
-}
+enum ActivityMethodType { Activity, Event, Context }

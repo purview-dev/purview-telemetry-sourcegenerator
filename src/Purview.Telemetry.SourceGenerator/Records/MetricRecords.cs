@@ -22,8 +22,27 @@ record MeterTarget(
 	MeterGenerationAttributeRecord? MeterGeneration,
 
 	ImmutableArray<InstrumentTarget> InstrumentationMethods,
-	ImmutableDictionary<string, Location[]> DuplicateMethods
-);
+	ImmutableDictionary<string, Location[]> DuplicateMethods,
+
+	ImmutableArray<(TelemetryDiagnosticDescriptor, ImmutableArray<Location>)>? Failures
+)
+{
+	public static MeterTarget Failed(TelemetryDiagnosticDescriptor diagnostic, ImmutableArray<Location> locations)
+		=> new(
+		null!,
+		GenerationType.None,
+		null!,
+		null,
+		null!,
+		null,
+		null,
+		null!,
+		null!,
+		null,
+		null, [],
+		null!,
+		[(diagnostic, locations)]);
+}
 
 record InstrumentTarget(
 	string MethodName,
@@ -37,7 +56,7 @@ record InstrumentTarget(
 
 	string MetricName,
 
-	Location? MethodLocation,
+	ImmutableArray<Location> Locations,
 
 	InstrumentAttributeRecord? InstrumentAttribute,
 
@@ -45,12 +64,10 @@ record InstrumentTarget(
 	ImmutableArray<InstrumentParameterTarget> Tags,
 	InstrumentParameterTarget? MeasurementParameter,
 
-	ImmutableArray<TelemetryDiagnosticDescriptor> ErrorDiagnostics,
-
 	TargetGeneration TargetGenerationState
 )
 {
-	public string TagPopulateMethodName => $"Populate{MethodName}Tags";
+	public string TagPopulateMethodName { get; } = $"Populate{MethodName}Tags";
 }
 
 record InstrumentParameterTarget(
@@ -68,7 +85,8 @@ record InstrumentParameterTarget(
 	string GeneratedName,
 	InstrumentParameterDestination ParamDestination,
 	bool SkipOnNullOrEmpty,
-	Location? Location
+
+	ImmutableArray<Location> Locations
 );
 
 enum InstrumentTypes
@@ -82,9 +100,4 @@ enum InstrumentTypes
 	ObservableUpDownCounter
 }
 
-enum InstrumentParameterDestination
-{
-	Tag,
-	Measurement,
-	Unknown
-}
+enum InstrumentParameterDestination { Tag, Measurement, Unknown }

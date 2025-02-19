@@ -46,5 +46,21 @@ partial class TelemetryDiagnostics
 			Category: Constants.Diagnostics.Usage,
 			Severity: DiagnosticSeverity.Error
 		);
+
+		public static readonly TelemetryDiagnosticDescriptor GenericInterfacesNotSupported = new(
+			Id: "TSG1004",
+			Title: "Generic interfaces are not supported",
+			Description: "Remove the generic type(s) from the interface, this type of generation is not supported.",
+			Category: Constants.Diagnostics.Usage,
+			Severity: DiagnosticSeverity.Error
+		);
+
+		public static readonly TelemetryDiagnosticDescriptor GenericMethodsNotSupported = new(
+			Id: "TSG1005",
+			Title: "Generic methods are not supported",
+			Description: "Remove the generic type(s) from the method, this type of generation is not supported.",
+			Category: Constants.Diagnostics.Usage,
+			Severity: DiagnosticSeverity.Error
+		);
 	}
 }

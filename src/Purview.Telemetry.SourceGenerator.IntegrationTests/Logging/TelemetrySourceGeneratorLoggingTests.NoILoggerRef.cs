@@ -22,7 +22,7 @@ public interface ITestActivities {
 ";
 
 		// Act
-		var generationResult = await GenerateAsync(basicActivity, includeILoggerRef: false);
+		var generationResult = await GenerateAsync(basicActivity, includeLoggerTypes: IncludeLoggerTypes.None);
 
 		// Assert
 		await TestHelpers.Verify(generationResult);
@@ -48,7 +48,7 @@ public interface ITestActivities {
 ";
 
 		// Act
-		var generationResult = await GenerateAsync(basicActivity, includeILoggerRef: false);
+		var generationResult = await GenerateAsync(basicActivity, includeLoggerTypes: IncludeLoggerTypes.None);
 
 		// Assert
 		await TestHelpers.Verify(generationResult, validateNonEmptyDiagnostics: false, whenValidatingDiagnosticsIgnoreNonErrors: true);

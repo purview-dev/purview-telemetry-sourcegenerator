@@ -21,7 +21,15 @@ static partial class LoggerTargetClassEmitter
 		}
 
 		var indent = EmitHelpers.EmitNamespaceStart(target.ClassNamespace, target.ParentClasses, builder, context.CancellationToken);
-		indent = EmitHelpers.EmitClassStart(target.ClassNameToGenerate, target.FullyQualifiedInterfaceName, builder, indent, context.CancellationToken);
+		indent = EmitHelpers.EmitClassStart(
+			GenerationType.Logging,
+			target.GenerationType,
+			target.ClassNameToGenerate,
+			target.FullyQualifiedInterfaceName,
+			builder,
+			indent,
+			context.CancellationToken
+		);
 
 		indent = EmitFields(target, builder, indent, context, logger);
 

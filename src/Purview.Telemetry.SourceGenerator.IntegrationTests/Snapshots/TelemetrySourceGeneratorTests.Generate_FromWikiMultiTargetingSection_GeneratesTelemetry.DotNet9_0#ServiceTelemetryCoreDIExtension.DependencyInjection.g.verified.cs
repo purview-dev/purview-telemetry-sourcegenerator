@@ -15,13 +15,15 @@
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
 	static class ServiceTelemetryCoreDIExtension
 	{
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		static public Microsoft.Extensions.DependencyInjection.IServiceCollection AddServiceTelemetry(this Microsoft.Extensions.DependencyInjection.IServiceCollection services)
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		public static global::Microsoft.Extensions.DependencyInjection.IServiceCollection AddServiceTelemetry(this global::Microsoft.Extensions.DependencyInjection.IServiceCollection services)
 		{
-			return services.AddSingleton<IServiceTelemetry, ServiceTelemetryCore>();
+			return services.AddSingleton<global::IServiceTelemetry, global::ServiceTelemetryCore>();
 		}
 	}
 }

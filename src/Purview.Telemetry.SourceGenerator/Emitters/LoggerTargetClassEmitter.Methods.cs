@@ -21,7 +21,7 @@ partial class LoggerTargetClassEmitter
 			if (methodTarget.HasMultipleExceptions)
 				continue;
 
-			if (methodTarget.ParameterCount > Constants.Logging.MaxNonExceptionParameters)
+			if (methodTarget.ParameterCountSansException > Constants.Logging.MaxNonExceptionParameters)
 				continue;
 
 			EmitLogActionMethod(builder, indent, methodTarget, context, logger);
@@ -30,7 +30,7 @@ partial class LoggerTargetClassEmitter
 		return --indent;
 	}
 
-	static void EmitLogActionMethod(StringBuilder builder, int indent, LogTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger)
+	static void EmitLogActionMethod(StringBuilder builder, int indent, LogMethodTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger)
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -38,6 +38,7 @@ partial class LoggerTargetClassEmitter
 
 		builder
 			.AppendLine()
+			.CodeGen(indent)
 			.AggressiveInlining(indent)
 			.Append(indent, "public ", withNewLine: false)
 		;
@@ -45,7 +46,7 @@ partial class LoggerTargetClassEmitter
 		if (methodTarget.IsScoped)
 		{
 			builder
-				.Append(Constants.System.IDisposable)
+				.Append(Constants.System.IDisposable.WithGlobal())
 				.Append('?')
 			;
 		}
@@ -81,7 +82,7 @@ partial class LoggerTargetClassEmitter
 				.Append(indent + 1, "if (!", withNewLine: false)
 				.Append(Constants.Logging.LoggerFieldName)
 				.Append(".IsEnabled(")
-				.Append(methodTarget.MSLevel)
+				.Append(methodTarget.MSLevel.WithGlobal())
 				.Append("))")
 				.AppendLine()
 				.Append(indent + 1, '{')
@@ -124,7 +125,7 @@ partial class LoggerTargetClassEmitter
 		;
 	}
 
-	static void EmitParametersAsMethodArgumentList(LogTarget methodTarget, StringBuilder builder, SourceProductionContext context)
+	static void EmitParametersAsMethodArgumentList(LogMethodTarget methodTarget, StringBuilder builder, SourceProductionContext context)
 	{
 		for (var i = 0; i < methodTarget.TotalParameterCount; i++)
 		{

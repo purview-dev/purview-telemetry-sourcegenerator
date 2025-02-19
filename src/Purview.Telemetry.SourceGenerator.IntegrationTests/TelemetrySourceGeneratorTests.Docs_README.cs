@@ -2,8 +2,10 @@
 
 partial class TelemetrySourceGeneratorTests
 {
-	[Fact]
-	public async Task Generate_FromREADMESection_GeneratesTelemetry()
+	[Theory]
+	[InlineData(IncludeLoggerTypes.LoggerOnly)]
+	[InlineData(IncludeLoggerTypes.Telemetry)]
+	public async Task Generate_FromREADMESection_GeneratesTelemetry(IncludeLoggerTypes loggerTypes)
 	{
 		// Arrange
 		const string basicTelemetry = @"
@@ -36,6 +38,12 @@ interface IEntityStoreTelemetry
     void RetrievedEntity(Activity? activity, float totalValue, int lastUpdatedByUserId);
 
     /// <summary>
+    /// A scoped logging method.
+    /// </summary>
+    [Log]
+    IDisposable AScopedLogEntry(int parentEntityId);
+
+    /// <summary>
     /// Generates a structured log message using an ILogger - defaults to Informational.
     /// </summary>
     [Log]
@@ -48,6 +56,12 @@ interface IEntityStoreTelemetry
     void ExplicitInfoMessage(int entityId, string updateState);
 
     /// <summary>
+    /// Generates a structured log message using an ILogger, specifically defined as Error.
+    /// </summary>
+    [Error(""An explicit error message. The entity Id is {EntityId}, and the error is {Exception}."")]
+    void ExplicitErrorMessage(int entityId, Exception exception);
+
+    /// <summary>
     /// Adds 1 to a Counter<T> with the entityId as a Tag.
     /// </summary>
     [AutoCounter]
@@ -56,10 +70,14 @@ interface IEntityStoreTelemetry
 ";
 
 		// Act
-		var generationResult = await GenerateAsync(basicTelemetry, disableDependencyInjection: false);
+		var generationResult = await GenerateAsync(
+			basicTelemetry,
+			disableDependencyInjection: false,
+			includeLoggerTypes: loggerTypes
+		);
 
 		// Assert
-		await TestHelpers.Verify(generationResult);
+		await TestHelpers.Verify(generationResult, c => c.UseParameters(loggerTypes));
 	}
 
 	[Fact]
@@ -108,7 +126,7 @@ using Microsoft.Extensions.Logging;
 [Logger]
 interface ILoggingTelemetry
 {
-    [Log(LogLevel.Information)]
+    [Log]
     IDisposable? ProcessingWorkItem(Guid id);
 
     [Log(LogLevel.Trace)]

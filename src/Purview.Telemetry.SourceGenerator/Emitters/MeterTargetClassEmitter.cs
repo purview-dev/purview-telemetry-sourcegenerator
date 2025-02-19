@@ -10,8 +10,8 @@ static partial class MeterTargetClassEmitter
 {
 	static readonly string DictionaryStringObject = Constants.System.Dictionary.MakeGeneric(
 		Constants.System.StringKeyword,
-		Constants.System.ObjectKeyword.WithNull()
-	);
+		Constants.System.ObjectKeyword.WithNullable()
+	).WithGlobal();
 
 	const string MeterFieldName = "_meter";
 	const string PartialMeterTagsMethod = "PopulateMeterTags";
@@ -29,7 +29,15 @@ static partial class MeterTargetClassEmitter
 		}
 
 		var indent = EmitHelpers.EmitNamespaceStart(target.ClassNamespace, target.ParentClasses, builder, context.CancellationToken);
-		indent = EmitHelpers.EmitClassStart(target.ClassNameToGenerate, target.FullyQualifiedInterfaceName, builder, indent, context.CancellationToken);
+		indent = EmitHelpers.EmitClassStart(
+			GenerationType.Metrics,
+			target.GenerationType,
+			target.ClassNameToGenerate,
+			target.FullyQualifiedInterfaceName,
+			builder,
+			indent,
+			context.CancellationToken
+		);
 
 		indent = EmitFields(target, builder, indent, context, logger);
 		indent = ConstructorEmitter.EmitCtor(

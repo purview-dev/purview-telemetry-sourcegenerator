@@ -32,7 +32,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.TagsParameterNotAllowed,
-				tagsParam.Location,
+				tagsParam.Locations,
 				tagsParam.ParameterName
 			);
 
@@ -45,7 +45,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.LinksParameterNotAllowed,
-				linksParam.Location,
+				linksParam.Locations,
 				linksParam.ParameterName
 			);
 

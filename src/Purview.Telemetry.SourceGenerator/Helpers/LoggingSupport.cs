@@ -27,10 +27,4 @@ sealed class Logger(Action<string, OutputType> logger) : IGenerationLogger
 	public void Error(string message) => logger(message, OutputType.Error);
 }
 
-enum OutputType
-{
-	Debug,
-	Diagnostic,
-	Warning,
-	Error
-}
+enum OutputType { Debug, Diagnostic, Warning, Error }

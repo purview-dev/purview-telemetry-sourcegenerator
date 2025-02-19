@@ -32,12 +32,13 @@ static class ConstructorEmitter
 
 		builder
 			.AppendLine()
+			.CodeGen(indent)
 			.Append(indent, "public ", withNewLine: false)
 			.Append(classNameToGenerate)
 			.Append('(')
 		;
 
-		EmitParameters(generationType, fullyQualifiedInterfaceName, builder, indent);
+		EmitParameters(generationType, fullyQualifiedInterfaceName, builder);
 
 		builder
 			.AppendLine(')')
@@ -51,14 +52,14 @@ static class ConstructorEmitter
 		return --indent;
 	}
 
-	static void EmitParameters(GenerationType generationType, string? loggerFullyQualifiedInterfaceName, StringBuilder builder, int indent)
+	static void EmitParameters(GenerationType generationType, string? loggerFullyQualifiedInterfaceName, StringBuilder builder)
 	{
 		if (generationType.HasFlag(GenerationType.Logging))
 		{
 			builder
-				.Append(Constants.Logging.MicrosoftExtensions.ILogger)
+				.Append(Constants.Logging.MicrosoftExtensions.ILogger.WithGlobal())
 				.Append('<')
-				.Append(loggerFullyQualifiedInterfaceName)
+				.Append(loggerFullyQualifiedInterfaceName!.WithGlobal())
 				.Append("> ")
 				.Append(LoggerParameterName)
 			;
@@ -70,7 +71,7 @@ static class ConstructorEmitter
 				builder.Append(", ");
 
 			builder
-				.Append(Constants.Metrics.SystemDiagnostics.IMeterFactory)
+				.Append(Constants.Metrics.SystemDiagnostics.IMeterFactory.WithGlobal())
 				.Append(' ')
 				.Append(Constants.Metrics.MeterFactoryParameterName)
 			;

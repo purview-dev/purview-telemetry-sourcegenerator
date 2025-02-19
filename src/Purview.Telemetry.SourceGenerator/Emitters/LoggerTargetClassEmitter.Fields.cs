@@ -15,9 +15,9 @@ partial class LoggerTargetClassEmitter
 
 		builder
 			.Append(indent, "readonly ", withNewLine: false)
-			.Append(Constants.Logging.MicrosoftExtensions.ILogger)
+			.Append(Constants.Logging.MicrosoftExtensions.ILogger.WithGlobal())
 			.Append('<')
-			.Append(target.FullyQualifiedInterfaceName)
+			.Append(target.FullyQualifiedInterfaceName.WithGlobal())
 			.Append('>')
 			.Append(' ')
 			.Append(Constants.Logging.LoggerFieldName)
@@ -35,13 +35,11 @@ partial class LoggerTargetClassEmitter
 				if (methodTarget.TargetGenerationState.RaiseMultiGenerationTargetsNotSupported)
 				{
 					logger?.Debug($"Identified {target.InterfaceName}.{methodTarget.MethodName} as problematic as it has another target types.");
-
 					TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.General.MultiGenerationTargetsNotSupported, methodTarget.MethodLocation);
 				}
 				else if (methodTarget.TargetGenerationState.RaiseInferenceNotSupportedWithMultiTargeting)
 				{
 					logger?.Debug($"Identified {target.InterfaceName}.{methodTarget.MethodName} as problematic as it is inferred.");
-
 					TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.General.InferenceNotSupportedWithMultiTargeting, methodTarget.MethodLocation);
 				}
 
@@ -51,16 +49,14 @@ partial class LoggerTargetClassEmitter
 			if (methodTarget.HasMultipleExceptions)
 			{
 				logger?.Diagnostic($"Method has multiple exception parameters, only a single one is permitted.");
-
 				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.MultipleExceptionsDefined, methodTarget.MethodLocation);
 
 				continue;
 			}
 
-			if (methodTarget.ParameterCount > Constants.Logging.MaxNonExceptionParameters)
+			if (methodTarget.ParameterCountSansException > Constants.Logging.MaxNonExceptionParameters)
 			{
 				logger?.Diagnostic($"Method has more than 6 parameters.");
-
 				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.MaximumLogEntryParametersExceeded, methodTarget.MethodLocation);
 
 				continue;
@@ -69,7 +65,6 @@ partial class LoggerTargetClassEmitter
 			if (methodTarget.InferredErrorLevel)
 			{
 				logger?.Diagnostic($"Inferring error log level.");
-
 				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Logging.InferringErrorLogLevel, methodTarget.MethodLocation);
 			}
 
@@ -79,13 +74,13 @@ partial class LoggerTargetClassEmitter
 		return --indent;
 	}
 
-	static void EmitLogActionField(StringBuilder builder, int indent, LogTarget methodTarget)
+	static void EmitLogActionField(StringBuilder builder, int indent, LogMethodTarget methodTarget)
 	{
 		builder
 			.Append(indent, "static readonly ", withNewLine: false)
-			.Append(methodTarget.IsScoped ? Constants.System.Func : Constants.System.Action)
+			.Append(methodTarget.IsScoped ? Constants.System.Func.WithGlobal() : Constants.System.Action.WithGlobal())
 			.Append('<')
-			.Append(Constants.Logging.MicrosoftExtensions.ILogger)
+			.Append(Constants.Logging.MicrosoftExtensions.ILogger.WithGlobal())
 			.Append(", ")
 		;
 
@@ -101,14 +96,14 @@ partial class LoggerTargetClassEmitter
 		if (methodTarget.IsScoped)
 		{
 			builder
-				.Append(Constants.System.IDisposable)
+				.Append(Constants.System.IDisposable.WithGlobal())
 				.Append("?> ")
 			;
 		}
 		else
 		{
 			builder
-				.Append(Constants.System.Exception)
+				.Append(Constants.System.Exception.WithGlobal())
 				.Append("?> ")
 			;
 		}
@@ -116,14 +111,14 @@ partial class LoggerTargetClassEmitter
 		builder
 			.Append(methodTarget.LoggerActionFieldName)
 			.Append(" = ")
-			.Append(Constants.Logging.MicrosoftExtensions.LoggerMessage)
+			.Append(Constants.Logging.MicrosoftExtensions.LoggerMessage.WithGlobal())
 			.Append(".Define")
 		;
 
 		if (methodTarget.IsScoped)
 			builder.Append("Scope");
 
-		if (methodTarget.ParameterCount > 0)
+		if (methodTarget.ParameterCountSansException > 0)
 		{
 			builder.Append('<');
 
@@ -135,7 +130,7 @@ partial class LoggerTargetClassEmitter
 				if (parameter.IsNullable)
 					builder.Append('?');
 
-				if (i < methodTarget.ParameterCount - 1)
+				if (i < methodTarget.ParameterCountSansException - 1)
 					builder.Append(", ");
 
 				i++;
@@ -149,24 +144,20 @@ partial class LoggerTargetClassEmitter
 		if (!methodTarget.IsScoped)
 		{
 			builder
-				.Append(methodTarget.MSLevel)
+				.Append(methodTarget.MSLevel.WithGlobal())
 				.Append(", ")
 			;
 
-			if (methodTarget.EventId != null)
-			{
-				builder
-					.Append("new ")
-					.Append(Constants.Logging.MicrosoftExtensions.EventId)
-					.Append('(')
-					.Append(methodTarget.EventId.Value)
-					.Append(", \"")
-					.Append(methodTarget.LogName)
-					.Append("\"), ")
-				;
-			}
-			else
-				builder.Append("default, ");
+			var eventId = methodTarget.EventId ?? SharedHelpers.GetNonRandomizedHashCode(methodTarget.MethodName);
+			builder
+				.Append("new ")
+				.Append(Constants.Logging.MicrosoftExtensions.EventId.WithGlobal())
+				.Append('(')
+				.Append(eventId)
+				.Append(", \"")
+				.Append(methodTarget.LogName)
+				.Append("\"), ")
+			;
 		}
 
 		builder

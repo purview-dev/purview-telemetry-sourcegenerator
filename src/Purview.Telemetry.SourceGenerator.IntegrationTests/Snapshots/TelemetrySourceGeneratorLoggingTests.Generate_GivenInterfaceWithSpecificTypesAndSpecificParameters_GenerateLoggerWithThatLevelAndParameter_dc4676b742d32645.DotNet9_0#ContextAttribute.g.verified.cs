@@ -17,12 +17,13 @@ namespace Purview.Telemetry.Activities;
 
 /// <summary>
 /// Determines if the methods parameters should be
-/// added to the current <see cref="System.Diagnostics.Activity"/>, using
-/// either the <see cref="Purview.Telemetry.TagAttribute"/>,
-/// the <see cref="BaggageAttribute"/> or inferred.
+/// added to the current <see cref="global::System.Diagnostics.Activity"/>, using
+/// either the <see cref="global::Purview.Telemetry.TagAttribute"/>,
+/// the <see cref="global::Purview.Telemetry.BaggageAttribute"/> or inferred.
 /// </summary>
-[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
-[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-sealed class ContextAttribute : System.Attribute
+[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+[global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false)]
+[global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+sealed class ContextAttribute : global::System.Attribute
 {
 }

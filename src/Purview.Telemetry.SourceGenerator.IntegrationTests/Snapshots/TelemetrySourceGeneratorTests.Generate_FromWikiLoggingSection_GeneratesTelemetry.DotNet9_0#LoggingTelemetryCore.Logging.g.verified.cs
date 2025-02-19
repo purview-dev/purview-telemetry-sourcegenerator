@@ -13,31 +13,35 @@
 
 #nullable enable
 
-sealed partial class LoggingTelemetryCore : ILoggingTelemetry
+[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+sealed partial class LoggingTelemetryCore : global::ILoggingTelemetry
 {
-	readonly Microsoft.Extensions.Logging.ILogger<ILoggingTelemetry> _logger;
+	readonly global::Microsoft.Extensions.Logging.ILogger<global::ILoggingTelemetry> _logger;
 
-	static readonly System.Func<Microsoft.Extensions.Logging.ILogger, System.Guid, System.IDisposable?> _processingWorkItemAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.Guid>("LoggingTelemetry.ProcessingWorkItem: id: {Id}");
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, ItemTypes, System.Exception?> _processingItemTypeAction = Microsoft.Extensions.Logging.LoggerMessage.Define<ItemTypes>(Microsoft.Extensions.Logging.LogLevel.Trace, default, "LoggingTelemetry.ProcessingItemType: itemType: {ItemType}");
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, System.Exception?> _failedToProcessWorkItemAction = Microsoft.Extensions.Logging.LoggerMessage.Define(Microsoft.Extensions.Logging.LogLevel.Error, default, "LoggingTelemetry.FailedToProcessWorkItem");
-	static readonly System.Action<Microsoft.Extensions.Logging.ILogger, bool, System.TimeSpan, System.Exception?> _processingCompleteAction = Microsoft.Extensions.Logging.LoggerMessage.Define<bool, System.TimeSpan>(Microsoft.Extensions.Logging.LogLevel.Information, default, "LoggingTelemetry.ProcessingComplete: success: {Success}, duration: {Duration}");
+	static readonly global::System.Func<global::Microsoft.Extensions.Logging.ILogger, System.Guid, global::System.IDisposable?> _processingWorkItemAction = global::Microsoft.Extensions.Logging.LoggerMessage.DefineScope<System.Guid>("ProcessingWorkItem: Id = {Id}");
+	static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, ItemTypes, global::System.Exception?> _processingItemTypeAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<ItemTypes>(global::Microsoft.Extensions.Logging.LogLevel.Trace, new global::Microsoft.Extensions.Logging.EventId(1819684787, "ProcessingItemType"), "ProcessingItemType: ItemType = {ItemType}");
+	static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, global::System.Exception?> _failedToProcessWorkItemAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define(global::Microsoft.Extensions.Logging.LogLevel.Error, new global::Microsoft.Extensions.Logging.EventId(1082978768, "FailedToProcessWorkItem"), "FailedToProcessWorkItem");
+	static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, bool, System.TimeSpan, global::System.Exception?> _processingCompleteAction = global::Microsoft.Extensions.Logging.LoggerMessage.Define<bool, System.TimeSpan>(global::Microsoft.Extensions.Logging.LogLevel.Information, new global::Microsoft.Extensions.Logging.EventId(1684975581, "ProcessingComplete"), "ProcessingComplete: Success = {Success}, Duration = {Duration}");
 
-	public LoggingTelemetryCore(Microsoft.Extensions.Logging.ILogger<ILoggingTelemetry> logger)
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	public LoggingTelemetryCore(global::Microsoft.Extensions.Logging.ILogger<global::ILoggingTelemetry> logger)
 	{
 		_logger = logger;
 	}
 
-	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-	public System.IDisposable? ProcessingWorkItem(System.Guid id)
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	public global::System.IDisposable? ProcessingWorkItem(System.Guid id)
 	{
 		return _processingWorkItemAction(_logger, id);
 	}
 
 
-	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void ProcessingItemType(ItemTypes itemType)
 	{
-		if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Trace))
+		if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Trace))
 		{
 			return;
 		}
@@ -46,10 +50,11 @@ sealed partial class LoggingTelemetryCore : ILoggingTelemetry
 	}
 
 
-	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void FailedToProcessWorkItem(System.Exception ex)
 	{
-		if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Error))
+		if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Error))
 		{
 			return;
 		}
@@ -58,10 +63,11 @@ sealed partial class LoggingTelemetryCore : ILoggingTelemetry
 	}
 
 
-	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 	public void ProcessingComplete(bool success, System.TimeSpan duration)
 	{
-		if (!_logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
+		if (!_logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Information))
 		{
 			return;
 		}

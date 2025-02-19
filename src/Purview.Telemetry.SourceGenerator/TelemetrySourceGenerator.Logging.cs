@@ -47,23 +47,29 @@ partial class TelemetrySourceGenerator
 		if (targets.Length == 0)
 			return;
 
-		if (targets.Any(m => m!.Failure != null))
+		if (targets.Any(m => m!.Failures?.Length > 0))
 		{
-			// Managed to get to the point of generation, with no ILogger defined. Probably impossible though.
-			var target = targets.First(m => m!.Failure != null)!;
-
-			TelemetryDiagnostics.Report(spc.ReportDiagnostic, target.Failure!);
-
-			return;
+			foreach (var failure in targets.SelectMany(m => m!.Failures!.Value))
+				TelemetryDiagnostics.Report(spc.ReportDiagnostic, failure.Item1, failure.Item1);
 		}
 
 		try
 		{
 			foreach (var target in targets)
 			{
+				if (target!.Failures?.Length > 0 && target.Failures.Value.Any(m => m.Item1.Severity == DiagnosticSeverity.Error))
+				{
+					logger?.Debug($"Skipping logger generation target due to error diagnostic: {target.FullyQualifiedName}");
+
+					continue;
+				}
+
 				logger?.Debug($"Logger generation target: {target!.FullyQualifiedName}");
 
-				LoggerTargetClassEmitter.GenerateImplementation(target!, spc, logger);
+				if (target!.UseMSLoggingTelemetryBasedGeneration)
+					LoggerGenTargetClassEmitter.GenerateImplementation(target, spc, logger);
+				else
+					LoggerTargetClassEmitter.GenerateImplementation(target, spc, logger);
 			}
 		}
 		catch (Exception ex)

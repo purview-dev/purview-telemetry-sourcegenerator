@@ -7,14 +7,14 @@ using Purview.Telemetry.SourceGenerator.Records;
 
 namespace Purview.Telemetry.SourceGenerator.Helpers;
 
-static class Utilities
+static partial class Utilities
 {
 	static readonly SymbolDisplayFormat SymbolDisplayFormat = new(
 		typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces
 	);
 
-	static readonly Lazy<ImmutableDictionary<Templates.TypeInfo, string>> _typeInfoToSystemTypeMapper = new(GenerateSystemTypeMap);
-	static readonly Lazy<ImmutableDictionary<string, string>> _fullTypeNameToSystemTypeMapper = new(() => _typeInfoToSystemTypeMapper.Value.ToImmutableDictionary(x => x.Key.FullName, x => x.Value));
+	static readonly Lazy<ImmutableDictionary<Templates.TypeInfo, string>> TypeInfoToSystemTypeMapper = new(GenerateSystemTypeMap);
+	static readonly Lazy<ImmutableDictionary<string, string>> FullTypeNameToSystemTypeMapper = new(() => TypeInfoToSystemTypeMapper.Value.ToImmutableDictionary(x => x.Key.FullName, x => x.Value));
 
 	static ImmutableDictionary<Templates.TypeInfo, string> GenerateSystemTypeMap()
 		// Putting this here ensures it's not accessed
@@ -33,10 +33,10 @@ static class Utilities
 		}.ToImmutableDictionary();
 
 	static public string Convert(this Templates.TypeInfo type)
-		=> _typeInfoToSystemTypeMapper.Value.GetValueOrDefault(type, type.FullName);
+		=> TypeInfoToSystemTypeMapper.Value.GetValueOrDefault(type, type.FullName);
 
 	static public string Convert(this string type)
-		=> _fullTypeNameToSystemTypeMapper.Value.GetValueOrDefault(type, type);
+		=> FullTypeNameToSystemTypeMapper.Value.GetValueOrDefault(type, type);
 
 	public static TargetGeneration IsValidGenerationTarget(IMethodSymbol method, GenerationType generationType, GenerationType requestedType)
 	{
@@ -98,10 +98,23 @@ static class Utilities
 		);
 	}
 
-	public static string WithNull(this string value) => value + "?";
+	public static string WithNullable(this string value) => value + '?';
+
+	public static string WithComma(this string value, bool andSpace = true)
+		=> value + ',' + (andSpace ? ' ' : null);
+
+	public static string OrNullKeyword(this string? value) => value ?? Constants.System.NullKeyword;
+
+	public static string WithGlobal(this string value) => "global::" + value;
 
 	public static StringBuilder AggressiveInlining(this StringBuilder builder, int indent)
 		=> builder.Append(indent, Constants.System.AggressiveInlining);
+
+	public static StringBuilder CodeGen(this StringBuilder builder, int indent)
+		=> builder.Append(indent, Constants.System.GeneratedCode.Value);
+
+	public static StringBuilder IfDefines(this StringBuilder builder, string condition, params string[] values)
+		=> builder.IfDefines(condition, 0, values);
 
 	public static StringBuilder IfDefines(this StringBuilder builder, string condition, int indent, params string[] values)
 	{
@@ -109,7 +122,7 @@ static class Utilities
 			.AppendLine()
 			.Append("#if ")
 			.AppendLine(condition)
-			.AppendTabs(indent)
+			.WithIndent(indent)
 		;
 
 		foreach (var value in values)
@@ -123,7 +136,7 @@ static class Utilities
 		return builder;
 	}
 
-	public static StringBuilder AppendTabs(this StringBuilder builder, int tabs)
+	public static StringBuilder WithIndent(this StringBuilder builder, int tabs)
 	{
 		for (var i = 0; i < tabs; i++)
 			builder.Append('\t');
@@ -134,7 +147,7 @@ static class Utilities
 	public static StringBuilder Append(this StringBuilder builder, int tabs, char value, bool withNewLine = true)
 	{
 		builder
-			.AppendTabs(tabs)
+			.WithIndent(tabs)
 			.Append(value);
 
 		if (withNewLine)
@@ -146,7 +159,7 @@ static class Utilities
 	public static StringBuilder Append(this StringBuilder builder, int tabs, string value, bool withNewLine = true)
 	{
 		builder
-			.AppendTabs(tabs)
+			.WithIndent(tabs)
 			.Append(value);
 
 		if (withNewLine)
@@ -158,7 +171,7 @@ static class Utilities
 	public static StringBuilder Append(this StringBuilder builder, int tabs, Templates.TypeInfo typeInfo, bool withNewLine = true)
 	{
 		builder
-			.AppendTabs(tabs)
+			.WithIndent(tabs)
 			.Append(typeInfo.Convert());
 
 		if (withNewLine)
@@ -361,12 +374,74 @@ static class Utilities
 	//	=> IsArray(parameterType, fullTypeName)
 	//		|| IsEnumerable(parameterType, fullTypeName);
 
+	public static bool IsComplexType(ITypeSymbol typeSymbol)
+	{
+		// Check for class, struct, or record types
+		if (typeSymbol.TypeKind == TypeKind.Class || typeSymbol.TypeKind == TypeKind.Struct)
+		{
+			// Exclude primitive types and special types like string
+			if (typeSymbol.SpecialType is SpecialType.None)
+				return true;
+		}
+
+		return false;
+	}
+
+	public static bool IsArray(ITypeSymbol typeSymbol)
+		=> typeSymbol.SpecialType != SpecialType.System_String && typeSymbol.TypeKind is TypeKind.Array;
+
 	public static bool IsArray(string parameterType, string fullTypeName)
 		=> parameterType == (fullTypeName + "[]");
 
+	public static bool IsIEnumerable(ITypeSymbol typeSymbol, Compilation compilation)
+	{
+		if (typeSymbol.SpecialType == SpecialType.System_String)
+			return false;
+
+		if (IsIEnumerable(typeSymbol))
+			return true;
+
+		// Get the `IEnumerable` symbol from the compilation
+		var ienumerableSymbol = compilation.GetTypeByMetadataName(Constants.System.IEnumerable);
+
+		// Check if the type implements `IEnumerable`
+		return ienumerableSymbol != null
+			&& typeSymbol.AllInterfaces.Any(i => SymbolEqualityComparer.Default.Equals(i, ienumerableSymbol));
+	}
+
+	public static bool IsGenericIEnumerable(ITypeSymbol typeSymbol, Compilation compilation)
+	{
+		if (typeSymbol.SpecialType == SpecialType.System_String)
+			return false;
+		if (IsIEnumerable(typeSymbol))
+			return true;
+
+		// Get the `IEnumerable` symbol from the compilation
+		var ienumerableSymbol = compilation.GetTypeByMetadataName(Constants.System.GenericIEnumerable + "`1");
+
+		// Check if the type implements `IEnumerable`
+		return ienumerableSymbol != null
+			&& typeSymbol.AllInterfaces.Any(i => SymbolEqualityComparer.Default.Equals(i, ienumerableSymbol));
+	}
+
+	static bool IsIEnumerable(ITypeSymbol typeSymbol)
+	{
+#pragma warning disable IDE0046 // Convert to conditional expression
+		if (typeSymbol.SpecialType == SpecialType.System_String)
+			return false;
+#pragma warning restore IDE0046 // Convert to conditional expression
+
+		return typeSymbol.SpecialType is SpecialType.System_Collections_IEnumerable
+			or SpecialType.System_Collections_Generic_ICollection_T
+			or SpecialType.System_Collections_Generic_IList_T
+			or SpecialType.System_Collections_Generic_IReadOnlyCollection_T
+			or SpecialType.System_Collections_Generic_IReadOnlyList_T
+			or SpecialType.System_Collections_Generic_IEnumerable_T;
+	}
+
 	public static bool IsEnumerable(string parameterType, string fullTypeName)
-		=> parameterType == (Constants.System.IEnumerable.FullName + "<" + fullTypeName + ">")
-		|| parameterType.StartsWith(Constants.System.IEnumerable.FullName + "<" + fullTypeName, StringComparison.Ordinal);
+		=> parameterType == (Constants.System.GenericIEnumerable.FullName + "<" + fullTypeName + ">")
+		|| parameterType.StartsWith(Constants.System.GenericIEnumerable.FullName + "<" + fullTypeName, StringComparison.Ordinal);
 
 	public static bool IsBoolean(ITypeSymbol type)
 		=> Constants.System.Boolean.Equals(type);
@@ -431,11 +506,33 @@ static class Utilities
 	//	return false;
 	//}
 
+	public static bool ContainsAttribute(ISymbol symbol, string typeName, CancellationToken token)
+		=> TryContainsAttribute(symbol, typeName, token, out _);
+
 	public static bool ContainsAttribute(ISymbol symbol, Templates.TemplateInfo templateInfo, CancellationToken token)
 		=> TryContainsAttribute(symbol, templateInfo, token, out _);
 
 	public static bool ContainsAttribute(ISymbol symbol, Templates.TemplateInfo[] templateInfo, CancellationToken token)
 		=> TryContainsAttribute(symbol, templateInfo, token, out _, out _);
+
+	public static bool TryContainsAttribute(ISymbol symbol, string typeName, CancellationToken token, out AttributeData? attributeData)
+	{
+		attributeData = null;
+
+		var attributes = symbol.GetAttributes();
+		foreach (var attribute in attributes)
+		{
+			token.ThrowIfCancellationRequested();
+
+			if (attribute.AttributeClass != null && typeName == attribute.AttributeClass?.ToString())
+			{
+				attributeData = attribute;
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	public static bool TryContainsAttribute(ISymbol symbol, Templates.TemplateInfo templateInfo, CancellationToken token, out AttributeData? attributeData)
 	{
@@ -483,7 +580,6 @@ static class Utilities
 
 		return false;
 	}
-
 
 	public static string LowercaseFirstChar(string value)
 	{

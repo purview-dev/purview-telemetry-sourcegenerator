@@ -17,13 +17,14 @@ namespace Purview.Telemetry.Activities;
 
 /// <summary>
 /// Marker attribute required for explicitly setting a
-/// parameter as baggage when generating and <see cref="System.Diagnostics.Activity"/>
-/// or an <see cref="System.Diagnostics.ActivityEvent"/>.
+/// parameter as baggage when generating and <see cref="global::System.Diagnostics.Activity"/>
+/// or an <see cref="global::System.Diagnostics.ActivityEvent"/>.
 /// </summary>
-[System.AttributeUsage(System.AttributeTargets.Parameter, AllowMultiple = false)]
-[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class BaggageAttribute : System.Attribute
+[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+[global::System.AttributeUsage(global::System.AttributeTargets.Parameter, AllowMultiple = false)]
+[global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
+sealed class BaggageAttribute : global::System.Attribute
 {
 	/// <summary>
 	/// Create a new <see cref="BaggageAttribute"/>.

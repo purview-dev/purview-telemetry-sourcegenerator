@@ -16,12 +16,13 @@
 namespace Purview.Telemetry.Metrics;
 
 /// <summary>
-/// Specifies the meter type generated corresponds to a <see cref="System.Diagnostics.Metrics.ObservableUpDownCounter{T}"/>.
+/// Specifies the meter type generated corresponds to a <see cref="global::System.Diagnostics.Metrics.ObservableUpDownCounter{T}"/>.
 /// </summary>
-[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class ObservableUpDownCounterAttribute : System.Attribute
+[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+[global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+[global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
+sealed class ObservableUpDownCounterAttribute : global::System.Attribute
 {
 	/// <summary>
 	/// Creates a new instance of the <see cref="ObservableUpDownCounterAttribute"/> class.

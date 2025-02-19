@@ -20,7 +20,7 @@ namespace Testing;
 		await TestHelpers.Verify(generationResult, autoVerifyTemplates: false);
 	}
 
-	static public TheoryData<string> BasicGenericParameters
+	public static TheoryData<string> BasicGenericParameters
 	{
 		get
 		{
@@ -34,4 +34,6 @@ namespace Testing;
 			return parameter;
 		}
 	}
+
+	public static TheoryData<int> GetGenericTypeDefCount => [1, 2, 5];
 }

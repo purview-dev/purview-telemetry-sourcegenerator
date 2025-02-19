@@ -2,12 +2,11 @@
 
 namespace SampleApp.Host.Services;
 
-sealed class WeatherService(IWeatherServiceTelemetry telemetry) : IWeatherService
+sealed class WeatherService(IWeatherServiceTelemetry telemetry, Func<int>? rng = null) : IWeatherService
 {
 	const int TooColdTempInC = -10;
 
-	static readonly string[] Summaries =
-	[
+	static readonly string[] Summaries = [
 		"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 	];
 
@@ -31,7 +30,7 @@ sealed class WeatherService(IWeatherServiceTelemetry telemetry) : IWeatherServic
 		// This would usually be async of course...
 		cancellationToken.ThrowIfCancellationRequested();
 
-		var shouldThrow = Random.Shared.Next(1, 11) == 8; // Eight ball says boom.
+		var shouldThrow = (rng?.Invoke() ?? Random.Shared.Next(1, 11)) == 8; // Eight ball says boom.
 		if (shouldThrow)
 		{
 			Exception ex = new("Failed to retrieve forecast from (simulated) upstream service.");
@@ -64,7 +63,7 @@ sealed class WeatherService(IWeatherServiceTelemetry telemetry) : IWeatherServic
 			telemetry.ItsTooCold(results.Count(wf => wf.TemperatureC < TooColdTempInC));
 		}
 		else
-			telemetry.TemperaturesWithinRange();
+			telemetry.TemperaturesWithinRange([.. results.Select(m => m.TemperatureC)]);
 
 		sw.Stop();
 

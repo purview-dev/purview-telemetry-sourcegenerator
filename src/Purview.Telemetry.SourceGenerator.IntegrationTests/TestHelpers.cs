@@ -51,7 +51,7 @@ using Purview.Telemetry;
 		}
 
 		var currentChar = input[0];
-		var remainder = input.Substring(1);
+		var remainder = input[1..];
 		var remainderPermutations = GetCasePermutations(remainder);
 
 		if (char.IsLetter(currentChar))
@@ -128,7 +128,7 @@ using Purview.Telemetry;
 		builder
 			.Append(type.Namespace)
 			.Append('.')
-			.Append(name.Substring(0, index))
+			.Append(name[..index])
 			.Append('<');
 
 		var first = true;
@@ -152,7 +152,6 @@ using Purview.Telemetry;
 		bool validationCompilation = true,
 		bool autoVerifyTemplates = true)
 	{
-
 		var verifierTask = Verifier
 			.Verify(generationResult.Result)
 			.UseDirectory("Snapshots")

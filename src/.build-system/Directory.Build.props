@@ -89,6 +89,7 @@
 	<!-- Test Projects. -->
 	<PropertyGroup Label="Testing Project Properties" Condition="'$(IsTestProject)' == 'true'">
 		<OutputType>Exe</OutputType>
+		<UseAppHost>true</UseAppHost>
 
 		<UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
 		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
@@ -96,7 +97,7 @@
 		<NoWarn>$(NoWarn);CA1707;CA1822</NoWarn>
 
 		<CollectCoverage>true</CollectCoverage>
-		<Exclude>[NSubstitute*]*,[xunit.*]*,[TUnit.*]*</Exclude>
+		<Exclude>[NSubstitute*]*,[Shouldly*]*,[xunit.*]*,[TUnit.*]*,[Microsoft.Testing.*]*,[Microsoft.NET.Test*]*[NCrunch*]*</Exclude>
 		<ExcludeByAttribute>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ExcludeByAttribute>
 
 		<Packable>false</Packable>
@@ -112,7 +113,7 @@
 		<Using Include="Xunit" />
 		<Using Include="NSubstitute" />
 
-		<Content Include="$(MSBuildThisFileDirectory)xunit/xunit.runner.json" Link="Properties/shared-xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+		<Content Include="$(MSBuildThisFileDirectory)xunit/xunit.runner.json" Link="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
 
 		<AssemblyAttribute Include="Xunit.Trait">
 			<_Parameter1>Category</_Parameter1>

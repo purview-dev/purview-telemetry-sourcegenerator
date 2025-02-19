@@ -47,10 +47,23 @@ partial class TelemetrySourceGenerator
 		if (targets.Length == 0)
 			return;
 
+		if (targets.Any(m => m!.Failures?.Length > 0))
+		{
+			foreach (var failure in targets.SelectMany(m => m!.Failures!.Value))
+				TelemetryDiagnostics.Report(spc.ReportDiagnostic, failure.Item1, failure.Item1);
+		}
+
 		try
 		{
 			foreach (var target in targets)
 			{
+				if (target!.Failures?.Length > 0 && target.Failures.Value.Any(m => m.Item1.Severity == DiagnosticSeverity.Error))
+				{
+					logger?.Debug($"Skipping meter generation target due to error diagnostic: {target.FullyQualifiedName}");
+
+					continue;
+				}
+
 				logger?.Debug($"Meter generation target: {target!.FullyQualifiedName}");
 
 				MeterTargetClassEmitter.GenerateImplementation(target!, spc, logger);

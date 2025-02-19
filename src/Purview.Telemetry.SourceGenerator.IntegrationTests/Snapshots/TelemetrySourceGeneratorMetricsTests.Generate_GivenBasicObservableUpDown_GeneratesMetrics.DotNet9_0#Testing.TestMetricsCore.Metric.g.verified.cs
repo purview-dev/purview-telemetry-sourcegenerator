@@ -15,32 +15,35 @@
 
 namespace Testing
 {
-	sealed partial class TestMetricsCore : Testing.ITestMetrics
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	sealed partial class TestMetricsCore : global::Testing.ITestMetrics
 	{
-		System.Diagnostics.Metrics.Meter _meter = default!;
+		global::System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.ObservableUpDownCounter<int>? _observableUpDownInstrument = null;
-		System.Diagnostics.Metrics.ObservableUpDownCounter<int>? _observableUpDown2Instrument = null;
-		System.Diagnostics.Metrics.ObservableUpDownCounter<int>? _observableUpDown3Instrument = null;
+		global::System.Diagnostics.Metrics.ObservableUpDownCounter<int>? _observableUpDownInstrument = null;
+		global::System.Diagnostics.Metrics.ObservableUpDownCounter<int>? _observableUpDown2Instrument = null;
+		global::System.Diagnostics.Metrics.ObservableUpDownCounter<int>? _observableUpDown3Instrument = null;
 
-		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		public TestMetricsCore(global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			InitializeMeters(meterFactory);
 		}
 
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		void InitializeMeters(global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
 			{
-				throw new System.Exception("The meters have already been initialized.");
+				throw new global::System.Exception("The meters have already been initialized.");
 			}
 
-			System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
+			global::System.Collections.Generic.Dictionary<string, object?> meterTags = new();
 
 			PopulateMeterTags(meterTags);
 
-			_meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-observable-meter")
+			_meter = meterFactory.Create(new global::System.Diagnostics.Metrics.MeterOptions("testing-observable-meter")
 			{
 				Version = null,
 				Tags = meterTags
@@ -48,9 +51,11 @@ namespace Testing
 
 		}
 
-		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		partial void PopulateMeterTags(global::System.Collections.Generic.Dictionary<string, object?> meterTags);
 
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void ObservableUpDown(System.Func<int> f, int intParam, bool boolParam)
 		{
 			if (_observableUpDownInstrument != null)
@@ -58,7 +63,7 @@ namespace Testing
 				return;
 			}
 
-			System.Diagnostics.TagList observableUpDownTagList = new System.Diagnostics.TagList();
+			global::System.Diagnostics.TagList observableUpDownTagList = new();
 
 			observableUpDownTagList.Add("intparam", intParam);
 			observableUpDownTagList.Add("boolparam", boolParam);
@@ -67,15 +72,16 @@ namespace Testing
 				, tags: observableUpDownTagList
 			);
 		}
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void ObservableUpDown2(System.Func<System.Diagnostics.Metrics.Measurement<int>> f, int intParam, bool boolParam)
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		public void ObservableUpDown2(global::System.Func<global::System.Diagnostics.Metrics.Measurement<int>> f, int intParam, bool boolParam)
 		{
 			if (_observableUpDown2Instrument != null)
 			{
-				throw new System.Exception("observableupdown2 has already been initialized.");
+				throw new global::System.Exception("observableupdown2 has already been initialized.");
 			}
 
-			System.Diagnostics.TagList observableUpDown2TagList = new System.Diagnostics.TagList();
+			global::System.Diagnostics.TagList observableUpDown2TagList = new();
 
 			observableUpDown2TagList.Add("intparam", intParam);
 			observableUpDown2TagList.Add("boolparam", boolParam);
@@ -84,15 +90,16 @@ namespace Testing
 				, tags: observableUpDown2TagList
 			);
 		}
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public void ObservableUpDown3(System.Func<System.Collections.Generic.IEnumerable<System.Diagnostics.Metrics.Measurement<int>>> f, int intParam, bool boolParam)
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		public void ObservableUpDown3(global::System.Func<global::System.Collections.Generic.IEnumerable<global::System.Diagnostics.Metrics.Measurement<int>>> f, int intParam, bool boolParam)
 		{
 			if (_observableUpDown3Instrument != null)
 			{
 				return;
 			}
 
-			System.Diagnostics.TagList observableUpDown3TagList = new System.Diagnostics.TagList();
+			global::System.Diagnostics.TagList observableUpDown3TagList = new();
 
 			observableUpDown3TagList.Add("intparam", intParam);
 			observableUpDown3TagList.Add("boolparam", boolParam);

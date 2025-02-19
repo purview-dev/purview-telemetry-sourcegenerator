@@ -1,15 +1,16 @@
-﻿namespace Purview.Telemetry.Logging;
+﻿#if !EXCLUDE_PURVIEW_TELEMETRY_LOGGING
 
-#if !EXCLUDE_PURVIEW_TELEMETRY_LOGGING
+namespace Purview.Telemetry.Logging;
 
 /// <summary>
-/// Marker attribute used as an alternative to <see cref="LogAttribute"/>, where the <see cref="LogAttribute.Level"/>
-/// is set to <see cref="Microsoft.Extensions.Logging.LogLevel.Error"/>.
+/// Marker attribute used as an alternative to <see cref="global::Purview.Telemetry.Logging.LogAttribute"/>, where the <see cref="global::Purview.Telemetry.Logging.LogAttribute.Level"/>
+/// is set to <see cref="global::Microsoft.Extensions.Logging.LogLevel.Error"/>.
 /// </summary>
-[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
-[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-sealed class ErrorAttribute : System.Attribute
+{CodeGen}
+[global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false)]
+[global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
+sealed class ErrorAttribute : global::System.Attribute
 {
 	/// <summary>
 	/// Creates a new instance of the <see cref="ErrorAttribute"/>, specifying the <see cref="MessageTemplate"/>.

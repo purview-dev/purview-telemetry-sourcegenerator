@@ -50,4 +50,62 @@ public interface ITestMetrics
 			.UseParameters(parameterType)
 		);
 	}
+
+	[Theory]
+	[MemberData(nameof(TelemetrySourceGeneratorTests.GetGenericTypeDefCount), MemberType = typeof(TelemetrySourceGeneratorTests))]
+	public async Task Generate_GivenInterfaceWithGenerics_RaisesDiagnostics(int genericTypeCount)
+	{
+		// Arrange
+		var genericTypeDef = string.Join(", ", Enumerable.Range(0, genericTypeCount).Select(i => $"T{i}"));
+		var basicMeter = @$"
+using Purview.Telemetry.Metrics;
+
+namespace Testing;
+
+[Meter(""testing-meter"")]
+public interface ITestMetrics<{genericTypeDef}>  {{
+	[AutoCounter]
+	void AutoCounter();
+}}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicMeter);
+
+		// Assert
+		await TestHelpers.Verify(generationResult, c => c
+			.ScrubInlineGuids()
+			.UseParameters(genericTypeCount),
+			validateNonEmptyDiagnostics: true
+		);
+	}
+
+	[Theory]
+	[MemberData(nameof(TelemetrySourceGeneratorTests.GetGenericTypeDefCount), MemberType = typeof(TelemetrySourceGeneratorTests))]
+	public async Task Generate_GivenMethodWithGenerics_RaisesDiagnostics(int genericTypeCount)
+	{
+		// Arrange
+		var genericTypeDef = string.Join(", ", Enumerable.Range(0, genericTypeCount).Select(i => $"T{i}"));
+		var basicMeter = @$"
+using Purview.Telemetry.Metrics;
+
+namespace Testing;
+
+[Meter(""testing-meter"")]
+public interface ITestMetrics<{genericTypeDef}>  {{
+	[AutoCounter]
+	void AutoCounter();
+}}
+";
+
+		// Act
+		var generationResult = await GenerateAsync(basicMeter);
+
+		// Assert
+		await TestHelpers.Verify(generationResult, c => c
+			.ScrubInlineGuids()
+			.UseParameters(genericTypeCount),
+			validateNonEmptyDiagnostics: true
+		);
+	}
 }

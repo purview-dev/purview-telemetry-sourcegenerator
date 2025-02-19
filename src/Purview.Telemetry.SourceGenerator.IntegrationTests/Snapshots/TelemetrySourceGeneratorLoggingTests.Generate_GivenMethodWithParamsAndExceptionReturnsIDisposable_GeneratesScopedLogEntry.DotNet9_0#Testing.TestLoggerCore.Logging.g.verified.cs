@@ -15,19 +15,22 @@
 
 namespace Testing
 {
-	sealed partial class TestLoggerCore : Testing.ITestLogger
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	sealed partial class TestLoggerCore : global::Testing.ITestLogger
 	{
-		readonly Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> _logger;
+		readonly global::Microsoft.Extensions.Logging.ILogger<global::Testing.ITestLogger> _logger;
 
-		static readonly System.Func<Microsoft.Extensions.Logging.ILogger, string, int, System.Exception, System.IDisposable?> _logAction = Microsoft.Extensions.Logging.LoggerMessage.DefineScope<string, int, System.Exception>("Test.Log: stringParam: {StringParam}, intParam: {IntParam}, exception: {Exception}");
+		static readonly global::System.Func<global::Microsoft.Extensions.Logging.ILogger, string, int, System.Exception, global::System.IDisposable?> _logAction = global::Microsoft.Extensions.Logging.LoggerMessage.DefineScope<string, int, System.Exception>("Log: StringParam = {StringParam}, IntParam = {IntParam}, Exception = {Exception}");
 
-		public TestLoggerCore(Microsoft.Extensions.Logging.ILogger<Testing.ITestLogger> logger)
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		public TestLoggerCore(global::Microsoft.Extensions.Logging.ILogger<global::Testing.ITestLogger> logger)
 		{
 			_logger = logger;
 		}
 
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		public System.IDisposable? Log(string stringParam, int intParam, System.Exception exception)
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		public global::System.IDisposable? Log(string stringParam, int intParam, System.Exception exception)
 		{
 			return _logAction(_logger, stringParam, intParam, exception);
 		}

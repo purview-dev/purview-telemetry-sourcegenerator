@@ -138,7 +138,7 @@ partial class TelemetryDiagnostics
 
 		public static readonly TelemetryDiagnosticDescriptor StatusDescriptionMustBeString = new(
 			Id: "TSG3016",
-			Title: "Status parameter should be string",
+			Title: "Status description parameter should be a string",
 			Description: "Status descriptions can only be of type string.",
 			Category: Constants.Diagnostics.Activity.Usage,
 			Severity: DiagnosticSeverity.Error

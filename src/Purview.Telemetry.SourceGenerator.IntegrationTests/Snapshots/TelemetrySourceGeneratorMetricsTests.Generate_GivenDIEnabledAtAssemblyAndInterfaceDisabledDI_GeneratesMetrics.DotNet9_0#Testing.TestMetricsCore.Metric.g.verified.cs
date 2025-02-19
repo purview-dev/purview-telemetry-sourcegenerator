@@ -15,47 +15,53 @@
 
 namespace Testing
 {
-	sealed partial class TestMetricsCore : Testing.ITestMetrics
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+	sealed partial class TestMetricsCore : global::Testing.ITestMetrics
 	{
-		System.Diagnostics.Metrics.Meter _meter = default!;
+		global::System.Diagnostics.Metrics.Meter _meter = default!;
 
-		System.Diagnostics.Metrics.Counter<int>? _counterInstrument = null;
+		global::System.Diagnostics.Metrics.Counter<int>? _counterInstrument = null;
 
-		public TestMetricsCore(System.Diagnostics.Metrics.IMeterFactory meterFactory)
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		public TestMetricsCore(global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			InitializeMeters(meterFactory);
 		}
 
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-		void InitializeMeters(System.Diagnostics.Metrics.IMeterFactory meterFactory)
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		void InitializeMeters(global::System.Diagnostics.Metrics.IMeterFactory meterFactory)
 		{
 			if (_meter != null)
 			{
-				throw new System.Exception("The meters have already been initialized.");
+				throw new global::System.Exception("The meters have already been initialized.");
 			}
 
-			System.Collections.Generic.Dictionary<string, object?> meterTags = new System.Collections.Generic.Dictionary<string, object?>();
+			global::System.Collections.Generic.Dictionary<string, object?> meterTags = new();
 
 			PopulateMeterTags(meterTags);
 
-			_meter = meterFactory.Create(new System.Diagnostics.Metrics.MeterOptions("testing-meter")
+			_meter = meterFactory.Create(new global::System.Diagnostics.Metrics.MeterOptions("testing-meter")
 			{
 				Version = null,
 				Tags = meterTags
 			});
 
-			System.Collections.Generic.Dictionary<string, object?> counterTags = new System.Collections.Generic.Dictionary<string, object?>();
+			global::System.Collections.Generic.Dictionary<string, object?> counterTags = new();
 
 			PopulateCounterTags(counterTags);
 
 			_counterInstrument = _meter.CreateCounter<int>(name: "counter", unit: null, description: null, tags: counterTags);
 		}
 
-		partial void PopulateMeterTags(System.Collections.Generic.Dictionary<string, object?> meterTags);
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		partial void PopulateMeterTags(global::System.Collections.Generic.Dictionary<string, object?> meterTags);
 
-		partial void PopulateCounterTags(System.Collections.Generic.Dictionary<string, object?> instrumentTags);
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		partial void PopulateCounterTags(global::System.Collections.Generic.Dictionary<string, object?> instrumentTags);
 
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Purview.Telemetry.SourceGenerator", "0.1.0.0")]
+		[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public void Counter(int counterValue, int intParam, bool boolParam)
 		{
 			if (_counterInstrument == null)
@@ -63,7 +69,7 @@ namespace Testing
 				return;
 			}
 
-			System.Diagnostics.TagList counterTagList = new System.Diagnostics.TagList();
+			global::System.Diagnostics.TagList counterTagList = new();
 
 			counterTagList.Add("intparam", intParam);
 			counterTagList.Add("boolparam", boolParam);

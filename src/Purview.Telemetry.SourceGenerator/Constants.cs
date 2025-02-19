@@ -1,4 +1,5 @@
-﻿using Purview.Telemetry.SourceGenerator.Templates;
+﻿using System.Text.RegularExpressions;
+using Purview.Telemetry.SourceGenerator.Templates;
 
 // This as the non-SourceGenerator namespace...
 namespace Purview.Telemetry;
@@ -7,6 +8,24 @@ static partial class Constants
 {
 	public const string SystemDiagnosticsNamespace = "System.Diagnostics";
 	public const string EmbedAttributesHashDefineName = "PURVIEW_TELEMETRY_ATTRIBUTES";
+
+	public const string MessageTemplateRegex = @"\{
+    # Optional destructuring (@) or stringify ($)
+    (?: (?<destructure>@) | (?<stringify>\$) )?
+    # Capture 'identifier' as either an 'ordinal' or a 'named' identifier
+    (?<identifier>
+        (?<ordinal>\d+)        # e.g. 0, 1, 2
+        |                      # OR
+        (?<named>[A-Za-z_]\w*) # e.g. CustomerId, name_123
+    )
+    # Optional alignment (e.g. ,10 or ,-8)
+    (?:,(?<alignment>-?\d+))?
+    # Optional format specifier (e.g. :C, :0.00)
+    (?::(?<format>[^}]+))?
+\}";
+
+	public static readonly Regex MessageTemplateMatcher = new(MessageTemplateRegex,
+		RegexOptions.ExplicitCapture | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
 	public static TemplateInfo[] GetAllTemplates()
 	{
@@ -54,6 +73,7 @@ static partial class Constants
 		public static class Logging
 		{
 			public const string Usage = nameof(Logging) + "." + nameof(Usage);
+			public const string Performance = nameof(Logging) + "." + nameof(Performance);
 		}
 
 		public static class Metrics

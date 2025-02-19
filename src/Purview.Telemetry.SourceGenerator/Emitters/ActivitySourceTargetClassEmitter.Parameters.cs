@@ -66,7 +66,7 @@ partial class ActivitySourceTargetClassEmitter
 			{
 				logger?.Diagnostic("Found a baggage parameter type that is not a string.");
 
-				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Activities.BaggageParameterShouldBeString, param.Location);
+				TelemetryDiagnostics.Report(context.ReportDiagnostic, TelemetryDiagnostics.Activities.BaggageParameterShouldBeString, param.Locations);
 
 				if (param.IsNullable)
 					builder.Append('?');
@@ -119,7 +119,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.DuplicateParameterTypes,
-				activityParams.Where(m => m.Location != null).Select(m => m.Location!),
+				activityParams.SelectMany(m => m.Locations),
 				string.Join(", ", activityParams.Select(m => m.ParameterName)),
 				"activity"
 			);
@@ -135,7 +135,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.DuplicateParameterTypes,
-				parentContextOrIdParams.Where(m => m.Location != null).Select(m => m.Location!),
+				parentContextOrIdParams.SelectMany(m => m.Locations),
 				string.Join(", ", parentContextOrIdParams.Select(m => m.ParameterName)),
 				"parent context/ parent context Id"
 			);
@@ -151,7 +151,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.DuplicateParameterTypes,
-				tagsParams.Where(m => m.Location != null).Select(m => m.Location!),
+				tagsParams.SelectMany(m => m.Locations),
 				string.Join(", ", tagsParams.Select(m => m.ParameterName)),
 				"IEnumerable of ActivityTags"
 			);
@@ -167,7 +167,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.DuplicateParameterTypes,
-				linksParams.Where(m => m.Location != null).Select(m => m.Location!),
+				linksParams.SelectMany(m => m.Locations),
 				string.Join(", ", linksParams.Select(m => m.ParameterName)),
 				"IEnumerable of ActivityLinks"
 			);
@@ -183,7 +183,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.DuplicateParameterTypes,
-				escapeParams.Where(m => m.Location != null).Select(m => m.Location!),
+				escapeParams.SelectMany(m => m.Locations),
 				string.Join(", ", escapeParams.Select(m => m.ParameterName)),
 				"escape parameters"
 			);
@@ -199,7 +199,7 @@ partial class ActivitySourceTargetClassEmitter
 				{
 					TelemetryDiagnostics.Report(context.ReportDiagnostic,
 						TelemetryDiagnostics.Activities.EscapedParameterInvalidType,
-						escapeParams.Where(m => m.Location != null).Select(m => m.Location!),
+						escapeParams.SelectMany(m => m.Locations),
 						string.Join(", ", escapeParams.Select(m => m.ParameterName)),
 						"escape parameters"
 					);
@@ -211,7 +211,7 @@ partial class ActivitySourceTargetClassEmitter
 				{
 					TelemetryDiagnostics.Report(context.ReportDiagnostic,
 						TelemetryDiagnostics.Activities.EscapedParameterInvalidType,
-						escapeParams.Where(m => m.Location != null).Select(m => m.Location!),
+						escapeParams.SelectMany(m => m.Locations),
 						escapeParam.ParameterName
 					);
 
@@ -226,7 +226,7 @@ partial class ActivitySourceTargetClassEmitter
 
 			TelemetryDiagnostics.Report(context.ReportDiagnostic,
 				TelemetryDiagnostics.Activities.DuplicateParameterTypes,
-				statusDescriptionParams.Where(m => m.Location != null).Select(m => m.Location!),
+				statusDescriptionParams.SelectMany(m => m.Locations),
 				string.Join(", ", escapeParams.Select(m => m.ParameterName)),
 				"status description parameters"
 			);
@@ -242,7 +242,7 @@ partial class ActivitySourceTargetClassEmitter
 				{
 					TelemetryDiagnostics.Report(context.ReportDiagnostic,
 						TelemetryDiagnostics.Activities.StatusDescriptionMustBeString,
-						statusDescriptionParams.Where(m => m.Location != null).Select(m => m.Location!),
+						statusDescriptionParams.SelectMany(m => m.Locations),
 						string.Join(", ", escapeParams.Select(m => m.ParameterName)),
 						"status description parameters"
 					);
@@ -254,7 +254,7 @@ partial class ActivitySourceTargetClassEmitter
 				{
 					TelemetryDiagnostics.Report(context.ReportDiagnostic,
 						TelemetryDiagnostics.Activities.StatusDescriptionParameterInvalidType,
-						statusDescriptionParams.Where(m => m.Location != null).Select(m => m.Location!),
+						statusDescriptionParams.SelectMany(m => m.Locations),
 						statusDescriptionParam.ParameterName
 					);
 

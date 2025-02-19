@@ -33,6 +33,8 @@ sealed class EmbeddedResources
 		using StreamReader reader = new(resourceStream, Encoding.UTF8);
 		var result = reader.ReadToEnd();
 
+		result = result.Replace("{CodeGen}", Constants.System.GeneratedCode.Value);
+
 		return result.Trim();
 	}
 

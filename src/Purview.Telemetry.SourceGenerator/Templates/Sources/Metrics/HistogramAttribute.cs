@@ -1,11 +1,12 @@
 ﻿namespace Purview.Telemetry.Metrics;
 
 /// <summary>
-/// Specifies the meter type generated corresponds to a <see cref="System.Diagnostics.Metrics.Histogram{T}"/>.
+/// Specifies the meter type generated corresponds to a <see cref="global::System.Diagnostics.Metrics.Histogram{T}"/>.
 /// </summary>
-[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-[System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
-sealed class HistogramAttribute : System.Attribute
+{CodeGen}
+[global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+[global::System.Diagnostics.Conditional("PURVIEW_TELEMETRY_ATTRIBUTES")]
+sealed class HistogramAttribute : global::System.Attribute
 {
 	/// <summary>
 	/// Creates a new instance of the <see cref="HistogramAttribute"/> class.
