@@ -6,6 +6,8 @@
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<NoPackageAnalysis>true</NoPackageAnalysis>
 		<IsPackable>true</IsPackable>
+
+		<COPYRIGHT_YEAR>2025</COPYRIGHT_YEAR>
 		
 		<PackageId>Purview.Telemetry.SourceGenerator</PackageId>
 		<Title>Purview Telemetry Source Generator</Title>
@@ -13,7 +15,7 @@
 		<PackageIcon>purview-logo.png</PackageIcon>
 		<Authors>Kieron Lanning</Authors>
 		<Company>KJL Solutions Ltd.</Company>
-		<Copyright>KJL Solutions Ltd., 2025 | All rights reserved.</Copyright>
+		<Copyright>KJL Solutions Ltd., $(COPYRIGHT_YEAR) | All rights reserved.</Copyright>
 		<RepositoryUrl>https://github.com/purview-dev/purview-telemetry-sourcegenerator/</RepositoryUrl>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>

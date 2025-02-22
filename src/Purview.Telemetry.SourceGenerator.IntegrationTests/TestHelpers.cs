@@ -2,8 +2,6 @@
 using System.Text;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Emit;
-using Purview.Telemetry.SourceGenerator.Templates;
 
 namespace Purview.Telemetry.SourceGenerator;
 
@@ -164,7 +162,7 @@ using Purview.Telemetry;
 			{
 				if (autoVerifyTemplates)
 				{
-					foreach (TemplateInfo template in Constants.GetAllTemplates())
+					foreach (var template in Constants.GetAllTemplates())
 					{
 						var potentialName = $"#{template.Name}.g.";
 						if (file.IndexOf(potentialName, StringComparison.Ordinal) > -1)
@@ -195,8 +193,7 @@ using Purview.Telemetry;
 
 		await using MemoryStream ms = new();
 
-		EmitResult result = generationResult.Compilation.Emit(ms);
-
+		var result = generationResult.Compilation.Emit(ms);
 		if (!result.Success)
 		{
 			result

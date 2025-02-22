@@ -20,8 +20,8 @@ SAMPLE_SOLUTION_FILE = ./samples/SampleApp/SampleApp.slnx
 
 PACK_VERSION := $(shell bun -e 'console.log(require("./package.json").version)')
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
-GIT_COMMIT := $(shell git rev-parse --short HEAD)
-CURRENT_YEAR = $(shell bun -e 'console.log(new Date().getFullYear())')
+GIT_COMMIT := $(shell git rev-parse HEAD)
+COPYRIGHT_YEAR := $(shell bun -e 'console.log(new Date().getFullYear().toString())')
 
 ARTIFACT_FOLDER = p:/sync-projects/.local-nuget/
 
@@ -78,22 +78,26 @@ version: ## Displays the current version of the project.
 	
 update-version: ## Update related samples and docs to new version.
 	@echo -e "Update related samples and docs to new version: $(COLOUR_GREEN)$(PACK_VERSION)$(COLOUR_RESET)"
+	@git submodule update --init --recursive
 	@bun .build/update-version.js
 
 # Internal targets
 build-pack:
 	@echo -e "Packing $(COLOUR_BLUE)Source Generator$(COLOUR_RESET) with $(COLOUR_ORANGE)$(PACK_VERSION)$(COLOUR_RESET)..."
-	@dotnet pack $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator/Purview.Telemetry.SourceGenerator.csproj \
-		-c $(CONFIGURATION) \
-		-o $(ARTIFACT_FOLDER) \
-		--include-symbols \
-		--property:Version=$(PACK_VERSION) \
-		--property:RepositoryBranch=$(GIT_BRANCH) \
-		--property:RepositoryCommit=$(GIT_COMMIT) \
-		--property:Copyright="KJL Solutions Ltd., $(CURRENT_YEAR) | All rights reserved."
+	@echo -e "  Configuration:   $(COLOUR_GREEN)$(CONFIGURATION)$(COLOUR_RESET)"
+	@echo -e "  Branch:          $(COLOUR_GREEN)$(GIT_BRANCH)$(COLOUR_RESET)"
+	@echo -e "  Commit:          $(COLOUR_GREEN)$(GIT_COMMIT)$(COLOUR_RESET)"
+	@echo -e "  Copyright Year:  $(COLOUR_GREEN)$(COPYRIGHT_YEAR)$(COLOUR_RESET)"
+	@echo -e "  Output Folder:   $(COLOUR_GREEN)$(ARTIFACT_FOLDER)$(COLOUR_RESET)"
 
-year:
-	@echo -e "Current Year: $(COLOUR_GREEN)$(CURRENT_YEAR)$(COLOUR_RESET)"
+	@dotnet pack "$(ROOT_FOLDER)Purview.Telemetry.SourceGenerator/Purview.Telemetry.SourceGenerator.csproj" \
+		--configuration "$(CONFIGURATION)" \
+		--output "$(ARTIFACT_FOLDER)" \
+		--include-symbols \
+		--property:Version="$(PACK_VERSION)" \
+		--property:RepositoryBranch="$(GIT_BRANCH)" \
+		--property:RepositoryCommit="$(GIT_COMMIT)" \
+		--property:COPYRIGHT_YEAR="$(COPYRIGHT_YEAR)"
 
 # Testing targets - not ready for use yes.
 act:
