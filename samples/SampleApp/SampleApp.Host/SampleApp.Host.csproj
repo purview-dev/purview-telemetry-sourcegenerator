@@ -9,7 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Purview.Telemetry.SourceGenerator" Version="3.0.1-prerelease.1">
+		<PackageReference Include="Purview.Telemetry.SourceGenerator" Version="3.0.6">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
