@@ -32,7 +32,7 @@
 	},
 	"commit-and-tag-version": {
 		"scripts": {
-			"postbump": "make update-version"
+			"postbump": "make update-version && git add ."
 		}
 	}
 }
