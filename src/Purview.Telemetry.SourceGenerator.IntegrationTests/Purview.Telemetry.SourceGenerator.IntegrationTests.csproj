@@ -3,9 +3,9 @@
 		<Compile Remove="Resources/**/*" />
 		<EmbeddedResource Include="Resources/**/*" />
 
-		<Compile Remove="Snapshots/**" />
-		<EmbeddedResource Remove="Snapshots/**" />
-		<None Remove="Snapshots/**" />
+		<Compile Remove="Snapshots/**/*" />
+		<EmbeddedResource Remove="Snapshots/**/*" />
+		<None Remove="Snapshots/**/*" />
 	</ItemGroup>
 
 	<ItemGroup>

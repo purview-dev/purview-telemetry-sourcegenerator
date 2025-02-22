@@ -60,13 +60,6 @@
 		</AssemblyAttribute>
 	</ItemGroup>
 
-	<PropertyGroup Label="NuGet Package Defaults">
-		<Authors>Kieron Lanning</Authors>
-		<Company>KJL Solutions Ltd.</Company>
-		<Copyright>KJL Solutions Ltd., 2025 | All rights reserved.</Copyright>
-		<RepositoryUrl>https://github.com/purview-dev/purview-telemetry-sourcegenerator/</RepositoryUrl>
-	</PropertyGroup>
-
 	<!-- Package Projects -->
 	<PropertyGroup Label="NuGet Package Project Properties" Condition="'$(IsPackable)' == 'true'">
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>

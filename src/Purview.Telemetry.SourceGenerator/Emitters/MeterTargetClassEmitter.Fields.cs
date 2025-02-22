@@ -11,6 +11,8 @@ partial class MeterTargetClassEmitter
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
+		logger?.Debug($"Emitting fields for {target.ClassNameToGenerate}");
+
 		indent++;
 
 		builder
