@@ -1,5 +1,15 @@
 include .build/common.mk
 
+# Makefile for Purview.Telemetry.SourceGenerator
+# ---------------------------------------------
+# This Makefile is used to automate the build, test, and release process for the Purview.Telemetry.SourceGenerator project.
+# Type `make` to see a list of the available targets.
+# Note, this makes use of:
+# - bun: https://bun.sh/
+# - dotnet: https://dot.net/
+# - git: https://git-scm.com/
+# ---------------------------------------------
+
 # Variables
 ROOT_FOLDER = ./src/
 SOLUTION_FILE = $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator.slnx
@@ -9,6 +19,10 @@ CONFIGURATION = Release
 SAMPLE_SOLUTION_FILE = ./samples/SampleApp/SampleApp.slnx
 
 PACK_VERSION := $(shell bun -e 'console.log(require("./package.json").version)')
+GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+GIT_COMMIT := $(shell git rev-parse --short HEAD)
+CURRENT_YEAR = $(shell bun -e 'console.log(new Date().getFullYear())')
+
 ARTIFACT_FOLDER = p:/sync-projects/.local-nuget/
 
 # Common variables
@@ -22,7 +36,6 @@ COLOUR_BLUE   = \033[34m
 COLOUR_PURPLE = \033[35m
 COLOUR_CYAN   = \033[36m
 COLOUR_WHITE  = \033[37m
-
 COLOUR_GREY   = \033[90m
 
 # Targets
@@ -70,7 +83,17 @@ update-version: ## Update related samples and docs to new version.
 # Internal targets
 build-pack:
 	@echo -e "Packing $(COLOUR_BLUE)Source Generator$(COLOUR_RESET) with $(COLOUR_ORANGE)$(PACK_VERSION)$(COLOUR_RESET)..."
-	@dotnet pack -c $(CONFIGURATION) -o $(ARTIFACT_FOLDER) $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator/Purview.Telemetry.SourceGenerator.csproj --property:Version=$(PACK_VERSION) --include-symbols
+	@dotnet pack $(ROOT_FOLDER)Purview.Telemetry.SourceGenerator/Purview.Telemetry.SourceGenerator.csproj \
+		-c $(CONFIGURATION) \
+		-o $(ARTIFACT_FOLDER) \
+		--include-symbols \
+		--property:Version=$(PACK_VERSION) \
+		--property:RepositoryBranch=$(GIT_BRANCH) \
+		--property:RepositoryCommit=$(GIT_COMMIT) \
+		--property:Copyright="KJL Solutions Ltd., $(CURRENT_YEAR) | All rights reserved."
+
+year:
+	@echo -e "Current Year: $(COLOUR_GREEN)$(CURRENT_YEAR)$(COLOUR_RESET)"
 
 # Testing targets - not ready for use yes.
 act:

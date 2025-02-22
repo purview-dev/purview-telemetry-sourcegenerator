@@ -6,14 +6,20 @@
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<NoPackageAnalysis>true</NoPackageAnalysis>
 		<IsPackable>true</IsPackable>
-
-		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
 		
 		<PackageId>Purview.Telemetry.SourceGenerator</PackageId>
 		<Title>Purview Telemetry Source Generator</Title>
 		<Description>.NET Source Generator for interface-based telemetry generting activities, activity events, logs, and metrics.</Description>
 		<PackageIcon>purview-logo.png</PackageIcon>
+		<Authors>Kieron Lanning</Authors>
+		<Company>KJL Solutions Ltd.</Company>
+		<Copyright>KJL Solutions Ltd., 2025 | All rights reserved.</Copyright>
+		<RepositoryUrl>https://github.com/purview-dev/purview-telemetry-sourcegenerator/</RepositoryUrl>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageProjectUrl>https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki</PackageProjectUrl>
+		<PackageTags>logs;log;logger;logging;source-generator;high-performance-logging;otel;open-telemetry;telemetry;traces;tracing;metric;metrics;meter;meters;instrumentation;instruments;events;distributed-traces;distributed-tracing;melt;dotnet;aspnet;</PackageTags>
+		
 		<DevelopmentDependency>true</DevelopmentDependency>
 		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
 
@@ -43,7 +49,7 @@
 	<!-- Package the build output into the "analyzer" slot in the NuGet package -->
 	<ItemGroup>
 		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
-		<None Include="..\..\LICENSE.md" Pack="true" PackagePath="\"/>
+		<None Include="..\..\LICENSE.md" Pack="true" PackagePath="\" />
 		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 </Project>
