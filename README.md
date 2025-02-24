@@ -1,11 +1,11 @@
 # Purview Telemetry Source Generator
 
-Generates [`ActivitySource`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource), [`ILogger`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.ilogger), and [`Metrics`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics) based on interface methods.
+Generates [`ActivitySource`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource), [`ILogger`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.ilogger), and [`Metrics`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics) based telemetry from methods you define on an interface.
 
 This approach allows for:
 
-- Faster iteration cycles - simply create the method on the interface
-- Easy substitution for testing testing - for an example, check the [sample project](https://github.com/purview-dev/purview-telemetry-sourcegenerator/tree/main/samples/SampleApp)
+- Faster iteration cycles - simply create the method on your interface and the implementation will be automatically generated
+- Easy mocking/ substitution for testing - a full sample project, including tests can be found [here](https://github.com/purview-dev/purview-telemetry-sourcegenerator/tree/main/samples/SampleApp)
 - Built-in dependency injection helper generation
 
 Use the latest version available on [NuGet](https://www.nuget.org/packages/Purview.Telemetry.SourceGenerator/), which supports the following frameworks:
