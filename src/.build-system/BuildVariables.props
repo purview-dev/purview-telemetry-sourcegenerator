@@ -2,19 +2,10 @@
 	<PropertyGroup Label="Define C# Properties" Condition="'$(MSBuildProjectExtension)' == '.csproj'">
 		<IsCSharpProject>true</IsCSharpProject>
 		<IsTestProject>false</IsTestProject>
-		<_CsProjContent>$([System.IO.File]::ReadAllText(`$(MSBuildProjectFullPath)`))</_CsProjContent>
-	</PropertyGroup>
-
-	<!-- Get the Project Sdk details. -->
-	<PropertyGroup Label="Define C# SDK Project Properties" Condition="'$(_CsProjContent)' != ''">
-		<IsSdkProject>$([System.Text.RegularExpressions.Regex]::IsMatch(`$(_CsProjContent))`, `(?s-i)(?:^|\s|>)(?s-i)(?:^|\s|&gt;)&lt;\s*(?:Project|Import)\s(?:[^&gt;]*?)\s?Sdk\s*=&quot;(?&lt;sdkproj&gt;.*?)&quot;`))</IsSdkProject>
-		<SdkProjectName>$([System.Text.RegularExpressions.Regex]::Match(`$(_CsProjContent))`, `(?s-i)(?:^|\s|>)(?s-i)(?:^|\s|&gt;)&lt;\s*(?:Project|Import)\s(?:[^&gt;]*?)\s?Sdk\s*=&quot;(?&lt;sdkproj&gt;.*?)&quot;`).Groups['sdkproj'].Value)</SdkProjectName>
 	</PropertyGroup>
 
 	<!-- Add build properties director variable. -->
 	<PropertyGroup Label="Define C# MS-Build Properties" Condition="'$(IsCSharpProject)' == 'true'">
-		<_CsProjContent>$([System.IO.File]::ReadAllText(`$(MSBuildProjectFullPath)`))</_CsProjContent>
-		<AutoMSBuildProps>$(MSBuildThisFileDirectory)Properties/</AutoMSBuildProps>
 		<TestingType>$([System.Text.RegularExpressions.Regex]::Match($(MSBuildProjectName), `^.*\.([\w|_]\w*)Tests?$`).get_Groups().get_Item(1).ToString())</TestingType>
 	</PropertyGroup>
 
@@ -56,7 +47,7 @@
 
 	<Target Name="InternalsVisibleTo"
 			BeforeTargets="BeforeCompile"
-			Condition="'$(IsCSharpProject)' == 'true' AND '$(IsTestProject)' == 'false'"
+			Condition="'$(IsCSharpProject)' == 'true' AND '$(IsTestProject)' != 'true'"
 			Inputs="@TestType"
 			Outputs="%(TestType.Identity)"
 			Label="Generates InternalsVisibleToAttribute for Non-Test Projects based on Defined Testing Types">
