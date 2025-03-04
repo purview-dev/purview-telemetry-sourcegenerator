@@ -7,7 +7,7 @@ namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class LoggerGenTargetClassEmitter
 {
-	static int EmitMethods(LoggerTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger)
+	static int EmitMethods(LoggerTarget target, StringBuilder builder, int indent, SourceProductionContext context, GenerationLogger? logger)
 	{
 		indent++;
 
@@ -24,7 +24,7 @@ partial class LoggerGenTargetClassEmitter
 		return --indent;
 	}
 
-	static void EmitMethod(StringBuilder builder, int indent, LogMethodTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger)
+	static void EmitMethod(StringBuilder builder, int indent, LogMethodTarget methodTarget, SourceProductionContext context, GenerationLogger? logger)
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -210,7 +210,7 @@ partial class LoggerGenTargetClassEmitter
 		string stateVarName,
 		List<string> existingParamNames,
 		SourceProductionContext context,
-		IGenerationLogger? logger)
+		GenerationLogger? logger)
 	{
 		logger?.Debug("Emitting state content");
 
@@ -375,7 +375,7 @@ partial class LoggerGenTargetClassEmitter
 
 	}
 
-	static string OutputExpandedEnumerable(int indent, string stateVarName, LogParameterTarget parameter, SourceProductionContext context, List<string> existingParamNames, IGenerationLogger? logger)
+	static string OutputExpandedEnumerable(int indent, string stateVarName, LogParameterTarget parameter, SourceProductionContext context, List<string> existingParamNames, GenerationLogger? logger)
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 

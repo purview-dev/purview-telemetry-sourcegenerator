@@ -5,18 +5,7 @@ interface ILogSupport
 	void SetLogOutput(Action<string, OutputType> action);
 }
 
-interface IGenerationLogger
-{
-	void Debug(string message);
-
-	void Diagnostic(string message);
-
-	void Warning(string message);
-
-	void Error(string message);
-}
-
-sealed class Logger(Action<string, OutputType> logger) : IGenerationLogger
+sealed class GenerationLogger(Action<string, OutputType> logger)
 {
 	public void Debug(string message) => logger(message, OutputType.Debug);
 

@@ -15,11 +15,12 @@
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<IsPackable>false</IsPackable>
+		<PathMap>source=dest</PathMap>
 
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
-		<AnalysisLevel>5</AnalysisLevel>
+		<AnalysisLevel>latest</AnalysisLevel>
 
 		<NoWarn>AD0001;$(NoWarn)</NoWarn>
 		<NoWarn>IDE2001;$(NoWarn)</NoWarn>
@@ -42,7 +43,7 @@
 		<Using Include="$(RootNamespace)" />
 	</ItemGroup>
 
-	<ItemGroup Label="C# Project Item Groups" Condition="'$(IsCSharpProject)' == 'true' AND $(IsTestProject) == 'false'">
+	<ItemGroup Label="C# Project Item Groups" Condition="'$(IsCSharpProject)' == 'true' AND $(IsTestProject) != 'true'">
 		<!-- Embedded Resources -->
 		<None Remove="Resources/**/*" />
 		<EmbeddedResource Include="Resources/**/*" />
@@ -69,10 +70,12 @@
 
 		<!--<PublishRepositoryUrl>true</PublishRepositoryUrl>-->
 		<IncludeSymbols>true</IncludeSymbols>
+		<IncludeSource>true</IncludeSource>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageTags>$(PackageTags);purview;</PackageTags>
 	</PropertyGroup>
 
-	<ItemGroup Label="NuGet Package References" Condition="$(IsTestProject) == 'false'">
+	<ItemGroup Label="NuGet Package References" Condition="$(IsTestProject) != 'true'">
 		<PackageReference Include="Microsoft.SourceLink.GitHub">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -87,7 +90,7 @@
 		<UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
 		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
 
-		<NoWarn>$(NoWarn);CA1707;CA1822</NoWarn>
+		<NoWarn>$(NoWarn);CA1515;CA1707;CA1822</NoWarn>
 
 		<CollectCoverage>true</CollectCoverage>
 		<Exclude>[NSubstitute*]*,[Shouldly*]*,[xunit.*]*,[TUnit.*]*,[Microsoft.Testing.*]*,[Microsoft.NET.Test*]*[NCrunch*]*</Exclude>
@@ -100,6 +103,17 @@
 		<EnableStaticNativeInstrumentation>False</EnableStaticNativeInstrumentation>
 		<EnableDynamicNativeInstrumentation>False</EnableDynamicNativeInstrumentation>
 	</PropertyGroup>
+
+	<!-- Exclude any ncrunch settings and xml comment files. -->
+	<ItemGroup Label="C# File Content Options" Condition="'$(IsCSharpProject)' == 'true'">
+		<None Remove="$(MSBuildProjectName).v3.ncrunchproject" />
+		<None Remove="$(AssemblyName).xml" />
+
+		<Compile Remove="TestResults/**" />
+		<Content Remove="TestResults/**" />
+		<EmbeddedResource Remove="TestResults/**" />
+		<None Remove="TestResults/**" />
+	</ItemGroup>
 
 	<ItemGroup Label="Testing NuGet Packages" Condition="'$(IsTestProject)' == 'true'">
 		<Using Include="Shouldly" />

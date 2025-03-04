@@ -5,13 +5,13 @@ namespace Purview.Telemetry.SourceGenerator.Helpers;
 
 partial class SharedHelpers
 {
-	public static MeterGenerationAttributeRecord? GetMeterGenerationAttribute(SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token)
+	public static MeterGenerationAttributeRecord? GetMeterGenerationAttribute(SemanticModel semanticModel, GenerationLogger? logger, CancellationToken token)
 		=> GetMeterGenerationAttribute(semanticModel.Compilation.Assembly, semanticModel, logger, token);
 
 	public static MeterAttributeRecord? GetMeterAttribute(
 		ISymbol symbol,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token)
 	{
 		if (!Utilities.TryContainsAttribute(symbol, Constants.Metrics.MeterAttribute, token, out var attributeData))
@@ -53,7 +53,7 @@ partial class SharedHelpers
 	public static MeterGenerationAttributeRecord? GetMeterGenerationAttribute(
 		ISymbol symbol,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token)
 	{
 		if (!Utilities.TryContainsAttribute(symbol, Constants.Metrics.MeterGenerationAttribute, token, out var attributeData))
@@ -91,7 +91,7 @@ partial class SharedHelpers
 	public static InstrumentAttributeRecord? GetInstrumentAttribute(
 		ISymbol symbol,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token)
 	{
 		AttributeData? attributeData = null;

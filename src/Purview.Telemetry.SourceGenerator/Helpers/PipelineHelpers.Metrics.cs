@@ -9,7 +9,7 @@ partial class PipelineHelpers
 {
 	public static bool HasMeterTargetAttribute(SyntaxNode _, CancellationToken __) => true;
 
-	public static MeterTarget? BuildMeterTransform(GeneratorAttributeSyntaxContext context, IGenerationLogger? logger, CancellationToken token)
+	public static MeterTarget? BuildMeterTransform(GeneratorAttributeSyntaxContext context, GenerationLogger? logger, CancellationToken token)
 	{
 		token.ThrowIfCancellationRequested();
 
@@ -97,7 +97,7 @@ partial class PipelineHelpers
 		MeterGenerationAttributeRecord? meterGenerationAttribute,
 		SemanticModel semanticModel,
 		INamedTypeSymbol interfaceSymbol,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token,
 		out (TelemetryDiagnosticDescriptor, ImmutableArray<Location>)[]? methodDiagnostics)
 	{
@@ -268,7 +268,7 @@ partial class PipelineHelpers
 		bool lowercaseTagKeys,
 		bool isAutoCounter,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token)
 	{
 		List<InstrumentParameterTarget> parameterTargets = [];

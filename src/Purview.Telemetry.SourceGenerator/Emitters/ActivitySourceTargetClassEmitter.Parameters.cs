@@ -13,7 +13,7 @@ partial class ActivitySourceTargetClassEmitter
 		bool populateTags,
 		ActivityBasedGenerationTarget method,
 		bool checkForNullableActivity,
-		SourceProductionContext context, IGenerationLogger? logger)
+		SourceProductionContext context, GenerationLogger? logger)
 	{
 		var parameters = populateTags ? method.Tags : method.Baggage;
 		if (parameters.Length == 0)
@@ -84,7 +84,7 @@ partial class ActivitySourceTargetClassEmitter
 			builder.Append(--indent, '}');
 	}
 
-	static bool GuardParameters(ActivityBasedGenerationTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger,
+	static bool GuardParameters(ActivityBasedGenerationTarget methodTarget, SourceProductionContext context, GenerationLogger? logger,
 		out ActivityBasedParameterTarget? activityParam,
 		out ActivityBasedParameterTarget? parentContextOrId,
 		out ActivityBasedParameterTarget? tagsParam,

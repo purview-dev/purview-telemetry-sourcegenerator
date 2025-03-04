@@ -2,6 +2,7 @@
   <Folder Name="/Solution Items/">
     <File Path="../../global.json" />
     <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
   </Folder>
   <Project Path="SampleApp.AppHost/SampleApp.AppHost.csproj" />
   <Project Path="SampleApp.Host/SampleApp.Host.csproj" />

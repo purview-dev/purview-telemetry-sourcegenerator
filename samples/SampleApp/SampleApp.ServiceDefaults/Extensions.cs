@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,9 +13,10 @@ using OpenTelemetry.Trace;
 namespace Microsoft.Extensions.Hosting;
 #pragma warning restore IDE0130 // Namespace does not match folder structure
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 public static class Extensions
 {
-	public static IHostApplicationBuilder AddServiceDefaults(this IHostApplicationBuilder builder)
+	public static IHostApplicationBuilder AddServiceDefaults([NotNull] this IHostApplicationBuilder builder)
 	{
 		builder.ConfigureOpenTelemetry();
 
@@ -33,7 +36,7 @@ public static class Extensions
 		return builder;
 	}
 
-	public static IHostApplicationBuilder ConfigureOpenTelemetry(this IHostApplicationBuilder builder)
+	public static IHostApplicationBuilder ConfigureOpenTelemetry([NotNull] this IHostApplicationBuilder builder)
 	{
 		builder.Logging.AddOpenTelemetry(logging =>
 		{
@@ -95,7 +98,7 @@ public static class Extensions
 		return builder;
 	}
 
-	public static IHostApplicationBuilder AddDefaultHealthChecks(this IHostApplicationBuilder builder)
+	public static IHostApplicationBuilder AddDefaultHealthChecks([NotNull] this IHostApplicationBuilder builder)
 	{
 		builder.Services.AddHealthChecks()
 			// Add a default liveness check to ensure app is responsive

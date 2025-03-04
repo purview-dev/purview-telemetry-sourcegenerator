@@ -8,7 +8,7 @@ namespace Purview.Telemetry.SourceGenerator;
 
 partial class TelemetrySourceGenerator
 {
-	static void RegisterLoggerGeneration(IncrementalGeneratorInitializationContext context, IGenerationLogger? logger)
+	static void RegisterLoggerGeneration(IncrementalGeneratorInitializationContext context, GenerationLogger? logger)
 	{
 		// Transform
 		Func<GeneratorAttributeSyntaxContext, CancellationToken, LoggerTarget?> loggerTargetTransform =
@@ -42,7 +42,7 @@ partial class TelemetrySourceGenerator
 		);
 	}
 
-	static void GenerateLoggerTargets(ImmutableArray<LoggerTarget?> targets, SourceProductionContext spc, IGenerationLogger? logger)
+	static void GenerateLoggerTargets(ImmutableArray<LoggerTarget?> targets, SourceProductionContext spc, GenerationLogger? logger)
 	{
 		if (targets.Length == 0)
 			return;

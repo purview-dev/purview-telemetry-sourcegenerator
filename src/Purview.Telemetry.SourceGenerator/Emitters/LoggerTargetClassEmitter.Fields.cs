@@ -7,7 +7,7 @@ namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class LoggerTargetClassEmitter
 {
-	static int EmitFields(LoggerTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger)
+	static int EmitFields(LoggerTarget target, StringBuilder builder, int indent, SourceProductionContext context, GenerationLogger? logger)
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 

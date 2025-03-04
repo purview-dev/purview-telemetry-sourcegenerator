@@ -8,7 +8,7 @@ partial class SharedHelpers
 	public static LogAttributeRecord? GetLogAttribute(
 		ISymbol symbol,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token
 	)
 	{
@@ -51,7 +51,7 @@ partial class SharedHelpers
 	public static LoggerAttributeRecord? GetLoggerAttribute(
 		ISymbol symbol,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token)
 	{
 		if (!Utilities.TryContainsAttribute(symbol, Constants.Logging.LoggerAttribute, token, out var attributeData))
@@ -90,7 +90,7 @@ partial class SharedHelpers
 	public static LoggerGenerationAttributeRecord? GetLoggerGenerationAttribute(
 		ISymbol symbol,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token)
 	{
 		if (!Utilities.TryContainsAttribute(symbol, Constants.Logging.LoggerGenerationAttribute, token, out var attributeData))
@@ -125,7 +125,7 @@ partial class SharedHelpers
 	public static LogPropertiesAttributeRecord? GetLogPropertiesAttribute(
 		ISymbol symbol,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token)
 	{
 		if (!Utilities.TryContainsAttribute(symbol, Constants.Logging.MicrosoftExtensions.LogPropertiesAttribute, token, out var attributeData))
@@ -159,7 +159,7 @@ partial class SharedHelpers
 	public static ExpandEnumerableAttributeRecord? GetExpandEnumerableAttribute(
 		ISymbol symbol,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token)
 	{
 		if (!Utilities.TryContainsAttribute(symbol, Constants.Logging.ExpandEnumerableAttribute, token, out var attributeData))
@@ -182,7 +182,7 @@ partial class SharedHelpers
 		);
 	}
 
-	public static LoggerGenerationAttributeRecord? GetLoggerGenerationAttribute(SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token)
+	public static LoggerGenerationAttributeRecord? GetLoggerGenerationAttribute(SemanticModel semanticModel, GenerationLogger? logger, CancellationToken token)
 		=> GetLoggerGenerationAttribute(semanticModel.Compilation.Assembly, semanticModel, logger, token);
 
 	public static bool IsLogMethod(IMethodSymbol method, CancellationToken token)
