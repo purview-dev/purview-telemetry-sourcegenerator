@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace SampleApp.Host.Services;
 
@@ -30,7 +31,7 @@ sealed class WeatherService(IWeatherServiceTelemetry telemetry, Func<int>? rng =
 		// This would usually be async of course...
 		cancellationToken.ThrowIfCancellationRequested();
 
-		var shouldThrow = (rng?.Invoke() ?? Random.Shared.Next(1, 11)) == 8; // Eight ball says boom.
+		var shouldThrow = (rng?.Invoke() ?? RandomNumberGenerator.GetInt32(1, 11)) == 8; // Eight ball says boom.
 		if (shouldThrow)
 		{
 			Exception ex = new("Failed to retrieve forecast from (simulated) upstream service.");
@@ -44,8 +45,8 @@ sealed class WeatherService(IWeatherServiceTelemetry telemetry, Func<int>? rng =
 		var results = Enumerable.Range(1, requestCount).Select(index => new WeatherForecast
 		{
 			Date = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(--index)),
-			TemperatureC = Random.Shared.Next(-20, 55),
-			Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+			TemperatureC = RandomNumberGenerator.GetInt32(-20, 55),
+			Summary = Summaries[RandomNumberGenerator.GetInt32(Summaries.Length)]
 		}).ToArray();
 
 		foreach (var wf in results)
