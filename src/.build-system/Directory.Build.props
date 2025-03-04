@@ -87,7 +87,7 @@
 		<UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
 		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
 
-		<NoWarn>$(NoWarn);CA1707;CA1822</NoWarn>
+		<NoWarn>$(NoWarn);CA1515;CA1707;CA1822</NoWarn>
 
 		<CollectCoverage>true</CollectCoverage>
 		<Exclude>[NSubstitute*]*,[Shouldly*]*,[xunit.*]*,[TUnit.*]*,[Microsoft.Testing.*]*,[Microsoft.NET.Test*]*[NCrunch*]*</Exclude>

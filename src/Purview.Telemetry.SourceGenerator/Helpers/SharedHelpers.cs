@@ -51,7 +51,7 @@ static partial class SharedHelpers
 		AttributeData attributeData,
 		Action<string, object> namedArguments,
 		SemanticModel? semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken cancellationToken)
 	{
 		logger?.Debug($"Found attribute: {attributeData}");
@@ -153,7 +153,7 @@ static partial class SharedHelpers
 
 	static bool HasErrors(AttributeData attributeData,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken cancellationToken)
 	{
 		if (attributeData.ApplicationSyntaxReference?.GetSyntax(cancellationToken) is not AttributeSyntax attributeSyntax)
@@ -172,7 +172,7 @@ static partial class SharedHelpers
 	public static TagOrBaggageAttributeRecord? GetTagOrBaggageAttribute(
 		AttributeData attributeData,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token)
 	{
 		AttributeStringValue? nameValue = null;
@@ -197,7 +197,7 @@ static partial class SharedHelpers
 		);
 	}
 
-	public static TelemetryGenerationAttributeRecord GetTelemetryGenerationAttribute(ISymbol type, SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token)
+	public static TelemetryGenerationAttributeRecord GetTelemetryGenerationAttribute(ISymbol type, SemanticModel semanticModel, GenerationLogger? logger, CancellationToken token)
 	{
 		token.ThrowIfCancellationRequested();
 
@@ -232,7 +232,7 @@ static partial class SharedHelpers
 	static TelemetryGenerationAttributeRecord? GetTelemetryGenerationAttribute(
 		AttributeData attributeData,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token)
 	{
 		AttributeValue<bool>? generateDependencyExtension = null;

@@ -5,13 +5,13 @@ namespace Purview.Telemetry.SourceGenerator.Helpers;
 
 partial class SharedHelpers
 {
-	public static ActivitySourceGenerationAttributeRecord? GetActivitySourceGenerationAttribute(SemanticModel semanticModel, IGenerationLogger? logger, CancellationToken token)
+	public static ActivitySourceGenerationAttributeRecord? GetActivitySourceGenerationAttribute(SemanticModel semanticModel, GenerationLogger? logger, CancellationToken token)
 		=> GetActivitySourceGenerationAttribute(semanticModel.Compilation.Assembly, semanticModel, logger, token);
 
 	public static ActivitySourceAttributeRecord? GetActivitySourceAttribute(
 		ISymbol symbol,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token)
 	{
 		if (!Utilities.TryContainsAttribute(symbol, Constants.Activities.ActivitySourceAttribute, token, out var attributeData))
@@ -53,7 +53,7 @@ partial class SharedHelpers
 	public static ActivitySourceGenerationAttributeRecord? GetActivitySourceGenerationAttribute(
 		ISymbol symbol,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token)
 	{
 		if (!Utilities.TryContainsAttribute(symbol, Constants.Activities.ActivitySourceGenerationAttribute, token, out var attributeData))
@@ -99,7 +99,7 @@ partial class SharedHelpers
 	public static ActivityAttributeRecord? GetActivityGenAttribute(
 		ISymbol symbol,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token)
 	{
 		if (!Utilities.TryContainsAttribute(symbol, Constants.Activities.ActivityAttribute, token, out var attributeData))
@@ -133,7 +133,7 @@ partial class SharedHelpers
 	public static EventAttributeRecord? GetActivityEventAttribute(
 		ISymbol symbol,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token)
 	{
 		if (!Utilities.TryContainsAttribute(symbol, Constants.Activities.EventAttribute, token, out var attributeData))

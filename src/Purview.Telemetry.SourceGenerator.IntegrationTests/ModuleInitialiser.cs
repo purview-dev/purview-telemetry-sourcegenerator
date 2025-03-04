@@ -2,8 +2,6 @@
 
 namespace Purview.Telemetry.SourceGenerator;
 
-#if NET7_0_OR_GREATER
-
 public static class ModuleInitialiser
 {
 	[ModuleInitializer]
@@ -13,5 +11,3 @@ public static class ModuleInitialiser
 		VerifySourceGenerators.Initialize();
 	}
 }
-
-#endif

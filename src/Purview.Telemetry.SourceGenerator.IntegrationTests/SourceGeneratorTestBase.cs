@@ -46,8 +46,7 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 
 	protected void ConfigureGenerator(object generator)
 	{
-		if (generator == null)
-			throw new ArgumentNullException(nameof(generator));
+		ArgumentNullException.ThrowIfNull(generator);
 
 		GuardGenerator(generator);
 
@@ -89,14 +88,11 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 
 	protected async Task<Compilation> GetCompilationAsync(GenerationResult generationResult, CancellationToken cancellationToken = default)
 	{
-		if (generationResult == null)
-			throw new ArgumentNullException(nameof(generationResult));
+		ArgumentNullException.ThrowIfNull(generationResult);
 
 		List<SyntaxTree> nodes = [];
 		foreach (var tree in generationResult.Result.GeneratedTrees)
-		{
 			nodes.Add((await tree.GetRootAsync(cancellationToken)).SyntaxTree);
-		}
 
 		return generationResult.Compilation.AddSyntaxTrees(nodes);
 	}
@@ -110,8 +106,7 @@ public abstract class SourceGeneratorTestBase<TGenerator>(ITestOutputHelper? tes
 
 	protected Assembly GetAssembly(GenerationResult result)
 	{
-		if (result == null)
-			throw new ArgumentNullException(nameof(result));
+		ArgumentNullException.ThrowIfNull(result);
 
 		Assembly assembly;
 		using (var stream = new MemoryStream())

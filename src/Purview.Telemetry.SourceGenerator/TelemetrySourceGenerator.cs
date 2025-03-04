@@ -6,7 +6,7 @@ namespace Purview.Telemetry.SourceGenerator;
 [Generator]
 public sealed partial class TelemetrySourceGenerator : IIncrementalGenerator, ILogSupport
 {
-	IGenerationLogger? _logger;
+	GenerationLogger? _logger;
 
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
@@ -34,6 +34,6 @@ public sealed partial class TelemetrySourceGenerator : IIncrementalGenerator, IL
 	{
 		_logger = action == null
 			? null
-			: new Logger(action);
+			: new GenerationLogger(action);
 	}
 }

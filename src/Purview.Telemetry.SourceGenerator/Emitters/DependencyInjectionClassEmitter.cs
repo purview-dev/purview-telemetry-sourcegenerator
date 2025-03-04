@@ -19,7 +19,7 @@ static class DependencyInjectionClassEmitter
 		string? fullyQualifiedNamespace,
 
 		SourceProductionContext context,
-		IGenerationLogger? logger)
+		GenerationLogger? logger)
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -82,7 +82,7 @@ static class DependencyInjectionClassEmitter
 		context.AddSource(hintName, Microsoft.CodeAnalysis.Text.SourceText.From(sourceText, Encoding.UTF8));
 	}
 
-	static void EmitMethod(StringBuilder builder, int indent, string className, string interfaceName, string? fullyQualifiedNamespace, IGenerationLogger? logger, CancellationToken token)
+	static void EmitMethod(StringBuilder builder, int indent, string className, string interfaceName, string? fullyQualifiedNamespace, GenerationLogger? logger, CancellationToken token)
 	{
 		token.ThrowIfCancellationRequested();
 

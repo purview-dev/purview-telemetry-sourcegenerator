@@ -7,7 +7,7 @@ namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class ActivitySourceTargetClassEmitter
 {
-	static int EmitMethods(ActivitySourceTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger)
+	static int EmitMethods(ActivitySourceTarget target, StringBuilder builder, int indent, SourceProductionContext context, GenerationLogger? logger)
 	{
 		indent++;
 
@@ -33,7 +33,7 @@ partial class ActivitySourceTargetClassEmitter
 		return --indent;
 	}
 
-	static void EmitRecordExceptionEvent(StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger)
+	static void EmitRecordExceptionEvent(StringBuilder builder, int indent, SourceProductionContext context, GenerationLogger? logger)
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -149,7 +149,7 @@ partial class ActivitySourceTargetClassEmitter
 		;
 	}
 
-	static void EmitMethod(StringBuilder builder, int indent, ActivityBasedGenerationTarget methodTarget, ActivitySourceTarget target, SourceProductionContext context, IGenerationLogger? logger)
+	static void EmitMethod(StringBuilder builder, int indent, ActivityBasedGenerationTarget methodTarget, ActivitySourceTarget target, SourceProductionContext context, GenerationLogger? logger)
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -213,7 +213,7 @@ partial class ActivitySourceTargetClassEmitter
 		;
 	}
 
-	static bool GuardMethod(ActivityBasedGenerationTarget methodTarget, ActivitySourceTarget target, SourceProductionContext context, IGenerationLogger? logger)
+	static bool GuardMethod(ActivityBasedGenerationTarget methodTarget, ActivitySourceTarget target, SourceProductionContext context, GenerationLogger? logger)
 	{
 		if (!methodTarget.TargetGenerationState.IsValid)
 		{

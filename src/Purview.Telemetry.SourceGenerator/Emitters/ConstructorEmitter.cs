@@ -17,7 +17,7 @@ static class ConstructorEmitter
 		StringBuilder builder,
 		int indent,
 		SourceProductionContext context,
-		IGenerationLogger? logger)
+		GenerationLogger? logger)
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 

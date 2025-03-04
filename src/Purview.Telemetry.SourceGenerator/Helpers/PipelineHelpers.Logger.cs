@@ -16,7 +16,7 @@ partial class PipelineHelpers
 
 	public static bool HasLoggerTargetAttribute(SyntaxNode _, CancellationToken __) => true;
 
-	public static LoggerTarget? BuildLoggerTransform(GeneratorAttributeSyntaxContext context, IGenerationLogger? logger, CancellationToken token)
+	public static LoggerTarget? BuildLoggerTransform(GeneratorAttributeSyntaxContext context, GenerationLogger? logger, CancellationToken token)
 	{
 		token.ThrowIfCancellationRequested();
 
@@ -128,7 +128,7 @@ partial class PipelineHelpers
 		GeneratorAttributeSyntaxContext _,
 		SemanticModel semanticModel,
 		INamedTypeSymbol interfaceSymbol,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token,
 		out (TelemetryDiagnosticDescriptor, ImmutableArray<Location>)[]? telemetryDiagnostics)
 	{
@@ -365,7 +365,7 @@ partial class PipelineHelpers
 	static ImmutableArray<LogParameterTarget> GetLogMethodParameters(
 		IMethodSymbol method,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token,
 		out (TelemetryDiagnosticDescriptor, ImmutableArray<Location>)? parameterDiagnostic)
 	{

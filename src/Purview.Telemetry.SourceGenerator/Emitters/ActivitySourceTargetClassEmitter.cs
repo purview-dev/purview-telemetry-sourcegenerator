@@ -8,7 +8,7 @@ namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 static partial class ActivitySourceTargetClassEmitter
 {
-	public static void GenerateImplementation(ActivitySourceTarget target, SourceProductionContext context, IGenerationLogger? logger)
+	public static void GenerateImplementation(ActivitySourceTarget target, SourceProductionContext context, GenerationLogger? logger)
 	{
 		StringBuilder builder = new();
 

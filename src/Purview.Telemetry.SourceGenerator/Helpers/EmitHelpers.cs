@@ -86,7 +86,7 @@ static class EmitHelpers
 	public static void EmitClassEnd(StringBuilder builder, int indent)
 		=> builder.Append(indent, '}');
 
-	public static bool GenerateDuplicateMethodDiagnostics(GenerationType requestedType, GenerationType generationType, ImmutableDictionary<string, Location[]> duplicateMethods, SourceProductionContext context, IGenerationLogger? logger)
+	public static bool GenerateDuplicateMethodDiagnostics(GenerationType requestedType, GenerationType generationType, ImmutableDictionary<string, Location[]> duplicateMethods, SourceProductionContext context, GenerationLogger? logger)
 	{
 		if (duplicateMethods.IsEmpty)
 			// No duplicate methods found. 

@@ -4,15 +4,16 @@
     <File Path="Directory.Build.props" />
     <File Path="Directory.Build.targets" />
     <File Path="Directory.Packages.props" />
+    <File Path="exclusion.dic" />
     <File Path="global.json" />
   </Folder>
-  <Folder Name="/Solution Items/.build-system/">
+  <Folder Name="/Solution Items/.build-system/" Id="dd7e3dc2-fe79-c54d-4790-1409758131e2">
     <File Path=".build-system/BuildVariables.props" />
     <File Path=".build-system/Directory.Build.props" />
     <File Path=".build-system/Directory.Build.targets" />
   </Folder>
-  <Folder Name="/Solution Items/.github/" />
-  <Folder Name="/Solution Items/.github/workflows/">
+  <Folder Name="/Solution Items/.github/" Id="bf8fdaac-1360-8f30-b285-60d9d37e7330" />
+  <Folder Name="/Solution Items/.github/workflows/" Id="844ea37f-fb6c-50a6-2124-643f6f5b2f36">
     <File Path="../.github/workflows/publish.yml" />
   </Folder>
   <Project Path="Purview.Telemetry.SourceGenerator.IntegrationTests/Purview.Telemetry.SourceGenerator.IntegrationTests.csproj" />

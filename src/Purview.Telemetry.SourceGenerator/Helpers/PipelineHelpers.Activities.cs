@@ -9,7 +9,7 @@ partial class PipelineHelpers
 {
 	public static bool HasActivityTargetAttribute(SyntaxNode _, CancellationToken __) => true;
 
-	public static ActivitySourceTarget? BuildActivityTransform(GeneratorAttributeSyntaxContext context, IGenerationLogger? logger, CancellationToken token)
+	public static ActivitySourceTarget? BuildActivityTransform(GeneratorAttributeSyntaxContext context, GenerationLogger? logger, CancellationToken token)
 	{
 		token.ThrowIfCancellationRequested();
 
@@ -106,7 +106,7 @@ partial class PipelineHelpers
 		ActivitySourceGenerationAttributeRecord? activitySourceGenerationAttribute,
 		SemanticModel semanticModel,
 		INamedTypeSymbol interfaceSymbol,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token,
 		out (TelemetryDiagnosticDescriptor, ImmutableArray<Location>)[]? methodDiagnostics)
 	{
@@ -190,7 +190,7 @@ partial class PipelineHelpers
 		bool defaultToTags,
 		bool lowercaseBaggageAndTagKeys,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token)
 	{
 		List<ActivityBasedParameterTarget> parameterTargets = [];
@@ -267,7 +267,7 @@ partial class PipelineHelpers
 	static (ActivityMethodType, bool) GetMethodType(
 		IMethodSymbol method,
 		SemanticModel semanticModel,
-		IGenerationLogger? logger,
+		GenerationLogger? logger,
 		CancellationToken token,
 		out ActivityAttributeRecord? activityAttribute,
 		out EventAttributeRecord? eventAttribute)

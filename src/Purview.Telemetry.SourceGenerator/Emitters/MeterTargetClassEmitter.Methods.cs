@@ -7,7 +7,7 @@ namespace Purview.Telemetry.SourceGenerator.Emitters;
 
 partial class MeterTargetClassEmitter
 {
-	static int EmitMethods(MeterTarget target, StringBuilder builder, int indent, SourceProductionContext context, IGenerationLogger? logger)
+	static int EmitMethods(MeterTarget target, StringBuilder builder, int indent, SourceProductionContext context, GenerationLogger? logger)
 	{
 		indent++;
 
@@ -26,7 +26,7 @@ partial class MeterTargetClassEmitter
 		return --indent;
 	}
 
-	static void EmitPartialMethods(StringBuilder builder, int indent, MeterTarget target, SourceProductionContext context, IGenerationLogger? logger)
+	static void EmitPartialMethods(StringBuilder builder, int indent, MeterTarget target, SourceProductionContext context, GenerationLogger? logger)
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -69,7 +69,7 @@ partial class MeterTargetClassEmitter
 		}
 	}
 
-	static void EmitMethod(StringBuilder builder, int indent, InstrumentTarget methodTarget, SourceProductionContext context, IGenerationLogger? logger)
+	static void EmitMethod(StringBuilder builder, int indent, InstrumentTarget methodTarget, SourceProductionContext context, GenerationLogger? logger)
 	{
 		context.CancellationToken.ThrowIfCancellationRequested();
 
