@@ -90,6 +90,7 @@ The [.NET Aspire Sample](https://github.com/purview-dev/purview-telemetry-source
 
 Check the page in the the [wiki](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki/Sample-Application) for information.
 
+> [!TIP]
 > This sample project has [`EmitCompilerGeneratedFiles`](https://learn.microsoft.com/en-us/dotnet/core/extensions/configuration-generator#enable-the-configuration-source-generator) set to `true`, so you can easily see the generated output.
 
 ## Notes on Logging Generation
