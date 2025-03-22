@@ -11,6 +11,8 @@ jobs:
 
     env:
       CONFIGURATION: ${{ secrets.CONFIGURATION || 'Release' }}
+      SOLUTION: ./src/Purview.Telemetry.SourceGenerator.slnx
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -21,11 +23,11 @@ jobs:
           global-json-file: ./src/global.json
 
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore ${{ env.SOLUTION }}
 
       - name: Build
-        run: dotnet build --no-restore --configuration ${{ env.CONFIGURATION }}
+        run: dotnet build ${{ env.SOLUTION }} --no-restore --configuration ${{ env.CONFIGURATION }}
 
       - name: Run tests
-        run: dotnet test --no-build --verbosity normal --configuration ${{ env.CONFIGURATION }}
+        run: dotnet test ${{ env.SOLUTION }} --no-build --verbosity normal --configuration ${{ env.CONFIGURATION }}
       
