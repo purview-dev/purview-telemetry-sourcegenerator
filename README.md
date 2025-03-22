@@ -2,6 +2,8 @@
 
 Generates [`ActivitySource`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.activitysource), [`ILogger`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.ilogger), and [`Metrics`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics) based telemetry from methods you define on an interface.
 
+[![CI](https://github.com/purview-dev/purview-telemetry-sourcegenerator/actions/workflows/ci.yml/badge.svg)](https://github.com/purview-dev/purview-telemetry-sourcegenerator/actions/workflows/ci.yml)
+
 This approach allows for:
 
 - Faster iteration cycles - simply create the method on your interface and the implementation will be automatically generated
