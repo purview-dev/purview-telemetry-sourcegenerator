@@ -30,7 +30,8 @@ For more information see the [wiki](https://github.com/purview-dev/purview-telem
 
 This is called a **multi-target interface** because it generates more than one output type: **Activities, Logging, and Metrics**.
 
-When generating a single target, the generator will automatically infer the necessary attributes. More information about multi-targeting can be found in [here](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki/Multi-Targeting).
+> [!TIP]
+> When generating a single target, the generator will automatically infer the necessary attributes. More information about multi-targeting can be found in [here](https://github.com/purview-dev/purview-telemetry-sourcegenerator/wiki/Multi-Targeting).
 
 ```csharp
 using Purview.Telemetry.Activities;
